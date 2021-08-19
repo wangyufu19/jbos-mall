@@ -1,0 +1,25 @@
+server:
+  port: 8080
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 30 #定义服务续约任务的调用间隔时间，默认为30秒
+    lease-expiration-duration-in-seconds: 90 #定义服务失效的时间，默认为90秒
+  client:
+    service-url:
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+spring:
+  application:
+    name: admin
+  profiles:
+    active: dev
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+#mybatis
+mybatis-plus:
+  mapperLocations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
