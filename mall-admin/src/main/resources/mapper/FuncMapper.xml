@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jbos.app.sys.mapper.FuncMapper">
+    <!--查询所有权限-->
+    <select id="getAllFuncList" parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.Func">
+        SELECT FUNCURL,FUNCCODE
+        FROM JBOS_FUNC
+        WHERE FUNCURL IS NOT NULL AND TRIM(FUNCURL)!=''
+    </select>
+    <!--查询用户菜单权限列表-->
+    <select id="getUserFuncList"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.Func">
+        SELECT T.ID,T.PARENTID,T.FUNCCODE,T.FUNCNAME,T.FUNCTYPE,T.FUNCPATH,T.FUNCURL
+        FROM JBOS_FUNC T INNER JOIN JBOS_ROLE_FUNC T1 ON T.ID=T1.FUNCID
+        LEFT JOIN JBOS_USER_ROLE T3 ON T1.ROLEID=T3.ROLEID
+        LEFT JOIN JBOS_EMP T4 ON T3.USERID=T4.ID
+        WHERE T.ISVALID=1 AND T.PARENTID=#{parentId} AND T4.BADGE=#{userId}
+        ORDER BY T.ORDERNO
+    </select>
+    <!--查询下级功能节点-->
+    <select id="getFuncChildrenNode"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.TreeNode">
+        SELECT T.ID,T.FUNCNAME AS TEXT,
+        CASE
+            WHEN (SELECT COUNT(1) FROM JBOS_FUNC B WHERE B.PARENTID=T.ID)>=1 THEN 'false'
+            ELSE 'true'
+        END AS LEAF
+        FROM JBOS_FUNC T
+        WHERE T.ISVALID=1 AND T.PARENTID = #{parentId}
+        ORDER BY T.ORDERNO
+    </select>
+    <!--查询功能列表-->
+    <select id="getFuncList"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.Func">
+        SELECT T.ID,T.PARENTID,T.FUNCCODE,T.FUNCNAME,T.FUNCTYPE,T.FUNCURL,T.ORDERNO
+        FROM JBOS_FUNC T
+        WHERE T.ISVALID=1 AND T.PARENTID = #{parentId}
+        <if test="funcCodeS != null and funcCodeS != ''">
+            AND T.FUNCCODE = #{funcCodeS}
+        </if>
+        <if test="funcNameS != null and funcNameS != ''">
+            AND T.FUNCNAME = #{funcNameS}
+        </if>
+        ORDER BY T.ORDERNO
+    </select>
+    <!--新增功能-->
+    <insert id="insertFunc" parameterType="java.util.Map">
+        INSERT INTO JBOS_FUNC(
+            ID,PARENTID,FUNCCODE,FUNCNAME,FUNCTYPE,FUNCURL,ORDERNO
+        )VALUES(
+            #{id},#{parentId},#{funcCode},#{funcName},#{funcType},#{funcUrl},#{orderNo}
+        )
+    </insert>
+    <!--修改功能-->
+    <update id="updateFunc" parameterType="java.util.Map">
+        UPDATE JBOS_FUNC
+        SET PARENTID=#{parentId},FUNCCODE=#{funcCode},FUNCNAME=#{funcName},FUNCTYPE=#{funcType},FUNCURL=#{funcUrl},ORDERNO=#{orderNo}
+        WHERE ID=#{id}
+    </update>
+    <!--删除功能-->
+    <delete id="deleteFunc" parameterType="java.util.Map">
+        DELETE FROM JBOS_FUNC
+        WHERE ID=#{id}
+    </delete>
+</mapper>

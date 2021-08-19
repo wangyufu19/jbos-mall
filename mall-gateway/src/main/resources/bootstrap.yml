@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: dev
+  cloud:
+    config:
+      profile: dev
+      #服务发现和URI模式得到配置中心属性
+      uri: http://localhost:7080/
+#      discovery:
+#        enabled: true
+#        service-id: configserver
+server:
+  port: 9090
+eureka:
+  registry-fetch-interval-seconds: 10 #获取注册信息的时间间隔（s），默认为30秒
+  client:
+    service-url:
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+zuul:
+  add-host-header: false
+  routes:
+    support:
+      path: /api/admin/**
+      serviceId: admin
+ribbon:
+  http:
+    client:
+      enabled: false
+  okhttp:
+    enabled: true
+  #com.netflix.loadbalancer.RandomRule #配置规则 随机
+  #com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
+  #com.netflix.loadbalancer.RetryRule #配置规则 重试
+  #com.netflix.loadbalancer.WeightedResponseTimeRule #配置规则 响应时间权重
+  #com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
+  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
+  ConnectTimeout: 500 #请求连接超时时间
+  ReadTimeout: 1000 #请求处理的超时时间
+  OkToRetryOnAllOperations: true #对所有请求都进行重试
+  MaxAutoRetriesNextServer: 2 #切换实例的重试次数
+  MaxAutoRetries: 1 #对当前实例的重试次数
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+      isolation:
+        thread:
+          timeoutInMilliseconds: 5000
+#mybatis
+mybatis:
+  mapperLocations: classpath*:mapper/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.jboscloud.application.*.pojo
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 3
+    #字段策略 0:"忽略判断",1:"非 NULL 判断",2:"非空判断"
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    #数据库大写下划线转换
+    #capital-mode: true
+    # Sequence序列接口实现类配置
+    #key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
+    #逻辑删除配置
+    logic-delete-value: 1
+    logic-not-delete-value: 0
+    #自定义SQL注入器
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true

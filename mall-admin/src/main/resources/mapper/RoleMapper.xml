@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jbos.app.sys.mapper.RoleMapper">
+    <!--查询下级角色-->
+    <select id="getRoleChildrenNode"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.TreeNode">
+        SELECT T.ID,T.ROLENAME AS TEXT,
+        CASE
+            WHEN (SELECT COUNT(1) FROM JBOS_ROLE B WHERE B.PARENTID=T.ID)>=1 THEN 'false'
+            ELSE 'true'
+        END AS LEAF
+        FROM JBOS_ROLE T
+        WHERE T.ISVALID=1 AND T.PARENTID = #{parentId}
+        ORDER BY T.ROLENAME
+    </select>
+    <!--查询角色数据列表-->
+    <select id="getRoleList"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.Role">
+        SELECT T.ID,T.PARENTID,T.ROLECODE,T.ROLENAME,T.ROLETYPE
+        FROM JBOS_ROLE T
+        WHERE T.ISVALID=1
+        <if test="parentId != null and parentId != ''">
+            AND T.PARENTID = #{parentId}
+        </if>
+        <if test="roleNameS != null and roleNameS != ''">
+            AND T.ROLENAME = #{roleNameS}
+        </if>
+    </select>
+    <!--查询角色功能数据-->
+    <select id="getRoleFuncs"  parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            T.FUNCID
+        FROM JBOS_ROLE_FUNC T
+        WHERE ROLEID=#{roleId}
+    </select>
+    <!--新增角色-->
+    <insert id="insertRole" parameterType="java.util.Map">
+        INSERT INTO JBOS_ROLE(
+            ID,PARENTID,ROLECODE,ROLENAME,ROLETYPE
+        )VALUES(
+            #{id},#{parentId},#{roleCode}, #{roleName},#{roleType}
+        )
+    </insert>
+    <!--修改角色-->
+    <update id="updateRole" parameterType="java.util.Map">
+        UPDATE JBOS_ROLE
+        SET ROLENAME=#{roleName},ROLETYPE=#{roleType}
+        WHERE ID=#{id}
+    </update>
+    <!--删除角色-->
+    <delete id="deleteRole" parameterType="java.lang.String">
+        DELETE FROM JBOS_ROLE
+        WHERE ID=#{id}
+    </delete>
+    <!--删除角色功能-->
+    <delete id="deleteRoleFunc" parameterType="java.lang.String">
+        DELETE FROM JBOS_ROLE_FUNC
+        WHERE ROLEID=#{roleId}
+    </delete>
+    <!--新增角色功能-->
+    <insert id="insertRoleFunc" parameterType="java.util.List">
+        INSERT INTO JBOS_ROLE_FUNC(ROLEID,FUNCID)
+        VALUES
+        <foreach collection="list" item="roleFunc" separator =",">
+            (#{roleFunc.roleId}, #{roleFunc.funcId})
+        </foreach>
+    </insert>
+    <!--查询角色用户列表-->
+    <select id="getRoleEmpList"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.Emp">
+        SELECT T.ID,T.BADGE,T.EMPNAME,T.ORGID,
+        (SELECT B.ORGNAME FROM JBOS_ORG B WHERE B.ID=T.ORGID) AS ORGNAME,
+        T.DEPID,
+        (SELECT B.DEPNAME FROM JBOS_DEP B WHERE B.ID=T.DEPID) AS DEPNAME,
+        (SELECT CONCAT(B.DEPNAME,'-',T.EMPNAME) FROM JBOS_DEP B WHERE B.ID=T.DEPID) AS DEPEMPNAME,
+        T.HEADSHIP,
+        (SELECT B.DICTNAME FROM JBOS_DICT_CODE B WHERE B.TYPEID='JBOS_HEADSHIP' AND B.DICTID=T.HEADSHIP) AS HEADSHIPNAME,
+        T.EMPSTATUS,
+        (SELECT B.DICTNAME FROM JBOS_DICT_CODE B WHERE B.TYPEID='JBOS_EMP_STATUS' AND B.DICTID=T.EMPSTATUS) AS EMPSTATUSNAME
+        FROM JBOS_EMP T INNER JOIN JBOS_USER_ROLE T1 ON T.ID=T1.USERID
+        WHERE T.ISVALID=1 AND T1.ROLEID=#{roleId}
+        <if test="badgeS != null and badgeS != ''">
+            AND T.BADGE = #{badgeS}
+        </if>
+        <if test="empNameS != null and empNameS != ''">
+            AND T.EMPNAME LIKE  '%${empNameS}%'
+        </if>
+        ORDER BY T.ORDERNO
+    </select>
+    <!--查询选择角色用户列表-->
+    <select id="getSelectRoleEmpList"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.Emp">
+        SELECT T.ID,T.BADGE,T.EMPNAME,T.ORGID,
+        (SELECT B.ORGNAME FROM JBOS_ORG B WHERE B.ID=T.ORGID) AS ORGNAME,
+        T.DEPID,
+        (SELECT B.DEPNAME FROM JBOS_DEP B WHERE B.ID=T.DEPID) AS DEPNAME,
+        (SELECT CONCAT(B.DEPNAME,'-',T.EMPNAME) FROM JBOS_DEP B WHERE B.ID=T.DEPID) AS DEPEMPNAME,
+        T.HEADSHIP,
+        (SELECT B.DICTNAME FROM JBOS_DICT_CODE B WHERE B.TYPEID='JBOS_HEADSHIP' AND B.DICTID=T.HEADSHIP) AS HEADSHIPNAME,
+        T.EMPSTATUS,
+        (SELECT B.DICTNAME FROM JBOS_DICT_CODE B WHERE B.TYPEID='JBOS_EMP_STATUS' AND B.DICTID=T.EMPSTATUS) AS EMPSTATUSNAME
+        FROM JBOS_EMP T
+        WHERE T.ISVALID =1 AND T.ID NOT IN (
+        SELECT T1.ID
+        FROM JBOS_EMP T1 INNER JOIN JBOS_USER_ROLE T2 ON T1.ID=T2.USERID
+        WHERE T1.ISVALID=1 AND T2.ROLEID=#{roleId}
+        )
+        <if test="orgIdS != null and orgIdS != ''">
+            AND T.ORGID = #{orgIdS}
+        </if>
+        <if test="depIdS != null and depIdS != ''">
+            AND T.DEPID = #{depIdS}
+        </if>
+        <if test="badgeS != null and badgeS != ''">
+            AND T.BADGE = #{badgeS}
+        </if>
+        <if test="empNameS != null and empNameS != ''">
+            AND T.EMPNAME LIKE  '%${empNameS}%'
+        </if>
+        ORDER BY T.ORDERNO
+    </select>
+    <!--新增角色用户-->
+    <insert id="insertRoleUser" parameterType="java.util.List">
+        INSERT INTO JBOS_USER_ROLE(USERID,ROLEID)
+        VALUES
+        <foreach collection="list" item="userRole" separator =",">
+            (#{userRole.userId}, #{userRole.roleId})
+        </foreach>
+    </insert>
+</mapper>

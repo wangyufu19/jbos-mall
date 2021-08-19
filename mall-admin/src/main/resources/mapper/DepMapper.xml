@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jbos.app.sys.mapper.DepMapper">
+    <!--查询机构下级部门数据-->
+    <select id="getDepList"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.Dep">
+        SELECT T.ID,T.PARENTID,T.DEPCODE,T.DEPNAME,T.DEPLEVEL,
+        T.ORGID,(SELECT B.ORGNAME FROM JBOS_ORG B WHERE B.ID=T.ORGID) AS ORGNAME,
+        T.DEPCHARGE,(SELECT B.EMPNAME FROM JBOS_EMP B WHERE B.BADGE=T.DEPCHARGE) AS DEPCHARGENAME,
+        T.DEPDIRECTOR,(SELECT B.EMPNAME FROM JBOS_EMP B WHERE B.BADGE=T.DEPDIRECTOR) AS DEPDIRECTORNAME
+        FROM JBOS_DEP T
+        WHERE T.ISVALID=1 AND T.ORGID=#{orgId}
+        <if test="depCodeS != null and depCodeS != ''">
+            AND T.DEPCODE = #{depCodeS}
+        </if>
+        <if test="depNameS != null and depNameS != ''">
+            AND T.DEPNAME LIKE  '%${depNameS}%'
+        </if>
+        ORDER BY T.ORDERNO
+    </select>
+    <!--查询部门员工数量-->
+    <select id="getDepEmpCount"  parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT
+           COUNT(1) AS DATACOUNT
+        FROM JBOS_EMP T
+        WHERE T.DEPID=#{depId}
+    </select>
+    <!--新增部门-->
+    <insert id="addDep" parameterType="java.util.Map">
+        INSERT INTO JBOS_DEP(
+            ID,PARENTID,DEPCODE,DEPNAME,ORGID,DEPLEVEL,DEPCHARGE,DEPDIRECTOR,ORDERNO
+        )VALUES(
+            #{id},#{parentId},#{depCode},#{depName},#{orgId},#{depLevel},#{depCharge},#{depDirector},#{orderNo}
+        )
+    </insert>
+    <!--修改部门-->
+    <update id="updateDep" parameterType="java.util.Map">
+        UPDATE JBOS_DEP
+        SET DEPNAME=#{depName},DEPLEVEL=#{depLevel},DEPCHARGE=#{depCharge},DEPDIRECTOR=#{depDirector},ORDERNO=#{orderNo}
+        WHERE ID=#{id}
+    </update>
+    <!--删除部门-->
+    <delete id="deleteDep" parameterType="java.lang.String">
+        DELETE FROM JBOS_DEP
+        WHERE ID=#{id}
+    </delete>
+</mapper>
