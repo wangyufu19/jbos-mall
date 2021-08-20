@@ -1,5 +1,11 @@
 server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
   port: 9080
+  servlet:
+    context-path: /jbos-fast
 eureka:
   instance:
     lease-renewal-interval-in-seconds: 30 #定义服务续约任务的调用间隔时间，默认为30秒

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: eurekaserver
+    name: mall-eurekaserver
   profiles:
     active: peer1
 
