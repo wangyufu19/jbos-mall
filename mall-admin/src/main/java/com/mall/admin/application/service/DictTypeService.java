@@ -1,7 +1,7 @@
 package com.mall.admin.application.service;
 
 import com.mall.admin.domain.entity.DictType;
-import com.mall.admin.infrastructure.repository.mapper.DictTypeMapper;
+import com.mall.admin.infrastructure.repository.DictTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +15,13 @@ import java.util.List;
 @Service
 public class DictTypeService {
     @Autowired
-    private DictTypeMapper dictTypeMapper;
+    private DictTypeRepository dictTypeRepository;
 
     /**
      * 得到字典类型数据
      * @return
      */
     public List<DictType> getDictTypeList(){
-        return dictTypeMapper.getDictTypeList();
+        return dictTypeRepository.getDictTypeList();
     }
 }

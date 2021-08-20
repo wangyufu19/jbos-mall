@@ -2,12 +2,9 @@ package com.mall.admin.application.service;
 
 import com.mall.admin.domain.entity.Func;
 import com.mall.admin.domain.entity.TreeNode;
-import com.mall.admin.infrastructure.repository.mapper.FuncMapper;
+import com.mall.admin.infrastructure.repository.FuncMgrRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,14 +16,13 @@ import java.util.Map;
 @Service
 public class FuncMgrService {
     @Autowired
-    private FuncMapper funcMapper;
+    private FuncMgrRepository funcMgrRepository;
     /**
      * 查询所有菜单权限列表
      * @return
      */
     public List<Func> getAllFuncList(){
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        return funcMapper.getAllFuncList(parameterObject);
+        return funcMgrRepository.getAllFuncList();
     }
     /**
      * 查询用户菜单权限列表
@@ -34,7 +30,7 @@ public class FuncMgrService {
      * @return
      */
     public List<Func> getUserFuncList(String userid, String loginName){
-        return this.getUserFuncTree(loginName,Func.ROOTFUNC_ID);
+        return funcMgrRepository.getUserFuncList(userid,loginName);
     }
 
     /**
@@ -44,21 +40,7 @@ public class FuncMgrService {
      * @return
      */
     private List<Func> getUserFuncTree(String loginName,String parentId){
-        List<Func> funcs=new ArrayList<Func>();
-        Map<String,Object> parameterObject=new HashMap<String,Object>();
-        parameterObject.put("userId",loginName);
-        parameterObject.put("parentId",parentId);
-        if("admin".equals(loginName)){
-            funcs=funcMapper.getFuncList(parameterObject);
-        }else{
-            funcs=funcMapper.getUserFuncList(parameterObject);
-        }
-        if(null!=funcs){
-            for(Func func:funcs){
-                func.setChildren(this.getUserFuncTree(loginName,func.getId()));
-            }
-        }
-        return funcs;
+        return funcMgrRepository.getUserFuncTree(loginName,parentId);
     }
     /**
      * 查询下级功能节点
@@ -66,11 +48,7 @@ public class FuncMgrService {
      * @return
      */
     public List<TreeNode> getFuncChildrenNode(String parentId){
-        List<TreeNode> funcTree=null;
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("parentId",parentId);
-        funcTree=funcMapper.getFuncChildrenNode(parameterObject);
-        return funcTree;
+        return funcMgrRepository.getFuncChildrenNode(parentId);
     }
 
     /**
@@ -79,14 +57,7 @@ public class FuncMgrService {
      * @return
      */
     public List<TreeNode> getFuncTree(String parentId){
-        List<TreeNode> funcTree=new ArrayList<TreeNode>();
-        funcTree=this.getFuncChildrenNode(parentId);
-        if(null!=funcTree){
-            for(TreeNode treeNode:funcTree){
-                treeNode.setChildren(this.getFuncTree(treeNode.getId()));
-            }
-        }
-        return funcTree;
+        return funcMgrRepository.getFuncTree(parentId);
     }
     /**
      * 查询功能列表
@@ -94,14 +65,14 @@ public class FuncMgrService {
      * @return
      */
     public List<Func> getFuncList(Map<String, Object> parameterObject){
-         return funcMapper.getFuncList(parameterObject);
+         return funcMgrRepository.getFuncList(parameterObject);
     }
     /**
      * 新增功能
      * @param parameterObject
      */
     public void insertFunc(Map<String, Object> parameterObject){
-        funcMapper.insertFunc(parameterObject);
+        funcMgrRepository.insertFunc(parameterObject);
     }
 
     /**
@@ -109,7 +80,7 @@ public class FuncMgrService {
      * @param parameterObject
      */
     public void updateFunc(Map<String, Object> parameterObject){
-        funcMapper.updateFunc(parameterObject);
+        funcMgrRepository.updateFunc(parameterObject);
     }
 
     /**
@@ -117,6 +88,6 @@ public class FuncMgrService {
      * @param id
      */
     public void deleteFunc(String id){
-        funcMapper.deleteFunc(id);
+        funcMgrRepository.deleteFunc(id);
     }
 }

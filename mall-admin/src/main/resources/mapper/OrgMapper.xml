@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jbos.app.sys.mapper.OrgMapper">
+<mapper namespace="com.mall.admin.infrastructure.repository.mapper.OrgMapper">
     <!--查询组织机构数据-->
     <select id="getOrgTree"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.TreeNode">
         SELECT T.ID,T.ORGNAME AS TEXT,

@@ -1,9 +1,8 @@
 package com.mall.auth.application.service;
 
-import com.mall.auth.infrastructure.repository.mapper.UserAuthMapper;
+import com.mall.auth.infrastructure.repository.UserAuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.Map;
 @Service
 public class UserAuthService {
     @Autowired
-    private UserAuthMapper userAuthMapper;
+    private UserAuthRepository userAuthRepository;
 
 
     /**
@@ -23,9 +22,7 @@ public class UserAuthService {
      * @return
      */
     public Map<String,Object> login(String username){
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("username",username);
-        return userAuthMapper.login(parameterObject);
+        return userAuthRepository.login(username);
     }
 
     /**
@@ -34,9 +31,7 @@ public class UserAuthService {
      * @return
      */
     public List<HashMap> getAuthUserRole(String username){
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("username",username);
-        return userAuthMapper.getAuthUserRole(parameterObject);
+        return userAuthRepository.getAuthUserRole(username);
     }
     /**
      * 得到用户认证信息
@@ -44,8 +39,6 @@ public class UserAuthService {
      * @return
      */
     public Map<String,Object> getUserAuthInfoById(String userid){
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("userid",userid);
-        return userAuthMapper.getUserAuthInfoById(parameterObject);
+        return userAuthRepository.getUserAuthInfoById(userid);
     }
 }

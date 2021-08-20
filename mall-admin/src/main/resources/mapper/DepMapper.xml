@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jbos.app.sys.mapper.DepMapper">
+<mapper namespace="com.mall.admin.infrastructure.repository.mapper.DepMapper">
     <!--查询机构下级部门数据-->
     <select id="getDepList"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.Dep">
         SELECT T.ID,T.PARENTID,T.DEPCODE,T.DEPNAME,T.DEPLEVEL,

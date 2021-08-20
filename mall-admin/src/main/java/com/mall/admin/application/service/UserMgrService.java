@@ -1,11 +1,11 @@
 package com.mall.admin.application.service;
 
 import com.mall.admin.domain.entity.UserInfo;
-import com.mall.admin.infrastructure.repository.mapper.UserMapper;
+import com.mall.admin.infrastructure.repository.UserMgrRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,7 +17,7 @@ import java.util.Map;
 public class UserMgrService {
 
 	@Autowired
-	private UserMapper userMapper;
+	private UserMgrRepository userMgrRepository;
 	/**
 	 * 查询用户数据列表
 	 * @param params
@@ -32,10 +32,7 @@ public class UserMgrService {
 	 * @return
 	 */
 	public Map<String, Object> getUserInfoByLoginName(String username){
-		Map<String, Object> parameterObject=new HashMap<String, Object>();
-		parameterObject.put("username",username);
-		Map<String, Object> dataMap=userMapper.getUserInfoByLoginName(parameterObject);
-		return dataMap;
+		return userMgrRepository.getUserInfoByLoginName(username);
 	}
 	/**
 	 * 根据ID查询用户信息
@@ -43,27 +40,12 @@ public class UserMgrService {
 	 * @return
 	 */
 	public UserInfo getUserInfoById(String userid){
-		Map<String, Object> parameterObject=new HashMap<String, Object>();
-		parameterObject.put("userid",userid);
-		Map<String, Object> dataMap=userMapper.getUserInfoById(parameterObject);
-		if(dataMap!=null){
-			UserInfo userInfo=new UserInfo();
-//			userInfo.setUserId(String.valueOf(dataMap.get("ID")));
-//			userInfo.setLoginName(StringUtils.replaceNull(dataMap.get("LOGIN_NAME")));
-//			userInfo.setUsername(StringUtils.replaceNull(dataMap.get("USER_NAME")));
-//			userInfo.setUserStatus(StringUtils.replaceNull(dataMap.get("USER_STATUS")));
-//			userInfo.setOrgId(StringUtils.replaceNull(dataMap.get("ORG_ID")));
-//			userInfo.setDepId(StringUtils.replaceNull(dataMap.get("DEP_ID")));
-			return userInfo;
-		}else{
-			return null;
-		}
+		return userMgrRepository.getUserInfoById(userid);
 	}
 	/**
 	 * 更新用户信息
 	 * @param user
 	 */
-	//@Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
 	public void updateUserInfo(UserInfo user){
 
 	}

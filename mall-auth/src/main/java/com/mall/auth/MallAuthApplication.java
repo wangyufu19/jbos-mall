@@ -13,13 +13,13 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-public class AuthApplication extends SpringBootServletInitializer {
+public class MallAuthApplication extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(AuthApplication.class);
+        return application.sources(MallAuthApplication.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(AuthApplication.class, args);
+        SpringApplication.run(MallAuthApplication.class, args);
     }
 }

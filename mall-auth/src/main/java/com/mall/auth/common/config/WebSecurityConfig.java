@@ -144,6 +144,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         loginFilter.setAuthenticationFailureHandler(new AuthenticationFailureHandler() {
             public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
                 ResponseData r= ResponseData.error("登录失败！");
+                if(e.getMessage().indexOf("Bad credentials")!=-1){
+                    r= ResponseData.error("用户名或密码错误！");
+                }
                 response.setContentType("application/json;charset=utf-8");
                 PrintWriter out = response.getWriter();
                 out.write(JacksonUtils.toJson(r));

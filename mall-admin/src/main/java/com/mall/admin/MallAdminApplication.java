@@ -13,13 +13,13 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-public class AdminApplication extends SpringBootServletInitializer {
+public class MallAdminApplication extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(AdminApplication.class);
+        return application.sources(MallAdminApplication.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(AdminApplication.class, args);
+        SpringApplication.run(MallAdminApplication.class, args);
     }
 }
