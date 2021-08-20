@@ -1,9 +1,9 @@
-package com.mall.admin.common.config;
+package com.mall.auth.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mall.admin.application.api.response.ResponseData;
-import com.mall.admin.common.utils.JacksonUtils;
-import com.mall.admin.common.utils.StringUtils;
+import com.mall.common.response.ResponseData;
+import com.mall.common.utils.JacksonUtils;
+import com.mall.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

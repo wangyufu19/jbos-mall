@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jbos.app.sys.mapper.UserAuthMapper">
+<mapper namespace="com.mall.auth.infrastructure.repository.mapper.UserAuthMapper">
     <!--用户登录-->
     <select id="login" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT A.ID,A.LOGINNAME,A.PASSWORD,A.USERNAME,A.SALT,A.USERSTATUS

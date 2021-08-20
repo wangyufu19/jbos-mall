@@ -1,4 +1,4 @@
-package com.mall.admin.application.api.response;
+package com.mall.common.response;
 
 import lombok.Getter;
 import lombok.Setter;

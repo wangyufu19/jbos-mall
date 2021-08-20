@@ -1,4 +1,4 @@
-package com.mall.admin.common.config;
+package com.mall.auth.common.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;

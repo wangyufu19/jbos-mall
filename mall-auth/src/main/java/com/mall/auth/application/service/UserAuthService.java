@@ -1,6 +1,6 @@
-package com.mall.admin.application.service;
+package com.mall.auth.application.service;
 
-import com.mall.admin.infrastructure.repository.mapper.UserAuthMapper;
+import com.mall.auth.infrastructure.repository.mapper.UserAuthMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,6 @@ import java.util.Map;
  * 用户认证服务类
  */
 @Service
-
 public class UserAuthService {
     @Autowired
     private UserAuthMapper userAuthMapper;

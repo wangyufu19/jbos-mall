@@ -1,4 +1,4 @@
-package com.mall.admin.common.utils;
+package com.mall.common.utils;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.UUID;

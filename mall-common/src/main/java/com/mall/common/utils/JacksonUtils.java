@@ -1,4 +1,4 @@
-package com.mall.admin.common.utils;
+package com.mall.common.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;

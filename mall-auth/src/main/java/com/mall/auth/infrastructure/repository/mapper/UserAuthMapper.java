@@ -1,4 +1,4 @@
-package com.mall.admin.infrastructure.repository.mapper;
+package com.mall.auth.infrastructure.repository.mapper;
 
 import java.util.HashMap;
 import java.util.List;
