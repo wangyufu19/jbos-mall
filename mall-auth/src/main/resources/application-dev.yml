@@ -7,10 +7,6 @@ spring:
         url: jdbc:mysql://localhost:3306/jbos?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
         username: jbos
         password: jbos
-      activiti:
-        url: jdbc:mysql://localhost:3306/activiti?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
-        username: activiti
-        password: activiti
       initial-size: 10
       max-active: 100
       min-idle: 10
