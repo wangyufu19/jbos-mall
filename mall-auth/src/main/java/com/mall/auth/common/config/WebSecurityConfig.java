@@ -59,7 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
-    private String loginUrl="/sys/auth/login";
+
+    private String loginUrl="/login";
     /**
      * 用户认证配置
      * @param auth
@@ -143,7 +144,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 返回登录失败后数据
         loginFilter.setAuthenticationFailureHandler(new AuthenticationFailureHandler() {
             public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
-                ResponseData r= ResponseData.error("登录失败！");
+                ResponseData r= ResponseData.error(e.getMessage());
                 if(e.getMessage().indexOf("Bad credentials")!=-1){
                     r= ResponseData.error("用户名或密码错误！");
                 }
@@ -166,7 +167,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
             }
             // 判断请求是否是json格式，如果不是直接调用默认表单认证方式
-            if (MediaType.APPLICATION_JSON_VALUE.equals(request.getContentType())) {
+            if (request.getContentType().indexOf(MediaType.APPLICATION_JSON_VALUE)!=-1) {
                 // 把request的json数据转换为Map
                 Map<String, String> loginData = new HashMap<>();
                 try {

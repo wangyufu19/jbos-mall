@@ -8,7 +8,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * GatewayApplication
@@ -16,17 +15,16 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  * @date 2021-08-19
  */
 @SpringBootApplication
-@EnableAspectJAutoProxy
 @EnableEurekaClient
 @EnableZuulProxy
-public class GatewayApplication extends SpringBootServletInitializer {
+public class MallGatewayApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(GatewayApplication.class);
+        return application.sources(MallGatewayApplication.class);
     }
     public static void main(String[] args) {
-        SpringApplication springApplication=new SpringApplication(GatewayApplication.class);
+        SpringApplication springApplication=new SpringApplication(MallGatewayApplication.class);
         springApplication.addListeners(new ApplicationContextListener());
         ApplicationContext applicationContext=springApplication.run(args);
     }

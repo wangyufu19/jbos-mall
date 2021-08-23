@@ -1,6 +1,6 @@
 spring:
   application:
-    name: gateway
+    name: mall-gateway
   profiles:
     active: dev
   cloud:
@@ -21,8 +21,11 @@ eureka:
 zuul:
   add-host-header: false
   routes:
-    support:
-      path: /api/admin/**
+    mall-auth:
+      path: /gateway/mall-auth/**
+      serviceId: mall-auth
+    admin:
+      path: /gateway/admin/**
       serviceId: admin
 ribbon:
   http:
