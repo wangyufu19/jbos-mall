@@ -14,6 +14,9 @@ spring:
 server:
   port: 9090
 eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
+    lease-expiration-duration-in-seconds: 10 #定义服务失效的时间，默认为90秒
   registry-fetch-interval-seconds: 10 #获取注册信息的时间间隔（s），默认为30秒
   client:
     service-url:
@@ -22,11 +25,11 @@ zuul:
   add-host-header: false
   routes:
     mall-auth:
-      path: /gateway/mall-auth/**
+      path: /api/mall-auth/**
       serviceId: mall-auth
     admin:
-      path: /gateway/admin/**
-      serviceId: admin
+      path: /api/mall-admin/**
+      serviceId: mall-admin
 ribbon:
   http:
     client:

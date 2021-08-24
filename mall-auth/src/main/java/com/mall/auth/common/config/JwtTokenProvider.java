@@ -61,7 +61,6 @@ public class JwtTokenProvider {
             if(signData!=null){
                 //加密数据
                 for(Map.Entry<String,String> entry:signData.entrySet()){
-                    log.info("key={};value={}",entry.getKey(),entry.getValue());
                     builder.withClaim(entry.getKey(),entry.getValue());
                 }
             }

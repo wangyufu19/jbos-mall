@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mall.admin.infrastructure.repository.mapper.EmpMapper">
     <!--查询机构员工数据-->
-    <select id="getEmpList"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.Emp">
+    <select id="getEmpList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.Emp">
         SELECT T.ID,T.BADGE,T.EMPNAME,T.ORGID,
         (SELECT B.ORGNAME FROM JBOS_ORG B WHERE B.ID=T.ORGID) AS ORGNAME,
         T.DEPID,

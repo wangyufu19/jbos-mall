@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mall.admin.infrastructure.repository.mapper.OrgMapper">
     <!--查询组织机构数据-->
-    <select id="getOrgTree"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.TreeNode">
+    <select id="getOrgTree"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.TreeNode">
         SELECT T.ID,T.ORGNAME AS TEXT,
         CASE
             WHEN (SELECT COUNT(1) FROM JBOS_ORG B WHERE B.PARENTID=T.ID)>=1 THEN 'false'
@@ -14,7 +14,7 @@
     </select>
 
     <!--查询组织机构数据-->
-    <select id="getOrgList"  parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.Org">
+    <select id="getOrgList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.Org">
         SELECT T.ID,T.PARENTID,T.ORGCODE,T.ORGNAME,T.REMARK
         FROM JBOS_ORG T
         WHERE T.ISVALID=1
@@ -24,17 +24,17 @@
         ORDER BY ORDERNO
     </select>
     <!--查询组织机构数据-->
-    <select id="getOrg"  parameterType="java.lang.String" resultType="com.jbos.app.sys.pojo.Org">
+    <select id="getOrg"  parameterType="java.lang.String" resultType="com.mall.admin.domain.entity.Org">
         SELECT ID,PARENT_ID,ORG_CODE,ORG_NAME,ORG_TYPE,ORG_DESC FROM JBOS_T_ORG
         WHERE ID=#{orgId}
     </select>
     <!--保存组织机构数据-->
-    <insert id="addOrg" parameterType="com.jbos.app.sys.pojo.Org">
+    <insert id="addOrg" parameterType="com.mall.admin.domain.entity.Org">
         INSERT INTO JBOS_T_ORG(ID,PARENT_ID,ORG_CODE,ORG_NAME,ORG_TYPE,ORG_DESC)
         VALUES(#{id},#{parentId},#{orgCode},#{orgName},#{orgType},#{orgDesc})
     </insert>
     <!--更新组织机构数据-->
-    <update id="updateOrg" parameterType="com.jbos.app.sys.pojo.Org">
+    <update id="updateOrg" parameterType="com.mall.admin.domain.entity.Org">
         UPDATE JBOS_T_ORG SET ORG_CODE=#{orgCode},ORG_NAME=#{orgName},ORG_TYPE=#{orgType},ORG_DESC=#{orgDesc}
         WHERE ID=#{id}
     </update>

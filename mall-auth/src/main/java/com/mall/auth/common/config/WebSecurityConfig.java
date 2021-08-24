@@ -1,6 +1,7 @@
 package com.mall.auth.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mall.auth.common.user.JwtUser;
 import com.mall.common.response.ResponseData;
 import com.mall.common.utils.JacksonUtils;
 import com.mall.common.utils.StringUtils;
@@ -41,10 +42,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
 
 /**
  * WebSecurityConfig
@@ -251,64 +251,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-    public class JwtUser implements UserDetails{
-        private String password;
-        private String username;
-        private Set<GrantedAuthority> authorities;
-        private boolean accountNonExpired=true;
-        private boolean accountNonLocked=true;
-        private boolean credentialsNonExpired=true;
-        private boolean enabled=true;
 
-        public JwtUser(String username, String password,Set<GrantedAuthority> authorities){
-            this.username=username;
-            this.password=password;
-            this.authorities=authorities;
-        }
-
-        public Collection<? extends GrantedAuthority> getAuthorities() {
-            return null;
-        }
-
-        public String getPassword() {
-            return null;
-        }
-
-
-        public String getUsername() {
-            return null;
-        }
-
-        public boolean isAccountNonExpired() {
-            return accountNonExpired;
-        }
-
-        public void setAccountNonExpired(boolean accountNonExpired) {
-            this.accountNonExpired = accountNonExpired;
-        }
-
-        public boolean isAccountNonLocked() {
-            return accountNonLocked;
-        }
-
-        public void setAccountNonLocked(boolean accountNonLocked) {
-            this.accountNonLocked = accountNonLocked;
-        }
-
-        public boolean isCredentialsNonExpired() {
-            return credentialsNonExpired;
-        }
-
-        public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-            this.credentialsNonExpired = credentialsNonExpired;
-        }
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-    }
 }

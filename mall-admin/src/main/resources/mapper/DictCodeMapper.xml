@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mall.admin.infrastructure.repository.mapper.DictCodeMapper">
     <!--得到数据字典数据-->
-    <select id="getDictCodeList" parameterType="java.util.Map" resultType="com.jbos.app.sys.pojo.DictCode">
+    <select id="getDictCodeList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.DictCode">
         SELECT TYPEID,DICTID,DICTNAME,ORDERNO
         FROM JBOS_DICT_CODE
         WHERE TYPEID=#{typeId}
