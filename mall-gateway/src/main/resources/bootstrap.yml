@@ -17,7 +17,7 @@ eureka:
   instance:
     lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
     lease-expiration-duration-in-seconds: 10 #定义服务失效的时间，默认为90秒
-  registry-fetch-interval-seconds: 10 #获取注册信息的时间间隔（s），默认为30秒
+  registry-fetch-interval-seconds: 5 #获取注册信息的时间间隔（s），默认为30秒
   client:
     service-url:
       defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
@@ -25,10 +25,10 @@ zuul:
   add-host-header: false
   routes:
     mall-auth:
-      path: /api/mall-auth/**
+      path: /api/auth/**
       serviceId: mall-auth
     admin:
-      path: /api/mall-admin/**
+      path: /api/admin/**
       serviceId: mall-admin
 ribbon:
   http:

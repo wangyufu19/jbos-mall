@@ -1,16 +1,17 @@
-package com.mall.auth.application.api;
+package com.mall.gateway.application.api;
 
-import com.mall.auth.common.user.JwtUser;
 import com.mall.common.response.ResponseData;
+import com.mall.gateway.common.user.JwtUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/principal")
+@RequestMapping("/auth")
 @Api("用户认证接口")
 public class UserAuthApi {
 
@@ -23,7 +24,9 @@ public class UserAuthApi {
         JwtUser principal = (JwtUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Map<String,Object> data=new HashMap<String,Object>();
         data.put("username",principal.getUsername());
+        data.put("userInfo",principal.getUserInfo());
         responseData.setData(data);
         return responseData;
     }
+
 }

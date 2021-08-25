@@ -3,15 +3,15 @@
 <mapper namespace="com.mall.admin.infrastructure.repository.mapper.UserMapper">
     <!--根据ID查询用户信息-->
     <select id="getUserInfoById" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS,A.ORGID,A.DEPID
+        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS
         FROM JBOS_USER A
         WHERE A.ID=#{userid}
     </select>
     <!--根据登录用户查询用户信息-->
     <select id="getUserInfoByLoginName" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS,A.ORGID,A.DEPID
+        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS
         FROM JBOS_USER A
-        WHERE A.LOGIN_NAME=#{username}
+        WHERE A.LOGINNAME=#{username}
     </select>
 
 </mapper>

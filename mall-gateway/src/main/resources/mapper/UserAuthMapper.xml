@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.gateway.infrastructure.repository.mapper.UserAuthMapper">
+    <!--用户登录-->
+    <select id="login" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT A.ID,A.LOGINNAME,A.PASSWORD,A.USERSTATUS
+        FROM JBOS_USER A
+        WHERE A.LOGINNAME=#{username}
+    </select>
+    <!--根据登录用户查询用户信息-->
+    <select id="getUserInfoByLoginName" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS
+        FROM JBOS_USER A
+        WHERE A.LOGINNAME=#{username}
+    </select>
+    <!--查询认证用户角色-->
+    <select id="getAuthUserRole" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT C.ROLECODE
+        FROM JBOS_USER A INNER JOIN JBOS_USER_ROLE B ON A.ID=B.USERID
+        INNER JOIN JBOS_ROLE C ON B.ROLEID=C.ID
+        WHERE A.LOGINNAME=#{username}
+    </select>
+</mapper>
