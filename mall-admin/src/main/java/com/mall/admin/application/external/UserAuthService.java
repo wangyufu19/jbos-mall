@@ -15,6 +15,6 @@ import java.util.Map;
  */
 @FeignClient(name = "mall-gateway" , fallback = UserAuthServiceFallback.class)
 public interface UserAuthService {
-    @RequestMapping(value = "/auth/getPrincipalInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/auth/principal/getPrincipalInfo", method = RequestMethod.GET)
     public ResponseData getPrincipalInfo(@RequestParam Map<String, Object> params);
 }

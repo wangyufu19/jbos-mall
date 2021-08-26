@@ -1,4 +1,4 @@
-package com.mall.gateway.common.config;
+package com.mall.gateway.common.zuul.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.Map;
 
-
 /**
  * JwtTokenProvider
  * @author youfu.wang
@@ -24,7 +23,7 @@ import java.util.Map;
 @Slf4j
 public class JwtTokenProvider {
 
-    private static final long JWT_EXPIRATION =  60*60 * 1000L; // 默认过期时间一小时
+    private static final long JWT_EXPIRATION =  5*60 * 1000L; // 默认过期时间一小时
 
     public static final String TOKEN_PREFIX = "Bearer "; // token 的开头字符串
 
@@ -57,7 +56,7 @@ public class JwtTokenProvider {
             expireDate = new Date(System.currentTimeMillis() + JWT_EXPIRATION); // 设置过期时间
         }
         try {
-            JWTCreator.Builder builder=JWT.create();
+            JWTCreator.Builder builder= JWT.create();
             if(signData!=null){
                 //加密数据
                 for(Map.Entry<String,String> entry:signData.entrySet()){

@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Set;
+
 /**
  * JwtUser
  * @author youfu.wang
@@ -12,20 +12,25 @@ import java.util.Set;
  */
 public class JwtUser implements UserDetails {
     private String username;
+    private String userInfo;
     private String password;
-
-    private Set<GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> authorities;
     private boolean accountNonExpired=true;
     private boolean accountNonLocked=true;
     private boolean credentialsNonExpired=true;
     private boolean enabled=true;
 
-    public JwtUser(String username, String password,Set<GrantedAuthority> authorities){
+    public JwtUser(String username, String password,Collection<? extends GrantedAuthority> authorities){
         this.username=username;
         this.password=password;
         this.authorities=authorities;
     }
-
+    public JwtUser(String username, String userInfo,String password,Collection<? extends GrantedAuthority> authorities){
+        this.username=username;
+        this.userInfo=userInfo;
+        this.password=password;
+        this.authorities=authorities;
+    }
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
     }
@@ -38,7 +43,9 @@ public class JwtUser implements UserDetails {
     public String getUsername() {
         return this.username;
     }
-
+    public String getUserInfo(){
+            return this.userInfo;
+    }
     public boolean isAccountNonExpired() {
         return accountNonExpired;
     }

@@ -1,4 +1,4 @@
-package com.mall.gateway.common.zuul;
+package com.mall.gateway.common.zuul.filter;
 
 import com.mall.common.response.ResponseData;
 import com.mall.common.utils.JacksonUtils;
@@ -6,20 +6,24 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /**
- * MallGatewayFilter
+ * ZuulFilter
  * @author youfu.wang
  * @date 2021-08-19
  */
 @Component
-public class MallGatewayFilter extends ZuulFilter {
-    private static final Logger logger= LoggerFactory.getLogger(MallGatewayFilter.class);
+public class TokenFilter extends ZuulFilter {
+    private static final Logger logger= LoggerFactory.getLogger(TokenFilter.class);
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
     @Override
     public String filterType() {
         return  FilterConstants.PRE_TYPE;
@@ -50,23 +54,29 @@ public class MallGatewayFilter extends ZuulFilter {
         response.setContentType("application/json;charset=utf-8");
         logger.info("send {} request to {}", request.getMethod(),requestURI);
         try{
-            Object accessToken = request.getParameter("access_token");
+            String accessToken = request.getParameter("access_token");
             if(accessToken == null) {
                 accessToken=request.getHeader("access_token");
             }
             if(accessToken == null) {
                 logger.error("access token is empty");
                 ctx.setSendZuulResponse(false);
-                ctx.setResponseStatusCode(401);
+                ctx.setResponseStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
                 ctx.setResponseBody(JacksonUtils.toJson(ResponseData.error("access token is empty")));
+                return null;
+            }
+            if (!jwtTokenProvider.verifyToken(accessToken)) {
+                ctx.setSendZuulResponse(false);
+                ctx.setResponseStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
+                ctx.setResponseBody(JacksonUtils.toJson(ResponseData.error("token失效或认证过期！")));
                 return null;
             }
 
         }catch (Exception e){
-            logger.error("MallGateway Filter Exception");
+            logger.error("TokenFilter Filter Exception");
             ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(401);
-            ctx.setResponseBody(JacksonUtils.toJson(ResponseData.error("MallGateway Filter Exception")));
+            ctx.setResponseBody(JacksonUtils.toJson(ResponseData.error("TokenFilter Filter Exception")));
         }
         return null;
     }

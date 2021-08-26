@@ -22,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -125,13 +124,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 返回登录成功后数据
         loginFilter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-                User userPrincipal = (User) authentication.getPrincipal(); // 获取用户对象
+                JwtUser principal = (JwtUser) authentication.getPrincipal(); // 获取用户对象
                 Map<String,String> signData=new HashMap<String,String>();
-                signData.put("username",userPrincipal.getUsername());
+                signData.put("username",principal.getUsername());
                 String token = jwtTokenProvider.generateToken(signData);
                 ResponseData r= ResponseData.ok("登录成功！");
                 Map<String,Object> data=new HashMap<String,Object>();
-                data.put("principal", authentication.getPrincipal());
+                data.put("username", principal.getUsername());
                 data.put("access_token", JwtTokenProvider.TOKEN_PREFIX + token);
                 r.setData(data);
                 response.setContentType("application/json;charset=utf-8");
@@ -190,7 +189,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
             if(authentication!=null){
-                User user = (User) authentication.getPrincipal();
+                JwtUser user = (JwtUser) authentication.getPrincipal();
                 String username = user.getUsername();
                 log.info("username: {}  is offline now", username);
             }

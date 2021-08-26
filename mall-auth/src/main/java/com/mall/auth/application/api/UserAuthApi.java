@@ -23,6 +23,7 @@ public class UserAuthApi {
         JwtUser principal = (JwtUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Map<String,Object> data=new HashMap<String,Object>();
         data.put("username",principal.getUsername());
+        data.put("userInfo",principal.getUserInfo());
         responseData.setData(data);
         return responseData;
     }

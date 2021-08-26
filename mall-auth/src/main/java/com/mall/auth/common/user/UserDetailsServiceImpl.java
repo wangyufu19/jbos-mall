@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -39,7 +38,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             for (HashMap role : userRoles) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(StringUtils.replaceNull(role.get("ROLECODE"))));
             }
-            return new User(StringUtils.replaceNull(userMap.get("LOGINNAME")),StringUtils.replaceNull(userMap.get("PASSWORD")),grantedAuthorities);
+            String userInfo=StringUtils.replaceNull(userMap.get("USERNAME"));
+            String password=StringUtils.replaceNull(userMap.get("PASSWORD"));
+            return new JwtUser(username,userInfo,password,grantedAuthorities);
         }
     }
 }
