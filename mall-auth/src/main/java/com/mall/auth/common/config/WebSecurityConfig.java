@@ -131,7 +131,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 ResponseData r= ResponseData.ok("登录成功！");
                 Map<String,Object> data=new HashMap<String,Object>();
                 data.put("username", principal.getUsername());
-                data.put("access_token", JwtTokenProvider.TOKEN_PREFIX + token);
+                data.put("userInfo",principal.getUserInfo());
+                data.put("accessToken", token);
                 r.setData(data);
                 response.setContentType("application/json;charset=utf-8");
                 PrintWriter out = response.getWriter();
@@ -227,7 +228,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 }
                 UsernamePasswordAuthenticationToken authentication;
                 String username = jwtTokenProvider.getSignDataFromJWT(token, "username");
-                UserDetails userDetails = new JwtUser(username, null, null);
+                String userInfo = jwtTokenProvider.getSignDataFromJWT(token, "userInfo");
+                UserDetails userDetails = new JwtUser(username, userInfo,null, null);
                 // 构建认证过的token
                 authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 if (authentication != null) {
@@ -241,11 +243,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
 
         private String getRequestToken(HttpServletRequest request) {
-            String bearerToken = request.getHeader("Authorization");
-            if (bearerToken == null || !bearerToken.startsWith(JwtTokenProvider.TOKEN_PREFIX)) {
-                return request.getParameter("access_token");
+            String accessToken = request.getHeader("accessToken");
+            if (accessToken == null) {
+                return request.getParameter("accessToken");
             } else {
-                return bearerToken.split(" ")[1].trim();
+                return accessToken;
             }
         }
     }

@@ -39,6 +39,9 @@ public class UserMgrApi {
         ResponseData principalInfo=userAuthService.getPrincipalInfo(params);
         String username="";
         if(principalInfo!=null){
+            if(!ResponseData.RETCODE_SUCCESS.equals(principalInfo.getRetCode())){
+                return principalInfo;
+            }
             username= StringUtils.replaceNull(((Map) principalInfo.getData()).get("username"));
         }
         responseData.setData(userMgrService.getUserInfoByLoginName(username));
@@ -57,6 +60,9 @@ public class UserMgrApi {
         ResponseData principalInfo=userAuthService.getPrincipalInfo(params);
         String username="";
         if(principalInfo!=null){
+            if(!ResponseData.RETCODE_SUCCESS.equals(principalInfo.getRetCode())){
+                return principalInfo;
+            }
             username= StringUtils.replaceNull(((Map) principalInfo.getData()).get("username"));
         }
         List<Func> funcRouteList = null;

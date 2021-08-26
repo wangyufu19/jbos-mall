@@ -8,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,13 +40,24 @@ public class TokenFilter extends ZuulFilter {
     public boolean shouldFilter() {
         RequestContext ctx=RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
+        //只过滤OPTIONS 请求
+        if(request.getMethod().equals(RequestMethod.OPTIONS.name())){
+            return true;
+        }
         String requestURI=request.getRequestURI();
         if(requestURI.indexOf("login")!=-1||requestURI.indexOf("logout")!=-1){
             return false;
         }
         return true;
     }
-
+    private String getRequestToken(HttpServletRequest request) {
+        String accessToken = request.getHeader("accessToken");
+        if (accessToken == null) {
+            return request.getParameter("accessToken");
+        } else {
+            return accessToken;
+        }
+    }
     @Override
     public Object run() {
         RequestContext ctx=RequestContext.getCurrentContext();
@@ -54,10 +67,7 @@ public class TokenFilter extends ZuulFilter {
         response.setContentType("application/json;charset=utf-8");
         logger.info("send {} request to {}", request.getMethod(),requestURI);
         try{
-            String accessToken = request.getParameter("access_token");
-            if(accessToken == null) {
-                accessToken=request.getHeader("access_token");
-            }
+            String accessToken = this.getRequestToken(request);
             if(accessToken == null) {
                 logger.error("access token is empty");
                 ctx.setSendZuulResponse(false);

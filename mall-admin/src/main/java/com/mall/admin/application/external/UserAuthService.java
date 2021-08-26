@@ -13,8 +13,8 @@ import java.util.Map;
  * @author youfu.wang
  * @date 2021-08-24
  */
-@FeignClient(name = "mall-gateway" , fallback = UserAuthServiceFallback.class)
+@FeignClient(name = "mall-auth" , fallback = UserAuthServiceFallback.class)
 public interface UserAuthService {
-    @RequestMapping(value = "/api/auth/principal/getPrincipalInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/principal/getPrincipalInfo", method = RequestMethod.GET)
     public ResponseData getPrincipalInfo(@RequestParam Map<String, Object> params);
 }
