@@ -1,5 +1,6 @@
 package com.mall.gateway.common.zuul.filter;
 
+import com.mall.common.jwt.JwtTokenProvider;
 import com.mall.common.response.ResponseData;
 import com.mall.common.utils.JacksonUtils;
 import com.netflix.zuul.ZuulFilter;
@@ -8,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -45,7 +45,9 @@ public class TokenFilter extends ZuulFilter {
             return true;
         }
         String requestURI=request.getRequestURI();
-        if(requestURI.indexOf("login")!=-1||requestURI.indexOf("logout")!=-1){
+        if(requestURI.lastIndexOf("login")!=-1
+                ||requestURI.lastIndexOf("logout")!=-1
+                ||requestURI.lastIndexOf("captcha")!=-1){
             return false;
         }
         return true;

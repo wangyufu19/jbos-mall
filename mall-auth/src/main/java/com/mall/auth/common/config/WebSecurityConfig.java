@@ -2,6 +2,7 @@ package com.mall.auth.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mall.auth.common.user.JwtUser;
+import com.mall.common.jwt.JwtTokenProvider;
 import com.mall.common.response.ResponseData;
 import com.mall.common.utils.JacksonUtils;
 import com.mall.common.utils.StringUtils;
@@ -199,6 +200,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public class WebLogoutSuccessHandler implements LogoutSuccessHandler{
 
         public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+            authentication=SecurityContextHolder.getContext().getAuthentication();
             response.setStatus(HttpServletResponse.SC_OK);
             response.setCharacterEncoding("utf-8");
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -1,4 +1,4 @@
-package com.mall.auth.common.config;
+package com.mall.common.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -9,8 +9,6 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.Map;
 
@@ -20,7 +18,6 @@ import java.util.Map;
  * @author youfu.wang
  * @date 2021-01-01
  */
-@Component
 @Slf4j
 public class JwtTokenProvider {
 
