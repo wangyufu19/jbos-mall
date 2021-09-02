@@ -60,7 +60,7 @@
     </delete>
     <!--删除人员用户信息-->
     <delete id="deleteEmpUser" parameterType="java.lang.String">
-        DELETE FROM JBOS_USER_AUTH
+        DELETE FROM JBOS_USER
         WHERE LOGINNAME=#{LOGINNAME}
     </delete>
 </mapper>
