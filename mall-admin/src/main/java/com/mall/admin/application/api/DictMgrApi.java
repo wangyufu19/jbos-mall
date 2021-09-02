@@ -23,7 +23,7 @@ import java.util.Map;
  * @date 2019-01-31
  */
 @RestController
-@RequestMapping("/dep")
+@RequestMapping("/dict")
 @Slf4j
 @Api("字典管理接口")
 public class DictMgrApi extends BaseApi {

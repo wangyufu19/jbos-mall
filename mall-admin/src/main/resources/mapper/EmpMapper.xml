@@ -49,7 +49,7 @@
     </update>
     <!--更新人员用户信息-->
     <update id="updateEmpUser" parameterType="java.util.Map">
-        UPDATE JBOS_USER_AUTH
+        UPDATE JBOS_USER
         SET USERNAME=#{empName},USERSTATUS=#{empStatus}
         WHERE LOGINNAME=#{badge}
     </update>
