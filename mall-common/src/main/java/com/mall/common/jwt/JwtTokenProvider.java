@@ -10,6 +10,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -36,11 +37,21 @@ public class JwtTokenProvider {
         this.expireTime=expireTime;
     }
     /**
-     * 生成 JWT：从以通过验证的认证对象中获取用户信息，然后用指定加密方式生成 token
-     * token是有三个部分分别用"."隔开
-     * 第一部分是签名算法
-     * 第二部分是加密数据，如下就是用userId
-     * 第三部分是密钥，如下就是"123456"，解密第二部分数据时需要用到
+     * 生成 JWT,token是有三个部分分别用"."隔开
+     * 第一部分是头部信息
+     *   {
+     *         "type" :  "JWT",
+     *         "ALG" :  "HS256"
+     *   }
+     * 第二部分是荷载信息（建议但不强制使用）
+     * iss：JWT 签发者
+     * sub：JWT 所面向的用户
+     * aud：接收 JWT 的一方
+     * exp：JWT 的过期时间，这个过期时间必须要大于签发时间
+     * nbf：定义在什么时间之前，该 JWT 都是不可用的
+     * iat：JWT 的签发时间
+     * jti：JWT 的唯一身份标识，主要用来作为一次性 token, 从而回避重放攻击。
+     * 第三部分是签名
      * @param signData
      * @return
      */
@@ -55,15 +66,21 @@ public class JwtTokenProvider {
         }
         try {
             JWTCreator.Builder builder=JWT.create();
+            //头部信息
+            Map<String,Object> header=new HashMap<>();
+            header.put("alg","HS256");
+            header.put("typ","JWT");
+            builder.withHeader(header);
+            //负载信息
             if(signData!=null){
                 //加密数据
                 for(Map.Entry<String,String> entry:signData.entrySet()){
                     builder.withClaim(entry.getKey(),entry.getValue());
                 }
             }
-            token=builder.withIssuedAt(iatDate) // sign time
-                    .withExpiresAt(expireDate) // expire time
-                    .sign(Algorithm.HMAC256(secret)); // signature
+            builder.withIssuedAt(iatDate).withExpiresAt(expireDate);
+            //签名
+            token=builder.sign(Algorithm.HMAC256(secret));
             return  token;
         } catch (JWTCreationException jwtCreationException) {
             return null;

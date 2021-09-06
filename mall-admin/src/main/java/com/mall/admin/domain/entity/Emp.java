@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Setter
 @Getter
-public class Emp  implements Serializable{
+public class Emp extends BaseEntity implements Serializable{
     private String badge;
     private String empName;
     private String orgId;
