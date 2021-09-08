@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.auth.infrastructure.repository.mapper.CaptchaMapper">
+    <!-- 根据令牌查询验证码信息-->
+    <select id="getCaptcha" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT TEXT,TOKEN
+        FROM JBOS_CAPTCHA
+        WHERE TOKEN=#{token} AND TEXT=#{text}
+    </select>
+    <!--新增验证码信息-->
+    <insert id="addCaptcha" parameterType="java.util.Map">
+        INSERT INTO JBOS_CAPTCHA(TEXT,TOKEN)
+        VALUES(#{text},#{token})
+    </insert>
+    <!--删除验证码信息-->
+    <delete id="deleteCaptcha" parameterType="java.lang.String">
+        DELETE FROM JBOS_CAPTCHA WHERE TOKEN=#{token}
+    </delete>
+</mapper>

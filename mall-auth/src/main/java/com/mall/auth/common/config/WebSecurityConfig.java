@@ -1,6 +1,7 @@
 package com.mall.auth.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mall.auth.application.service.CaptchaService;
 import com.mall.auth.common.user.JwtUser;
 import com.mall.common.jwt.JwtTokenProvider;
 import com.mall.common.response.ResponseData;
@@ -8,6 +9,7 @@ import com.mall.common.utils.JacksonUtils;
 import com.mall.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +23,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,12 +35,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -59,8 +62,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
-
-    private String loginUrl="/login";
+    @Value("${spring.security.filter.loginUri}")
+    private String loginUri;
+    @Value("${spring.security.filter.excludeUri}")
+    private String excludeUri;
     /**
      * 用户认证配置
      * @param auth
@@ -79,11 +84,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @throws Exception
      */
     protected void configure(HttpSecurity http) throws Exception {
+        String[] excludeUris=excludeUri.split(",");
         http
                 .csrf().disable()  //禁用csrf
                 .formLogin().disable() //禁用form登录
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()  //禁用session
                 .authorizeRequests()
+                .antMatchers(excludeUris).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)
@@ -121,7 +128,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public LoginFilter loginFilter() throws Exception {
         LoginFilter loginFilter = new LoginFilter();
         // 登录请求地址
-        loginFilter.setFilterProcessesUrl(this.loginUrl);
+        loginFilter.setFilterProcessesUrl(this.loginUri);
         // 返回登录成功后数据
         loginFilter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -146,7 +153,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         loginFilter.setAuthenticationFailureHandler(new AuthenticationFailureHandler() {
             public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
                 ResponseData r= ResponseData.error(e.getMessage());
-                if(e.getMessage().indexOf("Bad credentials")!=-1){
+                if(e.getMessage().indexOf("Bad captcha")!=-1){
+                    r= ResponseData.error("验证码错误！");
+                }else if(e.getMessage().indexOf("Bad credentials")!=-1){
                     r= ResponseData.error("用户名或密码错误！");
                 }
                 response.setContentType("application/json;charset=utf-8");
@@ -163,6 +172,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * 自定义 UsernamePasswordAuthenticationFilter 过滤器
      */
     public class LoginFilter extends UsernamePasswordAuthenticationFilter {
+        @Autowired
+        private CaptchaService captchaService;
+
         public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
             if (!request.getMethod().equals("POST")) {
                 throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
@@ -176,6 +188,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                // 判断验证码
+                String captchaText=StringUtils.replaceNull(loginData.get("captchaText"));
+                String captchaToken=StringUtils.replaceNull(loginData.get("captchaToken"));
+                if(!captchaService.validate(captchaText,captchaToken)){
+                   throw new CaptchaAuthenticationException("Bad captcha");
+                }
                 // 调用父类的getParameter() 方法获取key值
                 String username = StringUtils.replaceNull(loginData.get(this.getUsernameParameter()));
                 String password = StringUtils.replaceNull(loginData.get(this.getPasswordParameter()));
@@ -185,6 +203,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             } else {
                 return super.attemptAuthentication(request, response);
             }
+        }
+    }
+    public class CaptchaAuthenticationException extends AuthenticationException{
+
+        public CaptchaAuthenticationException(String msg, Throwable t) {
+            super(msg, t);
+        }
+        public CaptchaAuthenticationException(String msg) {
+            super(msg);
         }
     }
     public class WebLogoutHandler implements LogoutHandler {
@@ -217,6 +244,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                 throws ServletException, IOException {
             try {
+                String requestURI=request.getRequestURI();
+                AntPathMatcher antPathMatcher=new AntPathMatcher(File.separator);
+                String[] excludeUrls=excludeUri.split(",");
+                boolean matches=false;
+                for(String url:excludeUrls){
+                    matches=antPathMatcher.match(url,requestURI);
+                    if(matches){
+                        break;
+                    }
+                }
+                if(matches){
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+
                 String token = getRequestToken(request);
                 if (token == null || !jwtTokenProvider.verifyToken(token)) {
                     ResponseData r = ResponseData.error("token失效或认证过期！");

@@ -8,6 +8,7 @@ import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,7 +31,8 @@ public class TokenFilter extends ZuulFilter {
     public String filterType() {
         return  FilterConstants.PRE_TYPE;
     }
-
+    @Value("${zuul.filter.excludeUri}")
+    private String excludeUri;
     @Override
     public int filterOrder() {
         return 0;

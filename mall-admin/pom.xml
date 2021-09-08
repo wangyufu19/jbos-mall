@@ -13,10 +13,6 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <properties>
-        <kaptcha.version>2.3.2</kaptcha.version>
-
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -75,11 +71,6 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>${jedis.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.penggle</groupId>
-            <artifactId>kaptcha</artifactId>
-            <version>${kaptcha.version}</version>
         </dependency>
         <dependency>
             <groupId>com.jbos.mall</groupId>

@@ -33,6 +33,8 @@ zuul:
     admin:
       path: /api/admin/**
       serviceId: mall-admin
+  filter:
+    excludeUri: /login,/logout,/captcha
 ribbon:
   http:
     client:

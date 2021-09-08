@@ -24,6 +24,10 @@ spring:
     loadbalancer:
       retry:
         enabled: true
+  security:
+    filter:
+      loginUri: /login
+      excludeUri: /captcha,/demo/**
 #mybatis-plus
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml

@@ -1,4 +1,4 @@
-package com.mall.admin.common.config;
+package com.mall.auth.common.config;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
