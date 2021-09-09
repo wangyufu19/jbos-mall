@@ -22,9 +22,8 @@ public class CaptchaRepository {
      * @param token
      * @return
      */
-    public Map<String, Object> getCaptcha(String token,String text){
+    public Map<String, Object> getCaptcha(String token){
         Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("text",text);
         parameterObject.put("token",token);
         return captchaMapper.getCaptcha(parameterObject);
     }

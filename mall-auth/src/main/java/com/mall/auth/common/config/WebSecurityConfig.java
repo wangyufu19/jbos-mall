@@ -189,9 +189,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     e.printStackTrace();
                 }
                 // 判断验证码
-                String captchaText=StringUtils.replaceNull(loginData.get("captchaText"));
                 String captchaToken=StringUtils.replaceNull(loginData.get("captchaToken"));
-                if(!captchaService.validate(captchaText,captchaToken)){
+                String captchaText=StringUtils.replaceNull(loginData.get("captchaText"));
+                if(!captchaService.validate(captchaToken,captchaText)){
                    throw new CaptchaAuthenticationException("Bad captcha");
                 }
                 // 调用父类的getParameter() 方法获取key值

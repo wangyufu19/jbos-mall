@@ -5,7 +5,7 @@
     <select id="getCaptcha" parameterType="java.lang.String" resultType="java.util.Map">
         SELECT TEXT,TOKEN
         FROM JBOS_CAPTCHA
-        WHERE TOKEN=#{token} AND TEXT=#{text}
+        WHERE TOKEN=#{token}
     </select>
     <!--新增验证码信息-->
     <insert id="addCaptcha" parameterType="java.util.Map">

@@ -22,13 +22,13 @@ public class CaptchaService {
 	 * @return
 	 */
 	public boolean validate(String token,String text){
-		Map<String, Object> data=captchaRepository.getCaptcha(token,text);
+		Map<String, Object> data=captchaRepository.getCaptcha(token);
 		//每次验证则删除验证码数据
 		this.deleteCaptcha(token);
 		if(data==null){
 			return false;
 		}else {
-			if(token.equals(StringUtils.replaceNull(data.get("TEXT")))){
+			if(text.equals(StringUtils.replaceNull(data.get("TEXT")))){
 				return true;
 			}else{
 				return false;
