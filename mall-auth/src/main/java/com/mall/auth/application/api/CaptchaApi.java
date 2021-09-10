@@ -34,6 +34,7 @@ public class CaptchaApi {
     @Autowired
     private CaptchaService captchaService;
 
+
     /**
      * 登录验证码
      * @return

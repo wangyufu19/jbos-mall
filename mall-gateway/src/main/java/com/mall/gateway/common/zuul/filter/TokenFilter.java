@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 
 
 /**
@@ -33,6 +35,8 @@ public class TokenFilter extends ZuulFilter {
     }
     @Value("${zuul.filter.excludeUri}")
     private String excludeUri;
+    private AntPathMatcher antPathMatcher=new AntPathMatcher(File.separator);
+
     @Override
     public int filterOrder() {
         return 0;
@@ -47,10 +51,12 @@ public class TokenFilter extends ZuulFilter {
             return true;
         }
         String requestURI=request.getRequestURI();
-        if(requestURI.lastIndexOf("login")!=-1
-                ||requestURI.lastIndexOf("logout")!=-1
-                ||requestURI.lastIndexOf("captcha")!=-1){
-            return false;
+        //令牌验证的过滤URI
+        String[] excludeUris=excludeUri.split(",");
+        for(String uri:excludeUris){
+            if(antPathMatcher.match(uri,requestURI)){
+                return false;
+            }
         }
         return true;
     }

@@ -239,17 +239,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
     public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
+        private AntPathMatcher antPathMatcher=new AntPathMatcher(File.separator);
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                 throws ServletException, IOException {
             try {
                 String requestURI=request.getRequestURI();
-                AntPathMatcher antPathMatcher=new AntPathMatcher(File.separator);
-                String[] excludeUrls=excludeUri.split(",");
+                String[] excludeUris=excludeUri.split(",");
                 boolean matches=false;
-                for(String url:excludeUrls){
-                    matches=antPathMatcher.match(url,requestURI);
+                for(String uri:excludeUris){
+                    matches=antPathMatcher.match(uri,requestURI);
                     if(matches){
                         break;
                     }

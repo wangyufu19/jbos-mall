@@ -1,11 +1,11 @@
 package com.mall.auth.application.service;
 
 
-import com.mall.auth.infrastructure.repository.CaptchaRepository;
+import com.mall.auth.common.redis.RedisKey;
+import com.mall.auth.common.redis.RedisService;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Map;
 
 /**
  * CaptchaService
@@ -15,20 +15,20 @@ import java.util.Map;
 @Service
 public class CaptchaService {
 	@Autowired
-	private CaptchaRepository captchaRepository;
+	private RedisService redisService;
 	/**
 	 * 根据令牌查询验证码信息
 	 * @param token
 	 * @return
 	 */
 	public boolean validate(String token,String text){
-		Map<String, Object> data=captchaRepository.getCaptcha(token);
+		Object data=redisService.get(RedisKey.getDataKey(token));
 		//每次验证则删除验证码数据
 		this.deleteCaptcha(token);
 		if(data==null){
 			return false;
 		}else {
-			if(text.equals(StringUtils.replaceNull(data.get("TEXT")))){
+			if(text.equals(StringUtils.replaceNull(data))){
 				return true;
 			}else{
 				return false;
@@ -42,7 +42,7 @@ public class CaptchaService {
 	 * @param token
 	 */
 	public void addCaptcha(String text,String token){
-		captchaRepository.addCaptcha(text,token);
+		redisService.set(RedisKey.getDataKey(token),text,60);
 	}
 
 	/**
@@ -50,6 +50,6 @@ public class CaptchaService {
 	 * @param token
 	 */
 	public void deleteCaptcha(String token){
-		captchaRepository.deleteCaptcha(token);
+		redisService.delete(RedisKey.getDataKey(token));
 	}
 }
