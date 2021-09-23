@@ -8,7 +8,6 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import lombok.extern.slf4j.Slf4j;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +18,6 @@ import java.util.Map;
  * @author youfu.wang
  * @date 2021-01-01
  */
-@Slf4j
 public class JwtTokenProvider {
 
     private static final long JWT_EXPIRATION =  60*60 * 1000L; // 默认过期时间一小时
@@ -67,7 +65,7 @@ public class JwtTokenProvider {
         try {
             JWTCreator.Builder builder=JWT.create();
             //头部信息
-            Map<String,Object> header=new HashMap<>();
+            Map<String,Object> header=new HashMap<String,Object>();
             header.put("alg","HS256");
             header.put("typ","JWT");
             builder.withHeader(header);

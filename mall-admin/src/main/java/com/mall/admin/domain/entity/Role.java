@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class Role {
+public class Role extends BaseEntity {
     public static String ROOTROLE_ID="0";
     private String roleCode;
     private String roleName;

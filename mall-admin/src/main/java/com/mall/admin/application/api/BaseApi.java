@@ -25,7 +25,6 @@ public class BaseApi {
 
 	/**
 	 * 完成分页
-	 * @param ret
 	 * @param datas
 	 */
 	public void doFinishPage(ResponseData res, List datas){

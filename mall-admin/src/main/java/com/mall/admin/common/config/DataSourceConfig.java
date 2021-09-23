@@ -14,7 +14,6 @@ import javax.sql.DataSource;
  * @date 2019-01-31
  */
 @Configuration
-@MapperScan(basePackages = "com.mall.admin.infrastructure.repository.mapper")
 public class DataSourceConfig {
     @Bean(name = "default")
     @ConfigurationProperties(prefix = "spring.datasource.druid.default")

@@ -15,11 +15,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mall-admin</module>
+        <module>mall-common</module>
         <module>mall-eureka-server</module>
         <module>mall-gateway</module>
         <module>mall-auth</module>
-        <module>mall-common</module>
+        <module>mall-admin</module>
     </modules>
 
     <properties>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>1.18.6</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -83,4 +83,13 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
