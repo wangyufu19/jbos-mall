@@ -45,7 +45,7 @@ public class MallGatewayFallback implements FallbackProvider {
                 Map<String,Object> data=new HashMap<String,Object>();
                 data.put("serviceId",route);
                 r.setData(data);
-                return new ByteArrayInputStream(JacksonUtils.toJson(r).getBytes());
+                return new ByteArrayInputStream(JacksonUtils.toJson(r).getBytes(Charset.forName("UTF-8")));
             }
 
             @Override
