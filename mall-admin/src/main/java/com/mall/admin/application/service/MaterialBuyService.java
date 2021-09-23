@@ -2,6 +2,7 @@ package com.mall.admin.application.service;
 
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.admin.infrastructure.repository.im.MaterialBuyRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Map;
  */
 @Service
 public class MaterialBuyService {
+    @Autowired
     private MaterialBuyRepo materialBuyRepo;
 
     public List<MaterialBuy> getMaterialBuyList(Map<String, Object> parameterObject){

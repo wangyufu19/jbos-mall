@@ -10,7 +10,7 @@
            T.APPLYUSERID,
            T.APPLYDEPID,
            T.FEETYPE,
-           T.APPLYTIME,
+           DATE_FORMAT(T.APPLYTIME,'%Y-%m-%d') APPLYTIME,
            DATE_FORMAT(T.TOTALAMT,'%Y-%m-%d') TOTALAMT,
            DATE_FORMAT(T.GMOTIME,'%Y-%m-%d') GMOTIME
         FROM IM_MATERIAL_BUY T

@@ -19,7 +19,7 @@ public class MaterialBuyRepo {
     private MaterialBuyMapper materialBuyMapper;
 
     public List<MaterialBuy> getMaterialBuyList(Map<String, Object> parameterObject){
-        return materialBuyMapper.selectByMap(parameterObject);
+        return materialBuyMapper.getMaterialBuyList(parameterObject);
     }
 
     public void addMaterialBuy(MaterialBuy materialBuy){
