@@ -1,5 +1,7 @@
 package com.mall.admin.domain.entity.im;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.mall.admin.domain.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,12 +13,19 @@ import lombok.Setter;
  */
 @Setter
 @Getter
+@TableName("im_material_list")
 public class MaterialList extends BaseEntity {
+    @TableField("bizid")
     private String bizId;
+    @TableField("bizno")
     private String bizNo;
+    @TableField("biztype")
     private String bizType;
+    @TableField("materialname")
     private String materialName;
+    @TableField("amount")
     private double amount;
+    @TableField("price")
     private double price;
 
 }

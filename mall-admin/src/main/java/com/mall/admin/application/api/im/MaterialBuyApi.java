@@ -1,18 +1,17 @@
 package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.api.BaseApi;
-import com.mall.admin.application.service.MaterialBuyService;
+import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.common.response.ResponseData;
+import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,15 +35,82 @@ public class MaterialBuyApi extends BaseApi {
     @RequestMapping("/list")
     @ApiOperation("查询物采购业务列表")
     public ResponseData getMaterialBuyList(@RequestParam Map<String, Object> params){
-        ResponseData ret=ResponseData.ok();
+        ResponseData res=ResponseData.ok();
         try{
             this.doStartPage(params);
             List<MaterialBuy> materialBuys=materialBuyService.getMaterialBuyList(params);
-            this.doFinishPage(ret,materialBuys);
+            this.doFinishPage(res,materialBuys);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            ret=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
         }
-        return ret;
+        return res;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ApiOperation("新增物品采购业务")
+    public ResponseData add(@RequestBody Map<String, Object> params) {
+        ResponseData res = ResponseData.ok();
+        try{
+            Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
+            List<Map<String,Object>> materials=(ArrayList<Map<String,Object>>)params.get("materials");
+            MaterialBuy materialBuy=new MaterialBuy();
+            materialBuy.setId(StringUtils.getUUID());
+            materialBuy.setBizNo(StringUtils.replaceNull(materialBuyMap.get("bizNo")));
+            materialBuy.setApplyUserId(StringUtils.replaceNull(materialBuyMap.get("applyUserId")));
+            materialBuy.setApplyDepId(StringUtils.replaceNull(materialBuyMap.get("applyDepId")));
+            materialBuy.setApplyTime(StringUtils.replaceNull(materialBuyMap.get("applyTime")));
+            materialBuy.setGmoTime(StringUtils.replaceNull(materialBuyMap.get("gmoTime")));
+            materialBuy.setTotalAmt(Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt"))));
+            materialBuyService.addMaterialBuy(materialBuy,materials);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    /**
+     * 查询物采购业务列表
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/id")
+    @ApiOperation("查询物采购业务列表")
+    public ResponseData getMaterialBuyById(@RequestParam Map<String, Object> params){
+        ResponseData res=ResponseData.ok();
+        try{
+            MaterialBuy materialBuy=materialBuyService.getMaterialBuyById(StringUtils.replaceNull(params.get("id")));
+            res.setData(materialBuy);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ApiOperation("修改物品采购业务")
+    public ResponseData update(@RequestBody MaterialBuy materialBuy) {
+        ResponseData res = ResponseData.ok();
+        try{
+            materialBuyService.updateMaterialBuy(materialBuy);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/deleteOne", method = RequestMethod.POST)
+    @ApiOperation("删除物品采购业务")
+    public ResponseData deleteOne(@RequestBody Map<String, Object> params) {
+        ResponseData res = ResponseData.ok();
+        try{
+            materialBuyService.deleteMaterialBuy(params);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
     }
 }

@@ -25,7 +25,9 @@ public class MaterialBuyRepo {
     public void addMaterialBuy(MaterialBuy materialBuy){
         materialBuyMapper.insert(materialBuy);
     }
-
+    public MaterialBuy getMaterialBuyById(String id){
+        return materialBuyMapper.selectById(id);
+    }
     public void updateMaterialBuy(MaterialBuy materialBuy){
         materialBuyMapper.updateById(materialBuy);
     }

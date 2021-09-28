@@ -1,0 +1,47 @@
+package com.mall.admin.application.api.im;
+
+import com.mall.admin.application.service.im.MaterialListService;
+import com.mall.admin.domain.entity.im.MaterialList;
+import com.mall.common.response.ResponseData;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * MaterialListApi
+ * @author youfu.wang
+ * @date 2019-01-31
+ */
+@RestController
+@RequestMapping("/material/list")
+@Slf4j
+@Api("物品清单业务接口")
+public class MaterialListApi {
+    @Autowired
+    private MaterialListService materialListService;
+    /**
+     * 查询物品清单业务列表
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/list")
+    @ApiOperation("查询物品清单业务列表")
+    public ResponseData getMaterialBuyList(@RequestParam Map<String, Object> params){
+        ResponseData res=ResponseData.ok();
+        try{
+            List<MaterialList> materialLists=materialListService.getMaterialListList(params);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+}
