@@ -28,6 +28,10 @@ spring:
     filter:
       loginUri: /login
       excludeUri: /captcha,/demo/**
+  jwt:
+    secret: 123456
+    #小时
+    expireTime: 24
 #mybatis-plus
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml

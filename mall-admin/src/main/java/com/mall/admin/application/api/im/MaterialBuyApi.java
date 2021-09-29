@@ -4,13 +4,13 @@ import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.common.response.ResponseData;
+import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class MaterialBuyApi extends BaseApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @ApiOperation("查询物采购业务列表")
     public ResponseData getMaterialBuyList(@RequestParam Map<String, Object> params){
         ResponseData res=ResponseData.ok();
@@ -47,7 +47,7 @@ public class MaterialBuyApi extends BaseApi {
         return res;
     }
     @ResponseBody
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @PostMapping("/add")
     @ApiOperation("新增物品采购业务")
     public ResponseData add(@RequestBody Map<String, Object> params) {
         ResponseData res = ResponseData.ok();
@@ -59,8 +59,8 @@ public class MaterialBuyApi extends BaseApi {
             materialBuy.setBizNo(StringUtils.replaceNull(materialBuyMap.get("bizNo")));
             materialBuy.setApplyUserId(StringUtils.replaceNull(materialBuyMap.get("applyUserId")));
             materialBuy.setApplyDepId(StringUtils.replaceNull(materialBuyMap.get("applyDepId")));
-            materialBuy.setApplyTime(StringUtils.replaceNull(materialBuyMap.get("applyTime")));
-            materialBuy.setGmoTime(StringUtils.replaceNull(materialBuyMap.get("gmoTime")));
+            materialBuy.setApplyTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("applyTime"))));
+            materialBuy.setGmoTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("gmoTime"))));
             materialBuy.setTotalAmt(Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt"))));
             materialBuyService.addMaterialBuy(materialBuy,materials);
         }catch (Exception e){
@@ -74,9 +74,9 @@ public class MaterialBuyApi extends BaseApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/id")
+    @GetMapping("/infoById")
     @ApiOperation("查询物采购业务列表")
-    public ResponseData getMaterialBuyById(@RequestParam Map<String, Object> params){
+    public ResponseData infoById(@RequestParam Map<String, Object> params){
         ResponseData res=ResponseData.ok();
         try{
             MaterialBuy materialBuy=materialBuyService.getMaterialBuyById(StringUtils.replaceNull(params.get("id")));
@@ -88,7 +88,7 @@ public class MaterialBuyApi extends BaseApi {
         return res;
     }
     @ResponseBody
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @PostMapping("/update")
     @ApiOperation("修改物品采购业务")
     public ResponseData update(@RequestBody MaterialBuy materialBuy) {
         ResponseData res = ResponseData.ok();
@@ -101,7 +101,7 @@ public class MaterialBuyApi extends BaseApi {
         return res;
     }
     @ResponseBody
-    @RequestMapping(value = "/deleteOne", method = RequestMethod.POST)
+    @PostMapping("/deleteOne")
     @ApiOperation("删除物品采购业务")
     public ResponseData deleteOne(@RequestBody Map<String, Object> params) {
         ResponseData res = ResponseData.ok();

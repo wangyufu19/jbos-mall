@@ -2,9 +2,13 @@ package com.mall.admin.domain.entity.im;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mall.admin.domain.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
+
 /**
  * MaterialBuy
  * @author youfu.wang
@@ -24,12 +28,14 @@ public class MaterialBuy extends BaseEntity {
     private String applyDepId;
     @TableField("feetype")
     private String feeType;
+    @JsonFormat(pattern = "yyyy-mm-dd")
     @TableField("applytime")
-    private String applyTime;
+    private Date applyTime;
     @TableField("totalamt")
     private double totalAmt;
+    @JsonFormat(pattern = "yyyy-mm-dd")
     @TableField("gmotime")
-    private String gmoTime;
+    private Date gmoTime;
     @TableField("purpose")
     private String purpose;
 

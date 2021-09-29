@@ -7,10 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -32,12 +29,13 @@ public class MaterialListApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @ApiOperation("查询物品清单业务列表")
     public ResponseData getMaterialBuyList(@RequestParam Map<String, Object> params){
         ResponseData res=ResponseData.ok();
         try{
             List<MaterialList> materialLists=materialListService.getMaterialListList(params);
+            res.setData(materialLists);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
