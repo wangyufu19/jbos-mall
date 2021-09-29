@@ -32,6 +32,23 @@ public class MaterialBuyApi extends BaseApi {
      * @return
      */
     @ResponseBody
+    @GetMapping("/bizno")
+    @ApiOperation("查询物采购业务列表")
+    public ResponseData getBizNo(@RequestParam Map<String, Object> params){
+        ResponseData res=ResponseData.ok();
+        try{
+           res.setData("BIZ_"+DateUtils.format(DateUtils.getCurrentDate(),"yyyyMMddHHmmss"));
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    /**
+     * 查询物采购业务列表
+     * @return
+     */
+    @ResponseBody
     @GetMapping("/list")
     @ApiOperation("查询物采购业务列表")
     public ResponseData getMaterialBuyList(@RequestParam Map<String, Object> params){
@@ -62,6 +79,7 @@ public class MaterialBuyApi extends BaseApi {
             materialBuy.setApplyTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("applyTime"))));
             materialBuy.setGmoTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("gmoTime"))));
             materialBuy.setTotalAmt(Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt"))));
+            materialBuy.setPurpose(StringUtils.replaceNull(materialBuyMap.get("purpose")));
             materialBuyService.addMaterialBuy(materialBuy,materials);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -90,9 +108,20 @@ public class MaterialBuyApi extends BaseApi {
     @ResponseBody
     @PostMapping("/update")
     @ApiOperation("修改物品采购业务")
-    public ResponseData update(@RequestBody MaterialBuy materialBuy) {
+    public ResponseData update(@RequestBody Map<String, Object> params) {
         ResponseData res = ResponseData.ok();
         try{
+            Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
+            List<Map<String,Object>> materials=(ArrayList<Map<String,Object>>)params.get("materials");
+            MaterialBuy materialBuy=new MaterialBuy();
+            materialBuy.setId(StringUtils.replaceNull(materialBuyMap.get("id")));
+            materialBuy.setBizNo(StringUtils.replaceNull(materialBuyMap.get("bizNo")));
+            materialBuy.setApplyUserId(StringUtils.replaceNull(materialBuyMap.get("applyUserId")));
+            materialBuy.setApplyDepId(StringUtils.replaceNull(materialBuyMap.get("applyDepId")));
+            materialBuy.setApplyTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("applyTime"))));
+            materialBuy.setGmoTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("gmoTime"))));
+            materialBuy.setTotalAmt(Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt"))));
+            materialBuy.setPurpose(StringUtils.replaceNull(materialBuyMap.get("purpose")));
             materialBuyService.updateMaterialBuy(materialBuy);
         }catch (Exception e){
             log.error(e.getMessage(),e);

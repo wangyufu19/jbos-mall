@@ -9,8 +9,10 @@
     </select>
     <!--根据登录用户查询用户信息-->
     <select id="getUserInfoByLoginName" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS
+        SELECT A.ID,A.LOGINNAME,A.USERNAME,B.DEPID,C.DEPNAME,B.ORGID,A.USERSTATUS
         FROM JBOS_USER A
+        LEFT JOIN JBOS_EMP B ON A.LOGINNAME=B.BADGE
+		LEFT JOIN JBOS_DEP C ON B.DEPID=C.ID
         WHERE A.LOGINNAME=#{username}
     </select>
 

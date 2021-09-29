@@ -24,16 +24,20 @@ public class MaterialBuy extends BaseEntity {
     private int instId;
     @TableField("applyuserid")
     private String applyUserId;
+    @TableField(exist=false)
+    private String applyUserName;
     @TableField("applydepid")
     private String applyDepId;
+    @TableField(exist=false)
+    private String applyDepName;
     @TableField("feetype")
     private String feeType;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @TableField("applytime")
     private Date applyTime;
     @TableField("totalamt")
     private double totalAmt;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @TableField("gmotime")
     private Date gmoTime;
     @TableField("purpose")
