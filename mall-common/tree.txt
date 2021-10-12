@@ -1,0 +1,11 @@
+com.jbos.mall:mall-common:jar:1.0.0
++- com.auth0:java-jwt:jar:3.8.3:compile
++- org.projectlombok:lombok:jar:1.18.6:compile
++- com.alibaba:fastjson:jar:1.2.45:compile
++- com.fasterxml.jackson.core:jackson-databind:jar:2.9.8:compile
+|  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+|  \- com.fasterxml.jackson.core:jackson-core:jar:2.9.8:compile
++- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.9.8:compile
++- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.9.8:compile
++- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.9.8:compile
+\- commons-codec:commons-codec:jar:1.10:compile

@@ -20,11 +20,10 @@ import javax.sql.DataSource;
 public class InitConfig {
     /**
      * 初始化业务字典
-     * @param transactionManager
      * @return
      */
     @Bean
-    public BusinessDict intBusinessDict(DataSourceTransactionManager transactionManager, @Qualifier("default") DataSource dataSource){
+    public BusinessDict intBusinessDict(@Qualifier("default") DataSource dataSource){
         BusinessDict businessDict=new BusinessDict();
         JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
         businessDict.setJdbcTemplate(jdbcTemplate);

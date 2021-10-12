@@ -1,29 +1,27 @@
-package com.mall.admin;
+package com.mall.workflow;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
- * AdminApplication
+ * MallWorkflowApplication
  * @author youfu.wang
  * @date 2021-08-19
  */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class MallAdminApplication extends SpringBootServletInitializer {
+public class MallWorkflowApplication extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(MallAdminApplication.class);
+        return application.sources(MallWorkflowApplication.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(MallAdminApplication.class, args);
+        SpringApplication.run(MallWorkflowApplication.class, args);
     }
 }
