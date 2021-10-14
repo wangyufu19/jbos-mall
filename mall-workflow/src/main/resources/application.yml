@@ -67,3 +67,4 @@ camunda:
     filter:
        create: All tasks
     deployment-resource-pattern: classpath*:processes/*.bpmn
+
