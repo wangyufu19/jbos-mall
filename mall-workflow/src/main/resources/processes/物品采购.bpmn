@@ -29,7 +29,7 @@
       <bpmn:incoming>Flow_0z1u4b4</bpmn:incoming>
       <bpmn:outgoing>Flow_1alqqq4</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics camunda:collection="assigneeList" camunda:elementVariable="assignee">
-        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${ nrOfCompletedInstances == 1}</bpmn:completionCondition>
+        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${nrOfInstances == nrOfCompletedInstances}</bpmn:completionCondition>
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:userTask>
     <bpmn:userTask id="Activity_1128j6h" name="仓库管理员">
@@ -41,7 +41,7 @@
       <bpmn:incoming>Flow_0sf87ar</bpmn:incoming>
       <bpmn:outgoing>Flow_094azi0</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics camunda:collection="assigneeList" camunda:elementVariable="assignee">
-        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">$ {nrOfInstances == nrOfCompletedInstances}</bpmn:completionCondition>
+        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${nrOfInstances == nrOfCompletedInstances}</bpmn:completionCondition>
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:userTask>
   </bpmn:process>

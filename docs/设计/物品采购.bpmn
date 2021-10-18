@@ -21,27 +21,27 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_01jxf17" sourceRef="Activity_1128j6h" targetRef="Event_0n98i2s" />
     <bpmn:sequenceFlow id="Flow_094azi0" sourceRef="Activity_0vxl8yk" targetRef="Activity_1128j6h" />
-    <bpmn:userTask id="Activity_0ths1wv" name="申请人">
+    <bpmn:userTask id="Activity_0ths1wv" name="申请人" camunda:assignee="${applyUserId}">
       <bpmn:incoming>Flow_0jhxoy7</bpmn:incoming>
       <bpmn:outgoing>Flow_0z1u4b4</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_0sh2jpw" name="部门领导" camunda:assignee="${assignee}">
+    <bpmn:userTask id="Activity_0sh2jpw" name="部门领导" camunda:assignee="${depLeader}">
       <bpmn:incoming>Flow_0z1u4b4</bpmn:incoming>
       <bpmn:outgoing>Flow_1alqqq4</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics camunda:collection="assigneeList" camunda:elementVariable="assignee">
-        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${ nrOfCompletedInstances == 1}</bpmn:completionCondition>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="depLeaderList" camunda:elementVariable="depLeader">
+        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${nrOfInstances == nrOfCompletedInstances}</bpmn:completionCondition>
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1128j6h" name="仓库管理员">
+    <bpmn:userTask id="Activity_1128j6h" name="仓库管理员" camunda:assignee="${storeMgr}">
       <bpmn:incoming>Flow_12nmh48</bpmn:incoming>
       <bpmn:incoming>Flow_094azi0</bpmn:incoming>
       <bpmn:outgoing>Flow_01jxf17</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_0vxl8yk" name="分管领导" camunda:assignee="${assignee}">
+    <bpmn:userTask id="Activity_0vxl8yk" name="分管领导" camunda:assignee="${chargeLeader}">
       <bpmn:incoming>Flow_0sf87ar</bpmn:incoming>
       <bpmn:outgoing>Flow_094azi0</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics camunda:collection="assigneeList" camunda:elementVariable="assignee">
-        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">$ {nrOfInstances == nrOfCompletedInstances}</bpmn:completionCondition>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="chargeLeaderList" camunda:elementVariable="chargeLeader">
+        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${nrOfInstances == nrOfCompletedInstances}</bpmn:completionCondition>
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:userTask>
   </bpmn:process>
