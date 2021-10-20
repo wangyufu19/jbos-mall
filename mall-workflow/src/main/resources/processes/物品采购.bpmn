@@ -4,43 +4,43 @@
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_0jhxoy7</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0jhxoy7" sourceRef="StartEvent_1" targetRef="Activity_0ths1wv" />
-    <bpmn:sequenceFlow id="Flow_0z1u4b4" sourceRef="Activity_0ths1wv" targetRef="Activity_0sh2jpw" />
+    <bpmn:sequenceFlow id="Flow_0jhxoy7" sourceRef="StartEvent_1" targetRef="applyPerson" />
+    <bpmn:sequenceFlow id="Flow_0z1u4b4" sourceRef="applyPerson" targetRef="depLeader" />
     <bpmn:exclusiveGateway id="Gateway_1bshp5k">
       <bpmn:incoming>Flow_1alqqq4</bpmn:incoming>
       <bpmn:outgoing>Flow_0sf87ar</bpmn:outgoing>
       <bpmn:outgoing>Flow_12nmh48</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1alqqq4" sourceRef="Activity_0sh2jpw" targetRef="Gateway_1bshp5k" />
-    <bpmn:sequenceFlow id="Flow_0sf87ar" name="大于等于5000元" sourceRef="Gateway_1bshp5k" targetRef="Activity_0vxl8yk">
+    <bpmn:sequenceFlow id="Flow_1alqqq4" sourceRef="depLeader" targetRef="Gateway_1bshp5k" />
+    <bpmn:sequenceFlow id="Flow_0sf87ar" name="大于等于5000元" sourceRef="Gateway_1bshp5k" targetRef="chargeLeader">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${amount&gt;=5000}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_12nmh48" sourceRef="Gateway_1bshp5k" targetRef="Activity_1128j6h" />
+    <bpmn:sequenceFlow id="Flow_12nmh48" sourceRef="Gateway_1bshp5k" targetRef="storeMgr" />
     <bpmn:endEvent id="Event_0n98i2s">
       <bpmn:incoming>Flow_01jxf17</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_01jxf17" sourceRef="Activity_1128j6h" targetRef="Event_0n98i2s" />
-    <bpmn:sequenceFlow id="Flow_094azi0" sourceRef="Activity_0vxl8yk" targetRef="Activity_1128j6h" />
-    <bpmn:userTask id="Activity_0ths1wv" name="申请人">
+    <bpmn:sequenceFlow id="Flow_01jxf17" sourceRef="storeMgr" targetRef="Event_0n98i2s" />
+    <bpmn:sequenceFlow id="Flow_094azi0" sourceRef="chargeLeader" targetRef="storeMgr" />
+    <bpmn:userTask id="applyPerson" name="申请人" camunda:assignee="${applyUserId}">
       <bpmn:incoming>Flow_0jhxoy7</bpmn:incoming>
       <bpmn:outgoing>Flow_0z1u4b4</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_0sh2jpw" name="部门领导" camunda:assignee="${assignee}">
+    <bpmn:userTask id="depLeader" name="部门领导" camunda:assignee="${depLeader}">
       <bpmn:incoming>Flow_0z1u4b4</bpmn:incoming>
       <bpmn:outgoing>Flow_1alqqq4</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics camunda:collection="assigneeList" camunda:elementVariable="assignee">
-        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${nrOfInstances == nrOfCompletedInstances}</bpmn:completionCondition>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="depLeaderList" camunda:elementVariable="depLeader">
+        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${nrOfCompletedInstances==1}</bpmn:completionCondition>
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1128j6h" name="仓库管理员">
+    <bpmn:userTask id="storeMgr" name="仓库管理员" camunda:assignee="${storeMgr}">
       <bpmn:incoming>Flow_12nmh48</bpmn:incoming>
       <bpmn:incoming>Flow_094azi0</bpmn:incoming>
       <bpmn:outgoing>Flow_01jxf17</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_0vxl8yk" name="分管领导" camunda:assignee="${assignee}">
+    <bpmn:userTask id="chargeLeader" name="分管领导" camunda:assignee="${chargeLeader}">
       <bpmn:incoming>Flow_0sf87ar</bpmn:incoming>
       <bpmn:outgoing>Flow_094azi0</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics camunda:collection="assigneeList" camunda:elementVariable="assignee">
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="chargeLeaderList" camunda:elementVariable="chargeLeader">
         <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${nrOfInstances == nrOfCompletedInstances}</bpmn:completionCondition>
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:userTask>
@@ -89,16 +89,16 @@
       <bpmndi:BPMNShape id="Event_0n98i2s_di" bpmnElement="Event_0n98i2s">
         <dc:Bounds x="982" y="102" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1mkpwx9_di" bpmnElement="Activity_0ths1wv">
+      <bpmndi:BPMNShape id="Activity_1mkpwx9_di" bpmnElement="applyPerson">
         <dc:Bounds x="270" y="177" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_01ok3do_di" bpmnElement="Activity_0sh2jpw">
+      <bpmndi:BPMNShape id="Activity_01ok3do_di" bpmnElement="depLeader">
         <dc:Bounds x="430" y="177" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_041cp2b_di" bpmnElement="Activity_1128j6h">
+      <bpmndi:BPMNShape id="Activity_041cp2b_di" bpmnElement="storeMgr">
         <dc:Bounds x="760" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0vnq0i5_di" bpmnElement="Activity_0vxl8yk">
+      <bpmndi:BPMNShape id="Activity_0vnq0i5_di" bpmnElement="chargeLeader">
         <dc:Bounds x="760" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

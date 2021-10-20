@@ -1,6 +1,6 @@
 package com.mall.workflow.application.service;
 
-import com.mall.workflow.common.exception.IdentityException;
+import com.mall.workflow.common.exception.CamundaException;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.impl.persistence.entity.UserEntity;
@@ -20,12 +20,12 @@ public class IdentityMgrService {
      * 用户认证
      * @param userId
      * @return
-     * @throws IdentityException
+     * @throws CamundaException
      */
-    public boolean auth(String userId) throws IdentityException{
+    public boolean auth(String userId) throws CamundaException {
         User user=identityService.createUserQuery().userId(userId).singleResult();
         if(user==null){
-            throw new IdentityException("Camunda ["+userId+"]用户认证失败！");
+            throw new CamundaException("Camunda["+userId+"]用户认证失败！");
         }else{
             return true;
         }
