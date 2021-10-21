@@ -30,7 +30,7 @@ public class ProcessInstanceMgrApi {
     @ApiOperation("启动流程实例")
     public ResponseData startProcessInstance(@RequestBody Map<String, Object> params){
         ResponseData res=ResponseData.ok();
-        log.info("============startProcessInstance invoke listForPage");
+        log.info("============启动流程实例");
         String processDefinitionKey= StringUtils.replaceNull(params.get("processDefinitionKey"));
         String businessKey= StringUtils.replaceNull(params.get("businessKey"));
         ProcessInstance processInstance=processInstanceService.startProcessInstance(processDefinitionKey,businessKey,params);
