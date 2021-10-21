@@ -1,0 +1,35 @@
+package com.mall.admin.application.external;
+
+import com.mall.common.response.ResponseData;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Map;
+
+/**
+ * ProcessInstanceService
+ * @author youfu.wang
+ * @date 2021-08-24
+ */
+@Component
+@FeignClient(name = "mall-workflow" , contextId = "process", fallback = ProcessInstanceServiceFallback.class)
+public interface ProcessInstanceService {
+    /**
+     * 启动流程实例
+     * @param params
+     * @return
+     */
+    @PostMapping(value = "/process/startProcessInstance")
+    public ResponseData startProcessInstance(@RequestBody Map<String, Object> params);
+
+    /**
+     * 启动和完成流程实例
+     * @param params
+     * @return
+     */
+    @PostMapping(value = "/process/startAndFinishProcessInstance")
+    public ResponseData startAndFinishProcessInstance(@RequestBody Map<String, Object> params);
+}

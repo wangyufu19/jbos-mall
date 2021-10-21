@@ -82,7 +82,7 @@ public class TaskMgrService {
      * @param pageSize
      * @return
      */
-    public PageInfo finishedListForPage(String userId, int pageNum, int pageSize) throws CamundaException {
+    public PageInfo completedListForPage(String userId, int pageNum, int pageSize) throws CamundaException {
         PageInfo pageInfo = new PageInfo();
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
@@ -123,7 +123,7 @@ public class TaskMgrService {
     }
 
     /**
-     * 得到用户任务
+     * 得到任务
      * @param userId
      * @param processInstanceId
      * @param taskId
@@ -143,7 +143,6 @@ public class TaskMgrService {
     }
     /**
      * 领取任务
-     *
      * @param taskId
      * @param userId
      */
@@ -157,7 +156,6 @@ public class TaskMgrService {
 
     /**
      * 完成任务
-     *
      * @param params
      */
     public void complete(Map<String, Object> params) throws CamundaException {

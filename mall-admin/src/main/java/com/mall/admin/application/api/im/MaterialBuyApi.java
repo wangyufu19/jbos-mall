@@ -1,6 +1,8 @@
 package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.api.BaseApi;
+import com.mall.admin.application.external.ProcessInstanceService;
+import com.mall.admin.application.external.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.common.response.ResponseData;
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +30,10 @@ import java.util.Map;
 public class MaterialBuyApi extends BaseApi {
     @Autowired
     private MaterialBuyService materialBuyService;
+    @Autowired
+    private ProcessInstanceService processInstanceService;
+    @Autowired
+    private TaskService taskService;
     /**
      * 查询物采购业务列表
      * @return
@@ -70,17 +77,29 @@ public class MaterialBuyApi extends BaseApi {
         ResponseData res = ResponseData.ok();
         try{
             Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
+            String applyUserId=StringUtils.replaceNull(materialBuyMap.get("applyUserId"));
+            String bizNo=StringUtils.replaceNull(materialBuyMap.get("bizNo"));
+            double totalAmt=Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt")));
             List<Map<String,Object>> materials=(ArrayList<Map<String,Object>>)params.get("materials");
             MaterialBuy materialBuy=new MaterialBuy();
             materialBuy.setId(StringUtils.getUUID());
-            materialBuy.setBizNo(StringUtils.replaceNull(materialBuyMap.get("bizNo")));
-            materialBuy.setApplyUserId(StringUtils.replaceNull(materialBuyMap.get("applyUserId")));
+            materialBuy.setBizNo(bizNo);
+            materialBuy.setApplyUserId(applyUserId);
             materialBuy.setApplyDepId(StringUtils.replaceNull(materialBuyMap.get("applyDepId")));
             materialBuy.setApplyTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("applyTime"))));
             materialBuy.setGmoTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("gmoTime"))));
-            materialBuy.setTotalAmt(Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt"))));
+            materialBuy.setTotalAmt(totalAmt);
             materialBuy.setPurpose(StringUtils.replaceNull(materialBuyMap.get("purpose")));
             materialBuyService.addMaterialBuy(materialBuy,materials);
+            //启动物品采购流程
+            Map<String, Object> processParams=new HashMap<String, Object>();
+            processParams.put("applyUserId",applyUserId);
+            processParams.put("processDefinitionKey","materialBuy");
+            processParams.put("businessKey",bizNo);
+            processParams.put("amount",totalAmt);
+            processParams.put("pageNum",1);
+            processParams.put("pageSize",10);
+            res=processInstanceService.startProcessInstance(processParams);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
@@ -122,7 +141,7 @@ public class MaterialBuyApi extends BaseApi {
             materialBuy.setGmoTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("gmoTime"))));
             materialBuy.setTotalAmt(Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt"))));
             materialBuy.setPurpose(StringUtils.replaceNull(materialBuyMap.get("purpose")));
-            materialBuyService.updateMaterialBuy(materialBuy);
+            materialBuyService.updateMaterialBuy(materialBuy,materials);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);

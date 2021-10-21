@@ -27,10 +27,10 @@ public class TaskMgrApi{
 
     @ResponseBody
     @GetMapping(value = "/listForPage")
-    @ApiOperation("查询用户待办任务")
-    public ResponseData listForPage(@RequestBody Map<String, Object> params){
+    @ApiOperation("查询待办任务")
+    public ResponseData listForPage(@RequestParam Map<String, Object> params){
+        log.info("============feignclient invoke listForPage");
         ResponseData res=ResponseData.ok();
-        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
         String userId=StringUtils.replaceNull(params.get("userId"));
         int pageNum=Integer.parseInt(StringUtils.replaceNull(params.get("pageNum")));
         int pageSize=Integer.parseInt(StringUtils.replaceNull(params.get("pageSize")));
@@ -44,16 +44,15 @@ public class TaskMgrApi{
         return res;
     }
     @ResponseBody
-    @GetMapping(value = "/finishedListForPage")
-    @ApiOperation("查询用户待办任务")
-    public ResponseData finishedListForPage(@RequestBody Map<String, Object> params){
+    @GetMapping(value = "/completedListForPage")
+    @ApiOperation("查询已办任务")
+    public ResponseData completedListForPage(@RequestBody Map<String, Object> params){
         ResponseData res=ResponseData.ok();
-        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
         String userId=StringUtils.replaceNull(params.get("userId"));
         int pageNum=Integer.parseInt(StringUtils.replaceNull(params.get("pageNum")));
         int pageSize=Integer.parseInt(StringUtils.replaceNull(params.get("pageSize")));
         try{
-            PageInfo pageInfo=taskMgrService.finishedListForPage(userId,pageNum,pageSize);
+            PageInfo pageInfo=taskMgrService.completedListForPage(userId,pageNum,pageSize);
             res.setData(pageInfo);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -63,7 +62,7 @@ public class TaskMgrApi{
     }
     @ResponseBody
     @PostMapping(value = "/assignee")
-    @ApiOperation("完成任务")
+    @ApiOperation("领取任务")
     public ResponseData assignee(@RequestBody Map<String, Object> params){
         ResponseData res=ResponseData.ok();
         String taskId=StringUtils.replaceNull(params.get("taskId"));
@@ -88,6 +87,29 @@ public class TaskMgrApi{
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
         }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping(value = "/isDrawback")
+    @ApiOperation("是否可撤回任务")
+    public ResponseData isDrawback(@RequestBody Map<String, Object> params){
+        ResponseData res=ResponseData.ok();
+        boolean isDrawback=false;
+        String userId=StringUtils.replaceNull(params.get("userId"));
+        String processDefinitionId= StringUtils.replaceNull(params.get("processDefinitionId"));
+        String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
+        String taskId=StringUtils.replaceNull(params.get("taskId"));
+        try {
+            isDrawback=taskMgrService.isDrawback(userId,processInstanceId,taskId);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+        }
+        Map<String,Object> data=new HashMap<String,Object>();
+        data.put("processInstanceId",processInstanceId);
+        data.put("taskId",taskId);
+        data.put("isDrawback",isDrawback);
+        res.setData(data);
         return res;
     }
     @ResponseBody

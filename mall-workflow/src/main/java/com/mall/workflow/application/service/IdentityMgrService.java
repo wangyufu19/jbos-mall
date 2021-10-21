@@ -40,6 +40,7 @@ public class IdentityMgrService {
         UserEntity userEntity=new UserEntity();
         userEntity.setId(userId);
         userEntity.setFirstName(userName);
+        userEntity.setLastName(userName);
         userEntity.setPassword("123456");
         identityService.saveUser(userEntity);
     }

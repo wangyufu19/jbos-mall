@@ -1,19 +1,12 @@
 package com.mall.workflow.application.service;
 
-import com.mall.workflow.common.exception.CamundaException;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.engine.impl.RepositoryServiceImpl;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
-import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.runtime.ActivityInstance;
-import org.camunda.bpm.engine.runtime.ProcessInstanceQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
@@ -32,7 +25,7 @@ public class ActivityInstanceService {
     /**
      * 得到活动实例
      * @param processInstanceId
-     * @param actId
+     * @param activityInstanceId
      * @return
      */
     public HistoricActivityInstance getActivityInstance(String processInstanceId,String activityInstanceId){

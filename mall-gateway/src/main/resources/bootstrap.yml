@@ -33,6 +33,9 @@ zuul:
     admin:
       path: /api/admin/**
       serviceId: mall-admin
+    mall-workflow:
+      path: /api/mall-workflow/**
+      serviceId: mall-workflow
   filter:
     excludeUri: /*/login,/*/logout,/*/captcha
 ribbon:

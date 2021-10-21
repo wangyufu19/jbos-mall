@@ -3,6 +3,8 @@ package com.mall.common.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
+
 /**
  * ResponseData
  * @author youfu.wang
@@ -17,7 +19,7 @@ public class ResponseData {
     public static final String RETMSG_FAILURE="操作失败";
     private String retCode;
     private String retMsg;
-    private Object data;
+    private Object data=new HashMap<String,Object>();
 
 
     public ResponseData(){

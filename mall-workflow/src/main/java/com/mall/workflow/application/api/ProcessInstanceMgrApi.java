@@ -5,6 +5,7 @@ import com.mall.common.utils.StringUtils;
 import com.mall.workflow.application.service.ProcessInstanceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.Map;
  * @author youfu.wang
  * @date 2019-01-31
  */
+@Slf4j
 @RestController
 @RequestMapping("/process")
 @Api("实例管理接口")
@@ -28,9 +30,9 @@ public class ProcessInstanceMgrApi {
     @ApiOperation("启动流程实例")
     public ResponseData startProcessInstance(@RequestBody Map<String, Object> params){
         ResponseData res=ResponseData.ok();
+        log.info("============startProcessInstance invoke listForPage");
         String processDefinitionKey= StringUtils.replaceNull(params.get("processDefinitionKey"));
         String businessKey= StringUtils.replaceNull(params.get("businessKey"));
-        String userId=StringUtils.replaceNull(params.get("userId"));
         ProcessInstance processInstance=processInstanceService.startProcessInstance(processDefinitionKey,businessKey,params);
         String processDefinitionId=processInstance.getProcessDefinitionId();
         String processInstanceId=processInstance.getProcessInstanceId();
@@ -42,7 +44,7 @@ public class ProcessInstanceMgrApi {
     }
     @ResponseBody
     @PostMapping(value = "/startAndFinishProcessInstance")
-    @ApiOperation("启动流程实例")
+    @ApiOperation("启动和完成流程实例")
     public ResponseData startAndFinishProcessInstance(@RequestBody Map<String, Object> params){
         ResponseData res=ResponseData.ok();
         String processDefinitionKey= StringUtils.replaceNull(params.get("processDefinitionKey"));

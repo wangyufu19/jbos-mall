@@ -33,9 +33,6 @@ public class ProcessInstanceService {
      */
     public ProcessInstance startProcessInstance(String processDefinitionKey, String businessKey, Map<String,Object> variables){
         ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(processDefinitionKey,businessKey,variables);
-        String processInstanceId=processInstance.getProcessInstanceId();
-        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).active().singleResult();
-        //taskService.complete(task.getId());
         return processInstance;
     }
     /**
@@ -46,6 +43,9 @@ public class ProcessInstanceService {
      */
     public ProcessInstance startAndFinishProcessInstance(String processDefinitionKey,String businessKey,Map<String,Object> variables){
         ProcessInstance processInstance=this.startProcessInstance(processDefinitionKey,businessKey,variables);
+        String processInstanceId=processInstance.getProcessInstanceId();
+        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).active().singleResult();
+        taskService.complete(task.getId());
         return processInstance;
     }
 }
