@@ -30,16 +30,32 @@ public class ProcessInstanceMgrApi {
     @ApiOperation("启动流程实例")
     public ResponseData startProcessInstance(@RequestBody Map<String, Object> params){
         ResponseData res=ResponseData.ok();
-        log.info("============启动流程实例");
+        String userId=StringUtils.replaceNull(params.get("userId"));
         String processDefinitionKey= StringUtils.replaceNull(params.get("processDefinitionKey"));
         String businessKey= StringUtils.replaceNull(params.get("businessKey"));
-        ProcessInstance processInstance=processInstanceService.startProcessInstance(processDefinitionKey,businessKey,params);
-        String processDefinitionId=processInstance.getProcessDefinitionId();
-        String processInstanceId=processInstance.getProcessInstanceId();
-        Map<String,Object> data=new HashMap<String,Object>();
-        data.put("processDefinitionId",processDefinitionId);
-        data.put("processInstanceId",processInstanceId);
-        res.setData(data);
+        String processDefinitionId="";
+        String processInstanceId="";
+        try{
+            ProcessInstance processInstance=processInstanceService.startProcessInstance(processDefinitionKey,businessKey,params);
+            processDefinitionId=processInstance.getProcessDefinitionId();
+            processInstanceId=processInstance.getProcessInstanceId();
+            Map<String,Object> data=new HashMap<String,Object>();
+            data.put("processDefinitionId",processDefinitionId);
+            data.put("processInstanceId",processInstanceId);
+            res.setData(data);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+        }
+        if(log.isDebugEnabled()){
+            log.info("============启动流程实例[" +
+                    "userId="+userId+";" +
+                    "processDefinitionKey="+processDefinitionKey+";" +
+                    "businessKey="+businessKey+
+                    "processDefinitionId="+processDefinitionId+
+                    "processInstanceId="+processInstanceId+
+                    "]");
+        }
         return res;
     }
     @ResponseBody
@@ -47,15 +63,32 @@ public class ProcessInstanceMgrApi {
     @ApiOperation("启动和完成流程实例")
     public ResponseData startAndFinishProcessInstance(@RequestBody Map<String, Object> params){
         ResponseData res=ResponseData.ok();
+        String userId=StringUtils.replaceNull(params.get("userId"));
         String processDefinitionKey= StringUtils.replaceNull(params.get("processDefinitionKey"));
         String businessKey= StringUtils.replaceNull(params.get("businessKey"));
-        ProcessInstance processInstance=processInstanceService.startAndFinishProcessInstance(processDefinitionKey,businessKey,params);
-        String processDefinitionId=processInstance.getProcessDefinitionId();
-        String processInstanceId=processInstance.getProcessInstanceId();
-        Map<String,Object> data=new HashMap<String,Object>();
-        data.put("processDefinitionId",processDefinitionId);
-        data.put("processInstanceId",processInstanceId);
-        res.setData(data);
+        String processDefinitionId="";
+        String processInstanceId="";
+        try{
+            ProcessInstance processInstance=processInstanceService.startAndFinishProcessInstance(processDefinitionKey,businessKey,params);
+            processDefinitionId=processInstance.getProcessDefinitionId();
+            processInstanceId=processInstance.getProcessInstanceId();
+            Map<String,Object> data=new HashMap<String,Object>();
+            data.put("processDefinitionId",processDefinitionId);
+            data.put("processInstanceId",processInstanceId);
+            res.setData(data);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+        }
+        if(log.isDebugEnabled()){
+            log.info("============启动和完成流程实例[" +
+                    "userId="+userId+";" +
+                    "processDefinitionKey="+processDefinitionKey+";" +
+                    "businessKey="+businessKey+
+                    "processDefinitionId="+processDefinitionId+
+                    "processInstanceId="+processInstanceId+
+                    "]");
+        }
         return res;
     }
 }

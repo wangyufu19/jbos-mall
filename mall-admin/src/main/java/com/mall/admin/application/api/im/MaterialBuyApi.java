@@ -93,6 +93,7 @@ public class MaterialBuyApi extends BaseApi {
             materialBuyService.addMaterialBuy(materialBuy,materials);
             //启动物品采购流程
             Map<String, Object> processParams=new HashMap<String, Object>();
+            processParams.put("userId",applyUserId);
             processParams.put("applyUserId",applyUserId);
             processParams.put("processDefinitionKey","materialBuy");
             processParams.put("businessKey",bizNo);

@@ -54,6 +54,9 @@ public class TaskMgrApi{
         int pageNum=Integer.parseInt(StringUtils.replaceNull(params.get("pageNum")));
         int pageSize=Integer.parseInt(StringUtils.replaceNull(params.get("pageSize")));
         try{
+            if(log.isDebugEnabled()){
+                log.info("============查询用户["+userId+"]已办任务");
+            }
             PageInfo pageInfo=taskMgrService.completedListForPage(userId,pageNum,pageSize);
             res.setData(pageInfo);
         }catch (Exception e){
@@ -70,6 +73,9 @@ public class TaskMgrApi{
         String taskId=StringUtils.replaceNull(params.get("taskId"));
         String userId=StringUtils.replaceNull(params.get("userId"));
         try {
+            if(log.isDebugEnabled()){
+                log.info("============["+userId+"]用户领取任务");
+            }
             taskMgrService.assignee(taskId,userId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -83,7 +89,11 @@ public class TaskMgrApi{
     @ApiOperation("完成任务")
     public ResponseData complete(@RequestBody Map<String, Object> params){
         ResponseData res=ResponseData.ok();
+        String userId = StringUtils.replaceNull(params.get("userId"));
         try {
+            if(log.isDebugEnabled()){
+                log.info("============["+userId+"]用户完成任务");
+            }
             taskMgrService.complete(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -102,6 +112,9 @@ public class TaskMgrApi{
         String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
         String taskId=StringUtils.replaceNull(params.get("taskId"));
         try {
+            if(log.isDebugEnabled()){
+                log.info("============["+userId+"]用户是否可撤回任务["+taskId+"]");
+            }
             isDrawback=taskMgrService.isDrawback(userId,processInstanceId,taskId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -124,6 +137,9 @@ public class TaskMgrApi{
         String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
         String taskId=StringUtils.replaceNull(params.get("taskId"));
         try {
+            if(log.isDebugEnabled()){
+                log.info("============["+userId+"]用户撤回任务["+taskId+"]");
+            }
             taskMgrService.drawback(userId,processDefinitionId,processInstanceId,taskId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -140,6 +156,9 @@ public class TaskMgrApi{
         String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
         String taskId=StringUtils.replaceNull(params.get("taskId"));
         try {
+            if(log.isDebugEnabled()){
+                log.info("============["+userId+"]用户驳回任务["+taskId+"]");
+            }
             taskMgrService.reject(userId,processInstanceId,taskId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
