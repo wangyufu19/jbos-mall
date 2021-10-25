@@ -24,13 +24,23 @@ public class MaterialBuyService {
     @Autowired
     private MaterialListService materialListService;
 
+    /**
+     * 得到物品采购列表
+     * @param parameterObject
+     * @return
+     */
     public List<MaterialBuy> getMaterialBuyList(Map<String, Object> parameterObject){
         return materialBuyRepo.getMaterialBuyList(parameterObject);
     }
+
+    /**
+     * 得到物品采购信息
+     * @param id
+     * @return
+     */
     public MaterialBuy getMaterialBuyById(String id){
         return materialBuyRepo.getMaterialBuyById(id);
     }
-
     /**
      * 新增物品采购
      * @param materialBuy

@@ -49,7 +49,6 @@ public class ProcessInstanceMgrApi {
         ResponseData res=ResponseData.ok();
         String processDefinitionKey= StringUtils.replaceNull(params.get("processDefinitionKey"));
         String businessKey= StringUtils.replaceNull(params.get("businessKey"));
-        String assignee=StringUtils.replaceNull(params.get("assignee"));
         ProcessInstance processInstance=processInstanceService.startAndFinishProcessInstance(processDefinitionKey,businessKey,params);
         String processDefinitionId=processInstance.getProcessDefinitionId();
         String processInstanceId=processInstance.getProcessInstanceId();

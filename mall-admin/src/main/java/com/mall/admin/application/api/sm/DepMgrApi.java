@@ -1,5 +1,6 @@
-package com.mall.admin.application.api;
+package com.mall.admin.application.api.sm;
 
+import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.DepMgrService;
 import com.mall.admin.domain.entity.Dep;
 import com.mall.common.response.ResponseData;

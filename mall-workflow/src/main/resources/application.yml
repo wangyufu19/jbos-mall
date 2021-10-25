@@ -1,5 +1,5 @@
 server:
-  port: 9527
+  port: 8090
 spring:
   application:
     name: mall-workflow
@@ -67,4 +67,6 @@ camunda:
     filter:
        create: All tasks
     deployment-resource-pattern: classpath*:processes/*.bpmn
-
+logging:
+  level:
+    com.mall.*: debug

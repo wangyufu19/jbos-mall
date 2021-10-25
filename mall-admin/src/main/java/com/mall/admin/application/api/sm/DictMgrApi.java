@@ -1,5 +1,6 @@
-package com.mall.admin.application.api;
+package com.mall.admin.application.api.sm;
 
+import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.BusinessDict;
 import com.mall.admin.application.service.DictCodeService;
 import com.mall.admin.application.service.DictTypeService;

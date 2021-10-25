@@ -21,13 +21,14 @@ public class MaterialBuyRepo {
     public List<MaterialBuy> getMaterialBuyList(Map<String, Object> parameterObject){
         return materialBuyMapper.getMaterialBuyList(parameterObject);
     }
+    public MaterialBuy getMaterialBuyById(String id){
+        return materialBuyMapper.getMaterialBuyById(id);
+    }
 
     public void addMaterialBuy(MaterialBuy materialBuy){
         materialBuyMapper.insert(materialBuy);
     }
-    public MaterialBuy getMaterialBuyById(String id){
-        return materialBuyMapper.selectById(id);
-    }
+
     public void updateMaterialBuy(MaterialBuy materialBuy){
         materialBuyMapper.updateById(materialBuy);
     }

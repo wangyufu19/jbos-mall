@@ -1,6 +1,7 @@
-package com.mall.admin.application.api;
+package com.mall.admin.application.api.sm;
 
 
+import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.RoleMgrService;
 import com.mall.admin.domain.entity.Emp;
 import com.mall.admin.domain.entity.Role;
@@ -27,7 +28,7 @@ import java.util.UUID;
 @RequestMapping("/role")
 @Slf4j
 @Api("角色管理接口")
-public class RoleMgrApi extends BaseApi{
+public class RoleMgrApi extends BaseApi {
     @Autowired
     private RoleMgrService roleMgrService;
     /**

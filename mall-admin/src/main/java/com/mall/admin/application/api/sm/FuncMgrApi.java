@@ -1,5 +1,6 @@
-package com.mall.admin.application.api;
+package com.mall.admin.application.api.sm;
 
+import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.FuncMgrService;
 import com.mall.admin.domain.entity.Func;
 import com.mall.admin.domain.entity.TreeNode;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/func")
-public class FuncMgrApi extends BaseApi{
+public class FuncMgrApi extends BaseApi {
     @Autowired
     private FuncMgrService funcMgrService;
 

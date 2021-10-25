@@ -15,6 +15,8 @@ public interface MaterialBuyMapper extends BaseMapper<MaterialBuy> {
 
     public List<MaterialBuy> getMaterialBuyList(Map<String, Object> parameterObject);
 
+    public MaterialBuy getMaterialBuyById(String id);
+
     public void addMaterialBuy(Map<String, Object> parameterObject);
 
     public void updateMaterialBuy(Map<String, Object> parameterObject);

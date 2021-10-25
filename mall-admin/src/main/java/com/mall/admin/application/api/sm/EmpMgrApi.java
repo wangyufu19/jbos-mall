@@ -1,5 +1,6 @@
-package com.mall.admin.application.api;
+package com.mall.admin.application.api.sm;
 
+import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.EmpMgrService;
 import com.mall.admin.domain.entity.Emp;
 import com.mall.common.response.ResponseData;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/emp")
-public class EmpMgrApi extends BaseApi{
+public class EmpMgrApi extends BaseApi {
     @Autowired
     private EmpMgrService empMgrService;
     /**

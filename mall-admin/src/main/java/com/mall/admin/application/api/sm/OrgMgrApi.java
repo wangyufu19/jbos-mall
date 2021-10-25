@@ -1,4 +1,5 @@
-package com.mall.admin.application.api;
+package com.mall.admin.application.api.sm;
+import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.OrgMgrService;
 import com.mall.admin.domain.entity.Org;
 import com.mall.admin.domain.entity.TreeNode;

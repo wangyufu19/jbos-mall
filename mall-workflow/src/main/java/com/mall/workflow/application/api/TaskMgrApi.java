@@ -29,12 +29,14 @@ public class TaskMgrApi{
     @GetMapping(value = "/listForPage")
     @ApiOperation("查询待办任务")
     public ResponseData listForPage(@RequestParam Map<String, Object> params){
-        log.info("============feignclient invoke listForPage");
         ResponseData res=ResponseData.ok();
         String userId=StringUtils.replaceNull(params.get("userId"));
         int pageNum=Integer.parseInt(StringUtils.replaceNull(params.get("pageNum")));
         int pageSize=Integer.parseInt(StringUtils.replaceNull(params.get("pageSize")));
         try{
+            if(log.isDebugEnabled()){
+                log.info("============查询用户["+userId+"]待办任务");
+            }
             PageInfo pageInfo=taskMgrService.listForPage(userId,pageNum,pageSize);
             res.setData(pageInfo);
         }catch (Exception e){

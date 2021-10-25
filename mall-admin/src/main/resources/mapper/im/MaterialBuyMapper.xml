@@ -17,6 +17,33 @@
            T.GMOTIME
         FROM IM_MATERIAL_BUY T
         WHERE T.ISVALID=1
+        <if test="bizNoS != null and bizNoS != ''">
+            AND T.BIZNO LIKE '%${bizNoS}%'
+        </if>
+        <if test="feeTypeS != null and feeTypeS != ''">
+            AND T.FEETYPE = #{feeTypeS}
+        </if>
+        <if test="applyTimeS != null and applyTimeS != ''">
+            AND date_format(T.APPLYTIME,'%Y-%m-%d')= #{applyTimeS}
+        </if>
+    </select>
+    <!--查询物品采购业务-->
+    <select id="getMaterialBuyById" parameterType="java.lang.String" resultType="com.mall.admin.domain.entity.im.MaterialBuy">
+         SELECT
+           T.ID,
+           T.BIZNO,
+           T.INSTID,
+           T.APPLYUSERID,
+           (SELECT EMP.EMPNAME FROM JBOS_EMP EMP WHERE EMP.BADGE=T.APPLYUSERID) AS APPLYUSERNAME,
+           T.APPLYDEPID,
+           (SELECT DEP.DEPNAME FROM JBOS_DEP DEP WHERE DEP.ID=T.APPLYDEPID) AS APPLYDEPNAME,
+           T.FEETYPE,
+           T.APPLYTIME,
+           T.TOTALAMT,
+           T.GMOTIME,
+           T.PURPOSE
+        FROM IM_MATERIAL_BUY T
+        WHERE T.ID=#{id}
     </select>
     <!--新增物品采购业务-->
     <insert id="addMaterialBuy" parameterType="java.util.Map">
