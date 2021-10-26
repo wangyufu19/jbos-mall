@@ -14,7 +14,8 @@
            T.FEETYPE,
            T.APPLYTIME,
            T.TOTALAMT,
-           T.GMOTIME
+           T.GMOTIME,
+           T.BIZSTATE
         FROM IM_MATERIAL_BUY T
         WHERE T.ISVALID=1
         <if test="bizNoS != null and bizNoS != ''">
@@ -41,7 +42,8 @@
            T.APPLYTIME,
            T.TOTALAMT,
            T.GMOTIME,
-           T.PURPOSE
+           T.PURPOSE,
+           T.BIZSTATE
         FROM IM_MATERIAL_BUY T
         WHERE T.ID=#{id}
     </select>
@@ -85,4 +87,18 @@
     <delete id="deleteMaterialBuy" parameterType="java.util.Map">
         DELETE FROM IM_MATERIAL_BUY WHERE ID=#{ID}
     </delete>
+    <!--更新物品采购实例ID-->
+    <update id="updateMaterialInstId" parameterType="java.util.Map">
+        UPDATE IM_MATERIAL_BUY
+        SET
+            INSTID=#{INSTID}
+        WHERE BIZNO=#{bizNo}
+    </update>
+    <!--更新物品采购业务状态-->
+    <update id="updateMaterialBizState" parameterType="java.util.Map">
+        UPDATE IM_MATERIAL_BUY
+        SET
+            BIZSTATE=#{BIZSTATE}
+        WHERE BIZNO=#{bizNo}
+    </update>
 </mapper>

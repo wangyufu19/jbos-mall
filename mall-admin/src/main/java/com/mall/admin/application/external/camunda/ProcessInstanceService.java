@@ -1,11 +1,10 @@
-package com.mall.admin.application.external;
+package com.mall.admin.application.external.camunda;
 
 import com.mall.common.response.ResponseData;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 

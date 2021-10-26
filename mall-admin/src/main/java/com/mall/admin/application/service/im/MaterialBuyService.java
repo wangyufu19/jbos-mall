@@ -105,4 +105,28 @@ public class MaterialBuyService {
         //删除物品采购清单
         materialListService.deleteMaterial(listParams);
     }
+
+    /**
+     * 更新物品采购业务实例ID和业务状态
+     */
+    @Transactional
+    public void updateMaterialInstIdAndBizState(Map<String, Object> parameterObject){
+        this.updateMaterialInstId(parameterObject);
+        this.updateMaterialBizState(parameterObject);
+    }
+    /**
+     * 更新物品采购业务实例ID
+     * @param parameterObject
+     */
+    public void updateMaterialInstId(Map<String, Object> parameterObject){
+        materialBuyRepo.updateMaterialInstId(parameterObject);
+    }
+
+    /**
+     * 更新物品采购业务状态
+     * @param parameterObject
+     */
+    public void updateMaterialBizState(Map<String, Object> parameterObject){
+        materialBuyRepo.updateMaterialBizState(parameterObject);
+    }
 }

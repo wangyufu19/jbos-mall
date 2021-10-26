@@ -1,6 +1,7 @@
 package com.mall.admin.application.api.sm;
 
 import com.mall.admin.application.api.BaseApi;
+import com.mall.admin.application.external.camunda.IdentityMgrService;
 import com.mall.admin.application.service.EmpMgrService;
 import com.mall.admin.domain.entity.Emp;
 import com.mall.common.response.ResponseData;
@@ -24,6 +25,8 @@ import java.util.UUID;
 public class EmpMgrApi extends BaseApi {
     @Autowired
     private EmpMgrService empMgrService;
+    @Autowired
+    private IdentityMgrService identityMgrService;
     /**
      * 查询组织机构员工数据
      * @return
@@ -105,4 +108,23 @@ public class EmpMgrApi extends BaseApi {
         }
         return res;
     }
+    /**
+     * 删除人员
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/synchToCamunda", method = RequestMethod.POST)
+    @ApiOperation("同步到CAMUNDA")
+    public ResponseData synchToCamunda(@RequestBody Map<String, Object> params){
+        ResponseData res=ResponseData.ok();
+        try{
+            res=identityMgrService.create(params);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+
 }

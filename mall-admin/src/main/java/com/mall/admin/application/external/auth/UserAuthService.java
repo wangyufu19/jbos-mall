@@ -1,4 +1,4 @@
-package com.mall.admin.application.external;
+package com.mall.admin.application.external.auth;
 
 import com.mall.common.response.ResponseData;
 import org.springframework.cloud.openfeign.FeignClient;

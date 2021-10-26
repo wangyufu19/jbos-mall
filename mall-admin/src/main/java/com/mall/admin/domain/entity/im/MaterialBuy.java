@@ -21,7 +21,7 @@ public class MaterialBuy extends BaseEntity {
     @TableField("bizno")
     private String bizNo;
     @TableField(exist=false)
-    private int instId;
+    private String instId;
     @TableField("applyuserid")
     private String applyUserId;
     @TableField(exist=false)
@@ -42,5 +42,6 @@ public class MaterialBuy extends BaseEntity {
     private Date gmoTime;
     @TableField("purpose")
     private String purpose;
-
+    @TableField("bizstate")
+    private String bizState;
 }

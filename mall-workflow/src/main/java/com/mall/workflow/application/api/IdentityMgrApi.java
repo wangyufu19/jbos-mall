@@ -36,6 +36,12 @@ public class IdentityMgrApi {
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
         }
+        if(log.isDebugEnabled()){
+            log.info("============创建用户[" +
+                    "userId="+userId+";" +
+                    "userName="+userName+";" +
+                    "]");
+        }
         return res;
     }
 }

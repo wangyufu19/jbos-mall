@@ -1,4 +1,4 @@
-package com.mall.admin.application.external;
+package com.mall.admin.application.external.camunda;
 
 import com.mall.common.response.ResponseData;
 import org.springframework.stereotype.Component;

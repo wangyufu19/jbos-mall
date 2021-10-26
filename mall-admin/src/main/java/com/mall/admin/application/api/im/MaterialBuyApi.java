@@ -1,8 +1,8 @@
 package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.api.BaseApi;
-import com.mall.admin.application.external.ProcessInstanceService;
-import com.mall.admin.application.external.TaskService;
+import com.mall.admin.application.external.camunda.ProcessInstanceService;
+import com.mall.admin.application.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.common.response.ResponseData;
@@ -44,7 +44,7 @@ public class MaterialBuyApi extends BaseApi {
     public ResponseData getBizNo(@RequestParam Map<String, Object> params){
         ResponseData res=ResponseData.ok();
         try{
-           res.setData("BIZ_"+DateUtils.format(DateUtils.getCurrentDate(),"yyyyMMddHHmmss"));
+           res.setData("BIZ_BUY_"+DateUtils.format(DateUtils.getCurrentDate(),"yyyyMMddHHmmss"));
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
@@ -90,7 +90,25 @@ public class MaterialBuyApi extends BaseApi {
             materialBuy.setGmoTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("gmoTime"))));
             materialBuy.setTotalAmt(totalAmt);
             materialBuy.setPurpose(StringUtils.replaceNull(materialBuyMap.get("purpose")));
+            materialBuy.setBizState("10");
             materialBuyService.addMaterialBuy(materialBuy,materials);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping("/startTrans")
+    @ApiOperation("流转物品采购业务")
+    public ResponseData startTrans(@RequestBody Map<String, Object> params) {
+        ResponseData res = ResponseData.ok();
+        String action=StringUtils.replaceNull(params.get("action"));
+        Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
+        String applyUserId=StringUtils.replaceNull(materialBuyMap.get("applyUserId"));
+        String bizNo=StringUtils.replaceNull(materialBuyMap.get("bizNo"));
+        double totalAmt=Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt")));
+        try {
             //启动物品采购流程
             Map<String, Object> processParams=new HashMap<String, Object>();
             processParams.put("userId",applyUserId);
@@ -98,12 +116,25 @@ public class MaterialBuyApi extends BaseApi {
             processParams.put("processDefinitionKey","materialBuy");
             processParams.put("businessKey",bizNo);
             processParams.put("amount",totalAmt);
-            processParams.put("pageNum",1);
-            processParams.put("pageSize",10);
+
+            if("create".equals(action)){
+                res=this.add(params);
+            }else if("update".equals(action)){
+                res=this.update(params);
+            }
             res=processInstanceService.startProcessInstance(processParams);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            if(ResponseData.RETCODE_SUCCESS.equals(res.getRetCode())){
+                Map<String,Object> data=(Map<String,Object>)res.getData();
+                if(data!=null){
+                    materialBuyMap.put("INSTID",data.get("processInstanceId"));
+                }
+                materialBuyMap.put("BIZSTATE","20");
+                //更新物品采购业务实例ID和业务状态
+                materialBuyService.updateMaterialInstIdAndBizState(materialBuyMap);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseData.error(ResponseData.RETCODE_FAILURE, ResponseData.RETMSG_FAILURE);
         }
         return res;
     }
