@@ -30,11 +30,11 @@ ribbon:
   #com.netflix.loadbalancer.WeightedResponseTimeRule #配置规则 响应时间权重
   #com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
   NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
-  ConnectTimeout: 60000 #请求连接超时时间，默认2000ms
-  ReadTimeout: 60000 #请求处理的超时时间，默认5000ms
+  ConnectTimeout: 3000 #请求连接超时时间，默认2000ms
+  ReadTimeout: 50000 #请求处理的超时时间，默认5000ms
   OkToRetryOnAllOperations: true #对所有请求都进行重试
-  MaxAutoRetriesNextServer: 2 #切换实例的重试次数,默认1
-  MaxAutoRetries: 1 #对当前实例的重试次数，默认0
+  MaxAutoRetriesNextServer: 1 #切换实例的重试次数,默认1
+  MaxAutoRetries: 0 #对当前实例的重试次数，默认0
 hystrix:
   command:
     default:

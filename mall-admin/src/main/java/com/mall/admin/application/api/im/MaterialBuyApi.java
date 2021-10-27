@@ -2,7 +2,6 @@ package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.external.camunda.ProcessInstanceService;
-import com.mall.admin.application.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.common.response.ResponseData;
@@ -32,8 +31,6 @@ public class MaterialBuyApi extends BaseApi {
     private MaterialBuyService materialBuyService;
     @Autowired
     private ProcessInstanceService processInstanceService;
-    @Autowired
-    private TaskService taskService;
     /**
      * 查询物采购业务列表
      * @return
@@ -123,6 +120,7 @@ public class MaterialBuyApi extends BaseApi {
                 res=this.update(params);
             }
             res=processInstanceService.startProcessInstance(processParams);
+            log.info("**********res retCode={}",res.getRetCode());
             if(ResponseData.RETCODE_SUCCESS.equals(res.getRetCode())){
                 Map<String,Object> data=(Map<String,Object>)res.getData();
                 if(data!=null){

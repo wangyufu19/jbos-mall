@@ -109,7 +109,7 @@ public class MaterialBuyService {
     /**
      * 更新物品采购业务实例ID和业务状态
      */
-    @Transactional
+    //@Transactional
     public void updateMaterialInstIdAndBizState(Map<String, Object> parameterObject){
         this.updateMaterialInstId(parameterObject);
         this.updateMaterialBizState(parameterObject);
