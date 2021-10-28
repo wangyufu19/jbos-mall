@@ -119,8 +119,9 @@ public class MaterialBuyApi extends BaseApi {
             }else if("update".equals(action)){
                 res=this.update(params);
             }
-            res=processInstanceService.startProcessInstance(processParams);
-            log.info("**********res retCode={}",res.getRetCode());
+            if(ResponseData.RETCODE_SUCCESS.equals(res.getRetCode())){
+                res=processInstanceService.startProcessInstance(processParams);
+            }
             if(ResponseData.RETCODE_SUCCESS.equals(res.getRetCode())){
                 Map<String,Object> data=(Map<String,Object>)res.getData();
                 if(data!=null){
