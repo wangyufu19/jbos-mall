@@ -5,8 +5,8 @@
     <select id="getRoleChildrenNode"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.TreeNode">
         SELECT T.ID,T.ROLENAME AS TEXT,
         CASE
-            WHEN (SELECT COUNT(1) FROM JBOS_ROLE B WHERE B.PARENTID=T.ID)>=1 THEN 'false'
-            ELSE 'true'
+            WHEN (SELECT COUNT(1) FROM JBOS_ROLE B WHERE B.PARENTID=T.ID)>=1 THEN 0
+            ELSE 1
         END AS LEAF
         FROM JBOS_ROLE T
         WHERE T.ISVALID=1 AND T.PARENTID = #{parentId}

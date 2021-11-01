@@ -8,7 +8,10 @@
         T.DEPCHARGE,(SELECT B.EMPNAME FROM JBOS_EMP B WHERE B.BADGE=T.DEPCHARGE) AS DEPCHARGENAME,
         T.DEPDIRECTOR,(SELECT B.EMPNAME FROM JBOS_EMP B WHERE B.BADGE=T.DEPDIRECTOR) AS DEPDIRECTORNAME
         FROM JBOS_DEP T
-        WHERE T.ISVALID=1 AND T.ORGID=#{orgId}
+        WHERE T.ISVALID=1
+        <if test="orgId != null and orgId != ''">
+            AND T.ORGID = #{orgId}
+        </if>
         <if test="depCodeS != null and depCodeS != ''">
             AND T.DEPCODE = #{depCodeS}
         </if>

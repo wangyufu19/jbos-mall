@@ -5,8 +5,8 @@
     <select id="getOrgTree"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.TreeNode">
         SELECT T.ID,T.ORGNAME AS TEXT,
         CASE
-            WHEN (SELECT COUNT(1) FROM JBOS_ORG B WHERE B.PARENTID=T.ID)>=1 THEN 'false'
-            ELSE 'true'
+            WHEN (SELECT COUNT(1) FROM JBOS_ORG B WHERE B.PARENTID=T.ID)>=1 THEN 0
+            ELSE 1
         END AS LEAF
         FROM JBOS_ORG T
         WHERE T.ISVALID=1 AND T.PARENTID = #{parentId}

@@ -7,6 +7,9 @@ spring:
     active: dev
   jackson:
     time-zone: GMT+8
+  mvc:
+    servlet:
+      load-on-startup: 0   # 启动时立即初始化 dispatcherServlet，数值表示延迟多久进行自动初始化dispatcherServlet，0是立即初始化
 eureka:
   instance:
     lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
@@ -31,10 +34,13 @@ ribbon:
   #com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
   NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
   ConnectTimeout: 3000 #请求连接超时时间，默认2000ms
-  ReadTimeout: 60000 #请求处理的超时时间，默认5000ms
+  ReadTimeout: 30000 #请求处理的超时时间，默认5000ms
   OkToRetryOnAllOperations: false #对所有请求都进行重试，默认只重试GET请求
   MaxAutoRetriesNextServer: 1 #切换实例的重试次数,默认1
   MaxAutoRetries: 0 #对当前实例的重试次数，默认0
+  eager-load:
+    enabled: true #开启饥饿加载 解决第一次feign调用失败的问题
+    clients: mall-admin
 hystrix:
   command:
     default:

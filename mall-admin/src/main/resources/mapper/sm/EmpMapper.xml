@@ -35,7 +35,7 @@
     </insert>
     <!--新增人员用户信息-->
     <insert id="addEmpUser" parameterType="java.util.Map">
-        INSERT INTO JBOS_USER_AUTH(
+        INSERT INTO JBOS_USER(
             ID,USERNAME,LOGINNAME,PASSWORD,SALT,USERSTATUS
         )VALUES (
             #{id},#{empName},#{badge},#{password},#{salt},'running'

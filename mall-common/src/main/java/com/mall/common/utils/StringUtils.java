@@ -1,5 +1,6 @@
 package com.mall.common.utils;
 
+import java.io.File;
 import java.util.UUID;
 
 /**

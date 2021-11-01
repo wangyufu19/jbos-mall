@@ -9,7 +9,7 @@
     </select>
     <!--查询用户菜单权限列表-->
     <select id="getUserFuncList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.Func">
-        SELECT T.ID,T.PARENTID,T.FUNCCODE,T.FUNCNAME,T.FUNCTYPE,T.FUNCPATH,T.FUNCURL
+        SELECT T.ID,T.PARENTID,T.FUNCCODE,T.FUNCNAME,T.FUNCTYPE,T.FUNCURL
         FROM JBOS_FUNC T INNER JOIN JBOS_ROLE_FUNC T1 ON T.ID=T1.FUNCID
         LEFT JOIN JBOS_USER_ROLE T3 ON T1.ROLEID=T3.ROLEID
         LEFT JOIN JBOS_EMP T4 ON T3.USERID=T4.ID
@@ -20,8 +20,8 @@
     <select id="getFuncChildrenNode"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.TreeNode">
         SELECT T.ID,T.FUNCNAME AS TEXT,
         CASE
-            WHEN (SELECT COUNT(1) FROM JBOS_FUNC B WHERE B.PARENTID=T.ID)>=1 THEN 'false'
-            ELSE 'true'
+            WHEN (SELECT COUNT(1) FROM JBOS_FUNC B WHERE B.PARENTID=T.ID)>=1 THEN 0
+            ELSE 1
         END AS LEAF
         FROM JBOS_FUNC T
         WHERE T.ISVALID=1 AND T.PARENTID = #{parentId}
@@ -31,7 +31,10 @@
     <select id="getFuncList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.Func">
         SELECT T.ID,T.PARENTID,T.FUNCCODE,T.FUNCNAME,T.FUNCTYPE,T.FUNCURL,T.ORDERNO
         FROM JBOS_FUNC T
-        WHERE T.ISVALID=1 AND T.PARENTID = #{parentId}
+        WHERE T.ISVALID=1
+        <if test="parentId != null and parentId != ''">
+            AND T.PARENTID = #{parentId}
+        </if>
         <if test="funcCodeS != null and funcCodeS != ''">
             AND T.FUNCCODE = #{funcCodeS}
         </if>

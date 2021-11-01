@@ -121,6 +121,11 @@ public class RoleMgrApi extends BaseApi {
     @ApiOperation("新增角色")
     public ResponseData addRole(@RequestBody Map<String, Object> params){
         ResponseData res=ResponseData.ok();
+        String parentId = StringUtils.replaceNull(params.get("parentId"));
+        if (StringUtils.isNUll(parentId)) {
+            parentId = Role.ROOTROLE_ID;
+            params.put("parentId",parentId);
+        }
         try{
             params.put("id", UUID.randomUUID().toString());
             roleMgrService.insertRole(params);

@@ -5,6 +5,8 @@ import com.mall.admin.infrastructure.repository.mapper.EmpMapper;
 import com.mall.common.utils.StringUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,7 +41,8 @@ public class EmpMgrRepository {
         empMapper.addEmp(parameterObject);
         String salt = RandomStringUtils.randomAlphanumeric(20);
         parameterObject.put("salt",salt);
-        //parameterObject.put("password",ShiroUtils.md5("111111", salt));
+        PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+        parameterObject.put("password",passwordEncoder.encode("123456"));
         empMapper.addEmpUser(parameterObject);
     }
     /**
