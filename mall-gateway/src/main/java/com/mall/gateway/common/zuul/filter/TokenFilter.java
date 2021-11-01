@@ -100,9 +100,4 @@ public class TokenFilter extends ZuulFilter {
         }
         return null;
     }
-    public static void main(String[] args){
-        AntPathMatcher antPathMatcher=new AntPathMatcher(File.separator);
-        boolean b=antPathMatcher.match("/*/captcha","/api/auth/captcha");
-        logger.info("*****b="+b);
-    }
 }
