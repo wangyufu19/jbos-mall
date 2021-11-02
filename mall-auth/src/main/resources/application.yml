@@ -3,7 +3,7 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 9080
+  port: 8070
 eureka:
   instance:
     lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒

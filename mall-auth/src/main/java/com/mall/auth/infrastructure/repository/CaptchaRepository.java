@@ -1,6 +1,7 @@
 package com.mall.auth.infrastructure.repository;
 
 import com.mall.auth.infrastructure.repository.mapper.CaptchaMapper;
+import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +23,15 @@ public class CaptchaRepository {
      * @param token
      * @return
      */
-    public Map<String, Object> getCaptcha(String token){
+    public String getCaptcha(String token){
+        String text="";
         Map<String, Object> parameterObject=new HashMap<String, Object>();
         parameterObject.put("token",token);
-        return captchaMapper.getCaptcha(parameterObject);
+        Map<String, Object> retMap=captchaMapper.getCaptcha(parameterObject);
+        if(retMap!=null){
+            text= StringUtils.replaceNull(retMap.get("TEXT"));
+        }
+        return text;
     }
 
     /**
