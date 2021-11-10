@@ -76,6 +76,11 @@ public class FuncMgrApi extends BaseApi {
     @ApiOperation("查询功能数据列表")
     public ResponseData getFuncList(@RequestParam Map<String, Object> params){
         ResponseData res = ResponseData.ok();
+        String parentId = StringUtils.replaceNull(params.get("parentId"));
+        if (StringUtils.isNUll(parentId)) {
+            parentId = Func.ROOTFUNC_ID;
+            params.put("parentId",parentId);
+        }
         try{
             List<Func> funcs=funcMgrService.getFuncList(params);
             res.setData(funcs);
@@ -95,6 +100,11 @@ public class FuncMgrApi extends BaseApi {
     @ApiOperation("新增功能")
     public ResponseData addFunc(@RequestBody Map<String, Object> params){
         ResponseData res = ResponseData.ok();
+        String parentId = StringUtils.replaceNull(params.get("parentId"));
+        if (StringUtils.isNUll(parentId)) {
+            parentId = Func.ROOTFUNC_ID;
+            params.put("parentId",parentId);
+        }
         try{
             params.put("id", UUID.randomUUID().toString());
             funcMgrService.insertFunc(params);
