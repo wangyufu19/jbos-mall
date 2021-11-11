@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: mall-eurekaserver
-  profiles:
-    active: peer1
-
-
-

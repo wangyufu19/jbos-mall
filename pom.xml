@@ -16,7 +16,7 @@
 
     <modules>
         <module>mall-common</module>
-        <module>mall-eureka-server</module>
+        <module>mall-eureka</module>
         <module>mall-gateway</module>
         <module>mall-auth</module>
         <module>mall-admin</module>
