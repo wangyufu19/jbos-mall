@@ -21,6 +21,7 @@
         <module>mall-auth</module>
         <module>mall-admin</module>
         <module>mall-workflow</module>
+        <module>mall-member</module>
     </modules>
 
     <properties>
