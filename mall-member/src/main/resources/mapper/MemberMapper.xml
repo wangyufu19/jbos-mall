@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.member.infrastructure.repository.mapper.MemberMapper">
+    <!--得到会员信息列表-->
+    <select id="getMemberList" parameterType="java.util.Map" resultType="com.mall.member.domain.entity.Member">
+        SELECT A.SEQ_ID,A.NICK_NAME,A.FULLNAME,A.SEX,A.MOBILE_PHONE,A.GRADE,A.INTEGRAL,A.REGISTRY_TIME
+        FROM MM_MEMBER_BASE A
+        WHERE A.IS_VALID=1
+    </select>
+    <!--得到会员信息-->
+    <select id="getMemberInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT A.SEQ_ID,A.NICK_NAME,A.FULLNAME,A.SEX,A.MOBILE_PHONE,A.GRADE,A.INTEGRAL,A.REGISTRY_TIME
+        FROM MM_MEMBER_BASE A INNER JOIN MM_ACCOUNT B ON A.ACCT_SEQ_ID=B.SEQ_ID
+        WHERE A.IS_VALID=1 AND B.ACCOUNT=''
+    </select>
+    <!--新增会员信息-->
+    <insert id="addMemberInfo" parameterType="java.util.Map">
+        INSERT INTO MM_MEMBER_BASE(SEQ_ID,ACCT_SEQ_ID,NICK_NAME,FULLNAME,SEX,MOBILE_PHONE,GRADE,REGISTRY_TIME)
+        VALUES(#{seqId},#{acctSeqId},#{nickName},#{fullName},#{sex},#{mobilePhone},#{grade},#{registryTime})
+    </insert>
+    <!--更新会员信息-->
+    <update id="updateMemberInfo" parameterType="java.util.Map">
+        UPDATE MM_MEMBER_BASE
+        SET NICK_NAME=#{nickName},FULLNAME=#{fullName},SEX=#{sex},MOBILE_PHONE=#{mobilePhone}
+        WHERE SEQ_ID=#{seqId}
+    </update>
+</mapper>

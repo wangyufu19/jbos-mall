@@ -35,7 +35,7 @@ ribbon:
   MaxAutoRetries: 0 #对当前实例的重试次数，默认0
   eager-load:
     enabled: true #开启饥饿加载 解决第一次feign调用失败的问题
-    clients: mall-admin
+    clients: mall-member
 hystrix:
   command:
     default:
@@ -61,7 +61,7 @@ feign:
       enabled: true
 #mybatis-plus
 mybatis-plus:
-  mapper-locations: classpath*:mapper/*/*.xml
+  mapper-locations: classpath*:mapper/*.xml
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.mall.member.domain.entity
   global-config:

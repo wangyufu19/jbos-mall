@@ -37,10 +37,10 @@ zuul:
       path: /api/mall-workflow/**
       serviceId: mall-workflow
     mall-member:
-      path: /api/mall-member/**
+      path: /api/member/**
       serviceId: mall-member
   filter:
-    excludeUri: /**/login,/**/logout,/**/captcha
+    excludeUri: /**/login,/**/logout,/**/captcha,/**/registry
 ribbon:
   http:
     client:
