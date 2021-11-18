@@ -2,8 +2,11 @@ package com.mall.member.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * Member
@@ -32,13 +35,14 @@ public class Member {
     private String grade;
     @TableField("integral")
     private String integral;
-    @TableField(exist=false)
-    private String registryTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField("registry_time")
+    private Date registryTime;
     @TableField(exist=false)
     private int isValid;
+    @TableField("create_time")
+    private Date createTime;
     @TableField(exist=false)
-    private String createTime;
-    @TableField(exist=false)
-    private String updateTime;
+    private Date updateTime;
 
 }

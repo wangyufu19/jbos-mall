@@ -34,7 +34,7 @@ public class MemberMgrApi extends BaseApi {
      */
     @ResponseBody
     @GetMapping(value = "/list")
-    @ApiOperation("新增会员个人信息")
+    @ApiOperation("得到会员信息列表")
     public ResponseData list(@RequestParam Map<String, Object> params){
         ResponseData res= ResponseData.ok();
         String isPage= StringUtils.replaceNull(params.get("isPage"));

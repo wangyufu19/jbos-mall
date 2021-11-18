@@ -3,8 +3,9 @@
 <mapper namespace="com.mall.member.infrastructure.repository.mapper.MemberMapper">
     <!--得到会员信息列表-->
     <select id="getMemberList" parameterType="java.util.Map" resultType="com.mall.member.domain.entity.Member">
-        SELECT A.SEQ_ID,A.NICK_NAME,A.FULL_NAME,A.SEX,A.MOBILE_PHONE,A.EMAIL,A.GRADE,A.INTEGRAL,A.REGISTRY_TIME
+        SELECT A.SEQ_ID,A.ACCOUNT,B.STATUS,A.NICK_NAME,A.FULL_NAME,A.SEX,A.MOBILE_PHONE,A.EMAIL,A.GRADE,A.INTEGRAL,A.REGISTRY_TIME
         FROM MM_MEMBER_BASE A
+        LEFT JOIN MM_ACCOUNT B ON A.ACCOUNT=B.ACCOUNT
         WHERE A.IS_VALID=1
     </select>
     <!--得到会员信息-->

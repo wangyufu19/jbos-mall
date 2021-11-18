@@ -1,6 +1,7 @@
 package com.mall.member.application.service;
 
 
+import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import com.mall.member.domain.entity.Member;
 import com.mall.member.infrastructure.repository.AccountRepo;
@@ -56,6 +57,8 @@ public class AccountService {
         Member member=new Member();
         member.setSeqId(StringUtils.getUUID());
         member.setAccount(String.valueOf(parameterObject.get("account")));
+        member.setRegistryTime(DateUtils.getCurrentDate());
+        member.setCreateTime(DateUtils.getCurrentDate());
         this.memberRepo.addMemberInfo(member);
     }
 }
