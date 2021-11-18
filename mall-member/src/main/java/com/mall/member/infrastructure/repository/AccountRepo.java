@@ -16,8 +16,8 @@ public class AccountRepo {
     @Autowired
     private AccountMapper accountMapper;
 
-    public Map<String,Object> login(Map<String,Object> parameterObject){
-        return this.accountMapper.login(parameterObject);
+    public Map<String,Object> getAccount(Map<String,Object> parameterObject){
+        return this.accountMapper.getAccount(parameterObject);
     }
 
     public void registry(Map<String,Object> parameterObject){

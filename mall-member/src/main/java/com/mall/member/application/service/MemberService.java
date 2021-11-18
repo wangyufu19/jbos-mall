@@ -21,14 +21,13 @@ public class MemberService {
     public List<Member> getMemberList(Map<String, Object> parameterObject){
         return this.memberRepo.getMemberList(parameterObject);
     }
-    public Map<String, Object> getMemberInfo(Map<String, Object> parameterObject){
+    public Member getMemberInfo(Map<String, Object> parameterObject){
         return this.memberRepo.getMemberInfo(parameterObject);
     }
-    public void addMemberInfo(Map<String, Object> parameterObject){
-        this.memberRepo.addMemberInfo(parameterObject);
+    public void addMemberInfo(Member member){
+        this.memberRepo.addMemberInfo(member);
     }
-
-    public void updateMemberInfo(Map<String, Object> parameterObject){
-        this.memberRepo.updateMemberInfo(parameterObject);
+    public void updateMemberInfo(Member member){
+        this.memberRepo.updateMemberInfo(member);
     }
 }

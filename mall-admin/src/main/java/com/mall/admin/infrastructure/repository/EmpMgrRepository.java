@@ -2,6 +2,7 @@ package com.mall.admin.infrastructure.repository;
 
 import com.mall.admin.domain.entity.Emp;
 import com.mall.admin.infrastructure.repository.mapper.EmpMapper;
+import com.mall.admin.infrastructure.repository.mapper.UserMapper;
 import com.mall.common.utils.StringUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import java.util.Map;
 public class EmpMgrRepository {
     @Autowired
     private EmpMapper empMapper;
+    @Autowired
+    private UserMapper userMapper;
     /**
      * 查询机构员工数据
      * @param parameterObject
@@ -42,8 +45,10 @@ public class EmpMgrRepository {
         String salt = RandomStringUtils.randomAlphanumeric(20);
         parameterObject.put("salt",salt);
         PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+        parameterObject.put("username",parameterObject.get("empName"));
+        parameterObject.put("loginName",parameterObject.get("badge"));
         parameterObject.put("password",passwordEncoder.encode("123456"));
-        empMapper.addEmpUser(parameterObject);
+        userMapper.addUserInfo(parameterObject);
     }
     /**
      * 更新人员信息

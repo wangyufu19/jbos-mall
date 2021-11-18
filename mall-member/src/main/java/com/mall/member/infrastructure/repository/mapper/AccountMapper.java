@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public interface AccountMapper {
 
-    public Map<String,Object> login(Map<String,Object> parameterObject);
+    public Map<String,Object> getAccount(Map<String,Object> parameterObject);
 
     public void registry(Map<String,Object> parameterObject);
 }

@@ -46,7 +46,7 @@ public class FuncMgrRepository {
     public List<Func> getUserFuncTree(String loginName,String parentId){
         List<Func> funcs=new ArrayList<Func>();
         Map<String,Object> parameterObject=new HashMap<String,Object>();
-        parameterObject.put("userId",loginName);
+        parameterObject.put("loginName",loginName);
         parameterObject.put("parentId",parentId);
         if("admin".equals(loginName)){
             funcs=funcMapper.getFuncList(parameterObject);

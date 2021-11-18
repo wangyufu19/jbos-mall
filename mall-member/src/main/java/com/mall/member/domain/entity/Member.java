@@ -1,7 +1,7 @@
 package com.mall.member.domain.entity;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,14 +16,18 @@ import lombok.Setter;
 public class Member {
     @TableField("seq_id")
     private String seqId;
+    @TableField("account")
+    private String account;
     @TableField("nick_name")
     private String nickName;
     @TableField("full_name")
     private String fullName;
     @TableField("sex")
-    private String sex;
+    private int sex;
     @TableField("mobile_phone")
     private String mobilePhone;
+    @TableField("email")
+    private String email;
     @TableField("grade")
     private String grade;
     @TableField("integral")

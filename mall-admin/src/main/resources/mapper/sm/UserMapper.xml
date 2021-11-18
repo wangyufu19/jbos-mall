@@ -7,13 +7,31 @@
         FROM JBOS_USER A
         WHERE A.ID=#{userid}
     </select>
-    <!--根据登录用户查询用户信息-->
+    <!--根据登录名称查询用户信息-->
     <select id="getUserInfoByLoginName" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS
+        FROM JBOS_USER A
+        WHERE A.LOGINNAME=#{loginName}
+    </select>
+    <!--查询用户信息-->
+    <select id="getUserInfo" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT A.ID,A.LOGINNAME,A.USERNAME,B.DEPID,C.DEPNAME,B.ORGID,A.USERSTATUS
         FROM JBOS_USER A
         LEFT JOIN JBOS_EMP B ON A.LOGINNAME=B.BADGE
 		LEFT JOIN JBOS_DEP C ON B.DEPID=C.ID
-        WHERE A.LOGINNAME=#{username}
+        WHERE A.LOGINNAME=#{loginName}
     </select>
-
+    <!--新增用户信息-->
+    <insert id="addUserInfo" parameterType="java.util.Map">
+        INSERT INTO JBOS_USER(
+            ID,LOGINNAME,USERNAME,PASSWORD,SALT,USERSTATUS
+        )VALUES (
+            #{id},#{loginName},#{username},#{password},#{salt},'running'
+        )
+    </insert>
+    <!--新增用户默认角色-->
+    <insert id="addUserDefaultRole" parameterType="java.util.Map">
+        INSERT INTO JBOS_USER_ROLE(USERID,ROLEID)
+        VALUES(#{userId},(SELECT ID FROM JBOS_ROLE WHERE ROLECODE='ROLE_DEFAULT'))
+    </insert>
 </mapper>

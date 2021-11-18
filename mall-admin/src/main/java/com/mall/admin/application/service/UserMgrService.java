@@ -5,8 +5,10 @@ import com.mall.admin.infrastructure.repository.UserMgrRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * UserMgrService
@@ -27,6 +29,14 @@ public class UserMgrService {
 		return;
 	}
 	/**
+	 * 根据ID查询用户信息
+	 * @param userid
+	 * @return
+	 */
+	public UserInfo getUserInfoById(String userid){
+		return userMgrRepository.getUserInfoById(userid);
+	}
+	/**
 	 * 根据登录名称查询用户信息
 	 * @param username
 	 * @return
@@ -35,12 +45,23 @@ public class UserMgrService {
 		return userMgrRepository.getUserInfoByLoginName(username);
 	}
 	/**
-	 * 根据ID查询用户信息
-	 * @param userid
-	 * @return
+	 * 得到用户信息
+	 * @param loginName
 	 */
-	public UserInfo getUserInfoById(String userid){
-		return userMgrRepository.getUserInfoById(userid);
+	public Map<String, Object> getUserInfo(String loginName){
+		return userMgrRepository.getUserInfo(loginName);
+	}
+	/**
+	 * 新增用户信息
+	 * @param parameterObject
+	 */
+	@Transactional
+	public void addUserInfo(Map<String, Object> parameterObject){
+		String id=UUID.randomUUID().toString();
+		parameterObject.put("id", id);
+		parameterObject.put("userId", id);
+		userMgrRepository.addUserInfo(parameterObject);
+		userMgrRepository.addUserDefaultRole(parameterObject);
 	}
 	/**
 	 * 更新用户信息

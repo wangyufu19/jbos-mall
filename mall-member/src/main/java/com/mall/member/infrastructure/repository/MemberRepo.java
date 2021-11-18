@@ -1,5 +1,7 @@
 package com.mall.member.infrastructure.repository;
 
+
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.mall.member.domain.entity.Member;
 import com.mall.member.infrastructure.repository.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +23,15 @@ public class MemberRepo {
     public List<Member> getMemberList(Map<String, Object> parameterObject){
         return this.memberMapper.getMemberList(parameterObject);
     }
-    public Map<String, Object> getMemberInfo(Map<String, Object> parameterObject){
+    public Member getMemberInfo(Map<String, Object> parameterObject){
         return this.memberMapper.getMemberInfo(parameterObject);
     }
-    public void addMemberInfo(Map<String, Object> parameterObject){
-        this.memberMapper.addMemberInfo(parameterObject);
+    public void addMemberInfo(Member member){
+        this.memberMapper.insert(member);
     }
-
-    public void updateMemberInfo(Map<String, Object> parameterObject){
-        this.memberMapper.updateMemberInfo(parameterObject);
+    public void updateMemberInfo(Member member){
+        UpdateWrapper<Member> updateWrapper=new UpdateWrapper<Member>();
+        updateWrapper.eq("account",member.getAccount());
+        this.memberMapper.update(member,updateWrapper);
     }
 }

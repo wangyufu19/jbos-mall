@@ -33,7 +33,7 @@ public class MemberMgrApi extends BaseApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @GetMapping(value = "/list")
     @ApiOperation("新增会员个人信息")
     public ResponseData list(@RequestParam Map<String, Object> params){
         ResponseData res= ResponseData.ok();
@@ -60,12 +60,12 @@ public class MemberMgrApi extends BaseApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    @GetMapping(value = "/get")
     @ApiOperation("得到会员信息")
     public ResponseData get(@RequestParam Map<String, Object> params){
         ResponseData res= ResponseData.ok();
         try{
-            Map<String, Object> member=memberService.getMemberInfo(params);
+            Member member=memberService.getMemberInfo(params);
             res.setData(member);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -79,13 +79,14 @@ public class MemberMgrApi extends BaseApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @PostMapping(value = "/add")
     @ApiOperation("新增会员个人信息")
     public ResponseData add(@RequestBody Map<String, Object> params){
         ResponseData res= ResponseData.ok();
         try{
-            params.put("seqId", UUID.randomUUID().toString());
-            memberService.addMemberInfo(params);
+            Member member=new Member();
+            member.setSeqId(UUID.randomUUID().toString());
+            memberService.addMemberInfo(member);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
@@ -98,13 +99,19 @@ public class MemberMgrApi extends BaseApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @PostMapping(value = "/update")
     @ApiOperation("修改会员个人信息")
     public ResponseData update(@RequestBody Map<String, Object> params){
         ResponseData res= ResponseData.ok();
         try{
-            params.put("seqId", UUID.randomUUID().toString());
-            memberService.updateMemberInfo(params);
+            Member member=new Member();
+            member.setAccount(StringUtils.replaceNull(params.get("account")));
+            member.setFullName(StringUtils.replaceNull(params.get("fullName")));
+            member.setNickName(StringUtils.replaceNull(params.get("nickName")));
+            member.setSex(StringUtils.replaceNull(params.get("sex")));
+            member.setMobilePhone(StringUtils.replaceNull(params.get("mobilePhone")));
+            member.setEmail(StringUtils.replaceNull(params.get("email")));
+            memberService.updateMemberInfo(member);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);

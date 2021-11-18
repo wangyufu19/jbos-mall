@@ -1,6 +1,7 @@
 package com.mall.member.application.api;
 
 import com.mall.common.response.ResponseData;
+import com.mall.member.application.external.admin.UserMgrService;
 import com.mall.member.application.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,7 +27,8 @@ import java.util.UUID;
 public class AccountMgrApi {
     @Autowired
     private AccountService accountService;
-
+    @Autowired
+    private UserMgrService userMgrService;
     /**
      * 会员登录
      * @param params
@@ -54,12 +57,19 @@ public class AccountMgrApi {
     @ApiOperation("会员注册")
     public ResponseData registry(@RequestBody Map<String, Object> params){
         ResponseData res= ResponseData.ok();
-        String password=String.valueOf(params.get("password"));
-        PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-        params.put("password",passwordEncoder.encode(password));
         try{
+            //会员账户是否存在
+            if(accountService.isExists(params)){
+                res=ResponseData.error(ResponseData.RETCODE_FAILURE,"对不起，该手机或邮箱已存在!");
+                return res;
+            }
+            Map<String, Object> paramMap=new HashMap<String, Object>();
+            paramMap.put("loginName",params.get("account"));
+            paramMap.put("username",params.get("account"));
+            paramMap.put("password",params.get("password"));
             params.put("seqId", UUID.randomUUID().toString());
             accountService.registry(params);
+            res=userMgrService.add(paramMap);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
