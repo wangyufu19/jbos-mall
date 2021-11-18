@@ -108,7 +108,7 @@ public class MemberMgrApi extends BaseApi {
             member.setAccount(StringUtils.replaceNull(params.get("account")));
             member.setFullName(StringUtils.replaceNull(params.get("fullName")));
             member.setNickName(StringUtils.replaceNull(params.get("nickName")));
-            member.setSex(StringUtils.replaceNull(params.get("sex")));
+            member.setSex(Integer.parseInt(StringUtils.replaceNull(params.get("sex"))));
             member.setMobilePhone(StringUtils.replaceNull(params.get("mobilePhone")));
             member.setEmail(StringUtils.replaceNull(params.get("email")));
             memberService.updateMemberInfo(member);
