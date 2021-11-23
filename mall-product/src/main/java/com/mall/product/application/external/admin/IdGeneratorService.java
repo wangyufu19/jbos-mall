@@ -15,6 +15,7 @@ import java.util.Map;
  */
 @FeignClient(name = "mall-admin" , fallback = IdGeneratorServiceFallback.class)
 public interface IdGeneratorService {
+    public final int BIZ_TYPE_PRODUCT=100;
 
     @RequestMapping(value = "/id/get", method = RequestMethod.GET)
     public ResponseData get(@RequestParam Map<String, Object> params);

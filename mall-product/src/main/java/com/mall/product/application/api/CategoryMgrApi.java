@@ -21,6 +21,7 @@ import java.util.Map;
  * @date 2021-08-19
  */
 @RestController
+@RequestMapping("/category")
 @Api("商品分类接口")
 @Slf4j
 public class CategoryMgrApi extends BaseApi {

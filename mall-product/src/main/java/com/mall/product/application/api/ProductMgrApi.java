@@ -2,6 +2,7 @@ package com.mall.product.application.api;
 
 import com.mall.common.response.BaseApi;
 import com.mall.common.response.ResponseData;
+import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import com.mall.product.application.external.admin.IdGeneratorService;
 import com.mall.product.application.service.ProductService;
@@ -69,12 +70,14 @@ public class ProductMgrApi extends BaseApi {
         ResponseData res= ResponseData.ok();
         try{
             Map<String, Object> idMap=new HashMap<String, Object>();
-            idMap.put("bizType","100");
+            idMap.put("bizType",IdGeneratorService.BIZ_TYPE_PRODUCT);
             ResponseData idRes=idGeneratorService.get(idMap);
             if(idRes.getRetCode().equals(ResponseData.RETCODE_SUCCESS)){
-                return idRes;
+                Map<String, Object> retMap=(Map<String, Object>)idRes.getData();
+                idMap.put("productCode",IdGeneratorService.BIZ_TYPE_PRODUCT+""+retMap.get("version")+""+retMap.get("currentId"));
+                res.setData(idMap);
             }else{
-                res=ResponseData.error(ResponseData.RETCODE_FAILURE,"生成商品编号失败");
+                res=ResponseData.error(ResponseData.RETCODE_FAILURE,"商品编号生成失败");
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -118,6 +121,8 @@ public class ProductMgrApi extends BaseApi {
             product.setProductCode(StringUtils.replaceNull(productMap.get("productCode")));
             product.setTitle(StringUtils.replaceNull(productMap.get("title")));
             product.setStatus("10");
+            product.setIsValid(1);
+            product.setCreateTime(DateUtils.getCurrentDate());
             this.productService.addProductInfo(product);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -135,8 +140,12 @@ public class ProductMgrApi extends BaseApi {
     @ApiOperation("新增商品信息")
     public ResponseData update(@RequestBody Map<String, Object> params){
         ResponseData res= ResponseData.ok();
+        Map<String,Object> productMap=(Map<String,Object>)params.get("formObj");
         try{
             Product product=new Product();
+            product.setSeqId(StringUtils.replaceNull(productMap.get("seqId")));
+            product.setTitle(StringUtils.replaceNull(productMap.get("title")));
+            product.setUpdateTime(DateUtils.getCurrentDate());
             this.productService.updateProductInfo(product);
         }catch (Exception e){
             log.error(e.getMessage(),e);

@@ -3,6 +3,7 @@ package com.mall.product.infrastructure.repository;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.mall.product.domain.entity.Product;
 import com.mall.product.domain.entity.ProductList;
+import com.mall.product.infrastructure.repository.mapper.ProductListMapper;
 import com.mall.product.infrastructure.repository.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,10 +19,12 @@ import java.util.Map;
 @Component
 public class ProductRepo {
     @Autowired
+    private ProductListMapper productListMapper;
+    @Autowired
     private ProductMapper productMapper;
 
     public List<ProductList> getProductList(Map<String,Object> parameterObject){
-        return productMapper.getProductList(parameterObject);
+        return productListMapper.getProductList(parameterObject);
     }
 
     public Product getProductInfo(Map<String,Object> parameterObject){
@@ -35,5 +38,8 @@ public class ProductRepo {
         UpdateWrapper<Product> updateWrapper=new UpdateWrapper<Product>();
         updateWrapper.eq("seq_id",product.getSeqId());
         this.productMapper.update(product,updateWrapper);
+    }
+    public void addProductList(ProductList productList){
+        productListMapper.insert(productList);
     }
 }

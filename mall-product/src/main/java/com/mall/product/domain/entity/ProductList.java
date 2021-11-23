@@ -15,9 +15,12 @@ import java.util.Date;
 @Setter
 @Getter
 @TableName("PM_PRODUCT_LIST")
-public class ProductList {
+public class ProductList extends BaseEntity{
     @TableField("seq_id")
     private String seqId;
+
+    @TableField("product_seq_id")
+    private String productSeqId;
     /**
      * 商品编号
      */
@@ -27,30 +30,22 @@ public class ProductList {
      */
     private String productName;
     /**
+     * 商品标题
+     */
+    private String title;
+    /**
      * 价格范围
      */
+    @TableField("price_scope")
     private String priceScope;
     /**
      * 累计销量
      */
+    @TableField("amount")
     private int amount;
     /**
      * 库存数量
      */
+    @TableField("inventory")
     private int inventory;
-    /**
-     * 是否有效
-     */
-    @TableField("is_valid")
-    private int isValid;
-    /**
-     * 创建时间
-     */
-    @TableField("create_time")
-    private Date createTime;
-    /**
-     * 更新时间
-     */
-    @TableField("update_time")
-    private Date updateTime;
 }

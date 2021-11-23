@@ -7057,7 +7057,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Code>pm_product_list</a:Code>
 <a:CreationDate>1636535983</a:CreationDate>
 <a:Creator>Administrator</a:Creator>
-<a:ModificationDate>1637301008</a:ModificationDate>
+<a:ModificationDate>1637301117</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <a:Comment>商品列表表</a:Comment>
 <a:TotalSavingCurrency/>
@@ -7111,6 +7111,17 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>int</a:DataType>
 </o:Column>
 <o:Column Id="o314">
+<a:ObjectID>AC4EAD75-805C-4349-8EF6-3C8216712EE8</a:ObjectID>
+<a:Name>库存数量</a:Name>
+<a:Code>inventory</a:Code>
+<a:CreationDate>1637301009</a:CreationDate>
+<a:Creator>Administrator</a:Creator>
+<a:ModificationDate>1637301117</a:ModificationDate>
+<a:Modifier>Administrator</a:Modifier>
+<a:Comment>库存数量</a:Comment>
+<a:DataType>int</a:DataType>
+</o:Column>
+<o:Column Id="o315">
 <a:ObjectID>0D071AFE-E3BC-4465-A232-A9D5CEE16D35</a:ObjectID>
 <a:Name>是否有效</a:Name>
 <a:Code>is_valid</a:Code>
@@ -7122,7 +7133,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DefaultValue>1</a:DefaultValue>
 <a:DataType>int</a:DataType>
 </o:Column>
-<o:Column Id="o315">
+<o:Column Id="o316">
 <a:ObjectID>302B9730-AD42-497A-9171-2DAA5B23EBCE</a:ObjectID>
 <a:Name>创建时间</a:Name>
 <a:Code>create_time</a:Code>
@@ -7133,7 +7144,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>创建时间</a:Comment>
 <a:DataType>timestamp</a:DataType>
 </o:Column>
-<o:Column Id="o316">
+<o:Column Id="o317">
 <a:ObjectID>132CB564-A2A9-4A8B-90DF-05766C048DC8</a:ObjectID>
 <a:Name>更新时间</a:Name>
 <a:Code>update_time</a:Code>
@@ -7146,7 +7157,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o317">
+<o:Key Id="o318">
 <a:ObjectID>BCB1C5D6-B921-47F5-A468-1F68F8C5A818</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -7160,10 +7171,10 @@ Shadow=0</a:DisplayPreferences>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o317"/>
+<o:Key Ref="o318"/>
 </c:PrimaryKey>
 </o:Table>
-<o:Table Id="o318">
+<o:Table Id="o319">
 <a:ObjectID>9CAD2940-AC03-42E9-9F30-3679A5B75ECD</a:ObjectID>
 <a:Name>商品评价表</a:Name>
 <a:Code>pm_comment</a:Code>
@@ -7174,7 +7185,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>商品评价表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o319">
+<o:Column Id="o320">
 <a:ObjectID>046E248C-2D7F-4F9A-97E8-531706758486</a:ObjectID>
 <a:Name>序列号</a:Name>
 <a:Code>seq_id</a:Code>
@@ -7187,7 +7198,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>128</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o320">
+<o:Column Id="o321">
 <a:ObjectID>B503CDE3-C146-41A3-9952-B1105B43DC82</a:ObjectID>
 <a:Name>用户昵称</a:Name>
 <a:Code>member_seq_id</a:Code>
@@ -7199,7 +7210,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o321">
+<o:Column Id="o322">
 <a:ObjectID>B5CFE7A7-F151-4C61-95E6-86AE08569127</a:ObjectID>
 <a:Name>商品名称</a:Name>
 <a:Code>product_seq_id</a:Code>
@@ -7211,7 +7222,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o322">
+<o:Column Id="o323">
 <a:ObjectID>1134CEB5-57C7-4CF0-8F6A-EC66BA910349</a:ObjectID>
 <a:Name>评价内容</a:Name>
 <a:Code>comment</a:Code>
@@ -7223,7 +7234,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(256)</a:DataType>
 <a:Length>256</a:Length>
 </o:Column>
-<o:Column Id="o323">
+<o:Column Id="o324">
 <a:ObjectID>C76DFB93-C7AF-43C8-AD52-AD44950473B4</a:ObjectID>
 <a:Name>IP</a:Name>
 <a:Code>ip</a:Code>
@@ -7235,7 +7246,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o324">
+<o:Column Id="o325">
 <a:ObjectID>F36A9A2B-7C03-4F53-9225-445BB5605F75</a:ObjectID>
 <a:Name>是否显示</a:Name>
 <a:Code>is_visble</a:Code>
@@ -7246,7 +7257,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>是否显示(1：是；0：否)</a:Comment>
 <a:DataType>int</a:DataType>
 </o:Column>
-<o:Column Id="o325">
+<o:Column Id="o326">
 <a:ObjectID>A342BC5A-9CD1-40BA-9B24-2D916D50A0F4</a:ObjectID>
 <a:Name>评价时间</a:Name>
 <a:Code>comment_time</a:Code>
@@ -7259,7 +7270,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o326">
+<o:Key Id="o327">
 <a:ObjectID>161203CD-FCA0-4924-A818-D650C6326E82</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -7268,15 +7279,15 @@ Shadow=0</a:DisplayPreferences>
 <a:ModificationDate>1636593258</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o319"/>
+<o:Column Ref="o320"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o326"/>
+<o:Key Ref="o327"/>
 </c:PrimaryKey>
 </o:Table>
-<o:Table Id="o327">
+<o:Table Id="o328">
 <a:ObjectID>2A7DADE1-51AB-4911-A253-C85FCF828365</a:ObjectID>
 <a:Name>商品评价图片表</a:Name>
 <a:Code>pm_comment_pic</a:Code>
@@ -7287,7 +7298,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>商品评价图片表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o328">
+<o:Column Id="o329">
 <a:ObjectID>3B06B012-A549-4D8C-B733-93996D750015</a:ObjectID>
 <a:Name>序列号</a:Name>
 <a:Code>seq_id</a:Code>
@@ -7300,7 +7311,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>128</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o329">
+<o:Column Id="o330">
 <a:ObjectID>97DC4314-E57C-4DAE-8F4D-C6655D635F5E</a:ObjectID>
 <a:Name>评价ID</a:Name>
 <a:Code>comment_seq_id</a:Code>
@@ -7312,7 +7323,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o330">
+<o:Column Id="o331">
 <a:ObjectID>A229A2DE-C1A3-4F1D-ADF7-7E4C736A2942</a:ObjectID>
 <a:Name>图片ID</a:Name>
 <a:Code>pic_seq_id</a:Code>
@@ -7326,7 +7337,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o331">
+<o:Key Id="o332">
 <a:ObjectID>281894CB-42B2-4030-AE48-923A3F656A26</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -7335,15 +7346,15 @@ Shadow=0</a:DisplayPreferences>
 <a:ModificationDate>1636593586</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o328"/>
+<o:Column Ref="o329"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o331"/>
+<o:Key Ref="o332"/>
 </c:PrimaryKey>
 </o:Table>
-<o:Table Id="o332">
+<o:Table Id="o333">
 <a:ObjectID>D925945C-8AF7-4200-A21E-98DF392BEB86</a:ObjectID>
 <a:Name>商品主图表</a:Name>
 <a:Code>pm_product_pic</a:Code>
@@ -7354,7 +7365,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>商品主图表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o333">
+<o:Column Id="o334">
 <a:ObjectID>AFA03EC2-147B-4089-87E5-52606521F3C6</a:ObjectID>
 <a:Name>序列号</a:Name>
 <a:Code>seq_id</a:Code>
@@ -7367,7 +7378,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>128</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o334">
+<o:Column Id="o335">
 <a:ObjectID>06CD7CC1-7D9B-47CB-8E0C-EFD89CC5D6EA</a:ObjectID>
 <a:Name>商品ID</a:Name>
 <a:Code>product_seq_id</a:Code>
@@ -7379,7 +7390,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o335">
+<o:Column Id="o336">
 <a:ObjectID>EA4B91FF-A1DC-4A0A-87FF-20C801FA9873</a:ObjectID>
 <a:Name>图片ID</a:Name>
 <a:Code>pic_seq_id</a:Code>
@@ -7391,7 +7402,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o336">
+<o:Column Id="o337">
 <a:ObjectID>B618982E-B011-476F-8E49-BD6FCBF1F4D2</a:ObjectID>
 <a:Name>是否有效</a:Name>
 <a:Code>is_valid</a:Code>
@@ -7403,7 +7414,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DefaultValue>1</a:DefaultValue>
 <a:DataType>int</a:DataType>
 </o:Column>
-<o:Column Id="o337">
+<o:Column Id="o338">
 <a:ObjectID>78DE1FDF-2C3F-42F2-BF49-B1CD93334351</a:ObjectID>
 <a:Name>创建时间</a:Name>
 <a:Code>create_time</a:Code>
@@ -7414,7 +7425,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>创建时间</a:Comment>
 <a:DataType>timestamp</a:DataType>
 </o:Column>
-<o:Column Id="o338">
+<o:Column Id="o339">
 <a:ObjectID>4F979E9F-F4E7-4197-AA38-B229B8E573C1</a:ObjectID>
 <a:Name>更新时间</a:Name>
 <a:Code>update_time</a:Code>
@@ -7427,7 +7438,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o339">
+<o:Key Id="o340">
 <a:ObjectID>C6B29656-97A1-4871-9042-50A8B8D1C7CC</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -7436,12 +7447,12 @@ Shadow=0</a:DisplayPreferences>
 <a:ModificationDate>1636593790</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o333"/>
+<o:Column Ref="o334"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o339"/>
+<o:Key Ref="o340"/>
 </c:PrimaryKey>
 </o:Table>
 </c:Tables>
@@ -7456,7 +7467,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Modifier>Administrator</a:Modifier>
 <a:Comment>公共部分</a:Comment>
 <c:PhysicalDiagrams>
-<o:PhysicalDiagram Id="o340">
+<o:PhysicalDiagram Id="o341">
 <a:ObjectID>1F168E12-C08C-4096-9960-9BF86F06CB76</a:ObjectID>
 <a:Name>PhysicalDiagram_1</a:Name>
 <a:Code>PhysicalDiagram_1</a:Code>
@@ -7887,10 +7898,10 @@ Shadow=0</a:DisplayPreferences>
 </o:PhysicalDiagram>
 </c:PhysicalDiagrams>
 <c:DefaultDiagram>
-<o:PhysicalDiagram Ref="o340"/>
+<o:PhysicalDiagram Ref="o341"/>
 </c:DefaultDiagram>
 <c:Tables>
-<o:Table Id="o341">
+<o:Table Id="o342">
 <a:ObjectID>D763D30D-8E72-4D89-99B1-039137EEABAF</a:ObjectID>
 <a:Name>地区信息表</a:Name>
 <a:Code>comm_region</a:Code>
@@ -7901,7 +7912,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>地区信息表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o342">
+<o:Column Id="o343">
 <a:ObjectID>58893FCD-5BD3-4E09-BD1E-A5467BD552AC</a:ObjectID>
 <a:Name>地区编码</a:Name>
 <a:Code>region_code</a:Code>
@@ -7913,7 +7924,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o343">
+<o:Column Id="o344">
 <a:ObjectID>58A01001-752B-4299-9DBA-7D040791A56B</a:ObjectID>
 <a:Name>上级地区</a:Name>
 <a:Code>parent_code</a:Code>
@@ -7925,7 +7936,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o344">
+<o:Column Id="o345">
 <a:ObjectID>8A806B5C-EA45-4217-AAB8-C3C389F9077A</a:ObjectID>
 <a:Name>地区名称</a:Name>
 <a:Code>region_name</a:Code>
@@ -7937,7 +7948,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o345">
+<o:Column Id="o346">
 <a:ObjectID>9C9A9B23-277E-4BDE-B989-C2CC68F53AA1</a:ObjectID>
 <a:Name>是否有效</a:Name>
 <a:Code>is_valid</a:Code>
@@ -7948,7 +7959,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>是否有效(1:有效;0:无效)</a:Comment>
 <a:DataType>int</a:DataType>
 </o:Column>
-<o:Column Id="o346">
+<o:Column Id="o347">
 <a:ObjectID>D4A0D33E-E82F-46F2-8595-A6DE338B82DC</a:ObjectID>
 <a:Name>创建时间</a:Name>
 <a:Code>create_time</a:Code>
@@ -7961,7 +7972,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 </o:Table>
-<o:Table Id="o347">
+<o:Table Id="o348">
 <a:ObjectID>7C45FB6E-E745-41E7-A71A-8BDDCFF4C7D8</a:ObjectID>
 <a:Name>图片存储表</a:Name>
 <a:Code>comm_pic_storage</a:Code>
@@ -7972,7 +7983,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>图片存储表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o348">
+<o:Column Id="o349">
 <a:ObjectID>CFCE4CAA-CCDB-47C2-BA1C-833D9502C059</a:ObjectID>
 <a:Name>序列号</a:Name>
 <a:Code>seq_id</a:Code>
@@ -7985,7 +7996,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>128</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o349">
+<o:Column Id="o350">
 <a:ObjectID>86AB712A-48D7-451C-B99B-0FFDB0E2D51C</a:ObjectID>
 <a:Name>目录ID</a:Name>
 <a:Code>dir_seq_id</a:Code>
@@ -7997,7 +8008,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o350">
+<o:Column Id="o351">
 <a:ObjectID>03B73394-F94E-4856-96C2-F520B6CD65F9</a:ObjectID>
 <a:Name>文件名称</a:Name>
 <a:Code>file_name</a:Code>
@@ -8009,7 +8020,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o351">
+<o:Column Id="o352">
 <a:ObjectID>1E159DB1-390A-452D-826D-29B8446F2620</a:ObjectID>
 <a:Name>文件别名</a:Name>
 <a:Code>file_as_name</a:Code>
@@ -8023,7 +8034,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o352">
+<o:Key Id="o353">
 <a:ObjectID>5EFC4214-001E-4123-B2EF-49925E71F7B4</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -8032,12 +8043,12 @@ Shadow=0</a:DisplayPreferences>
 <a:ModificationDate>1636536972</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o348"/>
+<o:Column Ref="o349"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o352"/>
+<o:Key Ref="o353"/>
 </c:PrimaryKey>
 </o:Table>
 </c:Tables>
@@ -8052,7 +8063,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Modifier>Administrator</a:Modifier>
 <a:Comment>订单管理</a:Comment>
 <c:PhysicalDiagrams>
-<o:PhysicalDiagram Id="o353">
+<o:PhysicalDiagram Id="o354">
 <a:ObjectID>BCC20663-BAB9-4517-95EE-80BD899CB426</a:ObjectID>
 <a:Name>PhysicalDiagram_1</a:Name>
 <a:Code>PhysicalDiagram_1</a:Code>
@@ -8483,10 +8494,10 @@ Shadow=0</a:DisplayPreferences>
 </o:PhysicalDiagram>
 </c:PhysicalDiagrams>
 <c:DefaultDiagram>
-<o:PhysicalDiagram Ref="o353"/>
+<o:PhysicalDiagram Ref="o354"/>
 </c:DefaultDiagram>
 <c:Tables>
-<o:Table Id="o354">
+<o:Table Id="o355">
 <a:ObjectID>5053F1E8-14E7-4F15-8E2C-719543D4C024</a:ObjectID>
 <a:Name>订单信息表</a:Name>
 <a:Code>om_order</a:Code>
@@ -8497,7 +8508,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>订单信息表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o355">
+<o:Column Id="o356">
 <a:ObjectID>2DEA338F-05EE-4B68-92F6-DB0F5EF39AC3</a:ObjectID>
 <a:Name>序列号</a:Name>
 <a:Code>seq_id</a:Code>
@@ -8510,7 +8521,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>128</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o356">
+<o:Column Id="o357">
 <a:ObjectID>A8780D26-42EE-4B55-B820-6B01D2A295F3</a:ObjectID>
 <a:Name>订单主号</a:Name>
 <a:Code>order_mno</a:Code>
@@ -8522,7 +8533,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(8)</a:DataType>
 <a:Length>8</a:Length>
 </o:Column>
-<o:Column Id="o357">
+<o:Column Id="o358">
 <a:ObjectID>E634318A-5003-4E84-AA84-262F93A7B053</a:ObjectID>
 <a:Name>订单副号</a:Name>
 <a:Code>order_sno</a:Code>
@@ -8534,7 +8545,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o358">
+<o:Column Id="o359">
 <a:ObjectID>7298BA56-C4A0-4512-A87D-9EF58CE5C2D1</a:ObjectID>
 <a:Name>账号ID</a:Name>
 <a:Code>acct_seq_id</a:Code>
@@ -8546,7 +8557,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o359">
+<o:Column Id="o360">
 <a:ObjectID>0B34185E-698B-434C-8E5F-5FB9F805C9DB</a:ObjectID>
 <a:Name>支付方式</a:Name>
 <a:Code>payway</a:Code>
@@ -8558,7 +8569,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(8)</a:DataType>
 <a:Length>8</a:Length>
 </o:Column>
-<o:Column Id="o360">
+<o:Column Id="o361">
 <a:ObjectID>512E8D52-D116-4F57-80C2-9D1E10EB12B5</a:ObjectID>
 <a:Name>订单来源</a:Name>
 <a:Code>order_src</a:Code>
@@ -8570,7 +8581,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(8)</a:DataType>
 <a:Length>8</a:Length>
 </o:Column>
-<o:Column Id="o361">
+<o:Column Id="o362">
 <a:ObjectID>D8DEF162-849F-4CE2-870A-E89DD579BDA0</a:ObjectID>
 <a:Name>订单类型</a:Name>
 <a:Code>order_type</a:Code>
@@ -8582,7 +8593,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(8)</a:DataType>
 <a:Length>8</a:Length>
 </o:Column>
-<o:Column Id="o362">
+<o:Column Id="o363">
 <a:ObjectID>C7A38665-4868-4D9A-9AB0-99C5071CDCEF</a:ObjectID>
 <a:Name>订单时间</a:Name>
 <a:Code>order_time</a:Code>
@@ -8593,7 +8604,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>订单时间</a:Comment>
 <a:DataType>timestamp</a:DataType>
 </o:Column>
-<o:Column Id="o363">
+<o:Column Id="o364">
 <a:ObjectID>04DE8648-AECC-43EB-910D-3350439C8F7C</a:ObjectID>
 <a:Name>支付时间</a:Name>
 <a:Code>pay_time</a:Code>
@@ -8604,7 +8615,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>支付时间</a:Comment>
 <a:DataType>timestamp</a:DataType>
 </o:Column>
-<o:Column Id="o364">
+<o:Column Id="o365">
 <a:ObjectID>F8DE0A0F-F03F-4FFD-83AC-F6E1E7456852</a:ObjectID>
 <a:Name>成交时间</a:Name>
 <a:Code>trade_time</a:Code>
@@ -8615,7 +8626,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>成交时间</a:Comment>
 <a:DataType>timestamp</a:DataType>
 </o:Column>
-<o:Column Id="o365">
+<o:Column Id="o366">
 <a:ObjectID>923BF93E-EB5A-4D06-AAE8-D05C9F090820</a:ObjectID>
 <a:Name>配送方式</a:Name>
 <a:Code>dstway</a:Code>
@@ -8627,7 +8638,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(8)</a:DataType>
 <a:Length>8</a:Length>
 </o:Column>
-<o:Column Id="o366">
+<o:Column Id="o367">
 <a:ObjectID>B40F23C6-042C-4391-82B2-E85F9559022A</a:ObjectID>
 <a:Name>订单状态</a:Name>
 <a:Code>order_status</a:Code>
@@ -8641,7 +8652,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o367">
+<o:Key Id="o368">
 <a:ObjectID>AED4E4C1-C37B-425B-997C-0CB2231E004D</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -8650,15 +8661,15 @@ Shadow=0</a:DisplayPreferences>
 <a:ModificationDate>1636594772</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o355"/>
+<o:Column Ref="o356"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o367"/>
+<o:Key Ref="o368"/>
 </c:PrimaryKey>
 </o:Table>
-<o:Table Id="o368">
+<o:Table Id="o369">
 <a:ObjectID>51BD148E-504E-4BC8-8F78-F3073AB43144</a:ObjectID>
 <a:Name>收货人信息表</a:Name>
 <a:Code>om_order_receipt</a:Code>
@@ -8669,7 +8680,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>收货人信息表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o369">
+<o:Column Id="o370">
 <a:ObjectID>812CFF4C-59E9-42DB-ABC3-11734533E739</a:ObjectID>
 <a:Name>序列号</a:Name>
 <a:Code>seq_id</a:Code>
@@ -8682,7 +8693,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>128</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o370">
+<o:Column Id="o371">
 <a:ObjectID>0682C257-69D4-4BFB-82D7-EDCD9B6E2AC9</a:ObjectID>
 <a:Name>订单序列号</a:Name>
 <a:Code>order_seq_id</a:Code>
@@ -8694,7 +8705,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o371">
+<o:Column Id="o372">
 <a:ObjectID>15F83AC0-2597-49B7-A1CD-FBFEC85261D1</a:ObjectID>
 <a:Name>收货人</a:Name>
 <a:Code>receipt_name</a:Code>
@@ -8706,7 +8717,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o372">
+<o:Column Id="o373">
 <a:ObjectID>76E95F45-66DF-44A7-8DC6-D13512A32D43</a:ObjectID>
 <a:Name>手机号码</a:Name>
 <a:Code>mobile_phone</a:Code>
@@ -8718,7 +8729,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o373">
+<o:Column Id="o374">
 <a:ObjectID>01716605-0E92-4F3F-A67D-6A1DE4B0F24B</a:ObjectID>
 <a:Name>邮政编码</a:Name>
 <a:Code>post_code</a:Code>
@@ -8730,7 +8741,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o374">
+<o:Column Id="o375">
 <a:ObjectID>1C0635F4-4073-41D3-BB05-D9BC03B3BC4B</a:ObjectID>
 <a:Name>详细地址</a:Name>
 <a:Code>address</a:Code>
@@ -8744,7 +8755,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o375">
+<o:Key Id="o376">
 <a:ObjectID>D28B095B-7613-4A3C-A393-3F101968BD7C</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -8753,15 +8764,15 @@ Shadow=0</a:DisplayPreferences>
 <a:ModificationDate>1636596565</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o369"/>
+<o:Column Ref="o370"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o375"/>
+<o:Key Ref="o376"/>
 </c:PrimaryKey>
 </o:Table>
-<o:Table Id="o376">
+<o:Table Id="o377">
 <a:ObjectID>F4674A35-FB76-4147-BDF1-A44CA4DF1E30</a:ObjectID>
 <a:Name>订单商品表</a:Name>
 <a:Code>om_order_product</a:Code>
@@ -8772,7 +8783,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>订单商品表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o377">
+<o:Column Id="o378">
 <a:ObjectID>97FCBD2F-4D29-432D-9380-3EE256D86E49</a:ObjectID>
 <a:Name>序列号</a:Name>
 <a:Code>seq_id</a:Code>
@@ -8785,7 +8796,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>128</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o378">
+<o:Column Id="o379">
 <a:ObjectID>EBC3CD9A-350D-4B22-B334-552A307E6A6D</a:ObjectID>
 <a:Name>订单序列号</a:Name>
 <a:Code>order_seq_id</a:Code>
@@ -8797,7 +8808,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o379">
+<o:Column Id="o380">
 <a:ObjectID>A2B02F24-A4BD-4C6E-90F3-11C7FCDE8375</a:ObjectID>
 <a:Name>商品图片</a:Name>
 <a:Code>pic_seq_id</a:Code>
@@ -8809,7 +8820,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o380">
+<o:Column Id="o381">
 <a:ObjectID>3A754F49-CA92-42C6-A5BB-A4C28E069168</a:ObjectID>
 <a:Name>商品名称</a:Name>
 <a:Code>product_name</a:Code>
@@ -8821,7 +8832,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(256)</a:DataType>
 <a:Length>256</a:Length>
 </o:Column>
-<o:Column Id="o381">
+<o:Column Id="o382">
 <a:ObjectID>4F25092B-6036-4A60-87F7-5D550845440B</a:ObjectID>
 <a:Name>价格</a:Name>
 <a:Code>price</a:Code>
@@ -8834,7 +8845,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>8</a:Length>
 <a:Precision>2</a:Precision>
 </o:Column>
-<o:Column Id="o382">
+<o:Column Id="o383">
 <a:ObjectID>CE4213A7-9A6F-4F55-AC8C-C1025FCB0D28</a:ObjectID>
 <a:Name>数量</a:Name>
 <a:Code>amount</a:Code>
@@ -8845,7 +8856,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>数量</a:Comment>
 <a:DataType>int</a:DataType>
 </o:Column>
-<o:Column Id="o383">
+<o:Column Id="o384">
 <a:ObjectID>14EFA796-8711-4BA8-A0CE-26BA9187E53E</a:ObjectID>
 <a:Name>库存</a:Name>
 <a:Code>inventory</a:Code>
@@ -8856,7 +8867,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>库存</a:Comment>
 <a:DataType>int</a:DataType>
 </o:Column>
-<o:Column Id="o384">
+<o:Column Id="o385">
 <a:ObjectID>002C297B-E0CC-467E-B5AD-38CEEE3B8CB3</a:ObjectID>
 <a:Name>总计</a:Name>
 <a:Code>totalAmt</a:Code>
@@ -8871,7 +8882,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o385">
+<o:Key Id="o386">
 <a:ObjectID>9582A0FF-1774-4EE9-993D-CBCEFC41C02A</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -8880,15 +8891,15 @@ Shadow=0</a:DisplayPreferences>
 <a:ModificationDate>1636596807</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o377"/>
+<o:Column Ref="o378"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o385"/>
+<o:Key Ref="o386"/>
 </c:PrimaryKey>
 </o:Table>
-<o:Table Id="o386">
+<o:Table Id="o387">
 <a:ObjectID>109A3294-AF9A-431F-A922-57F236CE47D8</a:ObjectID>
 <a:Name>物流信息表</a:Name>
 <a:Code>om_order_logistics</a:Code>
@@ -8899,7 +8910,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Comment>物流信息表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o387">
+<o:Column Id="o388">
 <a:ObjectID>981E5336-5A10-488E-98A9-93ABB8CE22DB</a:ObjectID>
 <a:Name>序列号</a:Name>
 <a:Code>seq_id</a:Code>
@@ -8912,7 +8923,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>128</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o388">
+<o:Column Id="o389">
 <a:ObjectID>2158320F-9D30-4933-A647-B32769E80DA4</a:ObjectID>
 <a:Name>订单序列号</a:Name>
 <a:Code>order_seq_id</a:Code>
@@ -8924,7 +8935,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o389">
+<o:Column Id="o390">
 <a:ObjectID>E87D96BF-4A43-44F1-92CE-0D51CC31DBC3</a:ObjectID>
 <a:Name>物流单号</a:Name>
 <a:Code>logistics_no</a:Code>
@@ -8936,7 +8947,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o390">
+<o:Column Id="o391">
 <a:ObjectID>497ABC30-F0D6-4125-A7E6-85229E4A1FF1</a:ObjectID>
 <a:Name>物流公司</a:Name>
 <a:Code>logistics_name</a:Code>
@@ -8948,7 +8959,7 @@ Shadow=0</a:DisplayPreferences>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o391">
+<o:Column Id="o392">
 <a:ObjectID>128CB95C-C0B6-4921-9FB1-06880C953371</a:ObjectID>
 <a:Name>状态</a:Name>
 <a:Code>status</a:Code>
@@ -8962,7 +8973,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o392">
+<o:Key Id="o393">
 <a:ObjectID>F5520BD6-223D-4C83-8BF6-28F8114619EE</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -8971,15 +8982,15 @@ Shadow=0</a:DisplayPreferences>
 <a:ModificationDate>1636597624</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o387"/>
+<o:Column Ref="o388"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o392"/>
+<o:Key Ref="o393"/>
 </c:PrimaryKey>
 </o:Table>
-<o:Table Id="o393">
+<o:Table Id="o394">
 <a:ObjectID>E8748E16-C2DB-4EA5-8733-245847C143A7</a:ObjectID>
 <a:Name>订单费用表</a:Name>
 <a:Code>om_order_fees</a:Code>
@@ -8989,7 +9000,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Modifier>Administrator</a:Modifier>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o394">
+<o:Column Id="o395">
 <a:ObjectID>874027C9-B00E-4787-A21E-13B4F3B219EF</a:ObjectID>
 <a:Name>序列号</a:Name>
 <a:Code>seq_id</a:Code>
@@ -9002,7 +9013,7 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>128</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o395">
+<o:Column Id="o396">
 <a:ObjectID>54344469-0910-483A-B8F5-6AD98A2C3792</a:ObjectID>
 <a:Name>订单序列号</a:Name>
 <a:Code>order_seq_id</a:Code>
@@ -9016,7 +9027,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o396">
+<o:Key Id="o397">
 <a:ObjectID>C1BEC997-AB15-4714-BFF8-2A7F99790139</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -9025,12 +9036,12 @@ Shadow=0</a:DisplayPreferences>
 <a:ModificationDate>1636598128</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o394"/>
+<o:Column Ref="o395"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o396"/>
+<o:Key Ref="o397"/>
 </c:PrimaryKey>
 </o:Table>
 </c:Tables>
@@ -9040,7 +9051,7 @@ Shadow=0</a:DisplayPreferences>
 <o:PhysicalDiagram Ref="o5"/>
 </c:DefaultDiagram>
 <c:DefaultGroups>
-<o:Group Id="o397">
+<o:Group Id="o398">
 <a:ObjectID>237FE053-A0AF-4D82-B933-F4E68C676108</a:ObjectID>
 <a:Name>PUBLIC</a:Name>
 <a:Code>PUBLIC</a:Code>
@@ -9051,7 +9062,7 @@ Shadow=0</a:DisplayPreferences>
 </o:Group>
 </c:DefaultGroups>
 <c:TargetModels>
-<o:TargetModel Id="o398">
+<o:TargetModel Id="o399">
 <a:ObjectID>21E4866F-7BAF-4A65-9833-CA1A3FE158F1</a:ObjectID>
 <a:Name>MySQL 5.0</a:Name>
 <a:Code>MYSQL50</a:Code>

@@ -15,7 +15,7 @@ import java.util.Date;
 @Setter
 @Getter
 @TableName("PM_PRODUCT")
-public class Product {
+public class Product extends BaseEntity{
     @TableField("seq_id")
     private String seqId;
     /**
@@ -34,19 +34,4 @@ public class Product {
      * 商品状态
      */
     private String status;
-    /**
-     * 是否有效
-     */
-    @TableField("is_valid")
-    private int isValid;
-    /**
-     * 创建时间
-     */
-    @TableField("create_time")
-    private Date createTime;
-    /**
-     * 更新时间
-     */
-    @TableField("update_time")
-    private Date updateTime;
 }

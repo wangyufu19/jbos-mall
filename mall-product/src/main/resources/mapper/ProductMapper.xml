@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mall.product.infrastructure.repository.mapper.ProductMapper">
-    <!--得到商品信息列表-->
-    <select id="getProductList" parameterType="java.util.Map" resultType="com.mall.product.domain.entity.ProductList">
-        SELECT A.SEQ_ID,B.PRODUCT_CODE,B.PRODUCT_NAME,A.PRICE_SCOPE,A.AMOUNT,A.INVENTORY,B.STATUS,B.CREATE_TIME
-        FROM PM_PRODUCT_LIST A
-        LEFT JOIN PM_PRODUCT B ON A.PRODUCT_SEQ_ID=B.SEQ_ID
-        WHERE A.IS_VALID=1
-    </select>
     <!--得到商品信息-->
     <select id="getProductInfo" parameterType="java.util.Map" resultType="com.mall.product.domain.entity.Product">
-        SELECT A.SEQ_ID,A.PRODUCT_CODE,A.PRODUCT_NAME,A.STATUS,A.CREATE_TIME
+        SELECT A.SEQ_ID,A.PRODUCT_CODE,A.PRODUCT_NAME,A.TITLE,A.STATUS,A.CREATE_TIME
         FROM PM_PRODUCT A
-        WHERE B.SEQ_ID=#{seqId}
+        WHERE A.SEQ_ID=#{seqId}
     </select>
 </mapper>
