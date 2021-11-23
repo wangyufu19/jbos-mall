@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.product.infrastructure.repository.mapper.CategoryMapper">
+    <!--得到商品分类列表-->
+    <select id="getProductCateGory" parameterType="java.util.Map" resultType="com.mall.product.domain.entity.Category">
+        SELECT A.SEQ_ID,A.CODE,A.PARENT_CODE,A.NAME,A.ORDER_NO,A.KEYWORDS,A.REMARK,A.CREATE_TIME
+        FROM PM_PRODUCT_CATEGORY A
+        WHERE A.IS_VALID=1 AND A.PARENT_CODE=#{parentCode}
+    </select>
+
+</mapper>

@@ -84,7 +84,7 @@ mybatis-plus:
     logic-delete-value: 1
     logic-not-delete-value: 0
     #自定义SQL注入器
-    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+    #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false

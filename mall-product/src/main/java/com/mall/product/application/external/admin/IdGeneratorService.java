@@ -1,0 +1,21 @@
+package com.mall.product.application.external.admin;
+
+import com.mall.common.response.ResponseData;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Map;
+
+/**
+ * IdGeneratorService
+ * @author youfu.wang
+ * @date 2021-08-24
+ */
+@FeignClient(name = "mall-admin" , fallback = IdGeneratorServiceFallback.class)
+public interface IdGeneratorService {
+
+    @RequestMapping(value = "/id/get", method = RequestMethod.GET)
+    public ResponseData get(@RequestParam Map<String, Object> params);
+}

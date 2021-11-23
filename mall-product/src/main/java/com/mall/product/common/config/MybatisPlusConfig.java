@@ -1,9 +1,11 @@
-package com.mall.admin.common.config;
+package com.mall.product.common.config;
+
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 /**
  * MybatisConfig
  * @author youfu.wang
@@ -11,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@MapperScan(basePackages = "com.mall.admin.infrastructure.repository.mapper")
+@MapperScan(basePackages = "com.mall.product.infrastructure.repository.mapper")
 public class MybatisPlusConfig {
 
     @Bean

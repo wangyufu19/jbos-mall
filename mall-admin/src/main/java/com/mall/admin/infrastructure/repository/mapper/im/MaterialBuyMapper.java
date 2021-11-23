@@ -1,6 +1,6 @@
 package com.mall.admin.infrastructure.repository.mapper.im;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 
 import java.util.List;

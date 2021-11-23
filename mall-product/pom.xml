@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jbos.mall</groupId>
-    <artifactId>mall-admin</artifactId>
+    <artifactId>mall-product</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -73,5 +73,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

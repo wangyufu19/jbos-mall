@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.mapper.comm.IdMapper">
+    <!--得到当前号段-->
+    <select id="getId" parameterType="java.lang.String" resultType="com.mall.admin.domain.entity.comm.Id">
+        SELECT A.MAX_ID,A.STEP,A.VERSION
+        FROM COMM_ID_GENERATOR A
+        WHERE A.BIZ_TYPE=#{bizType}
+    </select>
+    <!--更新当前号码-->
+    <update id="updateId" parameterType="java.util.Map">
+        UPDATE COMM_ID_GENERATOR
+        SET MAX_ID=MAX_ID+STEP,VERSION=VERSION+1
+        WHERE BIZ_TYPE=#{bizType} AND VERSION=#{version}
+    </update>
+</mapper>
