@@ -1,6 +1,6 @@
 package com.mall.product.infrastructure.repository;
 
-import com.mall.product.domain.entity.Category;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.mall.product.domain.entity.Sku;
 import com.mall.product.infrastructure.repository.mapper.SkuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +21,13 @@ public class SkuRepo {
 
     public List<Sku> getProductSkuList(Map<String, Object> parameterObject){
         return skuMapper.getProductSkuList(parameterObject);
+    }
+    public void addProductSku(Sku sku){
+        skuMapper.insert(sku);
+    }
+    public void deleteProductSku(String productSeqId){
+        UpdateWrapper<Sku> updateWrapper=new UpdateWrapper<Sku>();
+        updateWrapper.eq("product_seq_id",productSeqId);
+        skuMapper.delete(updateWrapper);
     }
 }

@@ -18,7 +18,7 @@ public class BaseEntity {
      * 是否有效
      */
     @TableField("is_valid")
-    private int isValid;
+    private int isValid=1;
     /**
      * 创建时间
      */

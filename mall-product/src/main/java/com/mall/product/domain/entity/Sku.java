@@ -17,7 +17,7 @@ public class Sku extends BaseEntity{
      * 规格名称
      */
     @TableField("specs_name")
-    private double specsName;
+    private String specsName;
     /**
      * 销售价格
      */
@@ -38,4 +38,9 @@ public class Sku extends BaseEntity{
      */
     @TableField("warn_amount")
     private int warnAmount;
+    /**
+     * 排序
+     */
+    @TableField("order_no")
+    private int orderNo;
 }

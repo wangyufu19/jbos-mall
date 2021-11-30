@@ -11,6 +11,8 @@ import java.util.Locale;
  * @version 1.0
  */
 public class DateUtils {
+	public static final String YYYYMMDD="yyyyMMdd";
+	public static final String YYYYMMDDHIMMSS="yyyyMMddHHmmss";
 	/**
 	 * 得到日期YYYY的值
 	 * @param date

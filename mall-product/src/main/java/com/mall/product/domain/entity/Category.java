@@ -18,6 +18,8 @@ public class Category extends BaseEntity{
     private String seqId;
     @TableField("code")
     private String code;
+    @TableField("code_tree")
+    private String codeTree;
     @TableField("parent_code")
     private String parentCode;
     @TableField("name")

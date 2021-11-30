@@ -1,5 +1,6 @@
 package com.mall.product.infrastructure.repository;
 import com.mall.product.domain.entity.Category;
+import com.mall.product.domain.entity.TreeNode;
 import com.mall.product.infrastructure.repository.mapper.CategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,11 @@ public class CategoryRepo {
     @Autowired
     private CategoryMapper categoryMapper;
 
-    public List<Category> getProductCateGory(Map<String,Object> parameterObject){
-        return categoryMapper.getProductCateGory(parameterObject);
+
+    public List<TreeNode> getCateGoryTreeNode(Map<String, Object> parameterObject){
+        return categoryMapper.getCateGoryTreeNode(parameterObject);
+    }
+    public List<Category> getProductCategory(Map<String,Object> parameterObject){
+        return categoryMapper.getProductCategory(parameterObject);
     }
 }

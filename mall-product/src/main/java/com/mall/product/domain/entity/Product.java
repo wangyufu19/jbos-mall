@@ -19,6 +19,10 @@ public class Product extends BaseEntity{
     @TableField("seq_id")
     private String seqId;
     /**
+     * 商品分类
+     */
+    private String categoryCode;
+    /**
      * 商品编号
      */
     private String productCode;

@@ -20,28 +20,78 @@ import java.util.Map;
 public class ProductService {
     @Autowired
     private ProductRepo productRepo;
+    @Autowired
+    private SkuService skuService;
 
+    /**
+     * 查询商品列表
+     * @param parameterObject
+     * @return
+     */
     public List<ProductList> getProductList(Map<String,Object> parameterObject){
         return productRepo.getProductList(parameterObject);
     }
 
+    /**
+     * 得到商品信息
+     * @param parameterObject
+     * @return
+     */
     public Product getProductInfo(Map<String,Object> parameterObject){
         return productRepo.getProductInfo(parameterObject);
     }
+
+    /**
+     * 新增商品信息
+     * @param productMap
+     * @param skuList
+     */
     @Transactional
-    public void addProductInfo(Product product){
+    public void addProductInfo(Map<String,Object> productMap,List<Map<String,Object>> skuList){
+        Product product=new Product();
+        product.setSeqId(StringUtils.getUUID());
+        product.setCategoryCode(StringUtils.replaceNull(productMap.get("categoryCode")));
+        product.setProductCode(StringUtils.replaceNull(productMap.get("productCode")));
+        product.setTitle(StringUtils.replaceNull(productMap.get("title")));
+        product.setStatus("10");
+        product.setIsValid(1);
+        product.setCreateTime(DateUtils.getCurrentDate());
         //新增商品信息
         this.productRepo.addProductInfo(product);
+        //新增商品SKU
+        skuService.addProductSku(StringUtils.replaceNull(productMap.get("seqId")),skuList);
         //新增商品列表信息
         ProductList productList=new ProductList();
         productList.setSeqId(StringUtils.getUUID());
         productList.setProductSeqId(product.getSeqId());
         productList.setCreateTime(DateUtils.getCurrentDate());
-        productList.setIsValid(1);
         this.productRepo.addProductList(productList);
     }
 
-    public void updateProductInfo(Product product){
-       this.productRepo.updateProductInfo(product);
+    /**
+     * 更新商品信息
+     * @param productMap
+     * @param skuList
+     */
+    @Transactional
+    public void updateProductInfo(Map<String,Object> productMap,List<Map<String,Object>> skuList){
+        //更新商品信息
+        Product product=new Product();
+        product.setSeqId(StringUtils.replaceNull(productMap.get("seqId")));
+        product.setCategoryCode(StringUtils.replaceNull(productMap.get("categoryCode")));
+        product.setTitle(StringUtils.replaceNull(productMap.get("title")));
+        product.setUpdateTime(DateUtils.getCurrentDate());
+        this.productRepo.updateProductInfo(product);
+        if(skuList!=null&&skuList.size()>0){
+            //删除商品SKU
+            skuService.deleteProductSku(StringUtils.replaceNull(productMap.get("seqId")));
+            //新增商品SKU
+            skuService.addProductSku(StringUtils.replaceNull(productMap.get("seqId")),skuList);
+        }
+        //更新商品列表信息
+        ProductList productList=new ProductList();
+        productList.setProductSeqId(product.getSeqId());
+        productList.setUpdateTime(DateUtils.getCurrentDate());
+        this.productRepo.updateProductList(productList);
     }
 }

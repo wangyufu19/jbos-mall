@@ -6,14 +6,17 @@ import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import com.mall.product.application.external.admin.IdGeneratorService;
 import com.mall.product.application.service.ProductService;
+import com.mall.product.application.service.SkuService;
 import com.mall.product.domain.entity.Product;
 import com.mall.product.domain.entity.ProductList;
+import com.mall.product.domain.entity.Sku;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +30,13 @@ import java.util.Map;
 @Api("商品管理接口")
 @Slf4j
 public class ProductMgrApi extends BaseApi {
+
+    @Autowired
+    private IdGeneratorService idGeneratorService;
     @Autowired
     private ProductService productService;
     @Autowired
-    private IdGeneratorService idGeneratorService;
+    private SkuService skuService;
     /**
      * 得到商品列表
      * @param params
@@ -74,7 +80,10 @@ public class ProductMgrApi extends BaseApi {
             ResponseData idRes=idGeneratorService.get(idMap);
             if(idRes.getRetCode().equals(ResponseData.RETCODE_SUCCESS)){
                 Map<String, Object> retMap=(Map<String, Object>)idRes.getData();
-                idMap.put("productCode",IdGeneratorService.BIZ_TYPE_PRODUCT+""+retMap.get("version")+""+retMap.get("currentId"));
+                //商品编号=YYYYMMDD+业务类型+ID版本+ID
+                idMap.put("productCode",
+                        DateUtils.format(DateUtils.getCurrentDate(),DateUtils.YYYYMMDD)+""+IdGeneratorService.BIZ_TYPE_PRODUCT+""+retMap.get("version")+""+retMap.get("currentId")
+                );
                 res.setData(idMap);
             }else{
                 res=ResponseData.error(ResponseData.RETCODE_FAILURE,"商品编号生成失败");
@@ -97,7 +106,12 @@ public class ProductMgrApi extends BaseApi {
         ResponseData res= ResponseData.ok();
         try{
             Product product=productService.getProductInfo(params);
-            res.setData(product);
+            params.put("productSeqId",StringUtils.replaceNull(params.get("seqId")));
+            List<Sku> skuList=skuService.getProductSkuList(params);
+            Map<String,Object> retMap=new HashMap<String,Object>();
+            retMap.put("base",product);
+            retMap.put("skuList",skuList);
+            res.setData(retMap);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
@@ -115,15 +129,9 @@ public class ProductMgrApi extends BaseApi {
     public ResponseData add(@RequestBody Map<String, Object> params){
         ResponseData res= ResponseData.ok();
         Map<String,Object> productMap=(Map<String,Object>)params.get("formObj");
+        List<Map<String,Object>> skuList=(ArrayList<Map<String,Object>>)params.get("sku");
         try{
-            Product product=new Product();
-            product.setSeqId(StringUtils.getUUID());
-            product.setProductCode(StringUtils.replaceNull(productMap.get("productCode")));
-            product.setTitle(StringUtils.replaceNull(productMap.get("title")));
-            product.setStatus("10");
-            product.setIsValid(1);
-            product.setCreateTime(DateUtils.getCurrentDate());
-            this.productService.addProductInfo(product);
+            this.productService.addProductInfo(productMap,skuList);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
@@ -141,12 +149,9 @@ public class ProductMgrApi extends BaseApi {
     public ResponseData update(@RequestBody Map<String, Object> params){
         ResponseData res= ResponseData.ok();
         Map<String,Object> productMap=(Map<String,Object>)params.get("formObj");
+        List<Map<String,Object>> skuList=(ArrayList<Map<String,Object>>)params.get("sku");
         try{
-            Product product=new Product();
-            product.setSeqId(StringUtils.replaceNull(productMap.get("seqId")));
-            product.setTitle(StringUtils.replaceNull(productMap.get("title")));
-            product.setUpdateTime(DateUtils.getCurrentDate());
-            this.productService.updateProductInfo(product);
+            this.productService.updateProductInfo(productMap,skuList);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
