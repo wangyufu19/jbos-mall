@@ -29,6 +29,9 @@ public class ProductService {
      * @return
      */
     public List<ProductList> getProductList(Map<String,Object> parameterObject){
+        if(StringUtils.isNUll(parameterObject.get("status"))){
+            parameterObject.put("status",Product.PRODUCT_STATUS_SHELF);
+        }
         return productRepo.getProductList(parameterObject);
     }
 
@@ -53,7 +56,7 @@ public class ProductService {
         product.setCategoryCode(StringUtils.replaceNull(productMap.get("categoryCode")));
         product.setProductCode(StringUtils.replaceNull(productMap.get("productCode")));
         product.setTitle(StringUtils.replaceNull(productMap.get("title")));
-        product.setStatus("10");
+        product.setStatus(StringUtils.replaceNull(productMap.get("status")));
         product.setIsValid(1);
         product.setCreateTime(DateUtils.getCurrentDate());
         //新增商品信息
@@ -80,6 +83,7 @@ public class ProductService {
         product.setSeqId(StringUtils.replaceNull(productMap.get("seqId")));
         product.setCategoryCode(StringUtils.replaceNull(productMap.get("categoryCode")));
         product.setTitle(StringUtils.replaceNull(productMap.get("title")));
+        product.setStatus(StringUtils.replaceNull(productMap.get("status")));
         product.setUpdateTime(DateUtils.getCurrentDate());
         this.productRepo.updateProductInfo(product);
         if(skuList!=null&&skuList.size()>0){
@@ -93,5 +97,30 @@ public class ProductService {
         productList.setProductSeqId(product.getSeqId());
         productList.setUpdateTime(DateUtils.getCurrentDate());
         this.productRepo.updateProductList(productList);
+    }
+
+    /**
+     * 下架一个商品
+     * @param productMap
+     */
+    @Transactional
+    public void offShelfOne(Map<String,Object> productMap){
+        Product product=new Product();
+        product.setSeqId(StringUtils.replaceNull(productMap.get("seqId")));
+        product.setStatus(Product.PRODUCT_STATUS_OFF_SHELF);
+        product.setUpdateTime(DateUtils.getCurrentDate());
+        this.productRepo.updateProductInfo(product);
+    }
+    /**
+     * 上架一个商品
+     * @param productMap
+     */
+    @Transactional
+    public void shelfOne(Map<String,Object> productMap){
+        Product product=new Product();
+        product.setSeqId(StringUtils.replaceNull(productMap.get("seqId")));
+        product.setStatus(Product.PRODUCT_STATUS_SHELF);
+        product.setUpdateTime(DateUtils.getCurrentDate());
+        this.productRepo.updateProductInfo(product);
     }
 }

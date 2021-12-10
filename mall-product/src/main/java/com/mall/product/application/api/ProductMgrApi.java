@@ -139,6 +139,27 @@ public class ProductMgrApi extends BaseApi {
         return res;
     }
     /**
+     * 新增商品信息
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/saveDraft")
+    @ApiOperation("保存商品信息")
+    public ResponseData saveDraft(@RequestBody Map<String, Object> params){
+        ResponseData res= ResponseData.ok();
+        Map<String,Object> productMap=(Map<String,Object>)params.get("formObj");
+        List<Map<String,Object>> skuList=(ArrayList<Map<String,Object>>)params.get("sku");
+        try{
+            productMap.put("status",Product.PRODUCT_STATUS_DRAFT);
+            this.productService.addProductInfo(productMap,skuList);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    /**
      * 更新商品信息
      * @param params
      * @return
@@ -152,6 +173,32 @@ public class ProductMgrApi extends BaseApi {
         List<Map<String,Object>> skuList=(ArrayList<Map<String,Object>>)params.get("sku");
         try{
             this.productService.updateProductInfo(productMap,skuList);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping(value = "/offShelfOne")
+    @ApiOperation("下架一个商品")
+    public ResponseData offShelfOne(@RequestBody Map<String, Object> params){
+        ResponseData res= ResponseData.ok();
+        try{
+            this.productService.offShelfOne(params);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping(value = "/shelfOne")
+    @ApiOperation("上架一个商品")
+    public ResponseData shelfOne(@RequestBody Map<String, Object> params){
+        ResponseData res= ResponseData.ok();
+        try{
+            this.productService.shelfOne(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);

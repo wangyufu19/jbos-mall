@@ -45,4 +45,8 @@ public class ProductList extends BaseEntity{
      */
     @TableField("inventory")
     private int inventory;
+    /**
+     * 商品状态
+     */
+    private String status;
 }

@@ -7,6 +7,10 @@
         FROM PM_PRODUCT_LIST A
         LEFT JOIN PM_PRODUCT B ON A.PRODUCT_SEQ_ID=B.SEQ_ID
         WHERE A.IS_VALID=1
+
+        <if test="status != null and status != ''">
+            AND B.STATUS=#{status}
+        </if>
         <if test="productCodeS != null and productCodeS != ''">
             AND B.PRODUCT_CODE LIKE '%${productCodeS}%'
         </if>
