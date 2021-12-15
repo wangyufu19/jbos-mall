@@ -3,8 +3,9 @@
 <mapper namespace="com.mall.product.infrastructure.repository.mapper.ProductMapper">
     <!--得到商品信息-->
     <select id="getProductInfo" parameterType="java.util.Map" resultType="com.mall.product.domain.entity.Product">
-        SELECT A.SEQ_ID,A.CATEGORY_CODE,A.PRODUCT_CODE,A.PRODUCT_NAME,A.TITLE,A.STATUS,A.CREATE_TIME
+        SELECT A.SEQ_ID,A.CATEGORY_CODE,B.NAME CATEGORY_NAME,A.PRODUCT_CODE,A.PRODUCT_NAME,A.TITLE,A.STATUS,A.CREATE_TIME
         FROM PM_PRODUCT A
+        LEFT JOIN PM_PRODUCT_CATEGORY B ON A.CATEGORY_CODE=B.CODE
         WHERE A.SEQ_ID=#{seqId}
     </select>
 </mapper>

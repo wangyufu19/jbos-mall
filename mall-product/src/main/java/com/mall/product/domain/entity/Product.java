@@ -27,6 +27,10 @@ public class Product extends BaseEntity{
      */
     private String categoryCode;
     /**
+     * 商品分类
+     */
+    private String categoryName;
+    /**
      * 商品编号
      */
     private String productCode;
