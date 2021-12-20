@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.product.infrastructure.repository.mapper.ProductPicMapper">
+    <!--得到商品主图列表-->
+    <select id="getProductMainPicList" parameterType="java.util.Map" resultType="com.mall.product.domain.entity.ProductPic">
+        SELECT A.SEQ_ID,A.PRODUCT_SEQ_ID,B.FILE_AS_NAME NAME,CONCAT(#{endpointUrl},'/',B.FILE_AS_NAME) URL
+        FROM PM_PRODUCT_PIC A
+        INNER JOIN PM_PIC_REPO B ON A.PIC_SEQ_ID=B.SEQ_ID
+        WHERE A.PRODUCT_SEQ_ID=#{productSeqId}
+    </select>
+</mapper>

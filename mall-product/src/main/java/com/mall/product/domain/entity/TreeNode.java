@@ -21,6 +21,6 @@ public class TreeNode {
     private String code;
     private String codeTree;
     private String text;
-    //private List<TreeNode> children=new ArrayList<TreeNode>();
+    private List<TreeNode> children=null;
     private boolean leaf;
 }

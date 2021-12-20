@@ -3,8 +3,11 @@ import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import com.mall.product.domain.entity.Product;
 import com.mall.product.domain.entity.ProductList;
+import com.mall.product.domain.entity.ProductPic;
+import com.mall.product.infrastructure.repository.ProductPicRepo;
 import com.mall.product.infrastructure.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +21,12 @@ import java.util.Map;
  */
 @Service
 public class ProductService {
+    @Value("${spring.servlet.imageio.endpoint-url}")
+    private String endpointUrl;
     @Autowired
     private ProductRepo productRepo;
+    @Autowired
+    private ProductPicRepo productPicRepo;
     @Autowired
     private SkuService skuService;
 
@@ -45,6 +52,15 @@ public class ProductService {
     }
 
     /**
+     * 得到商品主图
+     * @param parameterObject
+     * @return
+     */
+    public List<ProductPic> getProductMainPicList(Map<String,Object> parameterObject){
+        parameterObject.put("endpointUrl",this.endpointUrl);
+        return  productPicRepo.getProductMainPicList(parameterObject);
+    }
+    /**
      * 新增商品信息
      * @param productMap
      * @param skuList
@@ -52,7 +68,7 @@ public class ProductService {
     @Transactional
     public void addProductInfo(Map<String,Object> productMap,List<Map<String,Object>> skuList){
         Product product=new Product();
-        product.setSeqId(StringUtils.getUUID());
+        product.setSeqId(StringUtils.replaceNull(productMap.get("seqId")));
         product.setCategoryCode(StringUtils.replaceNull(productMap.get("categoryCode")));
         product.setProductCode(StringUtils.replaceNull(productMap.get("productCode")));
         product.setTitle(StringUtils.replaceNull(productMap.get("title")));

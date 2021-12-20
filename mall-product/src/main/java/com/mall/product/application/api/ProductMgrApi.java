@@ -9,6 +9,7 @@ import com.mall.product.application.service.ProductService;
 import com.mall.product.application.service.SkuService;
 import com.mall.product.domain.entity.Product;
 import com.mall.product.domain.entity.ProductList;
+import com.mall.product.domain.entity.ProductPic;
 import com.mall.product.domain.entity.Sku;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -80,6 +81,7 @@ public class ProductMgrApi extends BaseApi {
             ResponseData idRes=idGeneratorService.get(idMap);
             if(idRes.getRetCode().equals(ResponseData.RETCODE_SUCCESS)){
                 Map<String, Object> retMap=(Map<String, Object>)idRes.getData();
+                idMap.put("seqId",StringUtils.getUUID());
                 //商品编号=YYYYMMDD+业务类型+ID版本+ID
                 idMap.put("productCode",
                         DateUtils.format(DateUtils.getCurrentDate(),DateUtils.YYYYMMDD)+""+IdGeneratorService.BIZ_TYPE_PRODUCT+""+retMap.get("version")+""+retMap.get("currentId")
@@ -107,9 +109,11 @@ public class ProductMgrApi extends BaseApi {
         try{
             Product product=productService.getProductInfo(params);
             params.put("productSeqId",StringUtils.replaceNull(params.get("seqId")));
+            List<ProductPic> productMainPics=productService.getProductMainPicList(params);
             List<Sku> skuList=skuService.getProductSkuList(params);
             Map<String,Object> retMap=new HashMap<String,Object>();
             retMap.put("base",product);
+            retMap.put("mainPics",productMainPics);
             retMap.put("skuList",skuList);
             res.setData(retMap);
         }catch (Exception e){
