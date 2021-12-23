@@ -31,7 +31,7 @@ public class FileUploadApi {
      * @return
      */
     @ResponseBody
-    @PostMapping(value = "/pic/upload")
+    @PostMapping(value = "/upload")
     //@CrossOrigin
     @ApiOperation("上传一个文件")
     public ResponseData upload(MultipartFile file,@RequestParam Map<String, Object> params){
