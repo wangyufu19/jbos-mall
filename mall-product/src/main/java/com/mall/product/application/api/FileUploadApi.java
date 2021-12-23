@@ -18,6 +18,7 @@ import java.util.Map;
  * @date 2021-08-19
  */
 @RestController
+@RequestMapping("/io")
 @Api("文件上传接口")
 @Slf4j
 public class FileUploadApi {
@@ -30,7 +31,7 @@ public class FileUploadApi {
      * @return
      */
     @ResponseBody
-    @PostMapping(value = "/upload")
+    @PostMapping(value = "/pic/upload")
     //@CrossOrigin
     @ApiOperation("上传一个文件")
     public ResponseData upload(MultipartFile file,@RequestParam Map<String, Object> params){
@@ -38,7 +39,7 @@ public class FileUploadApi {
         try{
             //判断合法的文件类型
             if(fileUploadService.includeExtensions(file)){
-                fileUploadService.upload(file);
+                fileUploadService.upload(file,params);
             }else{
                 res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
             }
@@ -57,10 +58,28 @@ public class FileUploadApi {
     @PostMapping(value = "/multiUpload")
     //@CrossOrigin
     @ApiOperation("上传多个文件")
-    public ResponseData multiUpload(MultipartFile[] files){
+    public ResponseData multiUpload(MultipartFile[] files,@RequestParam Map<String, Object> params){
         ResponseData res= ResponseData.ok();
         try{
-            fileUploadService.upload(files);
+            fileUploadService.upload(files,params);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    /**
+     * 删除一个文件
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/delete")
+    @ApiOperation("上传一个文件")
+    public ResponseData delete(@RequestParam Map<String, Object> params){
+        ResponseData res= ResponseData.ok();
+        try{
+            fileUploadService.delete(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);

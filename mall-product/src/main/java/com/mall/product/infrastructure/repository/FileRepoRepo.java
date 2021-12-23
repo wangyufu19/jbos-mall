@@ -19,9 +19,9 @@ public class FileRepoRepo {
     public void addFileRepo(FileRepo fileRepo){
         fileRepoMapper.insert(fileRepo);
     }
-    public void deleteFileRepo(String fileAsName){
+    public void deleteFileRepo(FileRepo fileRepo){
         UpdateWrapper<FileRepo> updateWrapper=new UpdateWrapper<FileRepo>();
-        updateWrapper.eq("file_as_name",fileAsName);
+        updateWrapper.eq("seq_id",fileRepo.getSeqId());
         fileRepoMapper.delete(updateWrapper);
     }
 }

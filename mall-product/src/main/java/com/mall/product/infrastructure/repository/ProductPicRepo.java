@@ -1,7 +1,6 @@
 package com.mall.product.infrastructure.repository;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.mall.product.domain.entity.ProductList;
 import com.mall.product.domain.entity.ProductPic;
 import com.mall.product.infrastructure.repository.mapper.ProductPicMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +32,16 @@ public class ProductPicRepo {
      * 新增商品主图
      * @param productPic
      */
-    public void addProductMainPic(ProductPic productPic){
+    public void addProductPic(ProductPic productPic){
         productPicMapper.insert(productPic);
     }
     /**
      * 删除商品主图
-     * @param picSeqId
+     * @param productPic
      */
-    public void deleteProductMainPic(String picSeqId){
+    public void deleteProductPic(ProductPic productPic){
         UpdateWrapper<ProductPic> updateWrapper=new UpdateWrapper<ProductPic>();
-        updateWrapper.eq("pic_seq_id",picSeqId);
+        updateWrapper.eq("pic_seq_id",productPic.getPicSeqId());
         productPicMapper.delete(updateWrapper);
     }
 }
