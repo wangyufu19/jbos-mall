@@ -76,7 +76,7 @@ public class FileUploadApi {
     @ResponseBody
     @PostMapping(value = "/delete")
     @ApiOperation("上传一个文件")
-    public ResponseData delete(@RequestParam Map<String, Object> params){
+    public ResponseData delete(@RequestBody Map<String, Object> params){
         ResponseData res= ResponseData.ok();
         try{
             fileUploadService.delete(params);

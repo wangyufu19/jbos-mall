@@ -41,7 +41,7 @@ public class ProductPicRepo {
      */
     public void deleteProductPic(ProductPic productPic){
         UpdateWrapper<ProductPic> updateWrapper=new UpdateWrapper<ProductPic>();
-        updateWrapper.eq("pic_seq_id",productPic.getPicSeqId());
+        updateWrapper.eq("seq_id",productPic.getSeqId());
         productPicMapper.delete(updateWrapper);
     }
 }
