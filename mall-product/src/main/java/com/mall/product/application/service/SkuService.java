@@ -42,7 +42,9 @@ public class SkuService {
                 sku.setProductSeqId(productSeqId);
                 sku.setSpecsName(StringUtils.replaceNull(skuMap.get("specsName")));
                 sku.setInventoryAmount(Integer.parseInt(StringUtils.replaceNull(skuMap.get("inventoryAmount"))));
-                sku.setSellPrice(Double.parseDouble(StringUtils.replaceNull(skuMap.get("sellPrice"))));
+                if(!StringUtils.isNUll(StringUtils.replaceNull(skuMap.get("sellPrice")))){
+                    sku.setSellPrice(Double.parseDouble(StringUtils.replaceNull(skuMap.get("sellPrice"))));
+                }
                 sku.setOrderNo(orderNo++);
                 skuRepo.addProductSku(sku);
             }

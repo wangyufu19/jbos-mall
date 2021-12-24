@@ -1,5 +1,6 @@
 package com.mall.product.application.service;
 import com.mall.common.utils.DateUtils;
+import com.mall.common.utils.NumberUtils;
 import com.mall.common.utils.StringUtils;
 import com.mall.product.domain.entity.Product;
 import com.mall.product.domain.entity.ProductList;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -102,15 +105,33 @@ public class ProductService {
         product.setStatus(StringUtils.replaceNull(productMap.get("status")));
         product.setUpdateTime(DateUtils.getCurrentDate());
         this.productRepo.updateProductInfo(product);
+        //SKU库存数量
+        int inventoryAmount=0;
+        //SKU所有价格的集合
+        List<Double> skuPriceList=new ArrayList<Double>();
         if(skuList!=null&&skuList.size()>0){
             //删除商品SKU
             skuService.deleteProductSku(StringUtils.replaceNull(productMap.get("seqId")));
             //新增商品SKU
             skuService.addProductSku(StringUtils.replaceNull(productMap.get("seqId")),skuList);
+            for(Map<String,Object> skuMap:skuList){
+                inventoryAmount+=Integer.parseInt(StringUtils.replaceNull(skuMap.get("inventoryAmount")));
+                if(!StringUtils.isNUll(StringUtils.replaceNull(skuMap.get("sellPrice")))){
+                    skuPriceList.add(Double.parseDouble(StringUtils.replaceNull(skuMap.get("sellPrice"))));
+                }
+            }
         }
         //更新商品列表信息
         ProductList productList=new ProductList();
         productList.setProductSeqId(product.getSeqId());
+        productList.setInventory(inventoryAmount);
+        if(skuPriceList.size()>0){
+            Double min=Collections.min(skuPriceList);
+            Double max=Collections.max(skuPriceList);
+            productList.setPriceScope("¥"+ NumberUtils.format(min)+"-"+NumberUtils.format(max));
+        }else{
+            productList.setPriceScope("¥"+NumberUtils.format(0));
+        }
         productList.setUpdateTime(DateUtils.getCurrentDate());
         this.productRepo.updateProductList(productList);
     }
