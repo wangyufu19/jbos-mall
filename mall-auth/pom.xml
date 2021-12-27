@@ -71,13 +71,8 @@
         <!-- mybatis-plus begin -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatisplus-spring-boot-starter</artifactId>
-            <version>1.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus</artifactId>
-            <version>2.1.8</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.penggle</groupId>
