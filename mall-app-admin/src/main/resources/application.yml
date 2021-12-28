@@ -1,0 +1,16 @@
+server:
+  port: 9528
+spring:
+  application:
+    name: mall-app-admin
+  profiles:
+    active: dev
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
+    lease-expiration-duration-in-seconds: 10 #定义服务失效的时间，默认为90秒
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    registry-fetch-interval-seconds: 10 #间隔多久拉取服务注册信息，默认为30秒

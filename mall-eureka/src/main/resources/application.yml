@@ -3,6 +3,16 @@ spring:
     name: mall-eurekaserver
   profiles:
     active: peer1
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:9528/
 
-
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

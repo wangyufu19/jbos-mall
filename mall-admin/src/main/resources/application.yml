@@ -10,6 +10,18 @@ spring:
   mvc:
     servlet:
       load-on-startup: 0   # 启动时立即初始化 dispatcherServlet，数值表示延迟多久进行自动初始化dispatcherServlet，0是立即初始化
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:9528/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
 eureka:
   instance:
     lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
