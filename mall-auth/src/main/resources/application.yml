@@ -29,9 +29,9 @@ spring:
       loginUri: /login
       excludeUri: /captcha,/demo/**
   jwt:
-    secret: 123456
-    #小时
-    expireTime: 24
+    secret: 123456  #密钥
+    expireTime: 24   #过期时间，默认24小时
+
 #mybatis-plus
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml

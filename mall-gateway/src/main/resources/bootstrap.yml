@@ -11,6 +11,9 @@ spring:
 #      discovery:
 #        enabled: true
 #        service-id: configserver
+  jwt:
+    secret: 123456  #密钥
+    expireTime: 24   #过期时间，默认24小时
 server:
   port: 8060
 eureka:
