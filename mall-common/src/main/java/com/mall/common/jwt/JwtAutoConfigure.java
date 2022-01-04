@@ -1,7 +1,6 @@
-package com.mall.common.config;
+package com.mall.common.jwt;
 
 import com.auth0.jwt.JWT;
-import com.mall.common.jwt.JwtTokenProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -23,7 +22,7 @@ public class JwtAutoConfigure {
     @Bean
     @ConditionalOnMissingBean
     public JwtTokenProvider jwtTokenProvider(JwtProperties jwtProperties){
-        logger.info("初始化JwtTokenProvider属性配置{expireTime={}}",jwtProperties.getExpireTime());
+        logger.info("初始化JwtTokenProvider属性配置");
         JwtTokenProvider jwtTokenProvide=new JwtTokenProvider();
         jwtTokenProvide.setSecret(jwtProperties.getSecret());
         jwtTokenProvide.setExpireTime(jwtProperties.getExpireTime()*60*60*1000L);

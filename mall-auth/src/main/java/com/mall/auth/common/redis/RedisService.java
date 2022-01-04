@@ -1,7 +1,6 @@
 package com.mall.auth.common.redis;
 import java.util.concurrent.TimeUnit;
 
-import com.mall.auth.common.config.RedisConfig;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +11,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class RedisService {
+    /**  默认过期时长60分钟，单位：秒 */
+    public final static long DEFAULT_EXPIRE = 60 * 60 ;
+    /**  不设置过期时长 */
+    public final static long NOT_EXPIRE = -1;
+
     private RedisTemplate redisTemplate;
     /**
      * 构造方法
@@ -22,22 +26,22 @@ public class RedisService {
     }
     public void set(String key, Object value, long expire){
         this.redisTemplate.opsForValue().set(key, value);
-        if(expire != RedisConfig.NOT_EXPIRE){
+        if(expire != RedisService.NOT_EXPIRE){
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
     }
 
     public void set(String key, Object value){
-        set(key, value, RedisConfig.DEFAULT_EXPIRE);
+        set(key, value, RedisService.DEFAULT_EXPIRE);
     }
 
     public Object get(String key) {
-        return get(key, RedisConfig.NOT_EXPIRE);
+        return get(key, RedisService.NOT_EXPIRE);
     }
 
     public Object get(String key, long expire) {
         Object value = this.redisTemplate.opsForValue().get(key);
-        if(expire != RedisConfig.NOT_EXPIRE){
+        if(expire != RedisService.NOT_EXPIRE){
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
         return value;

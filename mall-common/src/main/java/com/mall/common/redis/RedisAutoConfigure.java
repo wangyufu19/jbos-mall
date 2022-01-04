@@ -1,5 +1,8 @@
-package com.mall.auth.common.config;
+package com.mall.common.redis;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -11,25 +14,21 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * RedisConfig
+ * RedisAutoConfigure
  * @author youfu.wang
- * @date 2019-10-28
+ * @date 2021-01-01
  */
 @Configuration
+@ConditionalOnClass({RedisTemplate.class})
 @EnableCaching
-public class RedisConfig extends CachingConfigurerSupport{
-    /**  默认过期时长60分钟，单位：秒 */
-    public final static long DEFAULT_EXPIRE = 60 * 60 ;
-    /**  不设置过期时长 */
-    public final static long NOT_EXPIRE = -1;
-    private long expire=DEFAULT_EXPIRE;
-
-	@Autowired
+public class RedisAutoConfigure extends CachingConfigurerSupport {
+    @Autowired
     private RedisConnectionFactory redisConnectionFactory;
-	@Autowired
-	private LettuceConnectionFactory factory;
+    @Autowired
+    private LettuceConnectionFactory factory;
 
     @Bean
+    @ConditionalOnMissingBean
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setKeySerializer(new StringRedisSerializer());

@@ -1,1 +1,3 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.mall.common.config.JwtAutoConfigure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.mall.common.jwt.JwtAutoConfigure,\
+com.mall.common.redis.RedisAutoConfigure
