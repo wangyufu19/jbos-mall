@@ -1,8 +1,5 @@
 package com.mall.auth.application.service;
-
-
-import com.mall.auth.common.redis.RedisKey;
-import com.mall.auth.common.redis.RedisService;
+import com.mall.auth.application.external.redis.RedisService;
 import com.mall.auth.infrastructure.repository.CaptchaRepository;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

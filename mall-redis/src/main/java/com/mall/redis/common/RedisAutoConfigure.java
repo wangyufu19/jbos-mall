@@ -1,4 +1,4 @@
-package com.mall.common.redis;
+package com.mall.redis.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

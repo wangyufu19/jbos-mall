@@ -1,4 +1,8 @@
 server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
   port: 8090
 spring:
   application:
@@ -7,17 +11,21 @@ spring:
     active: dev
   jackson:
     time-zone: GMT+8
-eureka:
-  instance:
-    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
-    lease-expiration-duration-in-seconds: 10 #定义服务失效的时间，默认为90秒
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    registry-fetch-interval-seconds: 10 #间隔多久拉取服务注册信息，默认为30秒
-    service-url:
-      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+#eureka:
+#  instance:
+#    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
+#    lease-expiration-duration-in-seconds: 10 #定义服务失效的时间，默认为90秒
+#    prefer-ip-address: true
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    registry-fetch-interval-seconds: 10 #间隔多久拉取服务注册信息，默认为30秒
+#    service-url:
+#      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
 ribbon:
   http:
     client:
@@ -58,16 +66,4 @@ feign:
       enabled: true
     response:
       enabled: true
-camunda:
-  bpm:
-     #配置账户密码来访问Camunda自带的管理界面
-    admin-user:
-       id: admin
-       password: admin
-       first-name: admin
-    filter:
-       create: All tasks
-    deployment-resource-pattern: classpath*:processes/*.bpmn
-logging:
-  level:
-    com.mall.*: debug
+

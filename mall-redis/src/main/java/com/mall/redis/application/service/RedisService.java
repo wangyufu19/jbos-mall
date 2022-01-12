@@ -1,4 +1,4 @@
-package com.mall.auth.common.redis;
+package com.mall.redis.application.service;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.data.redis.core.RedisTemplate;

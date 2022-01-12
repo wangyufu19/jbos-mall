@@ -39,3 +39,16 @@ spring:
       logAbandoned: false
       validationQueryTimeout: 1
       keepAlive: true
+camunda:
+  bpm:
+    #配置账户密码来访问Camunda自带的管理界面
+    admin-user:
+      id: admin
+      password: admin
+      first-name: admin
+    filter:
+      create: All tasks
+    deployment-resource-pattern: classpath*:processes/*.bpmn
+logging:
+  level:
+    com.mall.*: debug

@@ -1,4 +1,4 @@
-package com.mall.auth.common.redis;
+package com.mall.auth.application.service;
 
 /**
  * RedisKey

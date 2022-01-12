@@ -4,23 +4,26 @@ server:
     max-threads: 1000
     min-spare-threads: 30
   port: 8070
-eureka:
-  instance:
-    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
-    lease-expiration-duration-in-seconds: 10 #定义服务失效的时间，默认为90秒
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    registry-fetch-interval-seconds: 5 #获取注册信息的时间间隔（s），默认为30秒
-    service-url:
-      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+#eureka:
+#  instance:
+#    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
+#    lease-expiration-duration-in-seconds: 10 #定义服务失效的时间，默认为90秒
+#    prefer-ip-address: true
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    registry-fetch-interval-seconds: 5 #获取注册信息的时间间隔（s），默认为30秒
+#    service-url:
+#      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
 spring:
   application:
     name: mall-auth
   profiles:
     active: dev
   cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
     loadbalancer:
       retry:
         enabled: true
@@ -31,31 +34,3 @@ spring:
   jwt:
     secret: 123456  #密钥
     expireTime: 24   #过期时间，默认24小时
-
-#mybatis-plus
-mybatis-plus:
-  mapper-locations: classpath*:mapper/*.xml
-  #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.mall.auth.domain.entity
-  global-config:
-    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
-    id-type: 3
-    #字段策略 0:"忽略判断",1:"非 NULL 判断",2:"非空判断"
-    field-strategy: 2
-    #驼峰下划线转换
-    db-column-underline: true
-    #刷新mapper 调试神器
-    refresh-mapper: true
-    #数据库大写下划线转换
-    #capital-mode: true
-    # Sequence序列接口实现类配置
-    #key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
-    #逻辑删除配置
-    logic-delete-value: 1
-    logic-not-delete-value: 0
-    #自定义SQL注入器
-    #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
-  configuration:
-    map-underscore-to-camel-case: true
-    cache-enabled: false
-    call-setters-on-nulls: true
