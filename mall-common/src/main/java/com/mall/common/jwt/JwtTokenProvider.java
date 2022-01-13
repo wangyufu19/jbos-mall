@@ -94,7 +94,7 @@ public class JwtTokenProvider {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTVerifier verifier = JWT.require(algorithm).build();
-            verifier.verify(token);
+            DecodedJWT jwt=verifier.verify(token);
             return true;
         } catch (JWTVerificationException jwtVerificationException) {
             return false;

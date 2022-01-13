@@ -1,13 +1,15 @@
-package com.mall.common.jwt;
+package com.mall.auth.common.jwt;
 
 import com.auth0.jwt.JWT;
+import com.mall.common.jwt.JwtTokenProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+
 /**
  * JwtAutoConfigure
  * @author youfu.wang
@@ -25,7 +27,7 @@ public class JwtAutoConfigure {
         logger.info("初始化JwtTokenProvider属性配置");
         JwtTokenProvider jwtTokenProvide=new JwtTokenProvider();
         jwtTokenProvide.setSecret(jwtProperties.getSecret());
-        jwtTokenProvide.setExpireTime(jwtProperties.getExpireTime()*60*60*1000L);
+        jwtTokenProvide.setExpireTime(jwtProperties.getExpireTime()*60*1000L);
         return jwtTokenProvide;
     }
 }

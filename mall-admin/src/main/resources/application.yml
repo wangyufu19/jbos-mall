@@ -30,46 +30,4 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-ribbon:
-  http:
-    client:
-      enabled: false
-  okhttp:
-    enabled: true
-  #com.netflix.loadbalancer.RandomRule #配置规则 随机
-  #com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
-  #com.netflix.loadbalancer.RetryRule #配置规则 重试
-  #com.netflix.loadbalancer.WeightedResponseTimeRule #配置规则 响应时间权重
-  #com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略
-  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #配置规则 轮询
-  ConnectTimeout: 3000 #请求连接超时时间，默认2000ms
-  ReadTimeout: 30000 #请求处理的超时时间，默认5000ms
-  OkToRetryOnAllOperations: false #对所有请求都进行重试，默认只重试GET请求
-  MaxAutoRetriesNextServer: 1 #切换实例的重试次数,默认1
-  MaxAutoRetries: 0 #对当前实例的重试次数，默认0
-  eager-load:
-    enabled: true #开启饥饿加载 解决第一次feign调用失败的问题
-    clients: mall-admin
-hystrix:
-  command:
-    default:
-      execution:
-        timeout:
-          enabled: true
-      isolation:
-        thread:
-          #断路器超时时间，默认1000ms
-          timeoutInMilliseconds: 60000
-feign:
-  hystrix:
-    enabled: true
-  httpclient:
-    enabled: false
-  okhttp:
-    enabled: true
-  #开启请求与响应的压缩
-  compression:
-    request:
-      enabled: true
-    response:
-      enabled: true
+

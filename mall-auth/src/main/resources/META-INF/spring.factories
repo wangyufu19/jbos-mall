@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.mall.common.jwt.JwtAutoConfigure
+com.mall.auth.common.jwt.JwtAutoConfigure

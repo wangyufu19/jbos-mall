@@ -51,7 +51,7 @@ public class TokenFilter extends ZuulFilter {
             return true;
         }
         String requestURI=request.getRequestURI();
-        //令牌验证的URI白名单
+        //过滤URI白名单
         String[] excludeUris=excludeUri.split(",");
         for(String uri:excludeUris){
             if(antPathMatcher.match(uri,requestURI)){

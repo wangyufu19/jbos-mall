@@ -1,4 +1,4 @@
-package com.mall.common.jwt;
+package com.mall.auth.common.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
