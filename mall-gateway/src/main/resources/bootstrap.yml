@@ -12,9 +12,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
+        server-addr: 127.0.0.1:8848,127.0.0.1:8849,127.0.0.1:8850  # 配置 nacos 的服务地址
       config:
-        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
+        server-addr: 127.0.0.1:8848,127.0.0.1:8849,127.0.0.1:8850  # 配置 nacos 的服务地址
         file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
         group: sit  # 配置组，默认就是 DEFAULT_GROUP
   jwt:
