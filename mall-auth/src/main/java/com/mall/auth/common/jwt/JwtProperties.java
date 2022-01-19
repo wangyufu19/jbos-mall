@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author youfu.wang
  * @date 2021-01-01
  */
-@ConfigurationProperties(prefix="spring.jwt")
+@ConfigurationProperties("spring.jwt")
 public class JwtProperties {
     private String secret = "123456";//密钥
 

@@ -22,4 +22,4 @@ spring:
       excludeUri: /captcha,/demo/**
   jwt:
     secret: 123456  #密钥
-    expireTime: 2   #过期时间，默认24小时
+    expireTime: 12   #过期时间，默认24小时
