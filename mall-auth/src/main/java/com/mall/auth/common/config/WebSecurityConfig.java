@@ -135,6 +135,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 JwtUser principal = (JwtUser) authentication.getPrincipal(); // 获取用户对象
                 Map<String,String> signData=new HashMap<String,String>();
                 signData.put("username",principal.getUsername());
+                signData.put("userInfo",principal.getUserInfo());
                 String token = jwtTokenProvider.generateToken(signData);
                 ResponseData r= ResponseData.ok("登录成功！");
                 Map<String,Object> data=new HashMap<String,Object>();

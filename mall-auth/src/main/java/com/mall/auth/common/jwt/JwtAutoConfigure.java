@@ -27,7 +27,7 @@ public class JwtAutoConfigure {
         logger.info("初始化JwtTokenProvider属性配置");
         JwtTokenProvider jwtTokenProvide=new JwtTokenProvider();
         jwtTokenProvide.setSecret(jwtProperties.getSecret());
-        jwtTokenProvide.setExpireTime(jwtProperties.getExpireTime()*60*60*1000L);
+        jwtTokenProvide.setExpireTime(jwtProperties.getExpireTime()*60*1000L);
         return jwtTokenProvide;
     }
 }

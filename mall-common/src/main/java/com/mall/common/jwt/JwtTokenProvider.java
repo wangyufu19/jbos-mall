@@ -26,7 +26,7 @@ public class JwtTokenProvider {
 
     private String secret = "123456";//密钥
 
-    private long expireTime=24;//过期时间(单位：小时)
+    private long expireTime=JWT_EXPIRATION;//过期时间
 
     public void setSecret(String secret){
         this.secret=secret;
