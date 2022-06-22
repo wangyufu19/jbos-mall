@@ -14,14 +14,13 @@ spring:
   mvc:
     servlet:
       load-on-startup: 0   # 启动时立即初始化 dispatcherServlet，数值表示延迟多久进行自动初始化dispatcherServlet，0是立即初始化
-  boot:
-    admin:
-      client:
-        url: http://127.0.0.1:9528/
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
+  security:
+    filter:
+      loginUri: /login
+      excludeUri: /captcha,/demo/**
+  jwt:
+    secret: 123456  #密钥
+    expireTime: 60   #过期时间，默认60分钟
 management:
   endpoints:
     web:
@@ -31,3 +30,34 @@ management:
     health:
       show-details: ALWAYS
 
+---
+spring:
+  profiles: dev
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:9528/
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
+      config:
+        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
+        file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
+        group: dev  # 配置组，默认就是 DEFAULT_GROUP
+---
+spring:
+  profiles: sit
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:9528/
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8849  # 配置 nacos 的服务地址
+      config:
+        server-addr: 127.0.0.1:8849  # 配置 nacos 的服务地址
+        file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
+        group: sit  # 配置组，默认就是 DEFAULT_GROUP
+---
