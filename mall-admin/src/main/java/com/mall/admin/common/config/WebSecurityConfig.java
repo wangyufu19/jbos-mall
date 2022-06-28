@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -76,6 +77,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * 获取认证用户信息
          */
         auth.userDetailsService(userDetailsService);
+    }
+    public void configure(WebSecurity web) throws Exception {
+        String[] excludeUris=excludeUri.split(",");
+        web.ignoring().antMatchers(excludeUris);
     }
 
     /**

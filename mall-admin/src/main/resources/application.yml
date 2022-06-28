@@ -17,10 +17,12 @@ spring:
   security:
     filter:
       loginUri: /login
-      excludeUri: /captcha,/demo/**
+      excludeUri: /captcha,/demo/**,/swagger-ui.html,/v2/**,/swagger-resources/**,/webjars/**
   jwt:
     secret: 123456  #密钥
     expireTime: 60   #过期时间，默认60分钟
+  thymeleaf:
+    cache: false
 management:
   endpoints:
     web:
