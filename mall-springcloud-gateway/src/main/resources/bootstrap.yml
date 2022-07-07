@@ -22,6 +22,11 @@ spring:
         group: dev  # 配置组，默认就是 DEFAULT_GROUP
     gateway:
       excludeUri: /**/login,/**/logout,/**/captcha,/**/registry
+      default-filters:
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/fallback
       routes:
         - id: mall-auth
           uri: lb://mall-auth
