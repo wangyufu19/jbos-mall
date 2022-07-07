@@ -63,9 +63,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.writeWith(Mono.just(response.bufferFactory().wrap(JacksonUtils.toJson(ResponseData.error("token失效或认证过期！")).getBytes())));
         }
-        RequestDecorator requestDecorator=new RequestDecorator(request);
-        ResponseDecorator responseDecorator = new ResponseDecorator(response);
-        return chain.filter(exchange.mutate().request(requestDecorator).response(responseDecorator).build());
+        return chain.filter(exchange);
     }
 
     @Override
@@ -88,7 +86,6 @@ public class TokenFilter implements GlobalFilter, Ordered {
         }
         public Flux<DataBuffer> getBody() {
             Flux<DataBuffer> body=super.getBody();
-            log.info("******body={}",body);
             return body;
         }
 
@@ -99,10 +96,8 @@ public class TokenFilter implements GlobalFilter, Ordered {
             super(delegate);
         }
         public Mono<Void> writeWith(Publisher<? extends DataBuffer> body){
-            log.info("******body={}",body);
             if (body instanceof Flux) {
                 Flux<? extends DataBuffer> flux = (Flux<? extends DataBuffer>) body;
-                log.info("******flux={}",flux);
             }
             return super.writeWith(body);
         }

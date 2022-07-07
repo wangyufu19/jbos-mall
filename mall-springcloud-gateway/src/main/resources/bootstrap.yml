@@ -27,10 +27,24 @@ spring:
           uri: lb://mall-auth
           predicates:
             - Path=/api/auth/**
-        - id: mall-auth
+          filters:
+            - StripPrefix=2
+        - id: mall-admin
           uri: lb://mall-admin
           predicates:
             - Path=/api/admin/**
+          filters:
+            - StripPrefix=2
+        - id: mall-member
+          uri: lb://mall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - StripPrefix=2
+        - id: mall-product
+          uri: lb://mall-product
+          predicates:
+            - Path=/api/product/**
           filters:
             - StripPrefix=2
 ---
