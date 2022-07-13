@@ -41,6 +41,9 @@ hystrix:
           #断路器超时时间，默认1000ms
           timeoutInMilliseconds: 60000
 spring:
+  jwt:
+    secret: 123456  #密钥
+    expireTime: 1   #过期时间，默认60分钟
   cloud:
     gateway:
       excludeUri: /**/login,/**/logout,/**/captcha,/**/registry

@@ -5,10 +5,6 @@ spring:
     name: mall-gateway
   profiles:
     active: dev
-  jwt:
-    secret: 123456  #密钥
-    expireTime: 1   #过期时间，默认60分钟
-
 ---
 spring:
   profiles: dev
