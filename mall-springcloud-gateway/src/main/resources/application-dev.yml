@@ -40,3 +40,37 @@ hystrix:
         thread:
           #断路器超时时间，默认1000ms
           timeoutInMilliseconds: 60000
+spring:
+  cloud:
+    gateway:
+      excludeUri: /**/login,/**/logout,/**/captcha,/**/registry
+      default-filters:
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/fallback
+      routes:
+        - id: mall-auth
+          uri: lb://mall-auth
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=2
+        - id: mall-admin
+          uri: lb://mall-admin
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - StripPrefix=2
+        - id: mall-member
+          uri: lb://mall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - StripPrefix=2
+        - id: mall-product
+          uri: lb://mall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - StripPrefix=2

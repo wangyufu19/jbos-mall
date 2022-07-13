@@ -20,38 +20,6 @@ spring:
         server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
         file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
         group: dev  # 配置组，默认就是 DEFAULT_GROUP
-    gateway:
-      excludeUri: /**/login,/**/logout,/**/captcha,/**/registry
-      default-filters:
-        - name: Hystrix
-          args:
-            name: fallbackcmd
-            fallbackUri: forward:/fallback
-      routes:
-        - id: mall-auth
-          uri: lb://mall-auth
-          predicates:
-            - Path=/api/auth/**
-          filters:
-            - StripPrefix=2
-        - id: mall-admin
-          uri: lb://mall-admin
-          predicates:
-            - Path=/api/admin/**
-          filters:
-            - StripPrefix=2
-        - id: mall-member
-          uri: lb://mall-member
-          predicates:
-            - Path=/api/member/**
-          filters:
-            - StripPrefix=2
-        - id: mall-product
-          uri: lb://mall-product
-          predicates:
-            - Path=/api/product/**
-          filters:
-            - StripPrefix=2
 ---
 spring:
   profiles: sit
