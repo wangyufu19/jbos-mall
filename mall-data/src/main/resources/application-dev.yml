@@ -1,0 +1,29 @@
+#eureka:
+#  instance:
+#    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
+#    lease-expiration-duration-in-seconds: 10 #定义服务失效的时间，默认为90秒
+#    prefer-ip-address: true
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    registry-fetch-interval-seconds: 5 #获取注册信息的时间间隔（s），默认为30秒
+#    service-url:
+#      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+spring:
+  redis:
+    enable: false
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:      # 密码（默认为空）
+    timeout: 6000ms  # 连接超时时长（毫秒）
+    lettuce:  #不是jedis, springboot2.0以上默认是lettuce
+      pool:
+        max-active: 1000  # 最大连接数（使用负值表示没有限制）
+        max-wait: -1ms    # 最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 最大空闲连接
+        min-idle: 5       # 最小空闲连接
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 127.0.0.1:9300

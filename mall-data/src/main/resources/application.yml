@@ -1,0 +1,35 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+  port: 9080
+spring:
+  application:
+    name: mall-data
+  profiles:
+    active: dev
+
+---
+spring:
+  profiles: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
+      config:
+        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
+        file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
+        group: dev  # 配置组，默认就是 DEFAULT_GROUP
+---
+spring:
+  profiles: sit
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8849  # 配置 nacos 的服务地址
+      config:
+        server-addr: 127.0.0.1:8849  # 配置 nacos 的服务地址
+        file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
+        group: sit  # 配置组，默认就是 DEFAULT_GROUP
+---
