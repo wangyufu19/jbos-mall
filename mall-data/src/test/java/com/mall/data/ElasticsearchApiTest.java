@@ -49,8 +49,8 @@ public class ElasticsearchApiTest {
     @Test
     public void indexList(){
         List<Item> items=new ArrayList<Item>();
-        items.add(new Item(6L,"荣耀7","手机","华为",2600.00));
-        items.add(new Item(7L,"荣耀8","手机","华为",2899.00));
+        items.add(new Item(11L,"IPHONE12","手机","苹果",5800.00));
+        items.add(new Item(12L,"IPHONE13","手机","苹果",7899.00));
         itemRepository.saveAll(items);
     }
     @Test

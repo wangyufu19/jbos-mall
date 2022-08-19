@@ -25,5 +25,5 @@ spring:
         min-idle: 5       # 最小空闲连接
   data:
     elasticsearch:
-      cluster-name: elasticsearch
-      cluster-nodes: 127.0.0.1:9300
+      cluster-name: jbos-mall
+      cluster-nodes: 127.0.0.1:9300,127.0.0.1:9301
