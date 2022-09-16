@@ -1,4 +1,4 @@
-package com.mall.gateway.common.filter;
+package com.mall.gateway.application.api.response;
 
 import lombok.Getter;
 import lombok.Setter;

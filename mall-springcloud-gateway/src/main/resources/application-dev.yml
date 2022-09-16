@@ -1,3 +1,5 @@
+server:
+  port: 8060
 ##eureka:
 ##  instance:
 ##    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒

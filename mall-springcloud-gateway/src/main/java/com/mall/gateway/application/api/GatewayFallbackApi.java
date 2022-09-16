@@ -1,7 +1,7 @@
 package com.mall.gateway.application.api;
 
 import com.alibaba.nacos.common.utils.JacksonUtils;
-import com.mall.gateway.common.filter.ResponseData;
+import com.mall.gateway.application.api.response.ResponseData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;

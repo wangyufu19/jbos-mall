@@ -1,6 +1,7 @@
 package com.mall.gateway.common.filter;
 
 import com.alibaba.nacos.common.utils.JacksonUtils;
+import com.mall.gateway.application.api.response.ResponseData;
 import com.mall.gateway.common.jwt.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
