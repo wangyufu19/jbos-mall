@@ -27,6 +27,7 @@
         <module>mall-redis</module>
         <module>mall-springcloud-gateway</module>
         <module>mall-data</module>
+        <module>mall-webflux</module>
     </modules>
 
     <properties>

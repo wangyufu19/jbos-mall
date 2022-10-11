@@ -5,7 +5,7 @@ spring:
       excludeUri: /captcha,/demo/**
   jwt:
     secret: 123456  #密钥
-    expireTime: 60   #过期时间，默认60分钟
+    expireTime: 5   #过期时间，默认60分钟
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
