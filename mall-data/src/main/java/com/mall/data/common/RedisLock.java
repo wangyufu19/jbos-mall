@@ -26,6 +26,9 @@ public class RedisLock {
     }
 
     public boolean getLock(String key, Object value,long seconds){
+        if(seconds<=0){
+            seconds=MUTEX_LOCK_EXPIRE;
+        }
         return this.redisTemplate.opsForValue().setIfAbsent(RedisLock.MUTEX_LOCK+"_"+key,value,seconds, TimeUnit.SECONDS);
     }
     public void unLock(String key){
