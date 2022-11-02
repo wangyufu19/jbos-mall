@@ -158,6 +158,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     r= ResponseData.error("验证码错误！");
                 }else if(e.getMessage().indexOf("Bad credentials")!=-1){
                     r= ResponseData.error("用户名或密码错误！");
+                }else if(e.getMessage().indexOf("Bad grant")!=-1){
+                    r= ResponseData.error(" 用户没有操作权限，请联系管理员！");
                 }
                 response.setContentType("application/json;charset=utf-8");
                 PrintWriter out = response.getWriter();
