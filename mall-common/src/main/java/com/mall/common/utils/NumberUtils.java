@@ -8,7 +8,17 @@ import java.util.regex.Pattern;
  * @version 1.0
  */
 public class NumberUtils {
-	
+	/**
+	 * 通过java自带函数判断字符串是否数字
+	 * @param value
+	 * @return
+	 */
+	public static boolean isNumeric(Object value){
+		if(value==null){
+			return false;
+		}
+		return isNumeric(String.valueOf(value));
+	}
 
 	/**
 	 * 通过java自带函数判断字符串是否数字

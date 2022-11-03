@@ -1,8 +1,8 @@
 package com.mall.admin.application.api.sm;
 import com.mall.admin.application.service.FuncMgrService;
 import com.mall.admin.application.service.UserMgrService;
+import com.mall.admin.common.jwt.JwtTokenProvider;
 import com.mall.admin.domain.entity.Func;
-import com.mall.common.jwt.JwtTokenProvider;
 import com.mall.common.response.ResponseData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,8 +26,7 @@ import java.util.Map;
 @Api("用户管理接口")
 @Slf4j
 public class UserMgrApi {
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+
     @Autowired
     private UserMgrService userMgrService;
     @Autowired
@@ -44,6 +43,7 @@ public class UserMgrApi {
             return accessToken;
         }
     }
+
     /**
      * 查询用户信息数据
      * @param params
@@ -54,7 +54,7 @@ public class UserMgrApi {
     @ApiOperation("查询用户信息数据")
     public ResponseData getUserInfo(@RequestParam Map<String, Object> params){
         ResponseData responseData=ResponseData.ok();
-        String username = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
+        String username = JwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
         responseData.setData(userMgrService.getUserInfo(username));
         return responseData;
     }
@@ -86,7 +86,7 @@ public class UserMgrApi {
     @ApiOperation("查询用户功能数据")
     public ResponseData getUserFunc(@RequestParam Map<String, Object> params) {
         ResponseData responseData=ResponseData.ok();
-        String username = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
+        String username = JwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
         List<Func> funcRouteList = null;
         funcRouteList=funcMgrService.getUserFuncList(username,username);
         responseData.setData(funcRouteList);

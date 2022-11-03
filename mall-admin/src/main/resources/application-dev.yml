@@ -14,13 +14,6 @@ spring:
   mvc:
     servlet:
       load-on-startup: 0   # 启动时立即初始化 dispatcherServlet，数值表示延迟多久进行自动初始化dispatcherServlet，0是立即初始化
-  security:
-    filter:
-      loginUri: /login
-      excludeUri: /captcha,/demo/**,/swagger-ui.html,/v2/**,/swagger-resources/**,/webjars/**
-  jwt:
-    secret: 123456  #密钥
-    expireTime: 60   #过期时间，默认60分钟
   thymeleaf:
     cache: false
   redis:

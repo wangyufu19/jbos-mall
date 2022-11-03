@@ -1,8 +1,8 @@
 package com.mall.gateway.common.zuul.filter;
 
-import com.mall.common.jwt.JwtTokenProvider;
 import com.mall.common.response.ResponseData;
 import com.mall.common.utils.JacksonUtils;
+import com.mall.gateway.common.jwt.JwtTokenProvider;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;

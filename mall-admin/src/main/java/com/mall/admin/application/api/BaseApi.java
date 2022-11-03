@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mall.common.response.ResponseData;
 import com.mall.common.utils.StringUtils;
+import com.mall.common.utils.NumberUtils;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +19,14 @@ public class BaseApi {
 	 * @param page
 	 */
 	public void doStartPage(Map<String, Object> page){
-		int pageNum=Integer.parseInt(StringUtils.replaceNull(page.get("page")));
-		int pageSize=Integer.parseInt(StringUtils.replaceNull(page.get("limit")));
+		int pageNum=1;
+		int pageSize=10;
+		if(NumberUtils.isNumeric(page.get("page"))){
+			pageNum=Integer.parseInt(StringUtils.replaceNull(page.get("page")));
+		}
+		if(NumberUtils.isNumeric(page.get("limit"))){
+			pageSize=Integer.parseInt(StringUtils.replaceNull(page.get("limit")));
+		}
 		PageHelper.startPage(pageNum,pageSize);
 	}
 

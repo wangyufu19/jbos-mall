@@ -1,6 +1,8 @@
-package com.mall.admin.common.jwt;
+package com.mall.auth.common.config;
 
 import com.auth0.jwt.JWT;
+import com.mall.auth.common.jwt.JwtProperties;
+import com.mall.auth.common.jwt.JwtTokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -17,8 +19,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass({JWT.class})
 @EnableConfigurationProperties({JwtProperties.class})
-public class JwtAutoConfigure {
-    private static final Logger logger=LoggerFactory.getLogger(JwtAutoConfigure.class);
+public class JwtConfig {
+    private static final Logger logger=LoggerFactory.getLogger(JwtConfig.class);
 
     @Bean
     @ConditionalOnMissingBean
