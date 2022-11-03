@@ -1,4 +1,4 @@
-package com.mall.common.jwt;
+package com.mall.admin.common.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -8,9 +8,11 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import com.mall.admin.common.user.JwtUser;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.*;
 
 
 /**
@@ -53,7 +55,7 @@ public class JwtTokenProvider {
      * @param signData
      * @return
      */
-    public String generateToken(Map<String,String> signData) {
+    public String generateToken(Map<String,String> signData, Collection<? extends GrantedAuthority> authorities) {
         String token="";
         Date iatDate = new Date();
         Date expireDate;
@@ -69,12 +71,16 @@ public class JwtTokenProvider {
             header.put("alg","HS256");
             header.put("typ","JWT");
             builder.withHeader(header);
-            //负载信息
+            //负载信息, 加密数据
             if(signData!=null){
-                //加密数据
                 for(Map.Entry<String,String> entry:signData.entrySet()){
                     builder.withClaim(entry.getKey(),entry.getValue());
                 }
+            }
+            if(authorities!=null){
+                String[] grantedAuthorities=new String[authorities.size()];
+                authorities.toArray(grantedAuthorities);
+                builder.withArrayClaim(JwtUser.AUTHORITIES,grantedAuthorities);
             }
             builder.withIssuedAt(iatDate).withExpiresAt(expireDate);
             //签名
@@ -110,6 +116,26 @@ public class JwtTokenProvider {
         try {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getClaim(key).asString();
+        } catch (JWTDecodeException jwtDecodeException) {
+            return null;
+        }
+    }
+    /**
+     * 获取荷载信息：从 token 的荷载部分里解析加密数据。
+     * @param token
+     * @return
+     */
+    public List<GrantedAuthority> getGrantedAuthorityFromJWT(String token,String key) {
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            List<String> list=jwt.getClaim(key).asList(String.class);
+            List<GrantedAuthority> authorities=new ArrayList<GrantedAuthority>();
+            if(list!=null){
+                for(String item:list){
+                    authorities.add(new SimpleGrantedAuthority(item));
+                }
+            }
+            return authorities;
         } catch (JWTDecodeException jwtDecodeException) {
             return null;
         }

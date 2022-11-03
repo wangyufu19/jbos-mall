@@ -25,6 +25,8 @@ import java.util.Map;
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+    private final String USER_ADMIN="admin";
+    private final String ROLE_ADMIN="ROLE_ADMIN";
     @Autowired
     private UserAuthService userAuthService;
     @Override
@@ -35,13 +37,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new BadCredentialsException("Bad credentials");
         }else{
             //判断用户权限
-            List<HashMap> userRoles=userAuthService.getAuthUserRole(username);
-            if(userRoles==null||userRoles.size()<=0){
-                throw new AccountGrantException("Bad grant");
-            }
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-            for (HashMap role : userRoles) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(StringUtils.replaceNull(role.get("ROLECODE"))));
+            List<HashMap> userRoles=userAuthService.getAuthUserRole(username);
+            if(USER_ADMIN.equals(username)){
+                grantedAuthorities.add(new SimpleGrantedAuthority(ROLE_ADMIN));
+            }else{
+                if(userRoles==null||userRoles.size()<=0){
+                    throw new AccountGrantException("Bad grant");
+                }
+                for (HashMap role : userRoles) {
+                    grantedAuthorities.add(new SimpleGrantedAuthority(StringUtils.replaceNull(role.get("ROLECODE"))));
+                }
             }
             String userInfo=StringUtils.replaceNull(userMap.get("USERNAME"));
             String password=StringUtils.replaceNull(userMap.get("PASSWORD"));

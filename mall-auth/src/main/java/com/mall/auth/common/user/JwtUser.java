@@ -11,6 +11,7 @@ import java.util.Collection;
  * @date 2021-05-21
  */
 public class JwtUser implements UserDetails {
+    public static final String AUTHORITIES = "authorities";
     private String username;
     private String userInfo;
     private String password;

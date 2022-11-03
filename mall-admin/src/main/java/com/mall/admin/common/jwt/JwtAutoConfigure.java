@@ -1,7 +1,6 @@
 package com.mall.admin.common.jwt;
 
 import com.auth0.jwt.JWT;
-import com.mall.common.jwt.JwtTokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

@@ -2,8 +2,8 @@ package com.mall.auth.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mall.auth.application.service.CaptchaService;
+import com.mall.auth.common.jwt.JwtTokenProvider;
 import com.mall.auth.common.user.JwtUser;
-import com.mall.common.jwt.JwtTokenProvider;
 import com.mall.common.response.ResponseData;
 import com.mall.common.utils.JacksonUtils;
 import com.mall.common.utils.StringUtils;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,12 +24,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -46,6 +49,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -100,16 +104,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addLogoutHandler(new WebLogoutHandler()).logoutSuccessHandler(new WebLogoutSuccessHandler())
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(new AuthenticationEntryPoint(){
-                    //未通过认证请求，返回异常信息
-                    public void commence(HttpServletRequest req, HttpServletResponse resp, AuthenticationException e) throws IOException {
-                        ResponseData r= ResponseData.error("403","对不起，非法请求");
-                        resp.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = resp.getWriter();
-                        out.write(JacksonUtils.toJson(r));
-                        out.flush();
-                        out.close();
-                    }
+                .authenticationEntryPoint((req,res,ex)-> {
+                    //请求认证异常
+                    ResponseData r= ResponseData.error("403","对不起，非法请求");
+                    res.setContentType("application/json;charset=utf-8");
+                    PrintWriter out = res.getWriter();
+                    out.write(JacksonUtils.toJson(r));
+                    out.flush();
+                    out.close();
+                })
+                .accessDeniedHandler((req,res,ex)-> {
+                    //请求权限异常
+                    ResponseData r= ResponseData.error("403","对不起，没有权限");
+                    res.setContentType("application/json;charset=utf-8");
+                    PrintWriter out = res.getWriter();
+                    out.write(JacksonUtils.toJson(r));
+                    out.flush();
+                    out.close();
                 })
                 .and().cors(); //启用跨域请求
     }
@@ -132,11 +143,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 返回登录成功后数据
         loginFilter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+                //获取用户对象
                 JwtUser principal = (JwtUser) authentication.getPrincipal(); // 获取用户对象
                 Map<String,String> signData=new HashMap<String,String>();
                 signData.put("username",principal.getUsername());
                 signData.put("userInfo",principal.getUserInfo());
-                String token = jwtTokenProvider.generateToken(signData);
+                String token = jwtTokenProvider.generateToken(signData,principal.getAuthorities());
                 ResponseData r= ResponseData.ok("登录成功！");
                 Map<String,Object> data=new HashMap<String,Object>();
                 data.put("username", principal.getUsername());
@@ -230,7 +242,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public class WebLogoutSuccessHandler implements LogoutSuccessHandler{
 
         public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-            authentication=SecurityContextHolder.getContext().getAuthentication();
             response.setStatus(HttpServletResponse.SC_OK);
             response.setCharacterEncoding("utf-8");
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -243,51 +254,57 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     public class JwtAuthenticationFilter extends OncePerRequestFilter {
         private AntPathMatcher antPathMatcher=new AntPathMatcher(File.separator);
-        @Override
+
+        private boolean isExcludeUri(String requestURI){
+            String[] excludeUris=excludeUri.split(",");
+            boolean matches=false;
+            for(String uri:excludeUris){
+                matches=antPathMatcher.match(uri,requestURI);
+                if(matches){
+                    break;
+                }
+            }
+            return matches;
+        }
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                 throws ServletException, IOException {
             try {
-                String requestURI=request.getRequestURI();
-                String[] excludeUris=excludeUri.split(",");
-                boolean matches=false;
-                for(String uri:excludeUris){
-                    matches=antPathMatcher.match(uri,requestURI);
-                    if(matches){
-                        break;
-                    }
-                }
-                if(matches){
+                //无需鉴权URI
+                if(this.isExcludeUri(request.getRequestURI())){
                     filterChain.doFilter(request, response);
                     return;
                 }
-
-                String token = getRequestToken(request);
-                if (token == null || !jwtTokenProvider.verifyToken(token)) {
-                    ResponseData r = ResponseData.error("token失效或认证过期！");
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.setContentType("application/json;charset=utf-8");
-                    PrintWriter out = response.getWriter();
-                    out.write(JacksonUtils.toJson(r));
-                    out.flush();
-                    out.close();
-                    return;
-                }
-                UsernamePasswordAuthenticationToken authentication;
-                String username = jwtTokenProvider.getSignDataFromJWT(token, "username");
-                String userInfo = jwtTokenProvider.getSignDataFromJWT(token, "userInfo");
-                UserDetails userDetails = new JwtUser(username, userInfo,null, null);
-                // 构建认证过的token
-                authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                if (authentication != null) {
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                }
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                //验证Token有效性和构建用户上下文认证对象
+                this.checkToken(request,response);
             } catch (Exception e) {
                 logger.error("无法给 Security 上下文设置用户验证对象", e);
             }
             filterChain.doFilter(request, response);
         }
-
+        private void checkToken(HttpServletRequest request,HttpServletResponse response) throws IOException {
+            String token = getRequestToken(request);
+            if (token == null || !jwtTokenProvider.verifyToken(token)) {
+                ResponseData r = ResponseData.error("token失效或认证过期！");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json;charset=utf-8");
+                PrintWriter out = response.getWriter();
+                out.write(JacksonUtils.toJson(r));
+                out.flush();
+                out.close();
+                return;
+            }
+            //解码JWT用户数据
+            String username = jwtTokenProvider.getSignDataFromJWT(token, "username");
+            String userInfo = jwtTokenProvider.getSignDataFromJWT(token, "userInfo");
+            List<GrantedAuthority> grantedAuthorities=jwtTokenProvider.getGrantedAuthorityFromJWT(token,JwtUser.AUTHORITIES);
+            UserDetails userDetails = new JwtUser(username, userInfo,null, grantedAuthorities);
+            // 构建认证过的token
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            if (authentication != null) {
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
         private String getRequestToken(HttpServletRequest request) {
             String accessToken = request.getHeader("accessToken");
             if (accessToken == null) {

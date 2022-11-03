@@ -1,11 +1,12 @@
 package com.mall.auth.application.api;
 
+import com.mall.auth.common.jwt.JwtTokenProvider;
 import com.mall.auth.common.user.JwtUser;
-import com.mall.common.jwt.JwtTokenProvider;
 import com.mall.common.response.ResponseData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class UserAuthApi {
             return accessToken;
         }
     }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DEFAULT')")
     @ResponseBody
     @RequestMapping(value = "/getPrincipalInfo", method = RequestMethod.GET)
     @ApiOperation("得到用户凭据信息")
