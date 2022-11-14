@@ -50,4 +50,8 @@ public class RedisService {
     public void delete(String key) {
         redisTemplate.delete(key);
     }
+
+    public Long getExpireTime(String key) {
+        return this.redisTemplate.opsForValue().getOperations().getExpire(key);
+    }
 }
