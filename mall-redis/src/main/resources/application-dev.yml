@@ -10,46 +10,6 @@
 #    service-url:
 #      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
 spring:
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.cj.jdbc.Driver
-    druid:
-      default:
-        url: jdbc:mysql://localhost:3306/jbos?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
-        username: jbos
-        password: jbos
-      initial-size: 10
-      max-active: 100
-      min-idle: 10
-      max-wait: 60000
-      pool-prepared-statements: true
-      max-pool-prepared-statement-per-connection-size: 20
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: true
-      test-on-return: false
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        #login-username: admin
-        #login-password: admin
-      filter:
-        stat:
-          log-slow-sql: true
-          slow-sql-millis: 1000
-          merge-sql: false
-        wall:
-          config:
-            multi-statement-allow: true
-      #使用非公平锁
-      useUnfairLock: true
-      removeAbandoned: true
-      removeAbandonedTimeout: 1800
-      logAbandoned: false
-      validationQueryTimeout: 1
-      keepAlive: true
   redis:
     enable: false
     database: 0

@@ -1,12 +1,16 @@
 package com.mall.redis.application.api;
 
 import com.mall.common.response.ResponseData;
+import com.mall.redis.application.entity.User;
 import com.mall.redis.application.service.RedisService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * RedisApi
@@ -40,7 +44,41 @@ public class RedisApi {
     public ResponseData set(@RequestParam String key,@RequestParam String value,@RequestParam long expire) {
         ResponseData res=ResponseData.ok();
         try{
-            redisService.set(key,value,expire);
+            User user=new User();
+            user.setUid(1);
+            user.setUserName("管理员");
+            user.setSex(1);
+            user.setAge(30);
+            redisService.set(key,user,expire);
+            res.setData(value);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping("/incr")
+    @ApiOperation("将 key 中储存的数字值增一")
+    public ResponseData incr(@RequestParam String key) {
+        ResponseData res=ResponseData.ok();
+        try{
+            long value=redisService.incr(key);
+            res.setData(value);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+
+    @ResponseBody
+    @PostMapping("/incrby")
+    @ApiOperation(" 将 key 中储存的数字加上指定的增量值")
+    public ResponseData incrby(@RequestParam String key,@RequestParam long incr) {
+        ResponseData res=ResponseData.ok();
+        try{
+            long value=redisService.incrby(key,incr);
             res.setData(value);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -56,6 +94,83 @@ public class RedisApi {
         redisService.delete(key);
         try{
             redisService.delete(key);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping("/hmset")
+    @ApiOperation("同时将多个 field-value (域-值)对设置到哈希表 key 中")
+    public ResponseData hmset() {
+        ResponseData res=ResponseData.ok();
+        try{
+            Map map=new HashMap<>();
+            map.put("uid",1);
+            map.put("userName","管理员");
+            redisService.hmset("user",map);
+            res.setData(map);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping("/hmget")
+    @ApiOperation("获取所有给定字段的值")
+    public ResponseData hmget() {
+        ResponseData res=ResponseData.ok();
+        try{
+            Map map=new HashMap<>();   ;
+            map=redisService.hget("user");
+            res.setData(map);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping("/lpush")
+    @ApiOperation("将一个或多个值插入到列表头部")
+    public ResponseData lpush() {
+        ResponseData res=ResponseData.ok();
+        try{
+            Map map=new HashMap<>();
+            map.put("uid",1);
+            map.put("userName","管理员");
+            redisService.lpush("user",map);
+            res.setData(map);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping("/lpop")
+    @ApiOperation("移出并获取列表的第一个元素")
+    public ResponseData lpop() {
+        ResponseData res=ResponseData.ok();
+        try{
+            Object user=redisService.lpop("user");
+            res.setData(user);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping("/index")
+    @ApiOperation("通过索引获取列表中的元素")
+    public ResponseData index(@RequestParam String key,@RequestParam int index) {
+        ResponseData res=ResponseData.ok();
+        try{
+            Object user=redisService.index(key,index);
+            res.setData(user);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
