@@ -46,7 +46,7 @@ zuul:
       path: /api/pay/**
       serviceId: mall-pay
   filter:
-    excludeUri: /**/login,/**/logout,/**/captcha,/**/registry
+    excludeUri: /**/login,/**/logout,/**/captcha,/**/registry,/**/error/
 
 ribbon:
   http:
