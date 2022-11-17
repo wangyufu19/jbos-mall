@@ -103,13 +103,12 @@ public class RedisApi {
     @ResponseBody
     @PostMapping("/hmset")
     @ApiOperation("同时将多个 field-value (域-值)对设置到哈希表 key 中")
-    public ResponseData hmset() {
+    public ResponseData hmset(@RequestParam String key,@RequestParam String field,@RequestParam String value) {
         ResponseData res=ResponseData.ok();
         try{
             Map map=new HashMap<>();
-            map.put("uid",1);
-            map.put("userName","管理员");
-            redisService.hmset("user",map);
+            map.put(field,value);
+            redisService.hmset(key,map);
             res.setData(map);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -135,13 +134,12 @@ public class RedisApi {
     @ResponseBody
     @PostMapping("/lpush")
     @ApiOperation("将一个或多个值插入到列表头部")
-    public ResponseData lpush() {
+    public ResponseData lpush(@RequestParam String key,@RequestParam String field,@RequestParam String value) {
         ResponseData res=ResponseData.ok();
         try{
             Map map=new HashMap<>();
-            map.put("uid",1);
-            map.put("userName","管理员");
-            redisService.lpush("user",map);
+            map.put(field,value);
+            redisService.lpush(key,map);
             res.setData(map);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -152,10 +150,10 @@ public class RedisApi {
     @ResponseBody
     @PostMapping("/lpop")
     @ApiOperation("移出并获取列表的第一个元素")
-    public ResponseData lpop() {
+    public ResponseData lpop(@RequestParam String key) {
         ResponseData res=ResponseData.ok();
         try{
-            Object user=redisService.lpop("user");
+            Object user=redisService.lpop(key);
             res.setData(user);
         }catch (Exception e){
             log.error(e.getMessage(),e);
