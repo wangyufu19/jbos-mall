@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: mall-admin
+  profiles:
+    active: dev
+
+---
+spring:
+  profiles: dev
+  kafka:
+    consumer:
+      bootstrap-servers: 127.0.0.1:9092
+      autoOffsetReset: latest #默认值：latest
+      #这个参数指定了消费者是否自动提交消费位移，默认为true。如果需要减少重复消费或者数据丢失，你可以设置为false，然后手动提交。如果为true，你可能需要关注自动提交的时间间隔，该间隔由auto.commit.interval.ms设置。
+      enable-auto-commit: false
+      #周期性自动提交的间隔，单位毫秒
+      auto-commit-interval: 2000 #默认值：5000
+      #这个参数允许消费者指定从broker读取消息时最小的Payload的字节数。当消费者从broker读取消息时，如果数据字节数小于这个阈值，broker会等待直到有足够的数据，然后才返回给消费者。对于写入量不高的主题来说，这个参数可以减少broker和消费者的压力，因为减少了往返的时间。而对于有大量消费者的主题来说，则可以明显减轻broker压力。
+      fetchMinSize: 1 #默认值： 1
+      #上面的fetch.min.bytes参数指定了消费者读取的最小数据量，而这个参数则指定了消费者读取时最长等待时间，从而避免长时间阻塞。这个参数默认为500ms。
+      fetchMaxWait: 500 #默认值：500毫秒
+      #这个参数控制一个poll()调用返回的记录数，即consumer每次批量拉多少条数据。
+      maxPollRecords: 500 #默认值：500
+---
+spring:
+  profiles: sit
+---
