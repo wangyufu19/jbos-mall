@@ -16,13 +16,7 @@ import java.io.File;
 @Slf4j
 public class CodeGenerator {
 
-    public static void main(String[] args) {
-        log.info("user.dir={}",System.getProperty("user.dir"));
-        String outputDir=System.getProperty("user.dir")+
-                File.separator+"mall-common"+
-                File.separator+"src"+
-                File.separator+"main"+
-                File.separator+"java";
+    public void generator(String outputDir,String packageInfo,String prefix,String table){
         //1. 全局配置
         GlobalConfig config = new GlobalConfig();
         //是否支持AR模式
@@ -47,25 +41,32 @@ public class CodeGenerator {
         stConfig.setCapitalMode(true) // 全局大写命名
                 .setNaming(NamingStrategy.underline_to_camel)// 数据库表映射到实体的命名策略
                 .setColumnNaming(NamingStrategy.underline_to_camel)
-                .setInclude("jbos_user") //生成的表
-                .setTablePrefix("jbos_")
+                .setInclude(table) //生成的表
+                .setTablePrefix(prefix)
+                .entityTableFieldAnnotationEnable(true)
                 .setControllerMappingHyphenStyle(true)
                 .setEntityLombokModel(true)
-                .setRestControllerStyle(true); // 表前缀
+                .setRestControllerStyle(true);
 
         //4.包名策略
         PackageConfig pkConfig = new PackageConfig();
-        pkConfig.setParent("com.mall")//父包名
-                .setController("controller")
-                .setEntity("entity")
-                .setService("service")
-                .setMapper("mapper")
-                .setServiceImpl("service.impl");
+        pkConfig.setParent(packageInfo)
+        .setEntity("entity");
         //5.整合配置
         AutoGenerator ag = new AutoGenerator().setGlobalConfig(config)
                 .setDataSource(dsConfig)
                 .setStrategy(stConfig)
                 .setPackageInfo(pkConfig);
         ag.execute();
+    }
+    public static void main(String[] args) {
+        log.info("user.dir={}",System.getProperty("user.dir"));
+        String outputDir=System.getProperty("user.dir")+
+                File.separator+"mall-common"+
+                File.separator+"src"+
+                File.separator+"main"+
+                File.separator+"java";
+        CodeGenerator codeGenerator=new CodeGenerator();
+        codeGenerator.generator(outputDir,"com.mall.common","jbos","jbos_user");
     }
 }
