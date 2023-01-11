@@ -36,6 +36,10 @@
             <version>${jedis.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.jbos.mall</groupId>
             <artifactId>mall-common</artifactId>
             <version>1.0.0</version>

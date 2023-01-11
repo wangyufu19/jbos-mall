@@ -1,4 +1,4 @@
-package com.mall.redis.application.entity;
+package com.mall.data.application.entity;
 
 import lombok.Getter;
 import lombok.Setter;

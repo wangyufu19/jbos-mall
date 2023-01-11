@@ -1,4 +1,4 @@
-package com.mall.mq.application;
+package com.mall.data.application.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

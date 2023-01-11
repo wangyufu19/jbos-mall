@@ -24,10 +24,8 @@
         <module>mall-member</module>
         <module>mall-product</module>
         <module>mall-app-admin</module>
-        <module>mall-redis</module>
         <module>mall-springcloud-gateway</module>
         <module>mall-data</module>
-        <module>mall-mq</module>
         <module>mall-generator</module>
     </modules>
 
