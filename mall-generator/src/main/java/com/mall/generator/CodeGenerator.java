@@ -23,8 +23,7 @@ public class CodeGenerator {
                     builder.parent(packageInfo); // 设置父包名
                 })
                 .templateConfig(builder -> {
-                    builder.disable(TemplateType.CONTROLLER)
-                           .build();
+                    builder.build();
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude(table)//设置需要生成的表名

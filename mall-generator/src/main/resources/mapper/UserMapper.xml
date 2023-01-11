@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.application.mapper.UserMapper">
+
+    <select id="getUserList" parameterType="java.util.Map" resultType="com.mall.application.entity.User">
+        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS
+        FROM JBOS_USER A
+    </select>
+</mapper>
