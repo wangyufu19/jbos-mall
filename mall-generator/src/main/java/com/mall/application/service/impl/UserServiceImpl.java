@@ -24,6 +24,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserMapper userMapper;
 
     public List<User> getUserList(Map<String, Object> params){
-        return userMapper.selectList(null);
+        return userMapper.getUserList(params);
     }
 }

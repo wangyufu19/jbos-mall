@@ -43,4 +43,15 @@ public class UserController {
         res.setData(users);
         return res;
     }
+    @ResponseBody
+    @RequestMapping(value = "/save", method = RequestMethod.GET)
+    @ApiOperation("保存用户信息数据")
+    public ResponseData saveUser(@RequestParam Map<String, Object> params){
+        ResponseData res=ResponseData.ok();
+        User user=new User();
+        user.setId("1111111111");
+        user.setLoginname("save123");
+        userService.save(user);
+        return res;
+    }
 }
