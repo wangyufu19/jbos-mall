@@ -75,7 +75,7 @@ spring:
       keepAlive: true
 #mybatis-plus
 mybatis-plus:
-  mapper-locations: classpath*:mapper/*/*.xml
+  mapper-locations: classpath*:mapper/**/*.xml
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.mall.admin.domain.entity
   global-config:
@@ -101,17 +101,6 @@ mybatis-plus:
     cache-enabled: false
     call-setters-on-nulls: true
     #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-camunda:
-  bpm:
-    #配置账户密码来访问Camunda自带的管理界面
-    admin-user:
-      id: admin
-      password: admin
-      first-name: admin
-    filter:
-      create: All tasks
-      #禁止自动部署resources下面的bpmn文
-    auto-deployment-enabled: false
 #eureka:
 #  instance:
 #    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
