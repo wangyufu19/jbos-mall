@@ -20,9 +20,8 @@
             <version>${springboot-admin.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.jbos.mall</groupId>
-            <artifactId>mall-common</artifactId>
-            <version>1.0.0</version>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
     </dependencies>
 

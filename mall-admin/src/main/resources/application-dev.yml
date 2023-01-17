@@ -5,10 +5,6 @@ server:
     min-spare-threads: 30
   port: 8080
 spring:
-  boot:
-    admin:
-      client:
-        url: http://127.0.0.1:9528/
   jackson:
     time-zone: GMT+8
   mvc:
@@ -112,14 +108,6 @@ mybatis-plus:
 #    registry-fetch-interval-seconds: 10 #间隔多久拉取服务注册信息，默认为30秒
 #    service-url:
 #      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: ALWAYS
 ribbon:
   http:
     client:
