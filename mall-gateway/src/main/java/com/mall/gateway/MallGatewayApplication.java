@@ -40,8 +40,6 @@ public class MallGatewayApplication extends SpringBootServletInitializer {
         SpringApplication springApplication=new SpringApplication(MallGatewayApplication.class);
         springApplication.addListeners(new ApplicationContextListener());
         ApplicationContext applicationContext=springApplication.run(args);
-        RestDemo restDemo=applicationContext.getBean(RestDemo.class);
-        restDemo.execute();
     }
     @Slf4j
     @Component
