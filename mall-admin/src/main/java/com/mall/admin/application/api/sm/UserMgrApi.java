@@ -53,10 +53,15 @@ public class UserMgrApi {
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
     @ApiOperation("查询用户信息数据")
     public ResponseData getUserInfo(@RequestParam Map<String, Object> params){
-        ResponseData responseData=ResponseData.ok();
-        String username = JwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
-        responseData.setData(userMgrService.getUserInfo(username));
-        return responseData;
+        ResponseData res=ResponseData.ok();
+        try{
+            String username = JwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
+            res.setData(userMgrService.getUserInfo(username));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            res=ResponseData.error(e.getMessage());
+        }
+        return res;
     }
     /**
      * 新增用户信息数据
