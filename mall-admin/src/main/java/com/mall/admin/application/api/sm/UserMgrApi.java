@@ -1,7 +1,10 @@
 package com.mall.admin.application.api.sm;
+import com.mall.admin.application.external.auth.UserAuthService;
 import com.mall.admin.application.service.FuncMgrService;
 import com.mall.admin.application.service.UserMgrService;
+import com.mall.admin.common.config.FeignConfig;
 import com.mall.admin.common.jwt.JwtTokenProvider;
+import com.mall.admin.common.utils.RequestContextUtils;
 import com.mall.admin.domain.entity.Func;
 import com.mall.common.response.ResponseData;
 import io.swagger.annotations.Api;
@@ -9,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -26,7 +30,8 @@ import java.util.Map;
 @Api("用户管理接口")
 @Slf4j
 public class UserMgrApi {
-
+    @Autowired
+    private UserAuthService userAuthService;
     @Autowired
     private UserMgrService userMgrService;
     @Autowired
@@ -55,8 +60,9 @@ public class UserMgrApi {
     public ResponseData getUserInfo(@RequestParam Map<String, Object> params){
         ResponseData res=ResponseData.ok();
         try{
-            String username = JwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
-            res.setData(userMgrService.getUserInfo(username));
+            res=userAuthService.getPrincipalInfo(params);
+//            String username = JwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
+//            res.setData(userMgrService.getUserInfo(username));
         }catch (Exception e){
             log.error(e.getMessage());
             res=ResponseData.error(e.getMessage());

@@ -2,6 +2,8 @@ package com.mall.admin.application.external.auth;
 
 import com.mall.common.response.ResponseData;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
