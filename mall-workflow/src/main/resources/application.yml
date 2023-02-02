@@ -11,8 +11,42 @@ spring:
     active: dev
   jackson:
     time-zone: GMT+8
+#actuator 端点信息配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+---
+spring:
+  profiles: dev
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
+        group: dev  # 配置组，默认就是 DEFAULT_GROUP
+      config:
+        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
+        file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
+        group: dev  # 配置组，默认就是 DEFAULT_GROUP
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:9528/
+---
+spring:
+  profiles: sit
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8849  # 配置 nacos 的服务地址
+        group: sit  # 配置组，默认就是 DEFAULT_GROUP
+      config:
+        server-addr: 127.0.0.1:8849  # 配置 nacos 的服务地址
+        file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
+        group: sit  # 配置组，默认就是 DEFAULT_GROUP
+---
 
