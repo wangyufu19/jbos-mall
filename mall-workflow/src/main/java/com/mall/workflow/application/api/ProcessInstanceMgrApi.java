@@ -36,7 +36,7 @@ public class ProcessInstanceMgrApi {
         String processDefinitionId="";
         String processInstanceId="";
         try{
-            ProcessInstance processInstance=processInstanceService.startProcessInstance(processDefinitionKey,businessKey,params);
+            ProcessInstance processInstance=processInstanceService.startProcessInstance(userId,processDefinitionKey,businessKey,params);
             processDefinitionId=processInstance.getProcessDefinitionId();
             processInstanceId=processInstance.getProcessInstanceId();
             Map<String,Object> data=new HashMap<String,Object>();
@@ -69,7 +69,7 @@ public class ProcessInstanceMgrApi {
         String processDefinitionId="";
         String processInstanceId="";
         try{
-            ProcessInstance processInstance=processInstanceService.startAndFinishProcessInstance(processDefinitionKey,businessKey,params);
+            ProcessInstance processInstance=processInstanceService.startAndFinishProcessInstance(userId,processDefinitionKey,businessKey,params);
             processDefinitionId=processInstance.getProcessDefinitionId();
             processInstanceId=processInstance.getProcessInstanceId();
             Map<String,Object> data=new HashMap<String,Object>();

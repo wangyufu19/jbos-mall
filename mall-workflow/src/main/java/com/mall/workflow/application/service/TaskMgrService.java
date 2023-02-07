@@ -217,6 +217,9 @@ public class TaskMgrService {
            //得到实例当前活动实例
            ActivityInstance activityInstance=runtimeService.getActivityInstance(processInstanceId);
            this.reject(userId,processInstanceId,(activityInstance.getChildActivityInstances()[0]).getActivityId(),historicActivityInstance.getActivityId());
+           //用户任务撤回后，重新领取该任务
+           Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).active().singleResult();
+           taskService.setAssignee(task.getId(), userId);
        }
     }
     /**
