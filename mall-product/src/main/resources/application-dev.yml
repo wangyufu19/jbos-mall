@@ -1,3 +1,9 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+  port: 9070
 #eureka:
 #  instance:
 #    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
@@ -53,6 +59,17 @@ feign:
     response:
       enabled: true
 spring:
+  servlet:
+    multipart:
+      max-file-size: 32MB #文件最大值，默认10MB
+      max-request-size: 512MB #文件总的最大值，默认10MB
+    upload:
+      repo: /nas/upload #文件存储位置
+    imageio:
+      endpoint-url: http://127.0.0.1/mall/image
+  jackson:
+    time-zone: GMT+8
+    default-property-inclusion: non_null
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
