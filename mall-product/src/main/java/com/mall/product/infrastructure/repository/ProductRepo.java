@@ -47,9 +47,4 @@ public class ProductRepo {
         updateWrapper.eq("product_seq_id",productList.getProductSeqId());
         productListMapper.update(productList,updateWrapper);
     }
-    public void deleteProductList(String productSeqId){
-        UpdateWrapper<ProductList> updateWrapper=new UpdateWrapper<ProductList>();
-        updateWrapper.eq("product_seq_id",productSeqId);
-        productListMapper.delete(updateWrapper);
-    }
 }

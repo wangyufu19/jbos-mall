@@ -19,7 +19,7 @@ public class Product extends BaseEntity{
     public final static String PRODUCT_STATUS_DRAFT="10";//草稿中
     public final static String PRODUCT_STATUS_SHELF="20";//已上架
     public final static String PRODUCT_STATUS_OFF_SHELF="50";//已下架
-
+    public final static String PRODUCT_STATUS_DELETED="99";//已删除
     @TableField("seq_id")
     private String seqId;
     /**

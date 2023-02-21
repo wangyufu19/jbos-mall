@@ -209,4 +209,19 @@ public class ProductMgrApi extends BaseApi {
         }
         return res;
     }
+    @ResponseBody
+    @PostMapping(value = "/deleteOne")
+    @ApiOperation("删除一个商品")
+    public ResponseData deleteOne(@RequestBody Map<String, Object> params){
+        ResponseData res= ResponseData.ok();
+        try{
+            this.productService.deleteOneProductList(params);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+
+
 }

@@ -160,4 +160,17 @@ public class ProductService {
         product.setUpdateTime(DateUtils.getCurrentDate());
         this.productRepo.updateProductInfo(product);
     }
+    /**
+     * 删除一个商品列表
+     * @param productMap
+     */
+    @Transactional
+    public void deleteOneProductList(Map<String,Object> productMap){
+        Product product=new Product();
+        product.setSeqId(StringUtils.replaceNull(productMap.get("productSeqId")));
+        product.setStatus(Product.PRODUCT_STATUS_DELETED);
+        product.setUpdateTime(DateUtils.getCurrentDate());
+        this.productRepo.updateProductInfo(product);
+    }
+
 }
