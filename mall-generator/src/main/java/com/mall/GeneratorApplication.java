@@ -1,9 +1,12 @@
 package com.mall;
 
+import com.mall.application.controller.UserController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.ApplicationContext;
+
 /**
  * GeneratorApplication
  * @author youfu.wang
@@ -17,6 +20,7 @@ public class GeneratorApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(GeneratorApplication.class, args);
+        ApplicationContext applicationContext=SpringApplication.run(GeneratorApplication.class, args);
+        System.out.println("UserController="+applicationContext.getBean(UserController.class));
     }
 }
