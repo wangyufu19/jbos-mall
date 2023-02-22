@@ -1,6 +1,7 @@
 package com.mall.product.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,7 @@ public class Product extends BaseEntity{
     public final static String PRODUCT_STATUS_SHELF="20";//已上架
     public final static String PRODUCT_STATUS_OFF_SHELF="50";//已下架
     public final static String PRODUCT_STATUS_DELETED="99";//已删除
-    @TableField("seq_id")
+    @TableId("seq_id")
     private String seqId;
     /**
      * 商品分类

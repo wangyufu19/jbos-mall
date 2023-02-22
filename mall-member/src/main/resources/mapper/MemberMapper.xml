@@ -7,6 +7,10 @@
         FROM MM_MEMBER_BASE A
         LEFT JOIN MM_ACCOUNT B ON A.ACCOUNT=B.ACCOUNT
         WHERE A.IS_VALID=1
+        <if test="fullNameS != null and fullNameS != ''">
+            AND A.FULL_NAME LIKE  '%${fullNameS}%'
+        </if>
+        ORDER BY A.REGISTRY_TIME
     </select>
     <!--得到会员信息-->
     <select id="getMemberInfo" parameterType="java.util.Map" resultType="com.mall.member.domain.entity.Member">
@@ -14,4 +18,5 @@
         FROM MM_MEMBER_BASE A INNER JOIN MM_ACCOUNT B ON A.ACCOUNT=B.ACCOUNT
         WHERE A.IS_VALID=1 AND B.ACCOUNT=#{account}
     </select>
+
 </mapper>

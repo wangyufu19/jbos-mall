@@ -3,6 +3,7 @@ package com.mall.member.application.service;
 
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
+import com.mall.member.domain.entity.Account;
 import com.mall.member.domain.entity.Member;
 import com.mall.member.infrastructure.repository.AccountRepo;
 import com.mall.member.infrastructure.repository.MemberRepo;
@@ -60,5 +61,13 @@ public class AccountService {
         member.setRegistryTime(DateUtils.getCurrentDate());
         member.setCreateTime(DateUtils.getCurrentDate());
         this.memberRepo.addMemberInfo(member);
+    }
+
+    /**
+     * 修改会员状态
+     * @param account
+     */
+    public void updateAccountStatus(Account account){
+        accountRepo.updateAccountStatus(account);
     }
 }

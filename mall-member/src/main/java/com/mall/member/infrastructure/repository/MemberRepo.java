@@ -2,6 +2,7 @@ package com.mall.member.infrastructure.repository;
 
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.mall.member.domain.entity.Account;
 import com.mall.member.domain.entity.Member;
 import com.mall.member.infrastructure.repository.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;

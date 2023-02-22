@@ -1,18 +1,15 @@
 package com.mall.member.application.api;
 
 import com.mall.common.response.ResponseData;
-import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import com.mall.member.application.external.admin.UserMgrService;
 import com.mall.member.application.service.AccountService;
+import com.mall.member.domain.entity.Account;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -72,6 +69,48 @@ public class AccountMgrApi {
             params.put("seqId", UUID.randomUUID().toString());
             accountService.registry(params);
             res=userMgrService.add(paramMap);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    /**
+     * 会员锁定"
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/lock", method = RequestMethod.POST)
+    @ApiOperation("会员锁定")
+    public ResponseData lock(@RequestBody Map<String, Object> params){
+        ResponseData res= ResponseData.ok();
+        try{
+            Account account=new Account();
+            account.setAccount(StringUtils.replaceNull(params.get("account")));
+            account.setStatus(Account.ACCT_LOCKED);
+            accountService.updateAccountStatus(account);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+        }
+        return res;
+    }
+    /**
+     * 会员解锁
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/unlock", method = RequestMethod.POST)
+    @ApiOperation("会员解锁")
+    public ResponseData unlock(@RequestBody Map<String, Object> params){
+        ResponseData res= ResponseData.ok();
+        try{
+            Account account=new Account();
+            account.setAccount(StringUtils.replaceNull(params.get("account")));
+            account.setStatus(Account.ACCT_NORMAL);
+            accountService.updateAccountStatus(account);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);

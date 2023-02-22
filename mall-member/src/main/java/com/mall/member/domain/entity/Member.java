@@ -44,5 +44,6 @@ public class Member {
     private Date createTime;
     @TableField(exist=false)
     private Date updateTime;
-
+    @TableField(exist=false)
+    private String status;
 }
