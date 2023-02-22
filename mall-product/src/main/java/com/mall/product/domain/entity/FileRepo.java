@@ -12,7 +12,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-@TableName("PM_PIC_REPO")
+@TableName("COMM_PIC_REPO")
 public class FileRepo {
     @TableField("seq_id")
     private String seqId;
