@@ -31,6 +31,8 @@ import java.util.Map;
 @Slf4j
 public class UserMgrApi {
     @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+    @Autowired
     private UserAuthService userAuthService;
     @Autowired
     private UserMgrService userMgrService;
@@ -97,7 +99,7 @@ public class UserMgrApi {
     @ApiOperation("查询用户功能数据")
     public ResponseData getUserFunc(@RequestParam Map<String, Object> params) {
         ResponseData responseData=ResponseData.ok();
-        String username = JwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
+        String username = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
         List<Func> funcRouteList = null;
         funcRouteList=funcMgrService.getUserFuncList(username,username);
         responseData.setData(funcRouteList);

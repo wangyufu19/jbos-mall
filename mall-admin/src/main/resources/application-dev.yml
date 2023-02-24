@@ -12,6 +12,13 @@ spring:
       load-on-startup: 0   # 启动时立即初始化 dispatcherServlet，数值表示延迟多久进行自动初始化dispatcherServlet，0是立即初始化
   thymeleaf:
     cache: false
+  security:
+    filter:
+      loginUri: /login
+      excludeUri: /captcha,/demo/**
+  jwt:
+    secret: 123456  #密钥
+    expireTime: 720   #过期时间，默认60分钟
   redis:
     enable: false
     database: 0
