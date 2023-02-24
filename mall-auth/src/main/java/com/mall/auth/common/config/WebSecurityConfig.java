@@ -147,12 +147,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 JwtUser principal = (JwtUser) authentication.getPrincipal(); // 获取用户对象
                 Map<String,String> signData=new HashMap<String,String>();
                 signData.put("username",principal.getUsername());
-                signData.put("userInfo",principal.getUserInfo());
+                signData.put("nickName",principal.getNickName());
                 String token = jwtTokenProvider.generateToken(signData,principal.getAuthorities());
                 ResponseData r= ResponseData.ok("登录成功！");
                 Map<String,Object> data=new HashMap<String,Object>();
                 data.put("username", principal.getUsername());
-                data.put("userInfo",principal.getUserInfo());
+                data.put("nickName",principal.getNickName());
                 data.put("accessToken", token);
                 r.setData(data);
                 response.setContentType("application/json;charset=utf-8");
@@ -295,9 +295,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             }
             //解码JWT用户数据
             String username = jwtTokenProvider.getSignDataFromJWT(token, "username");
-            String userInfo = jwtTokenProvider.getSignDataFromJWT(token, "userInfo");
+            String nickName = jwtTokenProvider.getSignDataFromJWT(token, "nickName");
             List<GrantedAuthority> grantedAuthorities=jwtTokenProvider.getGrantedAuthorityFromJWT(token,JwtUser.AUTHORITIES);
-            UserDetails userDetails = new JwtUser(username, userInfo,null, grantedAuthorities);
+            UserDetails userDetails = new JwtUser(username, nickName,null, grantedAuthorities);
             // 构建认证过的token
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             if (authentication != null) {

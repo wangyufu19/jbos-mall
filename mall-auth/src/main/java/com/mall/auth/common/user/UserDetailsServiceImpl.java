@@ -47,9 +47,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     grantedAuthorities.add(new SimpleGrantedAuthority(StringUtils.replaceNull(role.get("ROLECODE"))));
                 }
             }
-            String userInfo=StringUtils.replaceNull(userMap.get("USERNAME"));
+            String nickName=StringUtils.replaceNull(userMap.get("NICKNAME"));
             String password=StringUtils.replaceNull(userMap.get("PASSWORD"));
-            return new JwtUser(username,userInfo,password,grantedAuthorities);
+            return new JwtUser(username,nickName,password,grantedAuthorities);
         }
     }
     public class AccountGrantException extends AuthenticationException{

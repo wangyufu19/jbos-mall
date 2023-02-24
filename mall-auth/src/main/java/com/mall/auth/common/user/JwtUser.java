@@ -13,7 +13,7 @@ import java.util.Collection;
 public class JwtUser implements UserDetails {
     public static final String AUTHORITIES = "authorities";
     private String username;
-    private String userInfo;
+    private String nickName;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private boolean accountNonExpired=true;
@@ -26,9 +26,9 @@ public class JwtUser implements UserDetails {
         this.password=password;
         this.authorities=authorities;
     }
-    public JwtUser(String username, String userInfo,String password,Collection<? extends GrantedAuthority> authorities){
+    public JwtUser(String username, String nickName,String password,Collection<? extends GrantedAuthority> authorities){
         this.username=username;
-        this.userInfo=userInfo;
+        this.nickName=nickName;
         this.password=password;
         this.authorities=authorities;
     }
@@ -44,8 +44,8 @@ public class JwtUser implements UserDetails {
     public String getUsername() {
         return this.username;
     }
-    public String getUserInfo(){
-            return this.userInfo;
+    public String getNickName(){
+            return this.nickName;
     }
     public boolean isAccountNonExpired() {
         return accountNonExpired;

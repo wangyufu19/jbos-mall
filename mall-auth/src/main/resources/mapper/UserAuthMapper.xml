@@ -3,21 +3,21 @@
 <mapper namespace="com.mall.auth.infrastructure.repository.mapper.UserAuthMapper">
     <!--用户登录-->
     <select id="login" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT A.ID,A.LOGINNAME,A.PASSWORD,A.USERNAME,A.SALT,A.USERSTATUS
+        SELECT A.ID,A.USERNAME,A.PASSWORD,A.NICKNAME,A.SALT,A.USERSTATUS
         FROM JBOS_USER A
-        WHERE A.LOGINNAME=#{username}
+        WHERE A.USERNAME=#{username}
     </select>
     <!--根据用户ID查询认证信息-->
     <select id="getUserAuthInfoById" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT A.ID,A.LOGINNAME,A.PASSWORD,A.USERNAME,A.SALT,A.USERSTATUS
+        SELECT A.ID,A.USERNAME,A.PASSWORD,A.NICKNAME,A.SALT,A.USERSTATUS
         FROM JBOS_USER A
-        WHERE A.ID=#{userid}
+        WHERE A.ID=#{id}
     </select>
     <!--查询认证用户角色-->
     <select id="getAuthUserRole" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT C.ROLECODE
         FROM JBOS_USER A INNER JOIN JBOS_USER_ROLE B ON A.ID=B.USERID
         INNER JOIN JBOS_ROLE C ON B.ROLEID=C.ID
-        WHERE A.LOGINNAME=#{username}
+        WHERE A.USERNAME=#{username}
     </select>
 </mapper>
