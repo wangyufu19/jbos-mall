@@ -44,7 +44,7 @@ public class FuncMgrApi extends BaseApi {
             res.setData(childrenNode);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -62,7 +62,7 @@ public class FuncMgrApi extends BaseApi {
             res.setData(funcTree);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -86,7 +86,7 @@ public class FuncMgrApi extends BaseApi {
             res.setData(funcs);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -110,7 +110,7 @@ public class FuncMgrApi extends BaseApi {
             funcMgrService.insertFunc(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -128,7 +128,7 @@ public class FuncMgrApi extends BaseApi {
             funcMgrService.updateFunc(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -147,7 +147,7 @@ public class FuncMgrApi extends BaseApi {
             funcMgrService.deleteFunc(id);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

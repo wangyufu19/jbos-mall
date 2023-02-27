@@ -49,7 +49,7 @@ public class RoleMgrApi extends BaseApi {
             res.setData(childrenNode);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -69,7 +69,7 @@ public class RoleMgrApi extends BaseApi {
             this.doFinishPage(res,roles);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -88,7 +88,7 @@ public class RoleMgrApi extends BaseApi {
             res.setData(roleFuncs);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -106,7 +106,7 @@ public class RoleMgrApi extends BaseApi {
             roleMgrService.saveRoleFuncs(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -130,7 +130,7 @@ public class RoleMgrApi extends BaseApi {
             roleMgrService.insertRole(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -148,7 +148,7 @@ public class RoleMgrApi extends BaseApi {
             roleMgrService.updateRole(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -167,7 +167,7 @@ public class RoleMgrApi extends BaseApi {
             roleMgrService.deleteRole(id);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -187,7 +187,7 @@ public class RoleMgrApi extends BaseApi {
             this.doFinishPage(res,emps);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -207,7 +207,7 @@ public class RoleMgrApi extends BaseApi {
             this.doFinishPage(res,emps);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -225,7 +225,7 @@ public class RoleMgrApi extends BaseApi {
             roleMgrService.addRoleUser(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

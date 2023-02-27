@@ -34,7 +34,7 @@ public class IdentityMgrApi {
             identityMgrService.createUser(userId,userName);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
         }
         if(log.isDebugEnabled()){
             log.info("============创建用户[" +

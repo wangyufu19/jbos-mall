@@ -44,7 +44,7 @@ public class MaterialBuyApi extends BaseApi {
            res.setData("BIZ_BUY_"+DateUtils.format(DateUtils.getCurrentDate(),"yyyyMMddHHmmss"));
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -63,7 +63,7 @@ public class MaterialBuyApi extends BaseApi {
             this.doFinishPage(res,materialBuys);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -91,7 +91,7 @@ public class MaterialBuyApi extends BaseApi {
             materialBuyService.addMaterialBuy(materialBuy,materials);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -119,10 +119,10 @@ public class MaterialBuyApi extends BaseApi {
             }else if("update".equals(action)){
                 res=this.update(params);
             }
-            if(ResponseResult.RETCODE_SUCCESS.equals(res.getRetCode())){
+            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
                 res=processInstanceService.startProcessInstance(processParams);
             }
-            if(ResponseResult.RETCODE_SUCCESS.equals(res.getRetCode())){
+            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
                 Map<String,Object> data=(Map<String,Object>)res.getData();
                 if(data!=null){
                     materialBuyMap.put("INSTID",data.get("processInstanceId"));
@@ -133,7 +133,7 @@ public class MaterialBuyApi extends BaseApi {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -151,7 +151,7 @@ public class MaterialBuyApi extends BaseApi {
             res.setData(materialBuy);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -175,7 +175,7 @@ public class MaterialBuyApi extends BaseApi {
             materialBuyService.updateMaterialBuy(materialBuy,materials);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -188,7 +188,7 @@ public class MaterialBuyApi extends BaseApi {
             materialBuyService.deleteMaterialBuy(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

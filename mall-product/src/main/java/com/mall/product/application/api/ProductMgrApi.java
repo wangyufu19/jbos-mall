@@ -61,7 +61,7 @@ public class ProductMgrApi extends BaseApi {
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -79,7 +79,7 @@ public class ProductMgrApi extends BaseApi {
             Map<String, Object> idMap=new HashMap<String, Object>();
             idMap.put("bizType",IdGeneratorService.BIZ_TYPE_PRODUCT);
             ResponseResult idRes=idGeneratorService.get(idMap);
-            if(idRes.getRetCode().equals(ResponseResult.RETCODE_SUCCESS)){
+            if(idRes.getRetCode().equals(ResponseResult.CODE_SUCCESS)){
                 Map<String, Object> retMap=(Map<String, Object>)idRes.getData();
                 idMap.put("seqId",StringUtils.getUUID());
                 //商品编号=YYYYMMDD+业务类型+ID版本+ID
@@ -88,11 +88,11 @@ public class ProductMgrApi extends BaseApi {
                 );
                 res.setData(idMap);
             }else{
-                res= ResponseResult.error(ResponseResult.RETCODE_FAILURE,"商品编号生成失败");
+                res= ResponseResult.error(ResponseResult.CODE_FAILURE,"商品编号生成失败");
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -118,7 +118,7 @@ public class ProductMgrApi extends BaseApi {
             res.setData(retMap);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -138,7 +138,7 @@ public class ProductMgrApi extends BaseApi {
             this.productService.addProductInfo(productMap,skuList);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -159,7 +159,7 @@ public class ProductMgrApi extends BaseApi {
             this.productService.addProductInfo(productMap,skuList);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -179,7 +179,7 @@ public class ProductMgrApi extends BaseApi {
             this.productService.updateProductInfo(productMap,skuList);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -192,7 +192,7 @@ public class ProductMgrApi extends BaseApi {
             this.productService.offShelfOne(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -205,7 +205,7 @@ public class ProductMgrApi extends BaseApi {
             this.productService.shelfOne(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -218,7 +218,7 @@ public class ProductMgrApi extends BaseApi {
             this.productService.deleteOneProductList(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

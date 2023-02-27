@@ -40,7 +40,7 @@ public class DepMgrApi extends BaseApi {
             res.setData(deps);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -59,7 +59,7 @@ public class DepMgrApi extends BaseApi {
             depMgrService.addDep(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -77,7 +77,7 @@ public class DepMgrApi extends BaseApi {
             depMgrService.updateDep(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -98,12 +98,12 @@ public class DepMgrApi extends BaseApi {
             if(count<=0){
                 depMgrService.deleteDep(id);
             }else{
-                res= ResponseResult.error(ResponseResult.RETCODE_FAILURE,"对不起，该部门下存在员工数据，不能删除！");
+                res= ResponseResult.error(ResponseResult.CODE_FAILURE,"对不起，该部门下存在员工数据，不能删除！");
             }
 
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

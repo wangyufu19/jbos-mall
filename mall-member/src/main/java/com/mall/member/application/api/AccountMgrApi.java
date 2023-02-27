@@ -42,7 +42,7 @@ public class AccountMgrApi {
             params.put("id", UUID.randomUUID().toString());
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -59,7 +59,7 @@ public class AccountMgrApi {
         try{
             //会员账户是否存在
             if(accountService.isExists(params)){
-                res= ResponseResult.error(ResponseResult.RETCODE_FAILURE,"对不起，该手机或邮箱已存在!");
+                res= ResponseResult.error(ResponseResult.CODE_FAILURE,"对不起，该手机或邮箱已存在!");
                 return res;
             }
             Map<String, Object> paramMap=new HashMap<String, Object>();
@@ -71,7 +71,7 @@ public class AccountMgrApi {
             res=userMgrService.add(paramMap);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -92,7 +92,7 @@ public class AccountMgrApi {
             accountService.updateAccountStatus(account);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -113,7 +113,7 @@ public class AccountMgrApi {
             accountService.updateAccountStatus(account);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

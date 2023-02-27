@@ -41,7 +41,7 @@ public class TaskMgrApi{
             res.setData(pageInfo);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
         }
         return res;
     }
@@ -61,7 +61,7 @@ public class TaskMgrApi{
             res.setData(pageInfo);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
         }
         return res;
     }
@@ -79,7 +79,7 @@ public class TaskMgrApi{
             taskMgrService.assignee(taskId,userId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
         }
         return res;
     }
@@ -97,7 +97,7 @@ public class TaskMgrApi{
             taskMgrService.complete(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
         }
         return res;
     }
@@ -118,7 +118,7 @@ public class TaskMgrApi{
             isDrawback=taskMgrService.isDrawback(userId,processInstanceId,taskId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
         }
         Map<String,Object> data=new HashMap<String,Object>();
         data.put("processInstanceId",processInstanceId);
@@ -143,7 +143,7 @@ public class TaskMgrApi{
             taskMgrService.drawback(userId,processDefinitionId,processInstanceId,taskId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
         }
         return res;
     }
@@ -162,7 +162,7 @@ public class TaskMgrApi{
             taskMgrService.reject(userId,processInstanceId,taskId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
         }
         return res;
     }

@@ -52,7 +52,7 @@ public class OrgMgrApi extends BaseApi {
             ret.setData(orgTree);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            ret= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return ret;
     }
@@ -71,7 +71,7 @@ public class OrgMgrApi extends BaseApi {
             this.doFinishPage(ret,orgs);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            ret= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return ret;
     }
@@ -88,8 +88,8 @@ public class OrgMgrApi extends BaseApi {
             Org org=orgMgrService.getOrg(orgId);
             ret.setData(org);
         }catch(Exception e){
-            log.error(ResponseResult.RETMSG_FAILURE,e);
-            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            log.error(ResponseResult.MSG_FAILURE,e);
+            ret= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return ret;
     }
@@ -106,8 +106,8 @@ public class OrgMgrApi extends BaseApi {
         try{
             orgMgrService.addOrg(org);
         }catch(Exception e){
-            log.error(ResponseResult.RETMSG_FAILURE,e);
-            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            log.error(ResponseResult.MSG_FAILURE,e);
+            ret= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return ret;
     }
@@ -124,8 +124,8 @@ public class OrgMgrApi extends BaseApi {
         try{
             orgMgrService.updateOrg(org);
         }catch(Exception e){
-            log.error(ResponseResult.RETMSG_FAILURE,e);
-            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            log.error(ResponseResult.MSG_FAILURE,e);
+            ret= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return ret;
     }
@@ -142,8 +142,8 @@ public class OrgMgrApi extends BaseApi {
         try{
             orgMgrService.deleteOrg(orgs);
         }catch(Exception e){
-            log.error(ResponseResult.RETMSG_FAILURE,e);
-            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
+            log.error(ResponseResult.MSG_FAILURE,e);
+            ret= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return ret;
     }
