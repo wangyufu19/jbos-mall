@@ -29,7 +29,7 @@ public class FuncMgrApi extends BaseApi {
     /**
      * 查询下级功能节点
      * @param params
-     * @ResponseData
+     * @res
      */
     @ResponseBody
     @RequestMapping("/getFuncChildrenNode")
@@ -51,7 +51,7 @@ public class FuncMgrApi extends BaseApi {
     /**
      * 查询功能树所有节点
      * @param params
-     * @ResponseData
+     * @res
      */
     @ResponseBody
     @RequestMapping("/getFuncTree")
@@ -69,7 +69,7 @@ public class FuncMgrApi extends BaseApi {
     /**
      * 查询功能数据列表
      * @param params
-     * @ResponseData
+     * @res
      */
     @ResponseBody
     @RequestMapping("/getFuncList")
@@ -93,7 +93,7 @@ public class FuncMgrApi extends BaseApi {
     /**
      * 新增功能
      * @param params
-     * @ResponseData
+     * @res
      */
     @ResponseBody
     @RequestMapping(value = "/addFunc", method = RequestMethod.POST)
@@ -117,7 +117,7 @@ public class FuncMgrApi extends BaseApi {
     /**
      * 修改功能
      * @param params
-     * @ResponseData
+     * @res
      */
     @ResponseBody
     @RequestMapping(value = "/updateFunc", method = RequestMethod.POST)
@@ -135,7 +135,7 @@ public class FuncMgrApi extends BaseApi {
     /**
      * 删除功能
      * @param params
-     * @ResponseData
+     * @res
      */
     @ResponseBody
     @RequestMapping(value = "/deleteFunc", method = RequestMethod.POST)

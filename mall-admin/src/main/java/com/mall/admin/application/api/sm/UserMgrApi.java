@@ -95,11 +95,11 @@ public class UserMgrApi {
     @RequestMapping(value = "/getUserFunc", method = RequestMethod.GET)
     @ApiOperation("查询用户功能数据")
     public ResponseResult getUserFunc(@RequestParam Map<String, Object> params) {
-        ResponseResult responseData= ResponseResult.ok();
+        ResponseResult res= ResponseResult.ok();
         String username = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
         List<Func> funcRouteList = null;
         funcRouteList=funcMgrService.getUserFuncList(username,username);
-        responseData.setData(funcRouteList);
-        return responseData;
+        res.setData(funcRouteList);
+        return res;
     }
 }

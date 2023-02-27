@@ -38,14 +38,14 @@ public class UserAuthApi {
     @RequestMapping(value = "/getPrincipalInfo", method = RequestMethod.GET)
     @ApiOperation("得到用户凭据信息")
     public ResponseResult getPrincipalInfo(@RequestParam Map<String, Object> params) {
-        ResponseResult responseData= ResponseResult.ok();
+        ResponseResult res= ResponseResult.ok();
         //获取用户对象
         JwtUser principal = (JwtUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String nickName = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "nickName");
         Map<String,Object> data=new HashMap<String,Object>();
         data.put("username",principal.getUsername());
         data.put("nickName",nickName);
-        responseData.setData(data);
-        return responseData;
+        res.setData(data);
+        return res;
     }
 }
