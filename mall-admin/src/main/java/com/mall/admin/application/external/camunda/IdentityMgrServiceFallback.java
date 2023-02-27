@@ -1,6 +1,6 @@
 package com.mall.admin.application.external.camunda;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
 public class IdentityMgrServiceFallback implements IdentityMgrService{
 
 
-    public ResponseData create(Map<String, Object> params){
-        return ResponseData.error();
+    public ResponseResult create(Map<String, Object> params){
+        return ResponseResult.error();
     }
 }

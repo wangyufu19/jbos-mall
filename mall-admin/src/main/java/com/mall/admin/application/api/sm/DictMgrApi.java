@@ -10,7 +10,7 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +43,15 @@ public class DictMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping("/getCacheDictCodeList")
     @ApiOperation("得到缓存业务字典数据")
-    public ResponseData getCacheDictCodeList(@RequestParam Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult getCacheDictCodeList(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String typeId= StringUtils.replaceNull(params.get("typeId"));
         try{
             List<Map<String, Object>> dictCodes=businessDict.getDictCodeList(typeId);
             res.setData(dictCodes);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -63,28 +63,28 @@ public class DictMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping("/getDictTypeList")
     @ApiOperation("得到字典类型列表")
-    public ResponseData getDictTypeList(@RequestParam Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult getDictTypeList(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             List<DictType> dictTypes=dictTypeService.getDictTypeList();
             res.setData(dictTypes);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
     @ResponseBody
     @RequestMapping("/getDictCodeList")
     @ApiOperation("得到字典码值数据列表")
-    public ResponseData getDictCodeList(@RequestParam Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult getDictCodeList(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             List<DictCode> dictCodes=dictCodeService.getDictCodeList(params);
             res.setData(dictCodes);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -97,13 +97,13 @@ public class DictMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/saveDictCode", method = RequestMethod.POST)
     @ApiOperation("保存业务字典")
-    public ResponseData saveDictCode(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult saveDictCode(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             dictCodeService.saveDictCode(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

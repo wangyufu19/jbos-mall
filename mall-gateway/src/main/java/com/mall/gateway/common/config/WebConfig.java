@@ -1,6 +1,6 @@
 package com.mall.gateway.common.config;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.JacksonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,7 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
             log.info("uri={}",request.getRequestURI());
             String accessToken = getRequestToken(request);
             if(accessToken == null) {
-                ResponseData r = ResponseData.error("token失效或认证过期！");
+                ResponseResult r = ResponseResult.error("token失效或认证过期！");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json;charset=utf-8");
                 PrintWriter out = response.getWriter();

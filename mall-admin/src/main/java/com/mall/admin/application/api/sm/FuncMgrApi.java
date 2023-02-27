@@ -4,7 +4,7 @@ import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.FuncMgrService;
 import com.mall.admin.domain.entity.Func;
 import com.mall.admin.domain.entity.TreeNode;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +33,8 @@ public class FuncMgrApi extends BaseApi {
      */
     @ResponseBody
     @RequestMapping("/getFuncChildrenNode")
-    public ResponseData getFuncChildrenNode(@RequestParam Map<String, Object> params) {
-        ResponseData res = ResponseData.ok();
+    public ResponseResult getFuncChildrenNode(@RequestParam Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
         String parentId = StringUtils.replaceNull(params.get("parentId"));
         if (StringUtils.isNUll(parentId)) {
             parentId = Func.ROOTFUNC_ID;
@@ -44,7 +44,7 @@ public class FuncMgrApi extends BaseApi {
             res.setData(childrenNode);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -55,14 +55,14 @@ public class FuncMgrApi extends BaseApi {
      */
     @ResponseBody
     @RequestMapping("/getFuncTree")
-    public ResponseData getFuncTree(@RequestParam Map<String, Object> params) {
-        ResponseData res = ResponseData.ok();
+    public ResponseResult getFuncTree(@RequestParam Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
         try{
             List<TreeNode> funcTree=funcMgrService.getFuncTree(Func.ROOTFUNC_ID);
             res.setData(funcTree);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -74,8 +74,8 @@ public class FuncMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping("/getFuncList")
     @ApiOperation("查询功能数据列表")
-    public ResponseData getFuncList(@RequestParam Map<String, Object> params){
-        ResponseData res = ResponseData.ok();
+    public ResponseResult getFuncList(@RequestParam Map<String, Object> params){
+        ResponseResult res = ResponseResult.ok();
         String parentId = StringUtils.replaceNull(params.get("parentId"));
         if (StringUtils.isNUll(parentId)) {
             parentId = Func.ROOTFUNC_ID;
@@ -86,7 +86,7 @@ public class FuncMgrApi extends BaseApi {
             res.setData(funcs);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -98,8 +98,8 @@ public class FuncMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/addFunc", method = RequestMethod.POST)
     @ApiOperation("新增功能")
-    public ResponseData addFunc(@RequestBody Map<String, Object> params){
-        ResponseData res = ResponseData.ok();
+    public ResponseResult addFunc(@RequestBody Map<String, Object> params){
+        ResponseResult res = ResponseResult.ok();
         String parentId = StringUtils.replaceNull(params.get("parentId"));
         if (StringUtils.isNUll(parentId)) {
             parentId = Func.ROOTFUNC_ID;
@@ -110,7 +110,7 @@ public class FuncMgrApi extends BaseApi {
             funcMgrService.insertFunc(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -122,13 +122,13 @@ public class FuncMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/updateFunc", method = RequestMethod.POST)
     @ApiOperation("修改功能")
-    public ResponseData updateFunc(@RequestBody Map<String, Object> params){
-        ResponseData res = ResponseData.ok();
+    public ResponseResult updateFunc(@RequestBody Map<String, Object> params){
+        ResponseResult res = ResponseResult.ok();
         try{
             funcMgrService.updateFunc(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -140,14 +140,14 @@ public class FuncMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/deleteFunc", method = RequestMethod.POST)
     @ApiOperation("删除功能")
-    public ResponseData deleteFunc(@RequestBody Map<String, Object> params){
-        ResponseData res = ResponseData.ok();
+    public ResponseResult deleteFunc(@RequestBody Map<String, Object> params){
+        ResponseResult res = ResponseResult.ok();
         String id= StringUtils.replaceNull(params.get("id"));
         try{
             funcMgrService.deleteFunc(id);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

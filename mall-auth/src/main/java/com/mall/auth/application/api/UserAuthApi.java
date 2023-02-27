@@ -2,7 +2,7 @@ package com.mall.auth.application.api;
 
 import com.mall.auth.common.jwt.JwtTokenProvider;
 import com.mall.auth.common.user.JwtUser;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +37,8 @@ public class UserAuthApi {
     @ResponseBody
     @RequestMapping(value = "/getPrincipalInfo", method = RequestMethod.GET)
     @ApiOperation("得到用户凭据信息")
-    public ResponseData getPrincipalInfo(@RequestParam Map<String, Object> params) {
-        ResponseData responseData=ResponseData.ok();
+    public ResponseResult getPrincipalInfo(@RequestParam Map<String, Object> params) {
+        ResponseResult responseData= ResponseResult.ok();
         //获取用户对象
         JwtUser principal = (JwtUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userInfo = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "userInfo");

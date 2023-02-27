@@ -1,7 +1,7 @@
 package com.mall.workflow.application.api;
 
 import com.github.pagehelper.PageInfo;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.workflow.application.service.TaskMgrService;
 import io.swagger.annotations.Api;
@@ -28,8 +28,8 @@ public class TaskMgrApi{
     @ResponseBody
     @GetMapping(value = "/listForPage")
     @ApiOperation("查询待办任务")
-    public ResponseData listForPage(@RequestParam Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult listForPage(@RequestParam Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
         String userId=StringUtils.replaceNull(params.get("userId"));
         int pageNum=Integer.parseInt(StringUtils.replaceNull(params.get("pageNum")));
         int pageSize=Integer.parseInt(StringUtils.replaceNull(params.get("pageSize")));
@@ -41,15 +41,15 @@ public class TaskMgrApi{
             res.setData(pageInfo);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
         }
         return res;
     }
     @ResponseBody
     @GetMapping(value = "/completedListForPage")
     @ApiOperation("查询已办任务")
-    public ResponseData completedListForPage(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult completedListForPage(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
         String userId=StringUtils.replaceNull(params.get("userId"));
         int pageNum=Integer.parseInt(StringUtils.replaceNull(params.get("pageNum")));
         int pageSize=Integer.parseInt(StringUtils.replaceNull(params.get("pageSize")));
@@ -61,15 +61,15 @@ public class TaskMgrApi{
             res.setData(pageInfo);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
         }
         return res;
     }
     @ResponseBody
     @PostMapping(value = "/assignee")
     @ApiOperation("领取任务")
-    public ResponseData assignee(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult assignee(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
         String taskId=StringUtils.replaceNull(params.get("taskId"));
         String userId=StringUtils.replaceNull(params.get("userId"));
         try {
@@ -79,7 +79,7 @@ public class TaskMgrApi{
             taskMgrService.assignee(taskId,userId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
         }
         return res;
     }
@@ -87,8 +87,8 @@ public class TaskMgrApi{
     @ResponseBody
     @PostMapping(value = "/complete")
     @ApiOperation("完成任务")
-    public ResponseData complete(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult complete(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
         String userId = StringUtils.replaceNull(params.get("userId"));
         try {
             if(log.isDebugEnabled()){
@@ -97,15 +97,15 @@ public class TaskMgrApi{
             taskMgrService.complete(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
         }
         return res;
     }
     @ResponseBody
     @PostMapping(value = "/isDrawback")
     @ApiOperation("是否可撤回任务")
-    public ResponseData isDrawback(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult isDrawback(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
         boolean isDrawback=false;
         String userId=StringUtils.replaceNull(params.get("userId"));
         String processDefinitionId= StringUtils.replaceNull(params.get("processDefinitionId"));
@@ -118,7 +118,7 @@ public class TaskMgrApi{
             isDrawback=taskMgrService.isDrawback(userId,processInstanceId,taskId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
         }
         Map<String,Object> data=new HashMap<String,Object>();
         data.put("processInstanceId",processInstanceId);
@@ -130,8 +130,8 @@ public class TaskMgrApi{
     @ResponseBody
     @PostMapping(value = "/drawback")
     @ApiOperation("撤回任务")
-    public ResponseData drawback(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult drawback(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
         String userId=StringUtils.replaceNull(params.get("userId"));
         String processDefinitionId= StringUtils.replaceNull(params.get("processDefinitionId"));
         String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
@@ -143,15 +143,15 @@ public class TaskMgrApi{
             taskMgrService.drawback(userId,processDefinitionId,processInstanceId,taskId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
         }
         return res;
     }
     @ResponseBody
     @PostMapping(value = "/reject")
     @ApiOperation("驳回任务")
-    public ResponseData reject(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult reject(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
         String userId=StringUtils.replaceNull(params.get("userId"));
         String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
         String taskId=StringUtils.replaceNull(params.get("taskId"));
@@ -162,7 +162,7 @@ public class TaskMgrApi{
             taskMgrService.reject(userId,processInstanceId,taskId);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+            res=ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
         }
         return res;
     }

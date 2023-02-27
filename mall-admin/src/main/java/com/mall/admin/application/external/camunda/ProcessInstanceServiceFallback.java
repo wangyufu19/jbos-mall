@@ -1,6 +1,6 @@
 package com.mall.admin.application.external.camunda;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -13,10 +13,10 @@ import java.util.Map;
 @Component
 public class ProcessInstanceServiceFallback implements ProcessInstanceService{
 
-    public ResponseData startProcessInstance(Map<String, Object> params) {
-        return ResponseData.error();
+    public ResponseResult startProcessInstance(Map<String, Object> params) {
+        return ResponseResult.error();
     }
-    public ResponseData startAndFinishProcessInstance(Map<String, Object> params){
-        return ResponseData.error();
+    public ResponseResult startAndFinishProcessInstance(Map<String, Object> params){
+        return ResponseResult.error();
     }
 }

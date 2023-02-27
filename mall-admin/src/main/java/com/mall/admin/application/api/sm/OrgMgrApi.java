@@ -3,7 +3,7 @@ import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.OrgMgrService;
 import com.mall.admin.domain.entity.Org;
 import com.mall.admin.domain.entity.TreeNode;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,8 +41,8 @@ public class OrgMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping("/getOgrTree")
     @ApiOperation("查询组织机构树")
-    public ResponseData getOgrTree(@RequestParam Map<String, Object> params){
-        ResponseData ret=ResponseData.ok();
+    public ResponseResult getOgrTree(@RequestParam Map<String, Object> params){
+        ResponseResult ret= ResponseResult.ok();
         String parentId= StringUtils.replaceNull(params.get("parentId"));
         if(StringUtils.isNUll(parentId)){
             parentId= Org.ROOTORG_ID;
@@ -52,7 +52,7 @@ public class OrgMgrApi extends BaseApi {
             ret.setData(orgTree);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            ret=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return ret;
     }
@@ -63,15 +63,15 @@ public class OrgMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping("/getOrgList")
     @ApiOperation("查询组织机构列表")
-    public ResponseData getOrgList(@RequestParam Map<String, Object> params){
-        ResponseData ret=ResponseData.ok();
+    public ResponseResult getOrgList(@RequestParam Map<String, Object> params){
+        ResponseResult ret= ResponseResult.ok();
         try{
             this.doStartPage(params);
             List<Org> orgs=orgMgrService.getOrgList(Org.ROOTORG_ID);
             this.doFinishPage(ret,orgs);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            ret=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return ret;
     }
@@ -82,14 +82,14 @@ public class OrgMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping("/getOrg")
     @ApiOperation("查询一个组织机构信息")
-    public ResponseData getOrg(@RequestParam String orgId){
-        ResponseData ret=ResponseData.ok();
+    public ResponseResult getOrg(@RequestParam String orgId){
+        ResponseResult ret= ResponseResult.ok();
         try{
             Org org=orgMgrService.getOrg(orgId);
             ret.setData(org);
         }catch(Exception e){
-            log.error(ResponseData.RETMSG_FAILURE,e);
-            ret=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            log.error(ResponseResult.RETMSG_FAILURE,e);
+            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return ret;
     }
@@ -101,13 +101,13 @@ public class OrgMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/saveOrg", method = RequestMethod.POST)
     @ApiOperation("保存组织机构信息")
-    public ResponseData saveOrg(@RequestBody Org org){
-        ResponseData ret=ResponseData.ok();
+    public ResponseResult saveOrg(@RequestBody Org org){
+        ResponseResult ret= ResponseResult.ok();
         try{
             orgMgrService.addOrg(org);
         }catch(Exception e){
-            log.error(ResponseData.RETMSG_FAILURE,e);
-            ret=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            log.error(ResponseResult.RETMSG_FAILURE,e);
+            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return ret;
     }
@@ -119,13 +119,13 @@ public class OrgMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/updateOrg", method = RequestMethod.POST)
     @ApiOperation("更新组织机构信息")
-    public ResponseData updateOrg(@RequestBody Org org){
-        ResponseData ret=ResponseData.ok();
+    public ResponseResult updateOrg(@RequestBody Org org){
+        ResponseResult ret= ResponseResult.ok();
         try{
             orgMgrService.updateOrg(org);
         }catch(Exception e){
-            log.error(ResponseData.RETMSG_FAILURE,e);
-            ret=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            log.error(ResponseResult.RETMSG_FAILURE,e);
+            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return ret;
     }
@@ -137,13 +137,13 @@ public class OrgMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/deleteOrg", method = RequestMethod.POST)
     @ApiOperation("删除组织机构信息")
-    public ResponseData deleteOrg(@RequestBody Org[] orgs){
-        ResponseData ret=ResponseData.ok();
+    public ResponseResult deleteOrg(@RequestBody Org[] orgs){
+        ResponseResult ret= ResponseResult.ok();
         try{
             orgMgrService.deleteOrg(orgs);
         }catch(Exception e){
-            log.error(ResponseData.RETMSG_FAILURE,e);
-            ret=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            log.error(ResponseResult.RETMSG_FAILURE,e);
+            ret= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return ret;
     }

@@ -1,6 +1,6 @@
 package com.mall.auth.application.external.redis;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "mall-redis" , fallback = RedisServiceFallback.class)
 public interface RedisService {
     @GetMapping("/get/{key}")
-    public ResponseData get(@PathVariable("key") String key);
+    public ResponseResult get(@PathVariable("key") String key);
     @PostMapping("/set")
-    public ResponseData set(@RequestParam String key, @RequestParam String value,@RequestParam long expire);
+    public ResponseResult set(@RequestParam String key, @RequestParam String value, @RequestParam long expire);
     @PostMapping("/delete")
-    public ResponseData delete(@RequestParam String key);
+    public ResponseResult delete(@RequestParam String key);
 }

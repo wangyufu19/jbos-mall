@@ -3,7 +3,7 @@ package com.mall.admin.application.api.sm;
 import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.DepMgrService;
 import com.mall.admin.domain.entity.Dep;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,14 +33,14 @@ public class DepMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping("/getDepList")
     @ApiOperation("查询部门列表")
-    public ResponseData getDepList(@RequestParam Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult getDepList(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             List<Dep> deps=depMgrService.getDepList(params);
             res.setData(deps);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -52,14 +52,14 @@ public class DepMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/addDep", method = RequestMethod.POST)
     @ApiOperation("新增部门")
-    public ResponseData addDep(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult addDep(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             params.put("id", UUID.randomUUID().toString());
             depMgrService.addDep(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -71,13 +71,13 @@ public class DepMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/updateDep", method = RequestMethod.POST)
     @ApiOperation("修改部门")
-    public ResponseData updateDep(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult updateDep(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             depMgrService.updateDep(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -89,8 +89,8 @@ public class DepMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/deleteDep", method = RequestMethod.POST)
     @ApiOperation("删除部门")
-    public ResponseData deleteDep(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult deleteDep(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String id= StringUtils.replaceNull(params.get("id"));
         try{
             //查询部门下员工数量
@@ -98,12 +98,12 @@ public class DepMgrApi extends BaseApi {
             if(count<=0){
                 depMgrService.deleteDep(id);
             }else{
-                res=ResponseData.error(ResponseData.RETCODE_FAILURE,"对不起，该部门下存在员工数据，不能删除！");
+                res= ResponseResult.error(ResponseResult.RETCODE_FAILURE,"对不起，该部门下存在员工数据，不能删除！");
             }
 
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

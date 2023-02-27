@@ -1,6 +1,6 @@
 package com.mall.admin.application.external.camunda;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,5 +18,5 @@ public interface TaskService {
      */
     @ResponseBody
     @GetMapping(value = "/task/listForPage")
-    public ResponseData listForPage(@RequestParam Map<String, Object> params);
+    public ResponseResult listForPage(@RequestParam Map<String, Object> params);
 }

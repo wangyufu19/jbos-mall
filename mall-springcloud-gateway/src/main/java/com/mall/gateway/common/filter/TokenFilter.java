@@ -1,7 +1,7 @@
 package com.mall.gateway.common.filter;
 
 import com.alibaba.nacos.common.utils.JacksonUtils;
-import com.mall.gateway.application.api.response.ResponseData;
+import com.mall.gateway.application.api.response.ResponseResult;
 import com.mall.gateway.common.jwt.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
@@ -57,12 +57,12 @@ public class TokenFilter implements GlobalFilter, Ordered {
         if(accessToken == null) {
             log.error("access token is empty");
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            String json=JacksonUtils.toJson(ResponseData.error("access token is empty"));
+            String json=JacksonUtils.toJson(ResponseResult.error("access token is empty"));
             return response.writeWith(Mono.just(response.bufferFactory().wrap(json.getBytes())));
         }
         if (!jwtTokenProvider.verifyToken(accessToken)) {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            return response.writeWith(Mono.just(response.bufferFactory().wrap(JacksonUtils.toJson(ResponseData.error("token失效或认证过期！")).getBytes())));
+            return response.writeWith(Mono.just(response.bufferFactory().wrap(JacksonUtils.toJson(ResponseResult.error("token失效或认证过期！")).getBytes())));
         }
         return chain.filter(exchange);
     }

@@ -2,7 +2,7 @@ package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.service.im.MaterialListService;
 import com.mall.admin.domain.entity.im.MaterialList;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,14 +31,14 @@ public class MaterialListApi {
     @ResponseBody
     @GetMapping("/list")
     @ApiOperation("查询物品清单业务列表")
-    public ResponseData getMaterialBuyList(@RequestParam Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult getMaterialBuyList(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             List<MaterialList> materialLists=materialListService.getMaterialListList(params);
             res.setData(materialLists);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

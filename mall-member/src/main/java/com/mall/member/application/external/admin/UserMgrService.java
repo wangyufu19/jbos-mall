@@ -1,6 +1,6 @@
 package com.mall.member.application.external.admin;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,5 +19,5 @@ public interface UserMgrService {
      * @return
      */
     @PostMapping(value = "/user/add")
-    public ResponseData add(@RequestBody Map<String, Object> params);
+    public ResponseResult add(@RequestBody Map<String, Object> params);
 }

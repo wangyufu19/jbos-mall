@@ -1,7 +1,7 @@
 package com.mall.member.application.api;
 
 import com.mall.common.response.BaseApi;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.member.application.service.MemberService;
 import com.mall.member.domain.entity.Member;
@@ -35,8 +35,8 @@ public class MemberMgrApi extends BaseApi {
     @ResponseBody
     @GetMapping(value = "/list")
     @ApiOperation("得到会员信息列表")
-    public ResponseData list(@RequestParam Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult list(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String isPage= StringUtils.replaceNull(params.get("isPage"));
         try{
             if("true".equals(isPage)){
@@ -50,7 +50,7 @@ public class MemberMgrApi extends BaseApi {
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -62,14 +62,14 @@ public class MemberMgrApi extends BaseApi {
     @ResponseBody
     @GetMapping(value = "/get")
     @ApiOperation("得到会员信息")
-    public ResponseData get(@RequestParam Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult get(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             Member member=memberService.getMemberInfo(params);
             res.setData(member);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -81,15 +81,15 @@ public class MemberMgrApi extends BaseApi {
     @ResponseBody
     @PostMapping(value = "/add")
     @ApiOperation("新增会员个人信息")
-    public ResponseData add(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult add(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             Member member=new Member();
             member.setSeqId(UUID.randomUUID().toString());
             memberService.addMemberInfo(member);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -101,8 +101,8 @@ public class MemberMgrApi extends BaseApi {
     @ResponseBody
     @PostMapping(value = "/update")
     @ApiOperation("修改会员个人信息")
-    public ResponseData update(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult update(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             Member member=new Member();
             member.setAccount(StringUtils.replaceNull(params.get("account")));
@@ -114,7 +114,7 @@ public class MemberMgrApi extends BaseApi {
             memberService.updateMemberInfo(member);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

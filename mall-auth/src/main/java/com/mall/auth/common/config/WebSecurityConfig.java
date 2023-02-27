@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mall.auth.application.service.CaptchaService;
 import com.mall.auth.common.jwt.JwtTokenProvider;
 import com.mall.auth.common.user.JwtUser;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.JacksonUtils;
 import com.mall.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,8 +29,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -106,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint((req,res,ex)-> {
                     //请求认证异常
-                    ResponseData r= ResponseData.error("403","对不起，非法请求");
+                    ResponseResult r= ResponseResult.error("403","对不起，非法请求");
                     res.setContentType("application/json;charset=utf-8");
                     PrintWriter out = res.getWriter();
                     out.write(JacksonUtils.toJson(r));
@@ -115,7 +112,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .accessDeniedHandler((req,res,ex)-> {
                     //请求权限异常
-                    ResponseData r= ResponseData.error("403","对不起，没有权限");
+                    ResponseResult r= ResponseResult.error("403","对不起，没有权限");
                     res.setContentType("application/json;charset=utf-8");
                     PrintWriter out = res.getWriter();
                     out.write(JacksonUtils.toJson(r));
@@ -149,7 +146,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 signData.put("username",principal.getUsername());
                 signData.put("nickName",principal.getNickName());
                 String token = jwtTokenProvider.generateToken(signData,principal.getAuthorities());
-                ResponseData r= ResponseData.ok("登录成功！");
+                ResponseResult r= ResponseResult.ok("登录成功！");
                 Map<String,Object> data=new HashMap<String,Object>();
                 data.put("username", principal.getUsername());
                 data.put("nickName",principal.getNickName());
@@ -165,13 +162,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 返回登录失败后数据
         loginFilter.setAuthenticationFailureHandler(new AuthenticationFailureHandler() {
             public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
-                ResponseData r= ResponseData.error(e.getMessage());
+                ResponseResult r= ResponseResult.error(e.getMessage());
                 if(e.getMessage().indexOf("Bad captcha")!=-1){
-                    r= ResponseData.error("验证码错误！");
+                    r= ResponseResult.error("验证码错误！");
                 }else if(e.getMessage().indexOf("Bad credentials")!=-1){
-                    r= ResponseData.error("用户名或密码错误！");
+                    r= ResponseResult.error("用户名或密码错误！");
                 }else if(e.getMessage().indexOf("Bad grant")!=-1){
-                    r= ResponseData.error(" 用户没有操作权限，请联系管理员！");
+                    r= ResponseResult.error(" 用户没有操作权限，请联系管理员！");
                 }
                 response.setContentType("application/json;charset=utf-8");
                 PrintWriter out = response.getWriter();
@@ -246,7 +243,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             response.setCharacterEncoding("utf-8");
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             PrintWriter out = response.getWriter();
-            ResponseData r=ResponseData.ok("退出成功！");
+            ResponseResult r= ResponseResult.ok("退出成功！");
             out.write(JacksonUtils.toJson(r));
             out.flush();
             out.close();
@@ -284,7 +281,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         private void checkToken(HttpServletRequest request,HttpServletResponse response) throws IOException {
             String token = getRequestToken(request);
             if (token == null || !jwtTokenProvider.verifyToken(token)) {
-                ResponseData r = ResponseData.error("token失效或认证过期！");
+                ResponseResult r = ResponseResult.error("token失效或认证过期！");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json;charset=utf-8");
                 PrintWriter out = response.getWriter();

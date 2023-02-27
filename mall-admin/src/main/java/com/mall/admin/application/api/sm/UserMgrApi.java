@@ -2,17 +2,14 @@ package com.mall.admin.application.api.sm;
 import com.mall.admin.application.external.auth.UserAuthService;
 import com.mall.admin.application.service.FuncMgrService;
 import com.mall.admin.application.service.UserMgrService;
-import com.mall.admin.common.config.FeignConfig;
 import com.mall.admin.common.jwt.JwtTokenProvider;
-import com.mall.admin.common.utils.RequestContextUtils;
 import com.mall.admin.domain.entity.Func;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -59,15 +56,15 @@ public class UserMgrApi {
     @ResponseBody
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
     @ApiOperation("查询用户信息数据")
-    public ResponseData getUserInfo(@RequestParam Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult getUserInfo(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             res=userAuthService.getPrincipalInfo(params);
 //            String username = JwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
 //            res.setData(userMgrService.getUserInfo(username));
         }catch (Exception e){
             log.error(e.getMessage());
-            res=ResponseData.error(e.getMessage());
+            res= ResponseResult.error(e.getMessage());
         }
         return res;
     }
@@ -79,13 +76,13 @@ public class UserMgrApi {
     @ResponseBody
     @PostMapping(value = "/add")
     @ApiOperation("新增用户信息数据")
-    public ResponseData add(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult add(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             userMgrService.addUserInfo(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -97,8 +94,8 @@ public class UserMgrApi {
     @ResponseBody
     @RequestMapping(value = "/getUserFunc", method = RequestMethod.GET)
     @ApiOperation("查询用户功能数据")
-    public ResponseData getUserFunc(@RequestParam Map<String, Object> params) {
-        ResponseData responseData=ResponseData.ok();
+    public ResponseResult getUserFunc(@RequestParam Map<String, Object> params) {
+        ResponseResult responseData= ResponseResult.ok();
         String username = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
         List<Func> funcRouteList = null;
         funcRouteList=funcMgrService.getUserFuncList(username,username);

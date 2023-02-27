@@ -1,6 +1,6 @@
 package com.mall.admin.application.external.camunda;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,7 @@ public interface ProcessInstanceService {
      * @return
      */
     @PostMapping(value = "/process/startProcessInstance")
-    public ResponseData startProcessInstance(@RequestBody Map<String, Object> params);
+    public ResponseResult startProcessInstance(@RequestBody Map<String, Object> params);
 
     /**
      * 启动和完成流程实例
@@ -30,5 +30,5 @@ public interface ProcessInstanceService {
      * @return
      */
     @PostMapping(value = "/process/startAndFinishProcessInstance")
-    public ResponseData startAndFinishProcessInstance(@RequestBody Map<String, Object> params);
+    public ResponseResult startAndFinishProcessInstance(@RequestBody Map<String, Object> params);
 }

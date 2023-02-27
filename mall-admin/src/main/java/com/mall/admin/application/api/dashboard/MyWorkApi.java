@@ -2,7 +2,7 @@ package com.mall.admin.application.api.dashboard;
 
 import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.external.camunda.TaskService;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +25,13 @@ public class MyWorkApi extends BaseApi {
     @ResponseBody
     @GetMapping("/getMyWorkList")
     @ApiOperation("查询我的待办列表")
-    public ResponseData getMyWorkList(@RequestParam Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult getMyWorkList(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             res=taskService.listForPage(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

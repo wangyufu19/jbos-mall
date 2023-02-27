@@ -1,6 +1,6 @@
 package com.mall.workflow.application.api;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.workflow.application.service.ProcessInstanceService;
 import io.swagger.annotations.Api;
@@ -28,8 +28,8 @@ public class ProcessInstanceMgrApi {
     @ResponseBody
     @PostMapping(value = "/startProcessInstance")
     @ApiOperation("启动流程实例")
-    public ResponseData startProcessInstance(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult startProcessInstance(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String userId=StringUtils.replaceNull(params.get("userId"));
         String processDefinitionKey= StringUtils.replaceNull(params.get("processDefinitionKey"));
         String businessKey= StringUtils.replaceNull(params.get("businessKey"));
@@ -45,7 +45,7 @@ public class ProcessInstanceMgrApi {
             res.setData(data);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
         }
         if(log.isDebugEnabled()){
             log.info("============启动流程实例[" +
@@ -61,8 +61,8 @@ public class ProcessInstanceMgrApi {
     @ResponseBody
     @PostMapping(value = "/startAndFinishProcessInstance")
     @ApiOperation("启动和完成流程实例")
-    public ResponseData startAndFinishProcessInstance(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult startAndFinishProcessInstance(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String userId=StringUtils.replaceNull(params.get("userId"));
         String processDefinitionKey= StringUtils.replaceNull(params.get("processDefinitionKey"));
         String businessKey= StringUtils.replaceNull(params.get("businessKey"));
@@ -78,7 +78,7 @@ public class ProcessInstanceMgrApi {
             res.setData(data);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
         }
         if(log.isDebugEnabled()){
             log.info("============启动和完成流程实例[" +

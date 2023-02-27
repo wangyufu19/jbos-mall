@@ -2,7 +2,7 @@ package com.mall.auth.application.api;
 
 import com.google.code.kaptcha.Producer;
 import com.mall.auth.application.service.CaptchaService;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -42,8 +42,8 @@ public class CaptchaApi {
     @ResponseBody
     @RequestMapping("/captcha")
     @ApiOperation("登录验证码")
-    public ResponseData captcha() throws IOException {
-        ResponseData res=ResponseData.ok();
+    public ResponseResult captcha() throws IOException {
+        ResponseResult res= ResponseResult.ok();
         ByteArrayOutputStream out=new ByteArrayOutputStream();
         String text=producer.createText();
         BufferedImage image=producer.createImage(text);
@@ -58,7 +58,7 @@ public class CaptchaApi {
             captchaService.addCaptcha(text,captchaToken);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

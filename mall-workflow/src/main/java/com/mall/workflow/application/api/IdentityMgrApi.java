@@ -1,6 +1,6 @@
 package com.mall.workflow.application.api;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.workflow.application.service.IdentityMgrService;
 import io.swagger.annotations.Api;
@@ -26,15 +26,15 @@ public class IdentityMgrApi {
     @ResponseBody
     @PostMapping(value = "/create")
     @ApiOperation("创建用户")
-    public ResponseData create(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult create(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String userId=StringUtils.replaceNull(params.get("userId"));
         String userName= StringUtils.replaceNull(params.get("userName"));
         try {
             identityMgrService.createUser(userId,userName);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,e.getMessage());
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE,e.getMessage());
         }
         if(log.isDebugEnabled()){
             log.info("============创建用户[" +

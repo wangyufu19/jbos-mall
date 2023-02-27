@@ -1,7 +1,7 @@
 package com.mall.product.application.api;
 
 import com.mall.common.response.BaseApi;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.product.application.service.CategoryService;
 import com.mall.product.domain.entity.Category;
@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +35,8 @@ public class CategoryMgrApi extends BaseApi {
     @ResponseBody
     @GetMapping(value = "/tree")
     @ApiOperation("得到商品列表")
-    public ResponseData tree(@RequestParam Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult tree(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String parentId = StringUtils.replaceNull(params.get("parentId"));
         if (StringUtils.isNUll(parentId)) {
             parentId = TreeNode.ROOT_ID;
@@ -47,7 +46,7 @@ public class CategoryMgrApi extends BaseApi {
             res.setData(treeNodeList);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -59,8 +58,8 @@ public class CategoryMgrApi extends BaseApi {
     @ResponseBody
     @GetMapping(value = "/list")
     @ApiOperation("得到商品列表")
-    public ResponseData list(@RequestParam Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult list(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String isPage= StringUtils.replaceNull(params.get("isPage"));
         String parentCode=StringUtils.replaceNull(params.get("parentCode"));
         if(StringUtils.isNUll(parentCode)){
@@ -78,7 +77,7 @@ public class CategoryMgrApi extends BaseApi {
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

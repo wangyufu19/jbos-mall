@@ -34,7 +34,7 @@ public class BaseApi {
 	 *
 	 * @param datas
 	 */
-	public void doFinishPage(ResponseData res, List datas) {
+	public void doFinishPage(ResponseResult res, List datas) {
 		PageInfo pageInfo = new PageInfo(datas);
 		res.setData(pageInfo);
 	}

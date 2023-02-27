@@ -1,7 +1,7 @@
 package com.mall.gateway.application.api;
 
 import com.alibaba.nacos.common.utils.JacksonUtils;
-import com.mall.gateway.application.api.response.ResponseData;
+import com.mall.gateway.application.api.response.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
@@ -24,7 +24,7 @@ public class GatewayFallbackApi {
         Exception hystrix=exchange.getAttribute(ServerWebExchangeUtils.HYSTRIX_EXECUTION_EXCEPTION_ATTR);
         Route route=exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
         log.error(hystrix.getMessage());
-        ResponseData r=ResponseData.error("服务不可用");
+        ResponseResult r= ResponseResult.error("服务不可用");
         Map<String,Object> data=new HashMap<String,Object>();
         data.put("serviceId",route.getId());
         r.setData(data);

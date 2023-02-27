@@ -1,6 +1,6 @@
 package com.mall.product.application.api;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.product.application.service.FileUploadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,18 +34,18 @@ public class FileUploadApi {
     @PostMapping(value = "/upload")
     //@CrossOrigin
     @ApiOperation("上传一个文件")
-    public ResponseData upload(MultipartFile file,@RequestParam Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult upload(MultipartFile file, @RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             //判断合法的文件类型
             if(fileUploadService.includeExtensions(file)){
                 fileUploadService.upload(file,params);
             }else{
-                res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+                res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -58,13 +58,13 @@ public class FileUploadApi {
     @PostMapping(value = "/multiUpload")
     //@CrossOrigin
     @ApiOperation("上传多个文件")
-    public ResponseData multiUpload(MultipartFile[] files,@RequestParam Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult multiUpload(MultipartFile[] files, @RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             fileUploadService.upload(files,params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -76,13 +76,13 @@ public class FileUploadApi {
     @ResponseBody
     @PostMapping(value = "/delete")
     @ApiOperation("上传一个文件")
-    public ResponseData delete(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult delete(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             fileUploadService.delete(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

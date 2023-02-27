@@ -4,7 +4,7 @@ import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.external.camunda.IdentityMgrService;
 import com.mall.admin.application.service.EmpMgrService;
 import com.mall.admin.domain.entity.Emp;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +33,8 @@ public class EmpMgrApi extends BaseApi {
      */
     @ResponseBody
     @RequestMapping("/getEmpList")
-    public ResponseData getEmpList(@RequestParam Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult getEmpList(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String isPage= StringUtils.replaceNull(params.get("isPage"));
         try{
             if("true".equals(isPage)){
@@ -48,7 +48,7 @@ public class EmpMgrApi extends BaseApi {
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -60,14 +60,14 @@ public class EmpMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/addEmp", method = RequestMethod.POST)
     @ApiOperation("新增人员")
-    public ResponseData addEmp(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult addEmp(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             params.put("id", UUID.randomUUID().toString());
             empMgrService.addEmp(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -79,13 +79,13 @@ public class EmpMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/updateEmp", method = RequestMethod.POST)
     @ApiOperation("修改人员")
-    public ResponseData updateEmp(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult updateEmp(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             empMgrService.updateEmp(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -97,14 +97,14 @@ public class EmpMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/deleteEmp", method = RequestMethod.POST)
     @ApiOperation("删除人员")
-    public ResponseData deleteEmp(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult deleteEmp(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String id= StringUtils.replaceNull(params.get("id"));
         try{
             empMgrService.deleteEmp(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -116,13 +116,13 @@ public class EmpMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping(value = "/synchToCamunda", method = RequestMethod.POST)
     @ApiOperation("同步到CAMUNDA")
-    public ResponseData synchToCamunda(@RequestBody Map<String, Object> params){
-        ResponseData res=ResponseData.ok();
+    public ResponseResult synchToCamunda(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             res=identityMgrService.create(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

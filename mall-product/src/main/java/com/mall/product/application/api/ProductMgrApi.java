@@ -1,7 +1,7 @@
 package com.mall.product.application.api;
 
 import com.mall.common.response.BaseApi;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import com.mall.product.application.external.admin.IdGeneratorService;
@@ -46,8 +46,8 @@ public class ProductMgrApi extends BaseApi {
     @ResponseBody
     @GetMapping(value = "/list")
     @ApiOperation("得到商品列表")
-    public ResponseData list(@RequestParam Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult list(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         String isPage= StringUtils.replaceNull(params.get("isPage"));
         try{
             if("true".equals(isPage)){
@@ -61,7 +61,7 @@ public class ProductMgrApi extends BaseApi {
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -73,13 +73,13 @@ public class ProductMgrApi extends BaseApi {
     @ResponseBody
     @GetMapping(value = "/getNo")
     @ApiOperation("得到商品编号")
-    public ResponseData getNo(@RequestParam Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult getNo(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             Map<String, Object> idMap=new HashMap<String, Object>();
             idMap.put("bizType",IdGeneratorService.BIZ_TYPE_PRODUCT);
-            ResponseData idRes=idGeneratorService.get(idMap);
-            if(idRes.getRetCode().equals(ResponseData.RETCODE_SUCCESS)){
+            ResponseResult idRes=idGeneratorService.get(idMap);
+            if(idRes.getRetCode().equals(ResponseResult.RETCODE_SUCCESS)){
                 Map<String, Object> retMap=(Map<String, Object>)idRes.getData();
                 idMap.put("seqId",StringUtils.getUUID());
                 //商品编号=YYYYMMDD+业务类型+ID版本+ID
@@ -88,11 +88,11 @@ public class ProductMgrApi extends BaseApi {
                 );
                 res.setData(idMap);
             }else{
-                res=ResponseData.error(ResponseData.RETCODE_FAILURE,"商品编号生成失败");
+                res= ResponseResult.error(ResponseResult.RETCODE_FAILURE,"商品编号生成失败");
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -104,8 +104,8 @@ public class ProductMgrApi extends BaseApi {
     @ResponseBody
     @GetMapping(value = "/get")
     @ApiOperation("得到商品信息")
-    public ResponseData get(@RequestParam Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult get(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             Product product=productService.getProductInfo(params);
             params.put("productSeqId",StringUtils.replaceNull(params.get("seqId")));
@@ -118,7 +118,7 @@ public class ProductMgrApi extends BaseApi {
             res.setData(retMap);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -130,15 +130,15 @@ public class ProductMgrApi extends BaseApi {
     @ResponseBody
     @PostMapping(value = "/add")
     @ApiOperation("新增商品信息")
-    public ResponseData add(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult add(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         Map<String,Object> productMap=(Map<String,Object>)params.get("formObj");
         List<Map<String,Object>> skuList=(ArrayList<Map<String,Object>>)params.get("sku");
         try{
             this.productService.addProductInfo(productMap,skuList);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -150,8 +150,8 @@ public class ProductMgrApi extends BaseApi {
     @ResponseBody
     @PostMapping(value = "/saveDraft")
     @ApiOperation("保存商品信息")
-    public ResponseData saveDraft(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult saveDraft(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         Map<String,Object> productMap=(Map<String,Object>)params.get("formObj");
         List<Map<String,Object>> skuList=(ArrayList<Map<String,Object>>)params.get("sku");
         try{
@@ -159,7 +159,7 @@ public class ProductMgrApi extends BaseApi {
             this.productService.addProductInfo(productMap,skuList);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -171,54 +171,54 @@ public class ProductMgrApi extends BaseApi {
     @ResponseBody
     @PostMapping(value = "/update")
     @ApiOperation("新增商品信息")
-    public ResponseData update(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult update(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         Map<String,Object> productMap=(Map<String,Object>)params.get("formObj");
         List<Map<String,Object>> skuList=(ArrayList<Map<String,Object>>)params.get("sku");
         try{
             this.productService.updateProductInfo(productMap,skuList);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
     @ResponseBody
     @PostMapping(value = "/offShelfOne")
     @ApiOperation("下架一个商品")
-    public ResponseData offShelfOne(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult offShelfOne(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             this.productService.offShelfOne(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
     @ResponseBody
     @PostMapping(value = "/shelfOne")
     @ApiOperation("上架一个商品")
-    public ResponseData shelfOne(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult shelfOne(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             this.productService.shelfOne(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
     @ResponseBody
     @PostMapping(value = "/deleteOne")
     @ApiOperation("删除一个商品")
-    public ResponseData deleteOne(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult deleteOne(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             this.productService.deleteOneProductList(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

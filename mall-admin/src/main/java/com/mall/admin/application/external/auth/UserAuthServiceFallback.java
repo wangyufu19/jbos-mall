@@ -1,9 +1,7 @@
 package com.mall.admin.application.external.auth;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
@@ -15,7 +13,7 @@ import java.util.Map;
  */
 @Component
 public class UserAuthServiceFallback implements UserAuthService{
-    public ResponseData getPrincipalInfo(@RequestParam Map<String, Object> params) {
-        return ResponseData.error();
+    public ResponseResult getPrincipalInfo(@RequestParam Map<String, Object> params) {
+        return ResponseResult.error();
     }
 }

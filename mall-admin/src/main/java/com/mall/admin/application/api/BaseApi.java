@@ -2,7 +2,7 @@ package com.mall.admin.application.api;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.common.utils.NumberUtils;
 import java.util.List;
@@ -34,7 +34,7 @@ public class BaseApi {
 	 * 完成分页
 	 * @param datas
 	 */
-	public void doFinishPage(ResponseData res, List datas){
+	public void doFinishPage(ResponseResult res, List datas){
 		PageInfo pageInfo=new PageInfo(datas);
 		res.setData(pageInfo);
 	}

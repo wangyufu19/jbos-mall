@@ -1,6 +1,6 @@
 package com.mall.gateway.common.zuul.filter;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.JacksonUtils;
 import com.mall.gateway.common.jwt.JwtTokenProvider;
 import com.netflix.zuul.ZuulFilter;
@@ -82,13 +82,13 @@ public class TokenFilter extends ZuulFilter {
                 logger.error("access token is empty");
                 ctx.setSendZuulResponse(false);
                 ctx.setResponseStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
-                ctx.setResponseBody(JacksonUtils.toJson(ResponseData.error("access token is empty")));
+                ctx.setResponseBody(JacksonUtils.toJson(ResponseResult.error("access token is empty")));
                 return null;
             }
             if (!jwtTokenProvider.verifyToken(accessToken)) {
                 ctx.setSendZuulResponse(false);
                 ctx.setResponseStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
-                ctx.setResponseBody(JacksonUtils.toJson(ResponseData.error("token失效或认证过期！")));
+                ctx.setResponseBody(JacksonUtils.toJson(ResponseResult.error("token失效或认证过期！")));
                 return null;
             }
 
@@ -96,7 +96,7 @@ public class TokenFilter extends ZuulFilter {
             logger.error("TokenFilter Filter Exception");
             ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(401);
-            ctx.setResponseBody(JacksonUtils.toJson(ResponseData.error("TokenFilter Filter Exception")));
+            ctx.setResponseBody(JacksonUtils.toJson(ResponseResult.error("TokenFilter Filter Exception")));
         }
         return null;
     }

@@ -1,6 +1,6 @@
 package com.mall.admin.application.external.camunda;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,5 +18,5 @@ import java.util.Map;
 public interface IdentityMgrService {
 
     @PostMapping(value = "/user/create")
-    public ResponseData create(@RequestBody Map<String, Object> params);
+    public ResponseResult create(@RequestBody Map<String, Object> params);
 }

@@ -1,6 +1,6 @@
 package com.mall.member.application.api;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.member.application.external.admin.UserMgrService;
 import com.mall.member.application.service.AccountService;
@@ -36,13 +36,13 @@ public class AccountMgrApi {
     @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ApiOperation("会员登录")
-    public ResponseData login(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult login(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             params.put("id", UUID.randomUUID().toString());
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -54,12 +54,12 @@ public class AccountMgrApi {
     @ResponseBody
     @RequestMapping(value = "/registry", method = RequestMethod.POST)
     @ApiOperation("会员注册")
-    public ResponseData registry(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult registry(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             //会员账户是否存在
             if(accountService.isExists(params)){
-                res=ResponseData.error(ResponseData.RETCODE_FAILURE,"对不起，该手机或邮箱已存在!");
+                res= ResponseResult.error(ResponseResult.RETCODE_FAILURE,"对不起，该手机或邮箱已存在!");
                 return res;
             }
             Map<String, Object> paramMap=new HashMap<String, Object>();
@@ -71,7 +71,7 @@ public class AccountMgrApi {
             res=userMgrService.add(paramMap);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -83,8 +83,8 @@ public class AccountMgrApi {
     @ResponseBody
     @RequestMapping(value = "/lock", method = RequestMethod.POST)
     @ApiOperation("会员锁定")
-    public ResponseData lock(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult lock(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             Account account=new Account();
             account.setAccount(StringUtils.replaceNull(params.get("account")));
@@ -92,7 +92,7 @@ public class AccountMgrApi {
             accountService.updateAccountStatus(account);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }
@@ -104,8 +104,8 @@ public class AccountMgrApi {
     @ResponseBody
     @RequestMapping(value = "/unlock", method = RequestMethod.POST)
     @ApiOperation("会员解锁")
-    public ResponseData unlock(@RequestBody Map<String, Object> params){
-        ResponseData res= ResponseData.ok();
+    public ResponseResult unlock(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
         try{
             Account account=new Account();
             account.setAccount(StringUtils.replaceNull(params.get("account")));
@@ -113,7 +113,7 @@ public class AccountMgrApi {
             accountService.updateAccountStatus(account);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res=ResponseData.error(ResponseData.RETCODE_FAILURE,ResponseData.RETMSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.RETCODE_FAILURE, ResponseResult.RETMSG_FAILURE);
         }
         return res;
     }

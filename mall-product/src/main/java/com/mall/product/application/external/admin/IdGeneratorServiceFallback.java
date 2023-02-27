@@ -1,6 +1,6 @@
 package com.mall.product.application.external.admin;
 
-import com.mall.common.response.ResponseData;
+import com.mall.common.response.ResponseResult;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 @Component
 public class IdGeneratorServiceFallback implements IdGeneratorService {
 
-    public ResponseData get(@RequestParam Map<String, Object> params){
-        return ResponseData.error();
+    public ResponseResult get(@RequestParam Map<String, Object> params){
+        return ResponseResult.error();
     }
 }
