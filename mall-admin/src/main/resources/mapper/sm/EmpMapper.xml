@@ -50,8 +50,8 @@
     <!--更新人员用户信息-->
     <update id="updateEmpUser" parameterType="java.util.Map">
         UPDATE JBOS_USER
-        SET USERNAME=#{empName},USERSTATUS=#{empStatus}
-        WHERE LOGINNAME=#{badge}
+        SET NICKNAME=#{empName},USERSTATUS=#{empStatus}
+        WHERE USERNAME=#{badge}
     </update>
     <!--删除人员信息-->
     <delete id="deleteEmp" parameterType="java.lang.String">
@@ -61,6 +61,6 @@
     <!--删除人员用户信息-->
     <delete id="deleteEmpUser" parameterType="java.lang.String">
         DELETE FROM JBOS_USER
-        WHERE LOGINNAME=#{LOGINNAME}
+        WHERE USERNAME=#{LOGINNAME}
     </delete>
 </mapper>
