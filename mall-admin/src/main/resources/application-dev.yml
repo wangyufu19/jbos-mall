@@ -14,8 +14,8 @@ spring:
     cache: false
   security:
     filter:
-      loginUri: /login
-      excludeUri: /captcha,/demo/**
+      loginUri: /auth/login
+      excludeUri: /auth/captcha,/demo/**
   jwt:
     secret: 123456  #密钥
     expireTime: 720   #过期时间，默认60分钟
