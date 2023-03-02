@@ -65,6 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtTokenProvider jwtTokenProvider;
     @Value("${spring.security.filter.loginUri}")
     private String loginUri;
+    @Value("${spring.security.filter.logoutUri}")
+    private String logoutUri;
     @Value("${spring.security.filter.excludeUri}")
     private String excludeUri;
     /**
@@ -96,7 +98,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JwtAuthenticationFilter(),LoginFilter.class)
-                .logout()
+                .logout().logoutUrl(this.logoutUri)
                 .invalidateHttpSession(true)
                 .addLogoutHandler(new WebLogoutHandler()).logoutSuccessHandler(new WebLogoutSuccessHandler())
                 .and()

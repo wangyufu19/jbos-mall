@@ -15,6 +15,7 @@ spring:
   security:
     filter:
       loginUri: /auth/login
+      logoutUri: /auth/logout
       excludeUri: /auth/captcha,/demo/**
   jwt:
     secret: 123456  #密钥
