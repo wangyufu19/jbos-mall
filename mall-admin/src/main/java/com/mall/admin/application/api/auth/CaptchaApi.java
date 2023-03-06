@@ -26,6 +26,7 @@ import java.util.UUID;
  * @date 2019-01-31
  */
 @RestController
+@RequestMapping("/auth")
 @Slf4j
 @Api("登录验证码接口")
 public class CaptchaApi {
