@@ -5,5 +5,5 @@ package ${packageName};
 * @author ${author}
 * @since ${date}
 */
-public class ${repo} {
+public class ${repository} {
 }
