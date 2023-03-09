@@ -1,6 +1,6 @@
 spring:
   application:
-    name: mall-generator
+    name: ${springApplicationName}
   profiles:
     active: dev
 

@@ -120,7 +120,7 @@ public class CodeGenerator {
         this.outputFileMapper(objectMap,templateConfig.getMapper(),javaOutDir,packageInfo,packagePath,entityName);
     }
     private void outputFileYml(Map<String, Object> objectMap,String templatePath,String resourceOutDir) throws Exception {
-        File ymlFile=new File(resourceOutDir+File.separator+"ftl"+File.separator+TemplateConfig.TLT_YML);
+        File ymlFile=new File(resourceOutDir+File.separator+TemplateConfig.TLT_YML);
         this.outputFile(objectMap,templatePath,ymlFile);
     }
     private void outputFileRepo(Map<String, Object> objectMap,String templatePath,String javaOutDir,String packageInfo,String packagePath,String entityName) throws Exception {
