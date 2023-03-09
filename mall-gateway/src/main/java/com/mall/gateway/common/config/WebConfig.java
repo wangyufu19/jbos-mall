@@ -4,6 +4,7 @@ import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.JacksonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -28,6 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .maxAge(3600);
     }
+    @ConditionalOnMissingBean(WebSecurityConfig.class)
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new TokenInterceptor())
                 .excludePathPatterns(excludeUri.split(","))
