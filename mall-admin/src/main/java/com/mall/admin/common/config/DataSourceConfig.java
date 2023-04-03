@@ -24,15 +24,15 @@ public class DataSourceConfig {
     public DataSource defaultDataSource(){
         return DruidDataSourceBuilder.create().build();
     }
-
-    @Bean(name = "camundaBpmDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.druid.camunda")
-    public DataSource camundaDataSource(){
-        return DruidDataSourceBuilder.create().build();
-    }
-
-    @Bean(name="camundaBpmTransactionManager")
-    public PlatformTransactionManager camundaTransactionManager(@Qualifier("camundaBpmDataSource") DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
+//
+//    @Bean(name = "camundaBpmDataSource")
+//    @ConfigurationProperties(prefix = "spring.datasource.druid.camunda")
+//    public DataSource camundaDataSource(){
+//        return DruidDataSourceBuilder.create().build();
+//    }
+//
+//    @Bean(name="camundaBpmTransactionManager")
+//    public PlatformTransactionManager camundaTransactionManager(@Qualifier("camundaBpmDataSource") DataSource dataSource) {
+//        return new DataSourceTransactionManager(dataSource);
+//    }
 }

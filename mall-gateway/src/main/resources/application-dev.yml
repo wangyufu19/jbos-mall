@@ -31,7 +31,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     druid:
       default:
-        url: jdbc:mysql://localhost:3306/jbos?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+        url: jdbc:mysql://localhost:3306/jbos?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
         username: jbos
         password: jbos
       initial-size: 10
