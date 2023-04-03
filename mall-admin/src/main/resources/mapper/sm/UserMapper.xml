@@ -3,28 +3,28 @@
 <mapper namespace="com.mall.admin.infrastructure.repository.mapper.UserMapper">
     <!--根据ID查询用户信息-->
     <select id="getUserInfoById" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS
+        SELECT A.ID,A.NICKNAME,A.USERNAME,A.USERSTATUS
         FROM JBOS_USER A
         WHERE A.ID=#{userid}
     </select>
     <!--根据登录名称查询用户信息-->
     <select id="getUserInfoByLoginName" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS
+        SELECT A.ID,A.NICKNAME,A.USERNAME,A.USERSTATUS
         FROM JBOS_USER A
-        WHERE A.LOGINNAME=#{loginName}
+        WHERE A.USERNAME=#{loginName}
     </select>
     <!--查询用户信息-->
     <select id="getUserInfo" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT A.ID,A.LOGINNAME,A.USERNAME,B.DEPID,C.DEPNAME,B.ORGID,A.USERSTATUS
+        SELECT A.ID,A.NICKNAME,A.USERNAME,B.DEPID,C.DEPNAME,B.ORGID,A.USERSTATUS
         FROM JBOS_USER A
         LEFT JOIN JBOS_EMP B ON A.LOGINNAME=B.BADGE
 		LEFT JOIN JBOS_DEP C ON B.DEPID=C.ID
-        WHERE A.LOGINNAME=#{loginName}
+        WHERE A.NICKNAME=#{loginName}
     </select>
     <!--新增用户信息-->
     <insert id="addUserInfo" parameterType="java.util.Map">
         INSERT INTO JBOS_USER(
-            ID,LOGINNAME,USERNAME,PASSWORD,SALT,USERSTATUS
+            ID,USERNAME,NICKNAME,PASSWORD,SALT,USERSTATUS
         )VALUES (
             #{id},#{loginName},#{username},#{password},#{salt},'running'
         )
