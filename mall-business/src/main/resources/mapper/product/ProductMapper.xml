@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.business.infrastructure.repository.product.mapper.ProductMapper">
+    <!--得到商品信息-->
+    <select id="getProductInfo" parameterType="java.util.Map" resultType="com.mall.business.domain.entity.product.Product">
+        SELECT A.SEQ_ID,A.CATEGORY_CODE,B.NAME CATEGORY_NAME,A.PRODUCT_CODE,A.PRODUCT_NAME,A.TITLE,A.STATUS,A.CREATE_TIME
+        FROM PM_PRODUCT A
+        LEFT JOIN PM_PRODUCT_CATEGORY B ON A.CATEGORY_CODE=B.CODE
+        WHERE A.SEQ_ID=#{seqId}
+    </select>
+</mapper>

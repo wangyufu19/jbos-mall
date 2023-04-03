@@ -3,10 +3,10 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 8060
+  port: 9070
 spring:
   application:
-    name: mall-gateway
+    name: mall-business
   profiles:
     active: dev
 #actuator 端点信息配置
@@ -14,10 +14,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*" #开启所有端点
+        include: "*"
   endpoint:
     health:
-      show-details: ALWAYS #对所有用户暴露详细信息
+      show-details: ALWAYS
 ---
 spring:
   profiles: dev
@@ -34,18 +34,17 @@ spring:
         server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
         file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
         group: dev  # 配置组，默认就是 DEFAULT_GROUP
-##eureka:
-##  instance:
-##    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
-##    lease-expiration-duration-in-seconds: 10 #定义服务失效的时间，默认为90秒
-##    prefer-ip-address: true
-##  client:
-##    fetch-registry: true
-##    register-with-eureka: true
-##    registry-fetch-interval-seconds: 5 #获取注册信息的时间间隔（s），默认为30秒
-##    service-url:
-##      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
-#
+#eureka:
+#  instance:
+#    lease-renewal-interval-in-seconds: 5 #定义服务续约任务的调用间隔时间，默认为30秒
+#    lease-expiration-duration-in-seconds: 10 #定义服务失效的时间，默认为90秒
+#    prefer-ip-address: true
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    registry-fetch-interval-seconds: 10 #间隔多久拉取服务注册信息，默认为30秒
+#    service-url:
+#      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
 ---
 spring:
   profiles: sit

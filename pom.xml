@@ -21,11 +21,11 @@
         <module>mall-admin</module>
         <module>mall-workflow</module>
         <module>mall-member</module>
-        <module>mall-product</module>
         <module>mall-app-admin</module>
         <module>mall-springcloud-gateway</module>
         <module>mall-data</module>
         <module>mall-generator</module>
+        <module>mall-business</module>
     </modules>
 
     <properties>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.business.infrastructure.repository.product.mapper.ProductListMapper">
+    <!--得到商品信息列表-->
+    <select id="getProductList" parameterType="java.util.Map" resultType="com.mall.business.domain.entity.product.ProductList">
+        SELECT A.SEQ_ID,B.SEQ_ID AS PRODUCT_SEQ_ID,B.PRODUCT_CODE,B.PRODUCT_NAME,B.TITLE,A.PRICE_SCOPE,A.AMOUNT,A.INVENTORY,B.STATUS,B.CREATE_TIME
+        FROM PM_PRODUCT_LIST A
+        INNER JOIN PM_PRODUCT B ON A.PRODUCT_SEQ_ID=B.SEQ_ID
+        WHERE A.IS_VALID=1
+        <choose>
+            <when test="status == 'all'">
+                AND B.STATUS!='99'
+            </when>
+            <otherwise>
+                <if test="status != null and status != ''">
+                    AND B.STATUS=#{status}
+                </if>
+            </otherwise>
+        </choose>
+        <if test="productCodeS != null and productCodeS != ''">
+            AND B.PRODUCT_CODE LIKE '%${productCodeS}%'
+        </if>
+        <if test="productNameS != null and productNameS != ''">
+            AND B.TITLE LIKE '%${productNameS}%'
+        </if>
+    </select>
+</mapper>
