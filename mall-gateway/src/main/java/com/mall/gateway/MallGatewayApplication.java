@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
  * @author youfu.wang
  * @date 2021-08-19
  */
-@SpringBootApplication(exclude={DruidDataSourceAutoConfigure.class, DataSourceAutoConfiguration.class})
+@SpringBootApplication
 @EnableDiscoveryClient
 @EnableZuulProxy
 public class MallGatewayApplication extends SpringBootServletInitializer {

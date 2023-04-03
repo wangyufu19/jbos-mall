@@ -29,12 +29,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .maxAge(3600);
     }
-    @ConditionalOnMissingBean(WebSecurityConfig.class)
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new TokenInterceptor())
-                .excludePathPatterns(excludeUri.split(","))
-                .addPathPatterns("/**");
-    }
+//    @ConditionalOnMissingBean(WebSecurityConfig.class)
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new TokenInterceptor())
+//                .excludePathPatterns(excludeUri.split(","))
+//                .addPathPatterns("/**");
+//    }
     public class TokenInterceptor implements HandlerInterceptor {
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
             log.info("uri={}",request.getRequestURI());

@@ -1,10 +1,9 @@
 package com.mall.admin.application.api.sm;
-import com.mall.admin.application.external.auth.UserAuthService;
 import com.mall.admin.application.service.FuncMgrService;
 import com.mall.admin.application.service.UserMgrService;
-import com.mall.admin.common.jwt.JwtTokenProvider;
 import com.mall.admin.domain.entity.Func;
 import com.mall.common.response.ResponseResult;
+import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +27,6 @@ import java.util.Map;
 @Slf4j
 public class UserMgrApi {
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    private UserAuthService userAuthService;
-    @Autowired
     private UserMgrService userMgrService;
     @Autowired
     private FuncMgrService funcMgrService;
@@ -46,27 +41,6 @@ public class UserMgrApi {
         } else {
             return accessToken;
         }
-    }
-
-    /**
-     * 查询用户信息数据
-     * @param params
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
-    @ApiOperation("查询用户信息数据")
-    public ResponseResult getUserInfo(@RequestParam Map<String, Object> params){
-        ResponseResult res= ResponseResult.ok();
-        try{
-            res=userAuthService.getPrincipalInfo(params);
-//            String username = JwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
-//            res.setData(userMgrService.getUserInfo(username));
-        }catch (Exception e){
-            log.error(e.getMessage());
-            res= ResponseResult.error(e.getMessage());
-        }
-        return res;
     }
     /**
      * 新增用户信息数据
@@ -96,7 +70,7 @@ public class UserMgrApi {
     @ApiOperation("查询用户功能数据")
     public ResponseResult getUserFunc(@RequestParam Map<String, Object> params) {
         ResponseResult res= ResponseResult.ok();
-        String username = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "username");
+        String username = StringUtils.replaceNull(params.get("userId"));
         List<Func> funcRouteList = null;
         funcRouteList=funcMgrService.getUserFuncList(username,username);
         res.setData(funcRouteList);

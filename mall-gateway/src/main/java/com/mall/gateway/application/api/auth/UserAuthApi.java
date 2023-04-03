@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/principal")
+@RequestMapping("/auth")
 @Api("用户认证接口")
 public class UserAuthApi {
     @Autowired
