@@ -47,7 +47,7 @@ spring:
       max-file-size: 32MB #文件最大值，默认10MB
       max-request-size: 512MB #文件总的最大值，默认10MB
     upload:
-      repo: ${user.dir}/repo/upload #文件存储位置
+      repo: /home/repo/upload #文件存储位置
     imageio:
       endpoint-url: http://127.0.0.1/mall/image
   jackson:
