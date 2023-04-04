@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mall.admin.infrastructure.repository.mapper.UserTokenMapper">
+<mapper namespace="com.mall.admin.infrastructure.repository.sm.mapper.UserTokenMapper">
     <!--根据ID查询用户Token-->
-    <select id="getUserTokenByUserId" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.UserToken">
+    <select id="getUserTokenByUserId" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.UserToken">
         SELECT USERID,TOKEN,EXPIRETIME,UPDATETIME
         FROM JBOS_USER_TOKEN
         WHERE USERID=#{userid}
     </select>
     <!--根据accessToken查询用户Token-->
-    <select id="getUserTokenByAccessToken" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.UserToken">
+    <select id="getUserTokenByAccessToken" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.UserToken">
         SELECT USERID,TOKEN,EXPIRETIME,UPDATETIME
         FROM JBOS_USER_TOKEN
         WHERE TOKEN=#{token}
     </select>
-    <insert id="addUserToken" parameterType="com.mall.admin.domain.entity.UserToken">
+    <insert id="addUserToken" parameterType="com.mall.admin.domain.entity.sm.UserToken">
         INSERT INTO JBOS_USER_TOKEN(USERID,TOKEN,EXPIRETIME,UPDATETIME)
         VALUES(#{userId},#{token},#{expireTime},#{updateTime})
     </insert>
     <!--更新用户Token-->
-    <update id="updateUserToken" parameterType="com.mall.admin.domain.entity.UserToken">
+    <update id="updateUserToken" parameterType="com.mall.admin.domain.entity.sm.UserToken">
         UPDATE JBOS_USER_TOKEN
         SET TOKEN=#{token},EXPIRETIME=#{expireTime},UPDATETIME=#{updateTime}
         WHERE USERID=#{userId}

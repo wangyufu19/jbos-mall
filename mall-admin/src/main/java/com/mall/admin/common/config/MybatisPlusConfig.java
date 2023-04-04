@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@MapperScan(basePackages = "com.mall.admin.infrastructure.repository.mapper")
+@MapperScan(basePackages = "com.mall.admin.infrastructure.repository.*.mapper")
 public class MybatisPlusConfig {
 
     @Bean

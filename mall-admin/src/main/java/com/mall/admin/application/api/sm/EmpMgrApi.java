@@ -1,9 +1,9 @@
 package com.mall.admin.application.api.sm;
 
 import com.mall.admin.application.api.BaseApi;
-import com.mall.admin.application.external.camunda.IdentityMgrService;
-import com.mall.admin.application.service.EmpMgrService;
-import com.mall.admin.domain.entity.Emp;
+import com.mall.admin.application.service.external.camunda.IdentityMgrService;
+import com.mall.admin.application.service.sm.EmpMgrService;
+import com.mall.admin.domain.entity.sm.Emp;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
@@ -63,7 +63,6 @@ public class EmpMgrApi extends BaseApi {
     public ResponseResult addEmp(@RequestBody Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
         try{
-            params.put("id", UUID.randomUUID().toString());
             empMgrService.addEmp(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);

@@ -1,7 +1,7 @@
 package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.api.BaseApi;
-import com.mall.admin.application.external.camunda.ProcessInstanceService;
+import com.mall.admin.application.service.external.camunda.ProcessInstanceService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.common.response.ResponseResult;

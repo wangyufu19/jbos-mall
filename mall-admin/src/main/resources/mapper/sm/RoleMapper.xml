@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mall.admin.infrastructure.repository.mapper.RoleMapper">
+<mapper namespace="com.mall.admin.infrastructure.repository.sm.mapper.RoleMapper">
     <!--查询下级角色-->
-    <select id="getRoleChildrenNode"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.TreeNode">
+    <select id="getRoleChildrenNode"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.comm.TreeNode">
         SELECT T.ID,T.ROLENAME AS TEXT,
         CASE
             WHEN (SELECT COUNT(1) FROM JBOS_ROLE B WHERE B.PARENTID=T.ID)>=1 THEN 0
@@ -13,7 +13,7 @@
         ORDER BY T.ROLENAME
     </select>
     <!--查询角色数据列表-->
-    <select id="getRoleList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.Role">
+    <select id="getRoleList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.Role">
         SELECT T.ID,T.PARENTID,T.ROLECODE,T.ROLENAME,T.ROLETYPE
         FROM JBOS_ROLE T
         WHERE T.ISVALID=1
@@ -64,7 +64,7 @@
         </foreach>
     </insert>
     <!--查询角色用户列表-->
-    <select id="getRoleEmpList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.Emp">
+    <select id="getRoleEmpList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.Emp">
         SELECT T.ID,T.BADGE,T.EMPNAME,T.ORGID,
         (SELECT B.ORGNAME FROM JBOS_ORG B WHERE B.ID=T.ORGID) AS ORGNAME,
         T.DEPID,
@@ -85,7 +85,7 @@
         ORDER BY T.ORDERNO
     </select>
     <!--查询选择角色用户列表-->
-    <select id="getSelectRoleEmpList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.Emp">
+    <select id="getSelectRoleEmpList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.Emp">
         SELECT T.ID,T.BADGE,T.EMPNAME,T.ORGID,
         (SELECT B.ORGNAME FROM JBOS_ORG B WHERE B.ID=T.ORGID) AS ORGNAME,
         T.DEPID,

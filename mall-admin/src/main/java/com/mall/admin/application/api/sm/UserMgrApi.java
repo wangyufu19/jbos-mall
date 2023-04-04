@@ -1,7 +1,7 @@
 package com.mall.admin.application.api.sm;
-import com.mall.admin.application.service.FuncMgrService;
-import com.mall.admin.application.service.UserMgrService;
-import com.mall.admin.domain.entity.Func;
+import com.mall.admin.application.service.sm.FuncMgrService;
+import com.mall.admin.application.service.sm.UserMgrService;
+import com.mall.admin.domain.entity.sm.Func;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;

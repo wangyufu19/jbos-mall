@@ -2,10 +2,10 @@ package com.mall.admin.application.api.sm;
 
 
 import com.mall.admin.application.api.BaseApi;
-import com.mall.admin.application.service.RoleMgrService;
-import com.mall.admin.domain.entity.Emp;
-import com.mall.admin.domain.entity.Role;
-import com.mall.admin.domain.entity.TreeNode;
+import com.mall.admin.application.service.sm.RoleMgrService;
+import com.mall.admin.domain.entity.sm.Emp;
+import com.mall.admin.domain.entity.sm.Role;
+import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;

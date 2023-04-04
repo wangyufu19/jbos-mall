@@ -20,7 +20,6 @@
         <module>mall-gateway</module>
         <module>mall-admin</module>
         <module>mall-workflow</module>
-        <module>mall-member</module>
         <module>mall-app-admin</module>
         <module>mall-springcloud-gateway</module>
         <module>mall-data</module>

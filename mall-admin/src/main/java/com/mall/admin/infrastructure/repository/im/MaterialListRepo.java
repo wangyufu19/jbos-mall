@@ -1,7 +1,7 @@
 package com.mall.admin.infrastructure.repository.im;
 
 import com.mall.admin.domain.entity.im.MaterialList;
-import com.mall.admin.infrastructure.repository.mapper.im.MaterialListMapper;
+import com.mall.admin.infrastructure.repository.im.mapper.MaterialListMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

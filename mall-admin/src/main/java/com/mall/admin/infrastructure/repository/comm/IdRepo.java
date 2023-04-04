@@ -1,7 +1,7 @@
 package com.mall.admin.infrastructure.repository.comm;
 
 import com.mall.admin.domain.entity.comm.Id;
-import com.mall.admin.infrastructure.repository.mapper.comm.IdMapper;
+import com.mall.admin.infrastructure.repository.comm.mapper.IdMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

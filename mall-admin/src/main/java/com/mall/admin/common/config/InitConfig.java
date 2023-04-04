@@ -1,12 +1,11 @@
 package com.mall.admin.common.config;
 
-import com.mall.admin.application.service.BusinessDict;
+import com.mall.admin.application.service.sm.BusinessDict;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mall.admin.infrastructure.repository.mapper.UserMapper">
+<mapper namespace="com.mall.admin.infrastructure.repository.sm.mapper.UserMapper">
     <!--根据ID查询用户信息-->
     <select id="getUserInfoById" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT A.ID,A.NICKNAME,A.USERNAME,A.USERSTATUS
@@ -19,14 +19,14 @@
         FROM JBOS_USER A
         LEFT JOIN JBOS_EMP B ON A.LOGINNAME=B.BADGE
 		LEFT JOIN JBOS_DEP C ON B.DEPID=C.ID
-        WHERE A.NICKNAME=#{loginName}
+        WHERE A.USERNAME=#{loginName}
     </select>
     <!--新增用户信息-->
     <insert id="addUserInfo" parameterType="java.util.Map">
         INSERT INTO JBOS_USER(
             ID,USERNAME,NICKNAME,PASSWORD,SALT,USERSTATUS
         )VALUES (
-            #{id},#{loginName},#{username},#{password},#{salt},'running'
+            #{id},#{username},#{nickname},#{password},#{salt},'running'
         )
     </insert>
     <!--新增用户默认角色-->

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mall.admin.infrastructure.repository.mapper.im.MaterialBuyMapper">
+<mapper namespace="com.mall.admin.infrastructure.repository.im.mapper.MaterialBuyMapper">
     <!--查询物品采购业务列表-->
     <select id="getMaterialBuyList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.im.MaterialBuy">
         SELECT

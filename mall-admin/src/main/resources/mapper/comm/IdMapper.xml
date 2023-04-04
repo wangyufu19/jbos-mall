@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mall.admin.infrastructure.repository.mapper.comm.IdMapper">
+<mapper namespace="com.mall.admin.infrastructure.repository.comm.mapper.IdMapper">
     <!--得到当前号段-->
     <select id="getId" parameterType="java.lang.String" resultType="com.mall.admin.domain.entity.comm.Id">
         SELECT A.MAX_ID,A.STEP,A.VERSION

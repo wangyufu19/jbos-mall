@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.mm.mapper.AccountMapper">
+    <!--会员登录-->
+    <select id="getAccount" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT A.SEQ_ID,A.ACCOUNT,A.STATUS
+        FROM MM_ACCOUNT A
+        WHERE A.ACCOUNT=#{account}
+    </select>
+    <!--注册账号-->
+    <insert id="registry" parameterType="java.util.Map">
+        INSERT INTO MM_ACCOUNT(SEQ_ID,ACCOUNT,PASSWORD,STATUS)
+        VALUES(#{seqId},#{account},#{password},'10')
+    </insert>
+</mapper>

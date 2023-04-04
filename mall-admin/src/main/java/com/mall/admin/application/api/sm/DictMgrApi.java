@@ -1,11 +1,11 @@
 package com.mall.admin.application.api.sm;
 
 import com.mall.admin.application.api.BaseApi;
-import com.mall.admin.application.service.BusinessDict;
-import com.mall.admin.application.service.DictCodeService;
-import com.mall.admin.application.service.DictTypeService;
-import com.mall.admin.domain.entity.DictCode;
-import com.mall.admin.domain.entity.DictType;
+import com.mall.admin.application.service.sm.BusinessDict;
+import com.mall.admin.application.service.sm.DictCodeService;
+import com.mall.admin.application.service.sm.DictTypeService;
+import com.mall.admin.domain.entity.sm.DictCode;
+import com.mall.admin.domain.entity.sm.DictType;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;

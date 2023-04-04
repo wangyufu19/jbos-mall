@@ -105,9 +105,6 @@ zuul:
     mall-workflow:
       path: /api/workflow/**
       serviceId: mall-workflow
-    mall-member:
-      path: /api/member/**
-      serviceId: mall-member
     mall-product:
       path: /api/business/**
       serviceId: mall-business
