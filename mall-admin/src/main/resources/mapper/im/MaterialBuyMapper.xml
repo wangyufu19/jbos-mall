@@ -88,10 +88,11 @@
         DELETE FROM IM_MATERIAL_BUY WHERE ID=#{ID}
     </delete>
     <!--更新物品采购实例ID-->
-    <update id="updateMaterialInstId" parameterType="java.util.Map">
+    <update id="updateMaterialInstIdAndBizState" parameterType="java.util.Map">
         UPDATE IM_MATERIAL_BUY
         SET
-            INSTID=#{INSTID}
+            INSTID=#{INSTID},
+            BIZSTATE=#{BIZSTATE}
         WHERE BIZNO=#{bizNo}
     </update>
     <!--更新物品采购业务状态-->

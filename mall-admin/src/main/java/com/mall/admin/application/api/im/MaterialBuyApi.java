@@ -4,6 +4,7 @@ import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.external.camunda.ProcessInstanceService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
+import com.mall.admin.domain.entity.sm.ProcessInst;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
@@ -123,13 +124,15 @@ public class MaterialBuyApi extends BaseApi {
                 res=processInstanceService.startProcessInstance(processParams);
             }
             if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
-                Map<String,Object> data=(Map<String,Object>)res.getData();
+                Map<String,String> data=(Map<String,String>)res.getData();
+                ProcessInst processInst=new ProcessInst();
                 if(data!=null){
-                    materialBuyMap.put("INSTID",data.get("processInstanceId"));
+                    processInst.setProcInstId(data.get("processInstanceId"));
+                    processInst.setProcDefId(data.get("processDefinitionId"));
                 }
-                materialBuyMap.put("BIZSTATE","20");
-                //更新物品采购业务实例ID和业务状态
-                materialBuyService.updateMaterialInstIdAndBizState(materialBuyMap);
+                processInst.setBizNo(bizNo);
+                //处理物品采购业务流程数据
+                materialBuyService.handleMaterialProcessData(processInst);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

@@ -19,7 +19,7 @@ public class ResponseResult {
     public static final String MSG_FAILURE="操作失败";
     private String retCode;
     private String retMsg;
-    private Object data=new HashMap<String,Object>();
+    private Object data=new HashMap<String,String>();
 
 
     public ResponseResult(){

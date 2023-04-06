@@ -2,6 +2,7 @@ package com.mall.admin.application.api.dashboard;
 
 import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.external.camunda.TaskService;
+import com.mall.admin.application.service.sm.UserMgrService;
 import com.mall.common.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +19,8 @@ import java.util.Map;
 public class MyWorkApi extends BaseApi {
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private UserMgrService userMgrService;
     /**
      * 查询我的待办列表
      * @return
@@ -28,7 +31,8 @@ public class MyWorkApi extends BaseApi {
     public ResponseResult getMyWorkList(@RequestParam Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
         try{
-            res=taskService.listForPage(params);
+            //res=taskService.listForPage(params);
+            res.setData(userMgrService.getUserWorkList(params));
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

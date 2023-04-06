@@ -1,4 +1,5 @@
 package com.mall.admin.infrastructure.repository.sm.mapper;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,4 +36,5 @@ public interface UserMapper{
 	 * @param parameterObject
 	 */
 	public void addUserDefaultRole(Map<String, Object> parameterObject);
+	public List<Map<String, Object>> getUserWorkList(Map<String, Object> parameterObject);
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.sm.mapper.ProcessInstMapper">
+    <!--查询流程实例数据-->
+    <select id="getProcessInstList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessInst">
+        SELECT
+           T.ID,
+           T.PROCINSTID,
+           T.PROCDEFID,
+           T.BIZNO,
+           T.USERID,
+           T.BUSINESSKEY,
+           T.STARTTIME,
+           T.ENDTIME,
+           T.PROCSTATE
+        FROM JBOS_PROCESS_INST T
+        WHERE T.ISVALID=1
+        <if test="userId != null and userId != ''">
+            AND T.USERID=#{userId}
+        </if>
+        ORDER BY T.STARTTIME
+    </select>
+    <!--新增流程实例数据-->
+    <insert id="addProcessInst" parameterType="com.mall.admin.domain.entity.sm.ProcessInst">
+        INSERT JBOS_PROCESS_INST(
+            ID,
+            PROCINSTID,
+            PROCDEFID,
+            BIZNO,
+            USERID,
+            BUSINESSKEY,
+            STARTTIME,
+            PROCSTATE
+        )VALUE(
+            #{id},
+            #{procInstId},
+            #{procDefId},
+            #{bizNo},
+            #{userId},
+            #{businessKey},
+            #{startTime},
+            '20'
+        )
+    </insert>
+    <!--更新流程状态-->
+    <update id="updateProcState" parameterType="com.mall.admin.domain.entity.sm.ProcessInst">
+        UPDATE JBOS_PROCESS_INST
+        SET PROCSTATE=#{procState}
+        WHERE USERID=#{userId}
+    </update>
+</mapper>

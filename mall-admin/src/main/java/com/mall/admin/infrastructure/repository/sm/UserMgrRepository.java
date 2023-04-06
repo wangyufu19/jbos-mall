@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -97,5 +98,8 @@ public class UserMgrRepository {
      */
     public void addUserDefaultRole(Map<String, Object> parameterObject){
         userMapper.addUserDefaultRole(parameterObject);
+    }
+    public List<Map<String, Object>> getUserWorkList(Map<String, Object> parameterObject) {
+        return userMapper.getUserWorkList(parameterObject);
     }
 }

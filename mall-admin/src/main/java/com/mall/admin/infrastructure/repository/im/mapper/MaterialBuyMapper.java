@@ -23,7 +23,7 @@ public interface MaterialBuyMapper extends BaseMapper<MaterialBuy> {
 
     public void deleteMaterialBuy(Map<String, Object> parameterObject);
 
-    public void updateMaterialInstId(Map<String, Object> parameterObject);
+    public void updateMaterialInstIdAndBizState(Map<String, Object> parameterObject);
 
     public void updateMaterialBizState(Map<String, Object> parameterObject);
 

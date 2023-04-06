@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -69,5 +70,8 @@ public class UserMgrService {
 	 */
 	public void updateUserInfo(UserInfo user){
 
+	}
+	public List<Map<String, Object>> getUserWorkList(Map<String, Object> parameterObject) {
+		return userMgrRepository.getUserWorkList(parameterObject);
 	}
 }

@@ -36,8 +36,8 @@ public class MaterialBuyRepo {
     public void deleteMaterialBuy(Map<String, Object> parameterObject){
         materialBuyMapper.deleteByMap(parameterObject);
     }
-    public void updateMaterialInstId(Map<String, Object> parameterObject){
-        materialBuyMapper.updateMaterialInstId(parameterObject);
+    public void updateMaterialInstIdAndBizState(Map<String, Object> parameterObject){
+        materialBuyMapper.updateMaterialInstIdAndBizState(parameterObject);
     }
     public void updateMaterialBizState(Map<String, Object> parameterObject){
         materialBuyMapper.updateMaterialBizState(parameterObject);

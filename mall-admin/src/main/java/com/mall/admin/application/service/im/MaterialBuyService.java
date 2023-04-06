@@ -1,7 +1,9 @@
 package com.mall.admin.application.service.im;
 
+import com.mall.admin.application.service.sm.ProcessMgrService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.admin.domain.entity.im.MaterialList;
+import com.mall.admin.domain.entity.sm.ProcessInst;
 import com.mall.admin.infrastructure.repository.im.MaterialBuyRepo;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import java.util.Map;
  */
 @Service
 public class MaterialBuyService {
+    @Autowired
+    private ProcessMgrService processMgrService;
     @Autowired
     private MaterialBuyRepo materialBuyRepo;
     @Autowired
@@ -107,19 +111,24 @@ public class MaterialBuyService {
     }
 
     /**
-     * 更新物品采购业务实例ID和业务状态
+     * 处理物品采购业务流程数据
      */
-    //@Transactional
-    public void updateMaterialInstIdAndBizState(Map<String, Object> parameterObject){
-        this.updateMaterialInstId(parameterObject);
-        this.updateMaterialBizState(parameterObject);
+    @Transactional
+    public void handleMaterialProcessData(ProcessInst processInst){
+        //新增物品采购流程实例数据
+        processMgrService.addProcessInst(processInst);
+        //更新物品采购业务实例ID和业务状态
+        Map<String, Object> parameterObject=new HashMap<>();
+        parameterObject.put("INSTID",processInst.getProcInstId());
+        parameterObject.put("BIZSTATE","20");
+        this.updateMaterialInstIdAndBizState(parameterObject);
     }
     /**
-     * 更新物品采购业务实例ID
+     * 更新物品采购业务实例ID和业务状态
      * @param parameterObject
      */
-    public void updateMaterialInstId(Map<String, Object> parameterObject){
-        materialBuyRepo.updateMaterialInstId(parameterObject);
+    public void updateMaterialInstIdAndBizState(Map<String, Object> parameterObject){
+        materialBuyRepo.updateMaterialInstIdAndBizState(parameterObject);
     }
 
     /**

@@ -34,4 +34,10 @@
         INSERT INTO JBOS_USER_ROLE(USERID,ROLEID)
         VALUES(#{userId},(SELECT ID FROM JBOS_ROLE WHERE ROLECODE='ROLE_DEFAULT'))
     </insert>
+    <select id="getUserWorkList" resultType="java.util.Map">
+        SELECT
+           task.ID_,task.PROC_INST_ID_,task.PROC_DEF_ID_,task.NAME_,task.CREATE_TIME_
+        FROM camunda.act_ru_task task
+        WHERE task.ASSIGNEE_=#{userId}
+    </select>
 </mapper>
