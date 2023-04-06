@@ -93,13 +93,13 @@
         SET
             INSTID=#{INSTID},
             BIZSTATE=#{BIZSTATE}
-        WHERE BIZNO=#{bizNo}
+        WHERE BIZNO=#{BIZNO}
     </update>
     <!--更新物品采购业务状态-->
     <update id="updateMaterialBizState" parameterType="java.util.Map">
         UPDATE IM_MATERIAL_BUY
         SET
             BIZSTATE=#{BIZSTATE}
-        WHERE BIZNO=#{bizNo}
+        WHERE BIZNO=#{BIZNO}
     </update>
 </mapper>

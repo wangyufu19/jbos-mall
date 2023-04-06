@@ -41,7 +41,7 @@ public class MallGatewayFallback implements FallbackProvider {
 
             @Override
             public InputStream getBody() throws IOException {
-                ResponseResult r= ResponseResult.error("服务不可用");
+                ResponseResult r= ResponseResult.error("【"+route+"】服务不可用");
                 Map<String,Object> data=new HashMap<String,Object>();
                 data.put("serviceId",route);
                 r.setData(data);

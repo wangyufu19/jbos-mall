@@ -14,6 +14,9 @@ import java.io.Serializable;
 @Getter
 public class ProcessTask extends BaseEntity implements Serializable {
     private String procInstId;
+    private String bizId;
+    private String bizNo;
+    private String bizType;
     private String taskId;
     private String taskName;
     private String assignee;

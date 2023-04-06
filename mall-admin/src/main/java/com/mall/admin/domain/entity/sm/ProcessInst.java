@@ -15,6 +15,7 @@ import java.io.Serializable;
 public class ProcessInst extends BaseEntity implements Serializable {
     private String procInstId;
     private String procDefId;
+    private String bizId;
     private String bizNo;
     private String userId;
     private String businessKey;

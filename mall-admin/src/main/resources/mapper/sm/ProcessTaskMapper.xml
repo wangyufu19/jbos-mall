@@ -1,5 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mall.admin.infrastructure.repository.sm.mapper.ProcessTaskMapper">
-
+    <!--查询用户流程任务数据-->
+    <select id="getUserTaskList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessTask">
+        SELECT
+            task.ID_ ID,
+            task.PROC_INST_ID_ PROCINSTID,
+            task.PROC_DEF_ID_ PROCDEFID,
+            T1.BIZID,
+            T1.BIZNO,
+            CASE
+                WHEN T1.BIZTYPE='100' THEN '物品采购'
+            END BIZTYPE,
+            task.ID_ TASKID,
+            task.NAME_ TASKNAME,
+            task.CREATE_TIME_ STARTTIME,
+            T.ASSIGNEE,
+            T.ROUTEURL,
+            CASE
+                WHEN T.TASKSTATE='10' THEN '待领取'
+                WHEN T.TASKSTATE='20' THEN '处理中'
+                WHEN T.TASKSTATE='30' THEN '已处理'
+            END TASKSTATE,
+            T.ENDTIME,
+            T.OPINION
+        FROM camunda.act_ru_task task
+        LEFT JOIN JBOS_PROCESS_TASK T ON task.PROC_INST_ID_=T.PROCINSTID
+        LEFT JOIN JBOS_PROCESS_INST T1 ON T.PROCINSTID=T1.PROCINSTID
+        WHERE task.ASSIGNEE_=#{userId}
+        ORDER BY task.CREATE_TIME_
+    </select>
+    <!--新增流程任务数据-->
+    <insert id="addProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+        INSERT JBOS_PROCESS_TASK(
+            ID,
+            PROCINSTID,
+            ASSIGNEE,
+            ROUTEURL,
+            TASKSTATE,
+            STARTTIME
+        )VALUE(
+            #{id},
+            #{procInstId},
+            #{assignee},
+            #{routeUrl},
+           '20',
+            #{startTime}
+        )
+    </insert>
+    <!--更新流程任务审批意见-->
+    <update id="updateProcessTaskOpinion" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+        UPDATE JBOS_PROCESS_TASK
+        SET TASKID=#{taskId},OPINION=#{opinion},ENDTIME=#{endTime}
+        WHERE ASSIGNEE=#{assignee} AND PROCINSTID=#{procInstId} AND TASKSTATE='20'
+    </update>
 </mapper>

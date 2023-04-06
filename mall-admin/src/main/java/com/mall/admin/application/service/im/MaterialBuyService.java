@@ -1,10 +1,13 @@
 package com.mall.admin.application.service.im;
 
 import com.mall.admin.application.service.sm.ProcessMgrService;
+import com.mall.admin.application.service.sm.ProcessTaskService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.admin.domain.entity.im.MaterialList;
 import com.mall.admin.domain.entity.sm.ProcessInst;
+import com.mall.admin.domain.entity.sm.ProcessTask;
 import com.mall.admin.infrastructure.repository.im.MaterialBuyRepo;
+import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,8 @@ import java.util.Map;
 public class MaterialBuyService {
     @Autowired
     private ProcessMgrService processMgrService;
+    @Autowired
+    private ProcessTaskService processTaskService;
     @Autowired
     private MaterialBuyRepo materialBuyRepo;
     @Autowired
@@ -114,11 +119,33 @@ public class MaterialBuyService {
      * 处理物品采购业务流程数据
      */
     @Transactional
-    public void handleMaterialProcessData(ProcessInst processInst){
+    public void handleMaterialStartProcess(String bizId,String bizNo,String userId,String processInstanceId,String processDefinitionId){
+        String currentTime=DateUtils.format(DateUtils.getCurrentDate(),DateUtils.YYYYMMDDHIMMSS);
+        ProcessInst processInst=new ProcessInst();
         //新增物品采购流程实例数据
+        processInst.setId(StringUtils.getUUID());
+        processInst.setProcInstId(processInstanceId);
+        processInst.setProcDefId(processDefinitionId);
+        processInst.setUserId(userId);
+        processInst.setBizId(bizId);
+        processInst.setBizNo(bizNo);
+        processInst.setBusinessKey(bizNo);
+        processInst.setStartTime(currentTime);
+        processInst.setCreateUserId(userId);
+        processInst.setCreateTime(currentTime);
         processMgrService.addProcessInst(processInst);
+        //新增物品采购流程任务数据
+        ProcessTask processTask=new ProcessTask();
+        processTask.setId(StringUtils.getUUID());
+        processTask.setProcInstId(processInstanceId);
+        processTask.setAssignee(userId);
+        processTask.setStartTime(currentTime);
+        processTask.setCreateUserId(userId);
+        processTask.setCreateTime(currentTime);
+        processTaskService.addProcessTask(processTask);
         //更新物品采购业务实例ID和业务状态
         Map<String, Object> parameterObject=new HashMap<>();
+        parameterObject.put("BIZNO",bizNo);
         parameterObject.put("INSTID",processInst.getProcInstId());
         parameterObject.put("BIZSTATE","20");
         this.updateMaterialInstIdAndBizState(parameterObject);

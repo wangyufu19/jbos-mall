@@ -26,20 +26,26 @@
             ID,
             PROCINSTID,
             PROCDEFID,
+            BIZID,
             BIZNO,
             USERID,
             BUSINESSKEY,
             STARTTIME,
-            PROCSTATE
+            PROCSTATE,
+            CREATEUSERID,
+            CREATETIME
         )VALUE(
             #{id},
             #{procInstId},
             #{procDefId},
+            #{bizId},
             #{bizNo},
             #{userId},
             #{businessKey},
             #{startTime},
-            '20'
+            '20',
+            #{createUserId},
+            #{createTime}
         )
     </insert>
     <!--更新流程状态-->

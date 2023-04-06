@@ -104,6 +104,7 @@ public class MaterialBuyApi extends BaseApi {
         String action=StringUtils.replaceNull(params.get("action"));
         Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
         String applyUserId=StringUtils.replaceNull(materialBuyMap.get("applyUserId"));
+        String bizId=StringUtils.replaceNull(materialBuyMap.get("id"));
         String bizNo=StringUtils.replaceNull(materialBuyMap.get("bizNo"));
         double totalAmt=Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt")));
         try {
@@ -125,14 +126,10 @@ public class MaterialBuyApi extends BaseApi {
             }
             if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
                 Map<String,String> data=(Map<String,String>)res.getData();
-                ProcessInst processInst=new ProcessInst();
                 if(data!=null){
-                    processInst.setProcInstId(data.get("processInstanceId"));
-                    processInst.setProcDefId(data.get("processDefinitionId"));
+                    //处理物品采购业务流程数据
+                    materialBuyService.handleMaterialStartProcess(bizId,bizNo,applyUserId,data.get("processInstanceId"),data.get("processDefinitionId"));
                 }
-                processInst.setBizNo(bizNo);
-                //处理物品采购业务流程数据
-                materialBuyService.handleMaterialProcessData(processInst);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
