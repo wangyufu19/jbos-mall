@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,8 +42,8 @@ public class User implements Serializable {
     /**
      * 登录名称
      */
-    @TableField("LOGINNAME")
-    private String loginname;
+    @TableField("NICKNAME")
+    private String nickname;
 
     /**
      * 登录密码

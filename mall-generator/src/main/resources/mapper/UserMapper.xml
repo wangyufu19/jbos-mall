@@ -3,7 +3,7 @@
 <mapper namespace="com.mall.application.mapper.UserMapper">
 
     <select id="getUserList" parameterType="java.util.Map" resultType="com.mall.application.entity.User">
-        SELECT A.ID,A.LOGINNAME,A.USERNAME,A.USERSTATUS
+        SELECT A.ID,A.USERNAME,A.NICKNAME,A.USERSTATUS
         FROM JBOS_USER A
     </select>
 </mapper>

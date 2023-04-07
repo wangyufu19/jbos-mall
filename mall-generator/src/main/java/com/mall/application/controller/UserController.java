@@ -50,7 +50,7 @@ public class UserController {
         ResponseResult res= ResponseResult.ok();
         User user=new User();
         user.setId("1111111111");
-        user.setLoginname("save123");
+        user.setUsername("save123");
         userService.save(user);
         return res;
     }

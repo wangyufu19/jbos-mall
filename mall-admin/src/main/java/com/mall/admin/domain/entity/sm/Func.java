@@ -30,6 +30,7 @@ public class Func  extends BaseEntity implements Serializable {
     private String funcType;
     private String funcPath;
     private String funcUrl;
+    private String icon;
     int orderNo;
     private List<Func> children;
     private List<Func> funcList;

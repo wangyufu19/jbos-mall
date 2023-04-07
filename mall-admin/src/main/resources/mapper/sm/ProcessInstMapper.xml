@@ -52,6 +52,6 @@
     <update id="updateProcState" parameterType="com.mall.admin.domain.entity.sm.ProcessInst">
         UPDATE JBOS_PROCESS_INST
         SET PROCSTATE=#{procState}
-        WHERE USERID=#{userId}
+        WHERE PROCINSTID=#{procInstId}
     </update>
 </mapper>

@@ -3,14 +3,15 @@
 <mapper namespace="com.mall.admin.infrastructure.repository.sm.mapper.ProcessTaskMapper">
     <!--查询用户流程任务数据-->
     <select id="getUserTaskList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessTask">
-        SELECT
+        SELECT * FROM (
+            SELECT
             task.ID_ ID,
             task.PROC_INST_ID_ PROCINSTID,
             task.PROC_DEF_ID_ PROCDEFID,
             T1.BIZID,
             T1.BIZNO,
             CASE
-                WHEN T1.BIZTYPE='100' THEN '物品采购'
+            WHEN T1.BIZTYPE='100' THEN '物品采购'
             END BIZTYPE,
             task.ID_ TASKID,
             task.NAME_ TASKNAME,
@@ -18,17 +19,24 @@
             T.ASSIGNEE,
             T.ROUTEURL,
             CASE
-                WHEN T.TASKSTATE='10' THEN '待领取'
-                WHEN T.TASKSTATE='20' THEN '处理中'
-                WHEN T.TASKSTATE='30' THEN '已处理'
+            WHEN T.TASKSTATE='10' THEN '待领取'
+            WHEN T.TASKSTATE='20' THEN '处理中'
+            WHEN T.TASKSTATE='30' THEN '已处理'
             END TASKSTATE,
             T.ENDTIME,
             T.OPINION
-        FROM camunda.act_ru_task task
-        LEFT JOIN JBOS_PROCESS_TASK T ON task.PROC_INST_ID_=T.PROCINSTID
-        LEFT JOIN JBOS_PROCESS_INST T1 ON T.PROCINSTID=T1.PROCINSTID
-        WHERE task.ASSIGNEE_=#{userId}
-        ORDER BY task.CREATE_TIME_
+            FROM camunda.act_ru_task task
+            LEFT JOIN JBOS_PROCESS_TASK T ON task.PROC_INST_ID_=T.PROCINSTID
+            LEFT JOIN JBOS_PROCESS_INST T1 ON T.PROCINSTID=T1.PROCINSTID
+            WHERE task.ASSIGNEE_=#{userId}
+            <if test="bizNoS != null and bizNoS != ''">
+                AND T1.BIZNO LIKE '%${bizNoS}%'
+            </if>
+            <if test="bizTypeS != null and bizTypeS != ''">
+                AND T1.BIZTYPE=#{bizTypeS}
+            </if>
+        ) T5
+        ORDER BY T5.STARTTIME
     </select>
     <!--新增流程任务数据-->
     <insert id="addProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">

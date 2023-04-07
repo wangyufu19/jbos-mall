@@ -9,7 +9,7 @@
     </select>
     <!--查询用户菜单权限列表-->
     <select id="getUserFuncList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.Func">
-        SELECT T.ID,T.PARENTID,T.FUNCCODE,T.FUNCNAME,T.FUNCTYPE,T.FUNCURL
+        SELECT T.ID,T.PARENTID,T.FUNCCODE,T.FUNCNAME,T.FUNCTYPE,T.FUNCURL,T.ICON
         FROM JBOS_FUNC T INNER JOIN JBOS_ROLE_FUNC T1 ON T.ID=T1.FUNCID
         LEFT JOIN JBOS_USER_ROLE T3 ON T1.ROLEID=T3.ROLEID
         LEFT JOIN JBOS_USER T4 ON T3.USERID=T4.ID
@@ -29,7 +29,7 @@
     </select>
     <!--查询功能列表-->
     <select id="getFuncList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.Func">
-        SELECT T.ID,T.PARENTID,T.FUNCCODE,T.FUNCNAME,T.FUNCTYPE,T.FUNCURL,T.ORDERNO
+        SELECT T.ID,T.PARENTID,T.FUNCCODE,T.FUNCNAME,T.FUNCTYPE,T.FUNCURL,T.ORDERNO,T.ICON
         FROM JBOS_FUNC T
         WHERE T.ISVALID=1
         <if test="parentId != null and parentId != ''">
@@ -46,15 +46,15 @@
     <!--新增功能-->
     <insert id="insertFunc" parameterType="java.util.Map">
         INSERT INTO JBOS_FUNC(
-            ID,PARENTID,FUNCCODE,FUNCNAME,FUNCTYPE,FUNCURL,ORDERNO
+            ID,PARENTID,FUNCCODE,FUNCNAME,FUNCTYPE,FUNCURL,ICON,ORDERNO
         )VALUES(
-            #{id},#{parentId},#{funcCode},#{funcName},#{funcType},#{funcUrl},#{orderNo}
+            #{id},#{parentId},#{funcCode},#{funcName},#{funcType},#{funcUrl},#{icon},#{orderNo}
         )
     </insert>
     <!--修改功能-->
     <update id="updateFunc" parameterType="java.util.Map">
         UPDATE JBOS_FUNC
-        SET PARENTID=#{parentId},FUNCCODE=#{funcCode},FUNCNAME=#{funcName},FUNCTYPE=#{funcType},FUNCURL=#{funcUrl},ORDERNO=#{orderNo}
+        SET PARENTID=#{parentId},FUNCCODE=#{funcCode},FUNCNAME=#{funcName},FUNCTYPE=#{funcType},FUNCURL=#{funcUrl},ORDERNO=#{orderNo},ICON=#{icon}
         WHERE ID=#{id}
     </update>
     <!--删除功能-->
