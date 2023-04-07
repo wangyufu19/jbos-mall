@@ -58,7 +58,11 @@ public class BusinessDict {
         if(dictCodeMaps.containsKey(typeId)){
             return (List<Map<String, Object>>) dictCodeMaps.get(typeId);
         }else{
-            return null;
+            String sql="";
+            sql="SELECT DICTID,DICTNAME FROM JBOS_DICT_CODE WHERE TYPEID=? ORDER BY ORDERNO";
+            List<Map<String, Object>> dictCodes=this.jdbcTemplate.queryForList(sql,typeId);
+            dictCodeMaps.put(typeId,dictCodes);
+            return dictCodes;
         }
     }
     /**

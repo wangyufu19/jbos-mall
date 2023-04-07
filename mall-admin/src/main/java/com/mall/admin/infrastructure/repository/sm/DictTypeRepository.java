@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * DictTypeRepository
@@ -13,7 +14,7 @@ import java.util.List;
  * @date 2020-06-24
  */
 @Component
-public class DictTypeRepository {
+public class DictTypeRepository{
     @Autowired
     private DictTypeMapper dictTypeMapper;
 
@@ -21,7 +22,7 @@ public class DictTypeRepository {
      * 得到字典类型数据
      * @return
      */
-    public List<DictType> getDictTypeList(){
-        return dictTypeMapper.getDictTypeList();
+    public List<DictType> getDictTypeList(Map<String, String> params){
+        return dictTypeMapper.getDictTypeList(params);
     }
 }

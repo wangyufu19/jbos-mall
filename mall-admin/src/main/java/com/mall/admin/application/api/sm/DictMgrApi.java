@@ -1,5 +1,6 @@
 package com.mall.admin.application.api.sm;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.sm.BusinessDict;
 import com.mall.admin.application.service.sm.DictCodeService;
@@ -63,10 +64,10 @@ public class DictMgrApi extends BaseApi {
     @ResponseBody
     @RequestMapping("/getDictTypeList")
     @ApiOperation("得到字典类型列表")
-    public ResponseResult getDictTypeList(@RequestParam Map<String, Object> params){
+    public ResponseResult getDictTypeList(@RequestParam Map<String, String> params){
         ResponseResult res= ResponseResult.ok();
         try{
-            List<DictType> dictTypes=dictTypeService.getDictTypeList();
+            List<DictType> dictTypes=dictTypeService.getDictTypeList(params);
             res.setData(dictTypes);
         }catch (Exception e){
             log.error(e.getMessage(),e);
@@ -74,6 +75,12 @@ public class DictMgrApi extends BaseApi {
         }
         return res;
     }
+
+    /**
+     * 得到字典码值数据列表
+     * @param params
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/getDictCodeList")
     @ApiOperation("得到字典码值数据列表")
@@ -88,7 +95,73 @@ public class DictMgrApi extends BaseApi {
         }
         return res;
     }
-
+    /**
+     * 新增字典类型
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/addDictType", method = RequestMethod.POST)
+    @ApiOperation("新增字典类型")
+    public ResponseResult addDictType(@RequestBody Map<String, String> params){
+        ResponseResult res= ResponseResult.ok();
+        try{
+            DictType dictType=new DictType();
+            dictType.setTypeId(params.get("typeId"));
+            dictType.setTypeName(params.get("typeName"));
+            dictTypeService.save(dictType);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+    /**
+     * 更新字典类型
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateDictType", method = RequestMethod.POST)
+    @ApiOperation("更新字典类型")
+    public ResponseResult updateDictType(@RequestBody Map<String, String> params){
+        ResponseResult res= ResponseResult.ok();
+        try{
+            DictType dictType=new DictType();
+            dictType.setTypeId(params.get("typeId"));
+            dictType.setTypeName(params.get("typeName"));
+            UpdateWrapper<DictType> updateWrapper=new UpdateWrapper<DictType>();
+            updateWrapper.eq("typeid",dictType.getTypeId());
+            dictTypeService.update(dictType,updateWrapper);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+    /**
+     * 删除字典类型
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteDictType", method = RequestMethod.POST)
+    @ApiOperation("删除字典类型")
+    public ResponseResult deleteDictType(@RequestBody Map<String, String> params){
+        ResponseResult res= ResponseResult.ok();
+        try{
+            DictType dictType=new DictType();
+            dictType.setTypeId(params.get("typeId"));
+            dictType.setTypeName(params.get("typeName"));
+            UpdateWrapper<DictType> updateWrapper=new UpdateWrapper<DictType>();
+            updateWrapper.eq("typeid",dictType.getTypeId());
+            dictTypeService.remove(updateWrapper);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
     /**
      * 保存业务字典
      * @param params

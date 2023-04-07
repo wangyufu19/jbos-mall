@@ -3,9 +3,34 @@
 <mapper namespace="com.mall.admin.infrastructure.repository.sm.mapper.DictTypeMapper">
     <!--得到字典类型数据-->
     <select id="getDictTypeList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.DictType">
-        SELECT TYPEID,TYPENAME
+        SELECT
+            TYPEID,
+            TYPENAME
         FROM JBOS_DICT_TYPE
+        WHERE 1=1
+        <if test="typeIdS != null and typeIdS != ''">
+            AND TYPEID LIKE '%${typeIdS}%'
+        </if>
+        <if test="typeNameS != null and typeNameS != ''">
+            AND TYPENAME LIKE '%${typeNameS}%'
+        </if>
         ORDER BY TYPEID
     </select>
+    <!--新增字典类型-->
+    <insert id="addDictType" parameterType="com.mall.admin.domain.entity.sm.DictType">
+        INSERT INTO JBOS_DICT_TYPE(
+            TYPEID,
+            TYPENAME
+        )VALUES(
+            #{typeId},
+            #{typeName}
+        )
+    </insert>
+    <!--更新字典类型-->
+    <update id="updateDictType" parameterType="com.mall.admin.domain.entity.sm.DictType">
+        UPDATE JBOS_DICT_TYPE
+        SET TYPENAME=#{typeName}
+        WHERE TYPEID=#{typeId}
+    </update>
 
 </mapper>
