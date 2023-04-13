@@ -223,6 +223,4 @@ public class ProductMgrApi extends BaseApi {
         }
         return res;
     }
-
-
 }

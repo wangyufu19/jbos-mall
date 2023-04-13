@@ -1,18 +1,23 @@
 package com.mall.admin.application.api.sm;
 
+import com.github.pagehelper.PageInfo;
 import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.external.camunda.IdentityMgrService;
 import com.mall.admin.application.service.sm.EmpMgrService;
 import com.mall.admin.domain.entity.sm.Emp;
+import com.mall.common.office.excel.IPageExcel;
+import com.mall.common.office.excel.PageExcelHandler;
+import com.mall.common.response.PageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * EmpMgrApi
@@ -125,5 +130,26 @@ public class EmpMgrApi extends BaseApi {
         }
         return res;
     }
-
+    @PostMapping(value = "/export",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ApiOperation("导出员工列表")
+    public void export(HttpServletResponse response){
+        Map<String,String> titles=new HashMap<>();
+        titles.put("badge","员工号");
+        titles.put("empName","姓名");
+        PageExcelHandler pageExcelHandler=new PageExcelHandler(titles);
+        try{
+            pageExcelHandler.generateExcelSheet(response.getOutputStream(), new IPageExcel() {
+                public PageInfo getSheetRowDataList(Map<String, Object> params) {
+                    List dataList;
+                    PageResult pageResult=new PageResult();
+                    pageResult.doStartPage(params);
+                    dataList=empMgrService.getEmpList(params);
+                    pageResult.doFinishPage(dataList);
+                    return pageResult.doFinishPage(dataList);
+                }
+            });
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+        }
+    }
 }
