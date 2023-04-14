@@ -60,33 +60,39 @@ public class PageExcelHandler {
         }
         XSSFWorkbook workbook=new XSSFWorkbook();
         int startRow=0;
-        int startCell=0;
         FileOutputStream out=null;
         try {
             XSSFSheet sheet=workbook.createSheet();
             //工作表标题
             XSSFRow titleRow = sheet.createRow(startRow);
-            for (Map.Entry<String, String> entry : this.titles.entrySet()) {
-                XSSFCell cell = titleRow.createCell(startCell);
-                cell.setCellValue(entry.getValue());
-                startCell++;
-            }
+            this.setCellValue(titleRow,this.titles);
             //工作表行数据
-            List<Map<String, String>> dataList=null;
-            PageInfo pageInfo=iPageExcel.getSheetRowDataList(null);
-            if(null!=pageInfo){
-                dataList=pageInfo.getList();
-            }
-            if (null != dataList&&dataList.size()>0) {
-                for (Map<String, String> data : dataList) {
-                    startRow++;
-                    startCell = 0;
-                    XSSFRow row = sheet.createRow(startRow);
-                    for (Map.Entry<String, String> entry : data.entrySet()) {
-                        XSSFCell cell = row.createCell(startCell);
-                        cell.setCellValue(entry.getValue());
-                        startCell++;
+            Map<String,Object> params=new HashMap<>();
+            params.put("page", PageResult.DEFAULT_PAGE_NUM);
+            params.put("limit", PageResult.DEFAULT_PAGE_SIZE);
+            while (true) {
+                if (startRow>=IPageExcel.length){
+                    sheet=workbook.createSheet();
+                    startRow=0;
+                }
+                List<Map<String, String>> dataList = null;
+                PageInfo pageInfo = iPageExcel.getSheetRowDataList(params);
+                if (null != pageInfo) {
+                    dataList = pageInfo.getList();
+                }else{
+                    break;
+                }
+                if (null != dataList && dataList.size() > 0) {
+                    for (Object obj : dataList) {
+                        startRow++;
+                        XSSFRow row = sheet.createRow(startRow);
+                        this.setCellValue(row,obj);
                     }
+                }
+                if(pageInfo.isIsLastPage()){
+                    break;
+                }else{
+                    params.put("page", (pageInfo.getTotal()/pageInfo.getPageSize())+1);
                 }
             }
             out=new FileOutputStream(this.outputFile);
@@ -112,46 +118,39 @@ public class PageExcelHandler {
     public void generateExcelSheet(OutputStream outputStream, IPageExcel iPageExcel){
         XSSFWorkbook workbook=new XSSFWorkbook();
         int startRow=0;
-        int startCell=0;
         try {
             XSSFSheet sheet=workbook.createSheet();
             //工作表标题
-            XSSFRow titleRow = sheet.createRow(startRow);
-            for (Map.Entry<String, String> entry : this.titles.entrySet()) {
-                XSSFCell cell = titleRow.createCell(startCell);
-                cell.setCellValue(entry.getValue());
-                startCell++;
-            }
+            this.setTitleCell(sheet,startRow);
+            //工作表行数据
             Map<String,Object> params=new HashMap<>();
             params.put("page", PageResult.DEFAULT_PAGE_NUM);
             params.put("limit", PageResult.DEFAULT_PAGE_SIZE);
-            //工作表行数据
-            List<Map<String, String>> dataList = null;
-            PageInfo pageInfo=iPageExcel.getSheetRowDataList(params);
-            if(null!=pageInfo){
-                dataList=pageInfo.getList();
-            }
-            if (null != dataList&&dataList.size()>0) {
-                for (Object obj : dataList) {
-                    startRow++;
-                    startCell = 0;
-                    XSSFRow row = sheet.createRow(startRow);
-                    if(obj instanceof Map || obj instanceof HashMap){
-                        Map<String, String> data=(Map<String, String>)obj;
-                        for (Map.Entry<String, String> entry : data.entrySet()) {
-                            this.setCellValue(row,startCell,entry.getValue());
-                            startCell++;
-                        }
-                    }else{
-                        Field[] fields=obj.getClass().getDeclaredFields();
-                        if(null!=fields){
-                            for(Field field:fields){
-                                Getter getter=BeanFactory.getGetter(obj.getClass(),field.getName());
-                                this.setCellValue(row,startCell,getter.get(obj));
-                                startCell++;
-                            }
-                        }
+            while (true) {
+                if (startRow >= IPageExcel.length) {
+                    sheet = workbook.createSheet();
+                    startRow = 0;
+                    //工作表标题
+                    this.setTitleCell(sheet,startRow);
+                }
+                List<Map<String, String>> dataList;
+                PageInfo pageInfo = iPageExcel.getSheetRowDataList(params);
+                if (null != pageInfo) {
+                    dataList = pageInfo.getList();
+                }else{
+                    break;
+                }
+                if (null != dataList && dataList.size() > 0) {
+                    for (Object obj : dataList) {
+                        startRow++;
+                        XSSFRow row = sheet.createRow(startRow);
+                        this.setCellValue(row,obj);
                     }
+                }
+                if(pageInfo.isIsLastPage()){
+                    break;
+                }else{
+                    params.put("page", (pageInfo.getTotal()/pageInfo.getPageSize())+1);
                 }
             }
             workbook.write(outputStream);
@@ -171,6 +170,34 @@ public class PageExcelHandler {
                     workbook.close();
                 } catch (IOException e) {
                     log.error(e.getMessage());
+                }
+            }
+        }
+    }
+    private void setTitleCell(XSSFSheet sheet,int startRow){
+        XSSFRow titleRow = sheet.createRow(startRow);
+        this.setCellValue(titleRow,this.titles);
+    }
+    private void setCellValue(XSSFRow row,Object obj){
+        if(obj==null){
+            return;
+        }
+        int startCell=0;
+        if (obj instanceof Map || obj instanceof HashMap) {
+            Map<String, String> data = (Map<String, String>) obj;
+            for (Map.Entry<String, String> entry : this.titles.entrySet()) {
+                this.setCellValue(row, startCell, data.get(entry.getKey()));
+                startCell++;
+            }
+        } else {
+            Field[] fields = obj.getClass().getDeclaredFields();
+            if (null != fields) {
+                for (Field field : fields) {
+                    if (this.titles.containsKey(field.getName())) {
+                        Getter getter = BeanFactory.getGetter(obj.getClass(), field.getName());
+                        this.setCellValue(row, startCell, getter.get(obj));
+                        startCell++;
+                    }
                 }
             }
         }

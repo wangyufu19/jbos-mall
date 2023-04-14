@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2023-04-01 15:32:31
+Date: 2023-04-14 09:30:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,7 +31,7 @@ CREATE TABLE `comm_id_generator` (
 -- ----------------------------
 -- Records of comm_id_generator
 -- ----------------------------
-INSERT INTO `comm_id_generator` VALUES ('1', '200000', '10000', '100', '20');
+INSERT INTO `comm_id_generator` VALUES ('1', '210000', '10000', '100', '21');
 
 -- ----------------------------
 -- Table structure for comm_pic_repo
@@ -48,15 +48,9 @@ CREATE TABLE `comm_pic_repo` (
 -- ----------------------------
 -- Records of comm_pic_repo
 -- ----------------------------
-INSERT INTO `comm_pic_repo` VALUES ('141a69c1-1171-4941-a97b-b748340da4c4', '/nas/upload', '9.jpg', '1677032760944.jpeg');
-INSERT INTO `comm_pic_repo` VALUES ('6ec911ca-3f52-4973-bad6-d2c6567209e3', '/nas/upload', '5.jpg', '1677032754886.jpeg');
-INSERT INTO `comm_pic_repo` VALUES ('73fa821d-fc04-4917-ae68-05af858d3657', '/nas/upload', 'O1CN01Ldl1s61bYyCf2oVCU_!!20003478-0-picasso.jpg', '1677032749170.jpeg');
-INSERT INTO `comm_pic_repo` VALUES ('781bbbf6-9125-4236-978d-bad2fb7e8b29', '/nas/upload', '2.jpg', '1647831995267.jpeg');
-INSERT INTO `comm_pic_repo` VALUES ('7f764bb5-53c4-4f80-9b09-51431473357d', '/nas/upload', '1.jpg', '1640243169339.jpeg');
-INSERT INTO `comm_pic_repo` VALUES ('afae050b-dea4-43d1-803d-28eb2a1db45e', '/nas/upload', '11.jpg', '1677032765309.jpeg');
-INSERT INTO `comm_pic_repo` VALUES ('bcf09c87-d98c-4bb1-8a97-66cf3bc5272f', '/nas/upload', '2.jpg', '1640243172541.jpeg');
-INSERT INTO `comm_pic_repo` VALUES ('c944580a-85df-4dfa-8361-a03e3aac42d1', '/nas/upload', '3.jpg', '1640243175839.jpeg');
-INSERT INTO `comm_pic_repo` VALUES ('d67d2d18-8baf-4043-a1d3-6f67f6d899b4', '/nas/upload', '2.jpg', '1677032777023.jpeg');
+INSERT INTO `comm_pic_repo` VALUES ('a0cc6104-e961-4b28-a8db-034610f362fe', '/home/repo/upload', '下载.jpg', '1680511568350.jpeg');
+INSERT INTO `comm_pic_repo` VALUES ('d8da513a-442d-4125-bfe8-96b47e904700', '/home/repo/upload', 'OIP-C.jpg', '1680511565406.jpeg');
+INSERT INTO `comm_pic_repo` VALUES ('e61d48e0-8993-4aa2-8b43-7957cc50f0e0', 'D:\\workspace\\jbos-mall/repo/upload', 'OIP-C.jfif', '1680508183024.jpeg');
 
 -- ----------------------------
 -- Table structure for comm_region
@@ -104,7 +98,7 @@ CREATE TABLE `im_material_buy` (
 -- ----------------------------
 -- Records of im_material_buy
 -- ----------------------------
-INSERT INTO `im_material_buy` VALUES ('65b6bf79-c115-49a7-a84f-56bd6d6babe6', 'BIZ_BUY_20211026150915', '09434f45-3c7c-11ec-9ddd-005056c00001', 'k0091', '2', null, '2021-10-26 00:00:00', '100.0000', '2021-10-26 00:00:00', 'A4纸2箱', '20', '1', null, null, null, null);
+INSERT INTO `im_material_buy` VALUES ('65b6bf79-c115-49a7-a84f-56bd6d6babe6', 'BIZ_BUY_20211026150915', '9288456e-d45b-11ed-a275-f46addef06a2', 'k0091', '2', null, '2021-10-26 00:00:00', '100.0000', '2021-10-26 00:00:00', 'A4纸2箱', '20', '1', null, null, null, null);
 INSERT INTO `im_material_buy` VALUES ('851c3bba-0c4a-43fe-b4fc-c2a2fa208280', 'BIZ_BUY_20211027182902', '0eef90cc-3713-11ec-8fbf-005056c00001', 'k0091', '2', null, '2021-10-27 00:00:00', '200.0000', '2021-10-27 00:00:00', '茶叶一盒', '20', '1', null, null, null, null);
 
 -- ----------------------------
@@ -152,7 +146,7 @@ CREATE TABLE `im_material_list` (
 -- ----------------------------
 -- Records of im_material_list
 -- ----------------------------
-INSERT INTO `im_material_list` VALUES ('1401c8ed-a720-49c1-b11e-55ffbee2b799', '65b6bf79-c115-49a7-a84f-56bd6d6babe6', null, 'BUY', 'A4纸', '2.00', '50.0000', '1', null, null, null, null);
+INSERT INTO `im_material_list` VALUES ('2d5a6f7e-5f54-42a6-ac5d-3610fabebd25', '65b6bf79-c115-49a7-a84f-56bd6d6babe6', null, 'BUY', 'A4纸', '2.00', '50.0000', '1', null, null, null, null);
 INSERT INTO `im_material_list` VALUES ('35169ff5-3481-43df-9f26-cb75e492f3a5', '851c3bba-0c4a-43fe-b4fc-c2a2fa208280', null, 'BUY', '茶叶', '1.00', '200.0000', '1', null, null, null, null);
 
 -- ----------------------------
@@ -183,13 +177,17 @@ INSERT INTO `jbos_captcha` VALUES ('030f8147-3deb-4eb7-ad74-c0d4bcf9d69d', '6ne7
 INSERT INTO `jbos_captcha` VALUES ('034530d5-69fc-4f4f-8cb2-58944ea1fa5a', '2p5x5');
 INSERT INTO `jbos_captcha` VALUES ('03465126-e78f-49c0-bb5e-25411879012c', 'd7xcw');
 INSERT INTO `jbos_captcha` VALUES ('0350410c-2ffe-479d-b0a6-c72a72cb29b5', '27222');
+INSERT INTO `jbos_captcha` VALUES ('035aeabe-42c6-4782-8674-f3d176ba17e9', 'cx3n6');
 INSERT INTO `jbos_captcha` VALUES ('039d5099-ce1e-4b44-8d8b-eb949c564527', 'gbe28');
 INSERT INTO `jbos_captcha` VALUES ('03cfef78-57fa-486c-9b2d-d8081695e09f', 'n6wb8');
 INSERT INTO `jbos_captcha` VALUES ('04cf0486-949f-41a0-90c5-2cd8bb6640ff', 'dg2d5');
+INSERT INTO `jbos_captcha` VALUES ('04fa95f3-ce23-4297-b215-872bc300a8e1', 'ag5ep');
 INSERT INTO `jbos_captcha` VALUES ('051c1551-96cb-4327-9b64-1f28e7f5aa54', 'gamf3');
+INSERT INTO `jbos_captcha` VALUES ('05597930-69ed-4353-842a-aad901402edb', '7enna');
 INSERT INTO `jbos_captcha` VALUES ('056989b3-3ccd-4fe9-afe9-a827c4159ae0', '4a38n');
 INSERT INTO `jbos_captcha` VALUES ('0608a4ab-665b-495d-a56a-4921c3481321', 'gygey');
 INSERT INTO `jbos_captcha` VALUES ('06be663e-82c8-44b7-bc88-23618bee5df2', 'bgmxa');
+INSERT INTO `jbos_captcha` VALUES ('07446e1b-c5cd-4f3b-9939-3ae0b28c1986', 'e6bge');
 INSERT INTO `jbos_captcha` VALUES ('07955cb2-6e5e-40f6-87d8-1f142600ef7c', 'ndne4');
 INSERT INTO `jbos_captcha` VALUES ('07afc17e-669f-4406-b8c5-4bf25ed8f1c8', '7nyma');
 INSERT INTO `jbos_captcha` VALUES ('08273abe-cd52-4b0f-8b7c-f13d2445defd', 'g5dwx');
@@ -199,10 +197,13 @@ INSERT INTO `jbos_captcha` VALUES ('096ae358-4a65-423d-8bec-cb1ff9c39123', 'eemc
 INSERT INTO `jbos_captcha` VALUES ('09979e15-6d74-4f68-ae73-4f0ddbd51875', '8c6g2');
 INSERT INTO `jbos_captcha` VALUES ('0a2f17fd-263c-4469-ab3d-942a19b716f3', '5yw2d');
 INSERT INTO `jbos_captcha` VALUES ('0aa384cd-0efa-4795-83b0-65263359326f', 'xgmwy');
+INSERT INTO `jbos_captcha` VALUES ('0af951fe-233f-45c4-8aa7-1640a2345bb3', 'yn5m4');
 INSERT INTO `jbos_captcha` VALUES ('0b28bf9d-fb25-4b27-bb9e-2c3cd6396ca7', 'gec24');
 INSERT INTO `jbos_captcha` VALUES ('0c1caec0-99fa-4099-aefa-19ace617ebe8', 'fd2c8');
 INSERT INTO `jbos_captcha` VALUES ('0cf15c14-1540-47c4-8cff-5371eefa2b4d', '7d562');
 INSERT INTO `jbos_captcha` VALUES ('0d16d348-e8aa-490d-8675-1458e81ca0e2', '275yx');
+INSERT INTO `jbos_captcha` VALUES ('0d54cfc3-c70e-4e3a-80d2-d6750de33ea3', 'x7b6a');
+INSERT INTO `jbos_captcha` VALUES ('0d7a44ff-4928-4906-8e4d-64b5dcff770f', '83wy6');
 INSERT INTO `jbos_captcha` VALUES ('0e5e8993-5f6f-402e-ade9-2c1f4146e74e', '88p66');
 INSERT INTO `jbos_captcha` VALUES ('0e651380-f6fa-4ff2-89b8-63c9d37ce099', '3e4wp');
 INSERT INTO `jbos_captcha` VALUES ('0ecfadbd-bceb-493a-a825-e5eca0241da6', '752cy');
@@ -210,16 +211,21 @@ INSERT INTO `jbos_captcha` VALUES ('0f527fc3-814f-4df6-bef5-3fae1a5230ab', '4mbn
 INSERT INTO `jbos_captcha` VALUES ('0fac91a2-fe8e-41a7-9b85-e05052703964', '8nn4n');
 INSERT INTO `jbos_captcha` VALUES ('0fb48e84-2789-4e97-92dc-d34fbc07f0b2', 'fp6f5');
 INSERT INTO `jbos_captcha` VALUES ('0fdbb365-d1bc-4aa1-a2b9-07e089377d12', 'p7wxx');
+INSERT INTO `jbos_captcha` VALUES ('1068fa30-3995-4003-ad78-398b762d56d5', 'ycnpa');
+INSERT INTO `jbos_captcha` VALUES ('10b9becf-7fbf-47e6-bde9-446929f3a2cb', 'gf6b3');
 INSERT INTO `jbos_captcha` VALUES ('10ba757e-3752-4d5f-a493-790449b3db7d', '2xxfm');
 INSERT INTO `jbos_captcha` VALUES ('10ce0c08-06d5-4dea-b42d-542d671913f9', 'xf5x7');
 INSERT INTO `jbos_captcha` VALUES ('10e5a7a0-adb9-4d1e-a5e6-c51c8d9c8912', 'agy6x');
+INSERT INTO `jbos_captcha` VALUES ('1103149c-6385-4b21-88a3-ead30e468169', '4wbcw');
 INSERT INTO `jbos_captcha` VALUES ('1174e60e-ab09-4100-974b-e5563e6f29ac', 'yf7ff');
 INSERT INTO `jbos_captcha` VALUES ('12083ecf-2e15-4e2c-a3ea-88805cd1add6', 'w57mw');
+INSERT INTO `jbos_captcha` VALUES ('12381dec-c8c8-448b-a85d-a459378fa794', 'cpayf');
 INSERT INTO `jbos_captcha` VALUES ('12e83cd7-30a9-4f2f-8e31-47d3a2afc6c1', '2a3ba');
 INSERT INTO `jbos_captcha` VALUES ('135465e7-0d54-4108-8794-406b6471ff2c', 'beegc');
 INSERT INTO `jbos_captcha` VALUES ('13be0c34-026f-44eb-a9e7-aa05e6619d5a', '88a7a');
 INSERT INTO `jbos_captcha` VALUES ('14967aa3-d489-4e95-beb8-77ba1293bd26', '33x6b');
 INSERT INTO `jbos_captcha` VALUES ('14c51add-11e1-47fd-9ed6-74fa8c138a1a', 'ag68b');
+INSERT INTO `jbos_captcha` VALUES ('14ccd60f-069f-4beb-92ea-18d5efd1faf5', 'e4543');
 INSERT INTO `jbos_captcha` VALUES ('14ce67a3-9840-4841-b346-dc34ff7f477a', '5fbga');
 INSERT INTO `jbos_captcha` VALUES ('151a8f5d-9006-4633-96e2-5a8d1376f5c9', 'pp7wc');
 INSERT INTO `jbos_captcha` VALUES ('153ed233-ffa7-488b-97d5-4ed6686881dd', 'nb4ff');
@@ -234,6 +240,9 @@ INSERT INTO `jbos_captcha` VALUES ('1945463d-4ebc-44c0-9a24-01fec90d537a', 'wa7d
 INSERT INTO `jbos_captcha` VALUES ('196e23fc-fc16-4f42-86ad-9a5aef168871', '6fcnx');
 INSERT INTO `jbos_captcha` VALUES ('19713901-602b-4e37-86bd-1858869db664', 'g64bg');
 INSERT INTO `jbos_captcha` VALUES ('19bb2fcf-6acc-4b54-a6e9-42c90b95609e', 'ycncy');
+INSERT INTO `jbos_captcha` VALUES ('1a2def70-8bef-4ac2-b49a-4ca2ab5d1f5b', 'nb3nm');
+INSERT INTO `jbos_captcha` VALUES ('1ab0efce-b26e-4b54-bfb9-9ec9ca817c62', '6bc6e');
+INSERT INTO `jbos_captcha` VALUES ('1ab81345-d1d4-4470-849e-f7ddd87f00eb', 'f7pdp');
 INSERT INTO `jbos_captcha` VALUES ('1ab88fd6-28bd-4c75-8241-6dccb7417f72', '8mp5y');
 INSERT INTO `jbos_captcha` VALUES ('1b2c3e8c-d130-4136-80e0-2a313ae5b5e7', '6ff3b');
 INSERT INTO `jbos_captcha` VALUES ('1b6932d0-9fc4-4f4f-8290-f93a0df647b9', 'mfapn');
@@ -244,6 +253,7 @@ INSERT INTO `jbos_captcha` VALUES ('1db48027-8eb0-4c18-b8da-5d9a9a77ca09', '8aw3
 INSERT INTO `jbos_captcha` VALUES ('1db8ac67-7ef3-4c4f-9391-ab3d1a746b71', 'n4w64');
 INSERT INTO `jbos_captcha` VALUES ('1dc42283-8255-4673-af48-debf552b26e4', 'we2yc');
 INSERT INTO `jbos_captcha` VALUES ('1dd853c7-d679-4f46-aeee-e23f8d7e1a27', '2my4x');
+INSERT INTO `jbos_captcha` VALUES ('1e5298a6-2998-40c8-8af9-899e0394a3d0', 'nm358');
 INSERT INTO `jbos_captcha` VALUES ('1eb74786-68ce-4b6a-82c4-713c326fcf8b', '744pg');
 INSERT INTO `jbos_captcha` VALUES ('1eeefbf0-d5be-4734-8274-efb56207d79f', 'f6nx8');
 INSERT INTO `jbos_captcha` VALUES ('1efbaf61-f7ad-4d56-a91d-1000947e34b2', 'bnd7n');
@@ -284,7 +294,9 @@ INSERT INTO `jbos_captcha` VALUES ('2931ebd9-f789-4999-9631-7a904db7d966', '5a43
 INSERT INTO `jbos_captcha` VALUES ('2974ee68-54f2-4f44-b74e-f6292c9e9b65', '8bg3n');
 INSERT INTO `jbos_captcha` VALUES ('299d858c-99c8-46fd-ad58-46e9e71a7517', 'wwg76');
 INSERT INTO `jbos_captcha` VALUES ('29ad6ef6-90f3-4aeb-9068-0099dc9bbe07', '24y2n');
+INSERT INTO `jbos_captcha` VALUES ('2a816ce2-e29a-4a25-bb15-105ae8ec6410', '56gxf');
 INSERT INTO `jbos_captcha` VALUES ('2b1f967e-925b-4425-bcb1-368f26fb1c91', '8xp5f');
+INSERT INTO `jbos_captcha` VALUES ('2b807c5a-f1d3-4c9c-8ec9-3dad90e2d441', 'nmmw6');
 INSERT INTO `jbos_captcha` VALUES ('2b8e4dfb-d7a6-4f23-8401-f13b062515e0', 'dd4d5');
 INSERT INTO `jbos_captcha` VALUES ('2bb97495-42d5-44f5-a78a-232f4fc975e6', '55pgx');
 INSERT INTO `jbos_captcha` VALUES ('2c21440b-6605-412d-ae50-596fc09feed6', '76gnp');
@@ -292,6 +304,7 @@ INSERT INTO `jbos_captcha` VALUES ('2c8e810a-1c79-4aa7-a24e-8d9aceb94584', 'wefg
 INSERT INTO `jbos_captcha` VALUES ('2d0ed2be-7283-49fc-9123-2dc6efc8183c', '8by5f');
 INSERT INTO `jbos_captcha` VALUES ('2d21757e-b08d-4b52-976b-7701a73793ad', '7x3fm');
 INSERT INTO `jbos_captcha` VALUES ('2de51793-965e-4640-837f-56a2d1d97da3', 'n23na');
+INSERT INTO `jbos_captcha` VALUES ('2e2f3c43-bca4-4ae3-9df0-56ad734b482b', '35gec');
 INSERT INTO `jbos_captcha` VALUES ('2e8398b7-ab2b-49d1-bad2-1a28b0df203c', 'b6xcx');
 INSERT INTO `jbos_captcha` VALUES ('2e8f59a6-d875-4fb7-adef-c31b63c5441f', '7ef4a');
 INSERT INTO `jbos_captcha` VALUES ('2ecb83b6-ca92-4d70-a5db-195690dfa56b', 'ebf7a');
@@ -319,22 +332,28 @@ INSERT INTO `jbos_captcha` VALUES ('37eecd47-2e5d-423b-af0f-a853c8a7d51c', 'nmen
 INSERT INTO `jbos_captcha` VALUES ('37fb9d07-da56-478a-ad71-a9c1ac134960', 'm7n68');
 INSERT INTO `jbos_captcha` VALUES ('38b861e3-e4f0-44e7-9442-efb4e34cf20d', '4cf7e');
 INSERT INTO `jbos_captcha` VALUES ('38fde098-4d78-4590-a62b-a3fb950e1cfe', 'b4mf8');
+INSERT INTO `jbos_captcha` VALUES ('39a78c31-ecb0-4904-a308-dbd1b194b5a2', 'x76bf');
 INSERT INTO `jbos_captcha` VALUES ('39fc8db4-2ed8-45a9-848b-b471f00dffec', '6fbb2');
 INSERT INTO `jbos_captcha` VALUES ('3a18d9c4-31a0-4964-8416-697915b749de', 'e26fb');
 INSERT INTO `jbos_captcha` VALUES ('3a20e3cf-e77e-4d14-8417-6ff7c8e67714', 'bc3n3');
 INSERT INTO `jbos_captcha` VALUES ('3a349d2c-f211-4203-9494-76b175cee5c0', '5gmnb');
+INSERT INTO `jbos_captcha` VALUES ('3a593b4e-3af8-4d84-a67a-7bd98e0b5f1d', '4d3yy');
 INSERT INTO `jbos_captcha` VALUES ('3b7c1dc2-7aa1-4c0d-868e-3e41a3c2ca34', '2cc6p');
 INSERT INTO `jbos_captcha` VALUES ('3bc21b44-c6cc-47a8-b0c1-1d81f40660a6', '4d7a5');
 INSERT INTO `jbos_captcha` VALUES ('3c486447-af7b-4f27-b5c4-6decf670047c', 'gc4ae');
 INSERT INTO `jbos_captcha` VALUES ('3d11a27f-6736-40c1-96e2-1c0af1adaee0', '5b6xn');
 INSERT INTO `jbos_captcha` VALUES ('3f0ec61b-8588-493f-9b08-8877cfced6d6', 'cf4gn');
 INSERT INTO `jbos_captcha` VALUES ('3f4cdafb-2f03-4cf1-9dbf-4a31b01dcbe5', 'mfnye');
+INSERT INTO `jbos_captcha` VALUES ('3f4df523-8349-44e4-91c9-b2773eaf998f', 'wgw6y');
+INSERT INTO `jbos_captcha` VALUES ('3fc6071b-74e8-4e2c-a93c-ff5acf1fe768', 'afe8a');
 INSERT INTO `jbos_captcha` VALUES ('3ffcea4a-c2fc-4c51-8b66-a6eb795d5e21', 'mpcxw');
+INSERT INTO `jbos_captcha` VALUES ('4059c74c-f687-4ccf-8bef-81ef4cf343c2', 'dmxfp');
 INSERT INTO `jbos_captcha` VALUES ('4067b1ec-42c4-465a-b7ea-b59f688db1a5', '8dn5f');
 INSERT INTO `jbos_captcha` VALUES ('40859924-9053-41a7-b4e6-0dc2bd3326b2', '6y45c');
 INSERT INTO `jbos_captcha` VALUES ('416beea4-f23f-4640-87e7-3a0a0f19df0c', 'nx2ed');
 INSERT INTO `jbos_captcha` VALUES ('42882f08-c0b8-43c9-acc2-7cbf4c1e7241', 'nnw7x');
 INSERT INTO `jbos_captcha` VALUES ('42c84031-a248-492c-b223-78072ed1dafb', 'a66w6');
+INSERT INTO `jbos_captcha` VALUES ('43e6eccb-2803-4d1f-bf31-08fcd19497b6', '6ef3y');
 INSERT INTO `jbos_captcha` VALUES ('43f1e9ea-4ede-4d70-94e3-7fb0ee060e31', 'ep4bx');
 INSERT INTO `jbos_captcha` VALUES ('4419cd7a-935c-4589-8dbe-5de948735990', '724mx');
 INSERT INTO `jbos_captcha` VALUES ('44ab34d9-c40e-4310-b5a9-0b2ad7844930', 'm6xfe');
@@ -355,6 +374,7 @@ INSERT INTO `jbos_captcha` VALUES ('499556e1-6a2f-4b7e-ac9d-398c27e5da52', 'm45w
 INSERT INTO `jbos_captcha` VALUES ('49ada408-1b2b-42c1-b2d5-ce39823584fd', 'wbecm');
 INSERT INTO `jbos_captcha` VALUES ('49bfbbd9-7d8e-4f53-907e-5ce6d260b656', '7n74n');
 INSERT INTO `jbos_captcha` VALUES ('49ca5e8d-5bec-45f1-aff9-d238c7c98e55', 'g2b7a');
+INSERT INTO `jbos_captcha` VALUES ('49f0ce51-ffb1-4dc0-99f9-271d57505ace', 'fgx5g');
 INSERT INTO `jbos_captcha` VALUES ('4a5e1379-f25c-4727-b614-db7d63e2e729', '2n6w6');
 INSERT INTO `jbos_captcha` VALUES ('4a68ef08-c321-4164-b1c8-ddf01ae752a8', 'f5b4n');
 INSERT INTO `jbos_captcha` VALUES ('4a756844-11ca-4f6e-9cdb-4c87ec494828', 'pn64d');
@@ -376,6 +396,7 @@ INSERT INTO `jbos_captcha` VALUES ('4fcb3409-439c-4f81-a523-13232d96cb38', '6gan
 INSERT INTO `jbos_captcha` VALUES ('4fd0435b-c1dd-4299-a820-3918521c6d0f', 'cxpfe');
 INSERT INTO `jbos_captcha` VALUES ('5024bbd7-bd7e-4858-98d7-9c6798900961', 'f3fw6');
 INSERT INTO `jbos_captcha` VALUES ('51413fd5-dc77-43d3-ad79-4d7dd71a1e52', '58mnf');
+INSERT INTO `jbos_captcha` VALUES ('518aa9e7-c930-44a5-9294-8ef25270f7bb', 'dy35b');
 INSERT INTO `jbos_captcha` VALUES ('519ed0cd-4aa7-41ce-b541-dbb8417f66c1', 'fn3wa');
 INSERT INTO `jbos_captcha` VALUES ('51b814ec-da5a-49a3-897a-5ba4d88000f2', '728xb');
 INSERT INTO `jbos_captcha` VALUES ('51bd49e9-793c-4e0c-a723-a1dd97bfe6f7', 'p2556');
@@ -383,6 +404,7 @@ INSERT INTO `jbos_captcha` VALUES ('51ff0a9b-faa9-4d85-87d8-469251fec2e8', '6f6b
 INSERT INTO `jbos_captcha` VALUES ('52551a30-1726-46d6-b0a1-85d9c7bf1cf3', 'a6bn2');
 INSERT INTO `jbos_captcha` VALUES ('52f069eb-c85d-4ded-a5d1-ef79aee3b90a', 'bp3d4');
 INSERT INTO `jbos_captcha` VALUES ('532aeff6-4a08-4044-95be-16779ede2529', '62py3');
+INSERT INTO `jbos_captcha` VALUES ('5521ddfa-cf34-4520-ab87-6337b4fed8a7', 'adamm');
 INSERT INTO `jbos_captcha` VALUES ('56109d18-b6b6-4a78-b1cd-27bead7597e1', 'ce7gb');
 INSERT INTO `jbos_captcha` VALUES ('562f0c3a-d7b2-4533-94a7-c243ab1db337', 'c3ex6');
 INSERT INTO `jbos_captcha` VALUES ('563e7dea-9921-4538-a850-8b26f8ef236b', '55wbb');
@@ -403,6 +425,7 @@ INSERT INTO `jbos_captcha` VALUES ('5b6882b4-73ea-4f6b-9b2e-47fb8c36fed6', 'mfam
 INSERT INTO `jbos_captcha` VALUES ('5b95dd0e-af20-43a9-93f2-8d6cb9eba8ef', '8n3n6');
 INSERT INTO `jbos_captcha` VALUES ('5bcbcd0d-830f-4389-8dff-8a940ad2db18', 'e8n2m');
 INSERT INTO `jbos_captcha` VALUES ('5c484932-0322-419c-acce-705611c7c6c6', 'y38n8');
+INSERT INTO `jbos_captcha` VALUES ('5c4b9e2c-030f-4fc1-a822-63ad38dd76f4', 'x4d3m');
 INSERT INTO `jbos_captcha` VALUES ('5c7a84b9-9048-4dda-ac2e-f2e3daf57ec2', 'g2yn6');
 INSERT INTO `jbos_captcha` VALUES ('5c908236-c754-4805-8367-077b467a15e8', 'gg7be');
 INSERT INTO `jbos_captcha` VALUES ('5ca5eb61-3978-4ac3-b6dd-620f2c68a6b8', 'ya24p');
@@ -418,13 +441,16 @@ INSERT INTO `jbos_captcha` VALUES ('5eedc479-41f5-4d7b-937f-f1726bc49724', 'e5gf
 INSERT INTO `jbos_captcha` VALUES ('5fe3a385-9597-458d-8cc4-c408b69462ac', 'w3p53');
 INSERT INTO `jbos_captcha` VALUES ('602a1297-232a-4f2c-8322-842a232489e9', 'dxged');
 INSERT INTO `jbos_captcha` VALUES ('604b556f-34ec-4d0c-a393-24dcbb98ba4b', '2537c');
+INSERT INTO `jbos_captcha` VALUES ('605593bc-ae17-4446-a2fd-16023c496b12', '5cncd');
 INSERT INTO `jbos_captcha` VALUES ('60d3e2b2-a0f5-4075-8a70-f3f9a99e461a', '6n6nd');
 INSERT INTO `jbos_captcha` VALUES ('60fcee53-cbc0-49be-bb74-c46f7a0adeaa', '52388');
 INSERT INTO `jbos_captcha` VALUES ('636c8359-e2f4-48c8-a504-eeb7b5e3ca5e', '24a3a');
 INSERT INTO `jbos_captcha` VALUES ('63c0bd10-5d26-4970-b54b-b2b9c26e096d', '4bbbm');
 INSERT INTO `jbos_captcha` VALUES ('63f8a490-7aff-429c-aeaf-1871ad18682a', 'ay23n');
+INSERT INTO `jbos_captcha` VALUES ('64f4e395-5b20-41e2-a752-284f8bb18e63', '763p3');
 INSERT INTO `jbos_captcha` VALUES ('64feb35c-5c0c-49f1-8db1-985ea56caa44', 'mxgnp');
 INSERT INTO `jbos_captcha` VALUES ('654b1b1f-2a3b-4826-b670-ac38e609b90c', '22db2');
+INSERT INTO `jbos_captcha` VALUES ('655ff826-714a-4291-83bb-b8fef6618a59', 'xp22b');
 INSERT INTO `jbos_captcha` VALUES ('65898f61-01cb-4ad8-9544-927acd6602bc', 'ax6np');
 INSERT INTO `jbos_captcha` VALUES ('65acbdb8-3e1c-4090-9b9e-3f8279cde3fb', 'wnaxp');
 INSERT INTO `jbos_captcha` VALUES ('65fd95ce-eda7-41a5-9222-b9daa320f437', 'n2fna');
@@ -432,9 +458,13 @@ INSERT INTO `jbos_captcha` VALUES ('666c10f0-6773-4f02-b0f6-6565a7f4ab20', '4wm2
 INSERT INTO `jbos_captcha` VALUES ('6702ac9f-f28a-453c-be8a-a5e4cde6820c', 'd5mdg');
 INSERT INTO `jbos_captcha` VALUES ('671e7f5d-3149-41b8-9800-70bce54a24c6', 'nf6fy');
 INSERT INTO `jbos_captcha` VALUES ('67221548-904c-457c-a0c4-b332a6f27014', 'n8578');
+INSERT INTO `jbos_captcha` VALUES ('672bf5b2-ee23-4f57-8d4e-d58f1f730e6e', '587c2');
+INSERT INTO `jbos_captcha` VALUES ('6756c096-b4bf-4004-8ff5-c917b1501409', 'fbbx4');
 INSERT INTO `jbos_captcha` VALUES ('6860e8ad-9946-489d-a64d-d9bd17bdeaf5', 'gewma');
+INSERT INTO `jbos_captcha` VALUES ('689fd7c3-eac6-4e25-9af8-438cad4f03a8', 'xmnab');
 INSERT INTO `jbos_captcha` VALUES ('692fac28-505a-4640-8502-9489e6cfdbfc', '8de7g');
 INSERT INTO `jbos_captcha` VALUES ('69cd738f-50bd-4fa9-a252-351d01a69f73', '27bff');
+INSERT INTO `jbos_captcha` VALUES ('6a275eb1-c87e-4312-b1e7-da5778d085eb', '6dw2x');
 INSERT INTO `jbos_captcha` VALUES ('6a2d9873-e634-4b2c-8289-1f2453da50ae', 'nmm33');
 INSERT INTO `jbos_captcha` VALUES ('6ab81fc2-405b-4abe-915b-e55597969800', '5fgwa');
 INSERT INTO `jbos_captcha` VALUES ('6bb17542-2bac-430f-9ff8-58c686d01cda', '5634g');
@@ -445,6 +475,7 @@ INSERT INTO `jbos_captcha` VALUES ('6c309866-9191-4ae7-8068-ba6b23ac057a', 'ndp3
 INSERT INTO `jbos_captcha` VALUES ('6c5af481-e019-429a-a22d-333e5a53f13a', 'd225e');
 INSERT INTO `jbos_captcha` VALUES ('6cd5c85b-de9d-4fde-a2b6-570373c1315e', 'wffbw');
 INSERT INTO `jbos_captcha` VALUES ('6ce1f524-d7aa-4900-90ac-e207831d488f', 'xd4yg');
+INSERT INTO `jbos_captcha` VALUES ('6ce85919-62f5-43a9-9058-2ccdb7604f72', 'dw3fn');
 INSERT INTO `jbos_captcha` VALUES ('6ceb0ab5-3dba-465a-906e-cd055046360e', 'cnn3x');
 INSERT INTO `jbos_captcha` VALUES ('6cf9af96-862a-4891-aa0d-b6866f15e946', '65wag');
 INSERT INTO `jbos_captcha` VALUES ('6d432a88-1828-4b1a-b988-7f4480a91901', 'edyaf');
@@ -452,6 +483,7 @@ INSERT INTO `jbos_captcha` VALUES ('6da24f19-538d-48e9-ada3-c0ca07f46389', '4y24
 INSERT INTO `jbos_captcha` VALUES ('6f4a91ef-6f49-4b1b-96e4-063cd1438907', 'gxedm');
 INSERT INTO `jbos_captcha` VALUES ('6f54b6fa-88ea-44c3-89f4-e848cb5ee02e', 'c6dcw');
 INSERT INTO `jbos_captcha` VALUES ('708d372c-d0ed-4a5d-b311-81ca5dde3f43', '7xbf7');
+INSERT INTO `jbos_captcha` VALUES ('709487d8-4b8a-4956-86c7-7c09837b06d8', '8ba27');
 INSERT INTO `jbos_captcha` VALUES ('709b5847-0517-4a45-b767-3053c46b40e7', '4cgn5');
 INSERT INTO `jbos_captcha` VALUES ('713511ad-e8e7-46df-83a6-b7f7a3d606e3', '35g54');
 INSERT INTO `jbos_captcha` VALUES ('716a5155-778c-4009-b7f0-c2877ed9ed5e', 'wpnng');
@@ -478,6 +510,8 @@ INSERT INTO `jbos_captcha` VALUES ('7a72a373-679c-4728-bbcf-e971fb68acda', 'xb8b
 INSERT INTO `jbos_captcha` VALUES ('7b01046d-e796-4959-b243-c0af73c97bdc', 'm355d');
 INSERT INTO `jbos_captcha` VALUES ('7b52e6c4-84fd-4061-969d-2693b115c8f5', '2dydx');
 INSERT INTO `jbos_captcha` VALUES ('7cffe020-3a70-444e-b13a-cce027b1cbfc', 'ma54m');
+INSERT INTO `jbos_captcha` VALUES ('7d49090f-fe62-46f1-ae96-dee949037669', 'e3py2');
+INSERT INTO `jbos_captcha` VALUES ('7e2dfa10-878f-4b07-b9bf-05551fc6b42e', 'bmmg6');
 INSERT INTO `jbos_captcha` VALUES ('7e659c46-e79e-45fa-8f38-1546d9a4693a', 'bbn3y');
 INSERT INTO `jbos_captcha` VALUES ('7ed7b9cc-816a-4f6b-896d-6662e5583661', 'eewpn');
 INSERT INTO `jbos_captcha` VALUES ('7f22181a-d975-4b24-861a-90be4ca10652', '4gn6n');
@@ -485,6 +519,7 @@ INSERT INTO `jbos_captcha` VALUES ('7f542039-61d5-4117-aaf1-db26b693650d', 'e3ey
 INSERT INTO `jbos_captcha` VALUES ('8059bf57-930c-4cf4-b92b-418af4f91c83', 'n38pn');
 INSERT INTO `jbos_captcha` VALUES ('807b1be2-5d37-4dc4-936a-420ed129fa2d', '4a7ng');
 INSERT INTO `jbos_captcha` VALUES ('808d72ed-3551-47cc-b539-fe5261909a43', 'wpyde');
+INSERT INTO `jbos_captcha` VALUES ('80931fb4-5796-4246-95b1-e802ca3ab780', 'ggc44');
 INSERT INTO `jbos_captcha` VALUES ('8097360e-6928-4710-a954-313d8a8fb58c', '6fcn5');
 INSERT INTO `jbos_captcha` VALUES ('80cdcd02-a23a-41cd-a898-7aa1a932a58b', 'b6xxm');
 INSERT INTO `jbos_captcha` VALUES ('81eba1ee-f3b4-4af9-9d28-11e2f163cdd0', 'ycn2y');
@@ -516,29 +551,37 @@ INSERT INTO `jbos_captcha` VALUES ('89e1ee44-7055-404e-b307-057e67cbda17', '7g67
 INSERT INTO `jbos_captcha` VALUES ('8a3fd261-f654-4596-ae4f-4fb9bf3bd876', '5gmyb');
 INSERT INTO `jbos_captcha` VALUES ('8b2a21d7-6627-41d6-97fa-6ace75966510', 'ga88w');
 INSERT INTO `jbos_captcha` VALUES ('8b76c5cd-2fdf-4d75-b5ed-a758b067b376', 'adep2');
+INSERT INTO `jbos_captcha` VALUES ('8ba11690-1f3d-4199-8b5c-ef551cedad73', '5n2ax');
 INSERT INTO `jbos_captcha` VALUES ('8ba48ce3-3914-49c0-aa92-bb34cc6531ab', 'ngmn5');
 INSERT INTO `jbos_captcha` VALUES ('8c0e831f-e39f-4e09-a8c2-6239dadcd7df', 'cmnax');
 INSERT INTO `jbos_captcha` VALUES ('8c9bd08d-127b-403f-a731-ed494bd89d2a', 'wfxbw');
 INSERT INTO `jbos_captcha` VALUES ('8cf666b0-cdd5-4ac3-a37e-b5ca3978625e', '43x34');
 INSERT INTO `jbos_captcha` VALUES ('8d488bf7-3f19-41e1-a7df-8b71ea378f7a', 'xxp8g');
 INSERT INTO `jbos_captcha` VALUES ('8d5a48be-58dc-4f2c-bb4b-ebd7883d56af', 'xnad3');
+INSERT INTO `jbos_captcha` VALUES ('8d8196df-1b1b-4b11-9780-2272847b7947', 'g4y42');
+INSERT INTO `jbos_captcha` VALUES ('8de29acd-8cc6-4c79-878f-2c7a4c41808e', 'ybbe8');
 INSERT INTO `jbos_captcha` VALUES ('8e039e81-31a3-46f8-968a-82caa5865c7f', 'pfebw');
 INSERT INTO `jbos_captcha` VALUES ('8e2ea81a-4e6e-4ef0-8432-fd32cf7c758d', 'eedne');
+INSERT INTO `jbos_captcha` VALUES ('8e8283e7-f84f-4545-9336-a591251a1b7a', '8a8n3');
 INSERT INTO `jbos_captcha` VALUES ('8f9451ff-515f-4b5c-b9fc-8c66200b4af2', 'y8g7c');
 INSERT INTO `jbos_captcha` VALUES ('906f834b-4974-41da-86de-bf95c3ee55cd', 'eepd4');
 INSERT INTO `jbos_captcha` VALUES ('910f873d-5cc3-4d95-8388-b5ea46e6582c', 'w5a2a');
 INSERT INTO `jbos_captcha` VALUES ('91385d7a-4bc4-4580-82d5-8865ef2201a2', '2pyx5');
 INSERT INTO `jbos_captcha` VALUES ('929fecd7-af57-48be-aee4-979aa454d1cf', 'x3yyw');
 INSERT INTO `jbos_captcha` VALUES ('92abe206-7368-48a7-ad6b-9e00ff43c271', '5n7gd');
+INSERT INTO `jbos_captcha` VALUES ('92e05273-e74f-4765-a286-6770b066de4d', 'mxa87');
 INSERT INTO `jbos_captcha` VALUES ('92f8c090-deab-4bb3-9191-f98447f26a6a', 'f226p');
 INSERT INTO `jbos_captcha` VALUES ('93c1e837-ff0e-4be7-b942-118ed56be48b', 'pdpan');
+INSERT INTO `jbos_captcha` VALUES ('9465e46b-873b-4c0e-889c-f90c1833d320', 'aepcc');
 INSERT INTO `jbos_captcha` VALUES ('949b1f3b-7232-4832-a52a-77f9ec4df1b8', '882fw');
 INSERT INTO `jbos_captcha` VALUES ('94f5b88b-bc6b-4d65-bddc-74727c5d00e4', 'fagmn');
 INSERT INTO `jbos_captcha` VALUES ('95353147-422a-44ed-84b9-ae6792117f7e', 'g7fg2');
+INSERT INTO `jbos_captcha` VALUES ('954fcdc6-b211-4565-a39d-c24c157df135', '44pb4');
 INSERT INTO `jbos_captcha` VALUES ('956b83d5-ec74-42d4-ba5d-b02ded42536d', '2cxfy');
 INSERT INTO `jbos_captcha` VALUES ('95933a08-90d6-441e-8ec5-e1de1e9a0a9e', 'w476g');
 INSERT INTO `jbos_captcha` VALUES ('95adbb20-f16b-4f6d-8e4a-7d04d9623c13', '832cn');
 INSERT INTO `jbos_captcha` VALUES ('95d997cf-80a2-4d3a-bb65-772d226c6d66', 'nb37c');
+INSERT INTO `jbos_captcha` VALUES ('974cc9c4-4e8c-43cd-b5de-08c11f47cb84', '78caa');
 INSERT INTO `jbos_captcha` VALUES ('9766bf33-1b04-4114-84fa-0797b37743f8', 'nb2y6');
 INSERT INTO `jbos_captcha` VALUES ('97b3c68e-0402-4d55-9289-4e65afe4866b', 'n8xed');
 INSERT INTO `jbos_captcha` VALUES ('97b858df-76f5-4042-953e-58385e396c59', 'emna8');
@@ -547,11 +590,13 @@ INSERT INTO `jbos_captcha` VALUES ('98bc79f9-9b11-42df-90cc-f13fbaa8d5e3', 'fcgn
 INSERT INTO `jbos_captcha` VALUES ('98ded84a-1367-49b4-922e-ef23579862a0', '2y5dn');
 INSERT INTO `jbos_captcha` VALUES ('992455d9-32af-4fc4-8f70-eeafc5c36345', 'fc8eg');
 INSERT INTO `jbos_captcha` VALUES ('9994d227-4cb4-4c5d-8992-2c54e00ce3a3', 'wnppg');
+INSERT INTO `jbos_captcha` VALUES ('99feca81-c83f-48bd-b48b-beea94bc53f2', 'e738f');
 INSERT INTO `jbos_captcha` VALUES ('9a333fa3-29b9-4876-8fd3-4b750c26c066', 'w62gb');
 INSERT INTO `jbos_captcha` VALUES ('9ad74f50-63e8-4304-8fa7-6cbbde0d4fff', 'w7n4f');
 INSERT INTO `jbos_captcha` VALUES ('9b12d8ca-911a-43f8-bcc6-dca5bab8e9e7', '6wm64');
 INSERT INTO `jbos_captcha` VALUES ('9b205778-306d-478a-ad54-6255662ecfd5', 'wg2c6');
 INSERT INTO `jbos_captcha` VALUES ('9b4c313b-ff06-43ca-8ccd-81c7b38c144a', 'p2nad');
+INSERT INTO `jbos_captcha` VALUES ('9ba2cb4c-4bb7-4e8a-940e-7f2b0025f919', 'e6ygb');
 INSERT INTO `jbos_captcha` VALUES ('9bb24841-1bef-4453-9f5f-3bf00d48781b', '6wd22');
 INSERT INTO `jbos_captcha` VALUES ('9c1b7ad4-e93c-4f3f-9387-d9ce57bd4647', 'f33e5');
 INSERT INTO `jbos_captcha` VALUES ('9c3ce338-9240-4b9a-9cc4-4211ff7a454c', 'b4f8b');
@@ -565,6 +610,7 @@ INSERT INTO `jbos_captcha` VALUES ('9efc8141-aca1-49d4-8ce8-31b3ec3d575f', 'gwf3
 INSERT INTO `jbos_captcha` VALUES ('9fb68f1d-77cb-4285-a675-588118d8a4ba', 'cbc7d');
 INSERT INTO `jbos_captcha` VALUES ('a0725e0d-bd11-4080-8f7f-d28a5c7cbfb8', 'be66w');
 INSERT INTO `jbos_captcha` VALUES ('a1217898-73dc-472c-92f4-a15ed4fc14a7', 'nnfg3');
+INSERT INTO `jbos_captcha` VALUES ('a14c3f77-7c13-41a3-8cad-7097a1cd99e7', '2xy4n');
 INSERT INTO `jbos_captcha` VALUES ('a1717ec3-33c4-44a1-9b91-bd72697368b3', '445bn');
 INSERT INTO `jbos_captcha` VALUES ('a1c8b1ca-ddb5-4c99-99d7-36e6dd0df552', '8da6e');
 INSERT INTO `jbos_captcha` VALUES ('a1f3ae4f-6053-4a18-a4dd-bab7f7e6bafa', 'e747f');
@@ -594,6 +640,7 @@ INSERT INTO `jbos_captcha` VALUES ('acc140e3-190c-4a18-a2de-428cba56460f', 'g568
 INSERT INTO `jbos_captcha` VALUES ('acef5931-aca2-49bb-86e8-c4b526e33349', 'amfng');
 INSERT INTO `jbos_captcha` VALUES ('ad0186f7-904f-4672-8d57-2157373417ee', 'db4g4');
 INSERT INTO `jbos_captcha` VALUES ('ad2e35c3-3a09-4f7b-aaa8-62e3137dcdb2', 'd6fn3');
+INSERT INTO `jbos_captcha` VALUES ('ae301c0a-384e-483e-8436-5c13b3c77165', 'dnfpn');
 INSERT INTO `jbos_captcha` VALUES ('aead4ce2-2d09-4340-b5cc-f8add8effb12', '5afff');
 INSERT INTO `jbos_captcha` VALUES ('af25e3f7-4a75-495e-a6ee-60e08f5e1630', '6b8e8');
 INSERT INTO `jbos_captcha` VALUES ('af545a3c-d95a-4c34-b57e-f1a6e3351656', '55n76');
@@ -605,6 +652,8 @@ INSERT INTO `jbos_captcha` VALUES ('b386c465-799b-4bd8-95f0-ddf8fd8d7e5f', '27e6
 INSERT INTO `jbos_captcha` VALUES ('b3d7c24e-cdcb-44e5-b8da-cfb4097dab37', 'g3xbm');
 INSERT INTO `jbos_captcha` VALUES ('b42b68cf-3ae9-4030-b2aa-676bd13aa890', 'yc3dn');
 INSERT INTO `jbos_captcha` VALUES ('b4318342-ebc0-45dc-8346-32510717c4e3', 'xwbx2');
+INSERT INTO `jbos_captcha` VALUES ('b433e824-9d94-4e8f-a91a-312b27fe460d', '8y32p');
+INSERT INTO `jbos_captcha` VALUES ('b434c674-ade3-4738-830d-99f17144c1f6', 'eagnm');
 INSERT INTO `jbos_captcha` VALUES ('b446f5ff-af2f-4e40-ab6e-61501212405e', 'ed4x8');
 INSERT INTO `jbos_captcha` VALUES ('b475c976-172e-4926-a8ef-18cb899abf8e', 'b3pfg');
 INSERT INTO `jbos_captcha` VALUES ('b492fad3-b249-40f3-b8f2-ce704ff1720a', 'dyp8e');
@@ -627,6 +676,7 @@ INSERT INTO `jbos_captcha` VALUES ('b9f483ed-b814-4f55-9a87-b8bb7182585b', 'n8gw
 INSERT INTO `jbos_captcha` VALUES ('baa99215-90d8-4657-8d16-5941dd950075', 'bf8x4');
 INSERT INTO `jbos_captcha` VALUES ('babca41b-28dd-4cab-8b48-ce203d8763af', '7xen4');
 INSERT INTO `jbos_captcha` VALUES ('bb294634-4da0-4a08-a8d6-01dcb4a132c2', 'wwxya');
+INSERT INTO `jbos_captcha` VALUES ('bb8db4cc-7a2e-4a14-89fa-0f20dc97e17b', 'n37a7');
 INSERT INTO `jbos_captcha` VALUES ('bc75c315-0fb7-4eaf-98f8-5353cee176fc', 'f8fn8');
 INSERT INTO `jbos_captcha` VALUES ('bcf48d46-4d26-43d2-b64d-7bac37624fb9', 'awyfx');
 INSERT INTO `jbos_captcha` VALUES ('bcfe2807-e7c2-41e9-8c89-913839be3ae9', 'pxpf4');
@@ -637,6 +687,7 @@ INSERT INTO `jbos_captcha` VALUES ('bef6ce40-0fe3-41ac-bae6-ab50fb83c683', 'bd38
 INSERT INTO `jbos_captcha` VALUES ('bf19c0d9-91b3-4660-881b-13aa7735a950', 'bpnb3');
 INSERT INTO `jbos_captcha` VALUES ('c0323478-1554-44d2-a523-49bd3dee3816', 'cn7n7');
 INSERT INTO `jbos_captcha` VALUES ('c054f11e-6b76-4505-89a8-a1f9b6157f42', 'wg2ep');
+INSERT INTO `jbos_captcha` VALUES ('c0c6ef3e-eeac-483b-a775-3d1b8d8bac8d', '6b8fa');
 INSERT INTO `jbos_captcha` VALUES ('c0e57872-4aa5-453c-abc6-2253840bdf00', 'gfa7c');
 INSERT INTO `jbos_captcha` VALUES ('c0fa2711-1952-4f02-b8ff-e0c18e877f0b', '6xa8y');
 INSERT INTO `jbos_captcha` VALUES ('c15dd9c6-6ed1-4c9e-a29d-6414c74278dc', 'gb36f');
@@ -683,9 +734,11 @@ INSERT INTO `jbos_captcha` VALUES ('d0acf09b-a45f-43da-8624-83fd79a528a6', 'nnab
 INSERT INTO `jbos_captcha` VALUES ('d0c16549-5c3d-4c80-a07b-31b779041aa0', 'wf8mn');
 INSERT INTO `jbos_captcha` VALUES ('d1168af8-8b78-4acb-bcdc-2337948082e9', 'c7452');
 INSERT INTO `jbos_captcha` VALUES ('d1333740-44ba-47f8-8758-e6926874fe23', '3bn5e');
+INSERT INTO `jbos_captcha` VALUES ('d1949de5-13a0-4a5a-a482-1f15eba8856d', 'm8nb2');
 INSERT INTO `jbos_captcha` VALUES ('d20e38f3-b632-421a-81ee-1b84b9bfd29a', 'n6fm8');
 INSERT INTO `jbos_captcha` VALUES ('d314dd05-ee35-4e3a-922b-68938cef6f28', '3pn56');
 INSERT INTO `jbos_captcha` VALUES ('d34f3a12-e887-41bf-9168-887f23f74fb6', '8c5c6');
+INSERT INTO `jbos_captcha` VALUES ('d386ef01-8eeb-4464-b1cb-a1ae44a343c1', 'bgg3e');
 INSERT INTO `jbos_captcha` VALUES ('d3c3806e-57a8-41d7-9a3d-1deb36eaf382', 'n6885');
 INSERT INTO `jbos_captcha` VALUES ('d3cd550a-6d42-4294-ab79-431a0f7b2e47', 'pady5');
 INSERT INTO `jbos_captcha` VALUES ('d3ef4003-8835-4251-9ec3-fb280c5515ea', 'b24yn');
@@ -697,18 +750,24 @@ INSERT INTO `jbos_captcha` VALUES ('d63746f6-cb60-4f4f-bbc3-5b0b4b0fe745', 'dbpc
 INSERT INTO `jbos_captcha` VALUES ('d72fb5da-0fb1-4108-86ef-c29e7f5c05fe', '6e3m3');
 INSERT INTO `jbos_captcha` VALUES ('d7c5759e-3436-4f39-ab1a-5d718a51e50d', 'p5dw8');
 INSERT INTO `jbos_captcha` VALUES ('d870b0cf-2195-4d54-9b2b-a34418789d00', 'cnwnc');
+INSERT INTO `jbos_captcha` VALUES ('d8acebf7-355e-4421-abfa-b07381bc9619', 'axy28');
 INSERT INTO `jbos_captcha` VALUES ('d90d69d8-a319-4a9b-bc12-0f242cbe06a5', '26b4w');
 INSERT INTO `jbos_captcha` VALUES ('d9709a73-5f40-415f-bb68-ed9ce8582e28', 'y5y5f');
 INSERT INTO `jbos_captcha` VALUES ('d97ceb15-b18a-44ea-b607-6457e8ad108a', 'bnbyy');
+INSERT INTO `jbos_captcha` VALUES ('daefada5-e7dc-4b88-9c56-be07ee49a766', 'new83');
 INSERT INTO `jbos_captcha` VALUES ('db611e84-4c03-400c-ba58-7994d549d9e9', 'a56db');
 INSERT INTO `jbos_captcha` VALUES ('dc6861a2-4732-4d2d-9203-f90f25901581', 'fc7cp');
+INSERT INTO `jbos_captcha` VALUES ('dc7fd252-e30a-40b3-ab13-f3668b31d59b', 'nxn74');
+INSERT INTO `jbos_captcha` VALUES ('dc84cae0-2937-4ff9-8bc5-672aa51b3114', 'ww2a8');
 INSERT INTO `jbos_captcha` VALUES ('dd3188c3-ceb9-4cf6-b695-0f675f8c77c3', 'd7y5c');
 INSERT INTO `jbos_captcha` VALUES ('ddaa5a37-9915-45da-845a-4a8e1977d589', 'ab8ya');
 INSERT INTO `jbos_captcha` VALUES ('dddb2dc4-f296-4aa5-8875-33a34555b0fa', 'g57a8');
 INSERT INTO `jbos_captcha` VALUES ('dde6ff57-376a-4820-a276-0a6429696fe3', 'b7yc5');
 INSERT INTO `jbos_captcha` VALUES ('de6ea8d7-9068-4cfb-bd31-0498aeb19db8', '3c3cp');
 INSERT INTO `jbos_captcha` VALUES ('dea9aeac-f294-4332-98d7-43125e67c000', '2b86w');
+INSERT INTO `jbos_captcha` VALUES ('df063e41-72b9-4c38-b440-2adb4858e45d', 'g7268');
 INSERT INTO `jbos_captcha` VALUES ('df818d4f-34a7-47aa-abcb-e560605b6aa5', 'ffxpf');
+INSERT INTO `jbos_captcha` VALUES ('e048a4b8-d14a-4d6d-a4de-c67bc60352dd', 'b4a65');
 INSERT INTO `jbos_captcha` VALUES ('e0fc2883-10a5-4af4-830e-b5f87dd7c0e9', 'mp7ea');
 INSERT INTO `jbos_captcha` VALUES ('e1640e52-24c7-4889-a344-a857b6905556', '3cpxe');
 INSERT INTO `jbos_captcha` VALUES ('e2809ea2-7ba6-464f-9472-963b923066df', '8mypg');
@@ -717,12 +776,15 @@ INSERT INTO `jbos_captcha` VALUES ('e3726743-96ad-447d-9e78-24a75a0a8805', 'g6np
 INSERT INTO `jbos_captcha` VALUES ('e4348480-aeff-44ef-a5dc-80a41eae15cd', '663bw');
 INSERT INTO `jbos_captcha` VALUES ('e48c6fa8-1002-45da-9cb2-43eeb5fe14f7', 'nng3g');
 INSERT INTO `jbos_captcha` VALUES ('e502e750-7a52-4e27-9434-eabea6c4927e', '2p7dm');
+INSERT INTO `jbos_captcha` VALUES ('e5519433-1cc6-4384-a1c3-72d047363be9', 'dy23d');
 INSERT INTO `jbos_captcha` VALUES ('e567714e-d744-4293-be38-90fa67076f85', 'g7gdg');
 INSERT INTO `jbos_captcha` VALUES ('e5787dd6-d926-40ca-a2f8-91c5a7ed8415', '82mm2');
 INSERT INTO `jbos_captcha` VALUES ('e63820b5-8724-4eba-9e54-9bac7793327c', 'bn3mf');
 INSERT INTO `jbos_captcha` VALUES ('e6592961-843d-4a88-a215-b38f1f10e834', 'yac2c');
 INSERT INTO `jbos_captcha` VALUES ('e681c053-dc27-4d87-b444-9ee419de12f5', 'dfemm');
 INSERT INTO `jbos_captcha` VALUES ('e75054d4-6d8d-444e-9097-c3878e902814', 'y5md5');
+INSERT INTO `jbos_captcha` VALUES ('e7572300-3d93-4c37-b6fd-ba8ad1603bfc', 'd2b4a');
+INSERT INTO `jbos_captcha` VALUES ('e7e570a3-27ea-4e87-80f4-197a426b9a8d', '3mb7n');
 INSERT INTO `jbos_captcha` VALUES ('e8c57b16-019f-48dd-9bf7-b877faf56443', 'b4cax');
 INSERT INTO `jbos_captcha` VALUES ('e8c83205-6118-46dd-830d-727c27bdb2d3', 'ffp5g');
 INSERT INTO `jbos_captcha` VALUES ('e9d6da08-aaf9-43ef-a32d-96d225eaf893', '76yn2');
@@ -743,6 +805,8 @@ INSERT INTO `jbos_captcha` VALUES ('ee3709f6-b700-4c6e-a42d-caee36008e13', 'n2ex
 INSERT INTO `jbos_captcha` VALUES ('eef72e79-913d-4301-8140-61b85bb1317c', '5aex6');
 INSERT INTO `jbos_captcha` VALUES ('ef0ac063-330f-4db1-b703-2d679421ae80', 'ncg8x');
 INSERT INTO `jbos_captcha` VALUES ('f0a86380-9be4-476f-b7bc-8358a55427cc', 'adb84');
+INSERT INTO `jbos_captcha` VALUES ('f11d3b23-d67e-4cce-92c1-25ea729f5e7f', 'nxb82');
+INSERT INTO `jbos_captcha` VALUES ('f1afc412-6520-4ee3-ad58-f0987e867ef7', 'n45nw');
 INSERT INTO `jbos_captcha` VALUES ('f2043e44-a8ae-4d07-8d20-47c7a0567c18', '5fbax');
 INSERT INTO `jbos_captcha` VALUES ('f250f694-0ae2-445a-a2ed-6465cf4b3c6e', 'd7267');
 INSERT INTO `jbos_captcha` VALUES ('f376c5e1-ff15-40c5-bad5-9530e093b217', 'mn38a');
@@ -754,7 +818,9 @@ INSERT INTO `jbos_captcha` VALUES ('f53728b7-5ef8-4db1-a905-32f344e8d287', 'n3ac
 INSERT INTO `jbos_captcha` VALUES ('f6e1b0d3-040a-4e58-b782-c22a0f82173a', '328yw');
 INSERT INTO `jbos_captcha` VALUES ('f7969937-6864-4532-94e7-afe55be75e71', 'bpbdc');
 INSERT INTO `jbos_captcha` VALUES ('f806b291-bbd2-4547-9eed-5dc1cb6dbfd0', 'nxfa3');
+INSERT INTO `jbos_captcha` VALUES ('f80cedba-2dc6-4853-a750-e25c9106d49b', 'xmp25');
 INSERT INTO `jbos_captcha` VALUES ('f80ed098-d316-4b88-860e-23189a38842d', '3fnnn');
+INSERT INTO `jbos_captcha` VALUES ('f81e7d68-52e3-41ec-b930-d42cdbf475cc', 'becxe');
 INSERT INTO `jbos_captcha` VALUES ('f87e4263-57c8-4658-bfa8-b2dd3f3ef64b', 'wyx6b');
 INSERT INTO `jbos_captcha` VALUES ('f8e4951d-95d5-44f3-9c45-457172f2cae8', 'pdwxg');
 INSERT INTO `jbos_captcha` VALUES ('f8fc34ee-c223-4a2e-826b-f51d42a5c195', 'yaf46');
@@ -831,6 +897,9 @@ INSERT INTO `jbos_dict_code` VALUES ('JBOS_EMP_STATUS', 'locked', '锁定', '2')
 INSERT INTO `jbos_dict_code` VALUES ('JBOS_EMP_STATUS', 'running', '正常', '1');
 INSERT INTO `jbos_dict_code` VALUES ('JBOS_HEADSHIP', '100', '系统开发', '1');
 INSERT INTO `jbos_dict_code` VALUES ('JBOS_HEADSHIP', '102', '项目经理', '3');
+INSERT INTO `jbos_dict_code` VALUES ('JBOS_PROC_BIZTYPE', '100', '物品管理-物品采购', '1');
+INSERT INTO `jbos_dict_code` VALUES ('JBOS_PROC_BIZTYPE', '200', '物品管理-物品入库', '2');
+INSERT INTO `jbos_dict_code` VALUES ('JBOS_PROC_BIZTYPE', '300', '物品管理-物品领取', '3');
 
 -- ----------------------------
 -- Table structure for jbos_dict_type
@@ -848,6 +917,7 @@ CREATE TABLE `jbos_dict_type` (
 INSERT INTO `jbos_dict_type` VALUES ('JBOS_DEP_LEVEL', '部门级别');
 INSERT INTO `jbos_dict_type` VALUES ('JBOS_EMP_STATUS', '员工状态');
 INSERT INTO `jbos_dict_type` VALUES ('JBOS_HEADSHIP', '员工职务');
+INSERT INTO `jbos_dict_type` VALUES ('JBOS_PROC_BIZTYPE', '业务类型');
 
 -- ----------------------------
 -- Table structure for jbos_emp
@@ -882,14 +952,12 @@ INSERT INTO `jbos_emp` VALUES ('3e3b17c2-32ff-4d38-8cf0-a627fffaae70', 'k0100', 
 INSERT INTO `jbos_emp` VALUES ('56381b33-7cae-4125-9f84-6d5944cc0748', 'k0092', 'k0092', '2', '2', '100', 'running', null, null, null, null, null, null, '1', null, null, null, null);
 INSERT INTO `jbos_emp` VALUES ('57c3cb7f-bf05-4660-858d-50b1246582f2', 'k0097', 'k0097', '2', '2', '100', 'running', null, null, null, null, null, null, '1', null, null, null, null);
 INSERT INTO `jbos_emp` VALUES ('82470e24-4f71-4c75-8b7e-ff228d58e0f5', 'k0013', 'k0013', '2', '2', '', 'running', null, null, null, null, null, null, '1', null, null, null, null);
-INSERT INTO `jbos_emp` VALUES ('885ad986-af51-4b7d-ad49-f48a38d6ed09', 'l0091', 'l0091', '2', '2', '', 'running', null, null, null, null, null, null, '1', null, null, null, null);
 INSERT INTO `jbos_emp` VALUES ('917782f7-82d4-4510-9e5e-b5de2d25f89c', 'k0010', 'k0010', '2', '2', '', 'running', null, null, null, null, null, null, '1', null, null, null, null);
-INSERT INTO `jbos_emp` VALUES ('9f887008-0c79-4efa-b518-9bd56e934434', 'l0091', 'l0091', '2', '2', '', 'running', null, null, null, null, null, null, '1', null, null, null, null);
 INSERT INTO `jbos_emp` VALUES ('a76393f9-7624-4b75-8130-29da1cdd276b', 'k0096', 'k0096', '2', '2', '', 'running', null, null, null, null, null, null, '1', null, null, null, null);
+INSERT INTO `jbos_emp` VALUES ('aa64ace4-7534-4024-b1eb-e6d5dc1b94c5', 'k0091', 'k0091', '2', '2', '100', 'running', null, null, null, null, null, null, '1', null, null, null, null);
 INSERT INTO `jbos_emp` VALUES ('bd388b87-7181-43b8-86f0-869e49107105', 'k0094', 'k0094', '2', '2', '', 'running', null, null, null, null, null, null, '1', null, null, null, null);
 INSERT INTO `jbos_emp` VALUES ('caef9062-581f-43d0-9cbe-0f89a6fac03f', 'k0095', 'k0095', '2', '2', '', 'running', null, null, null, null, null, null, '1', null, null, null, null);
 INSERT INTO `jbos_emp` VALUES ('cc79fb2a-f081-48bc-9ad1-5272fc2a064d', 'k0011', 'k0011', '2', '2', '', 'running', null, null, null, null, null, null, '1', null, null, null, null);
-INSERT INTO `jbos_emp` VALUES ('cd611e49-d622-488b-a6ee-3afa5606f931', 'k0091', '张三', '2', '2', '100', 'running', null, null, null, null, null, null, '1', null, null, null, null);
 INSERT INTO `jbos_emp` VALUES ('f4662ed0-b84c-4b12-ac3d-ffa5421b6df0', 'k0093', '王二', '2', '2', '100', 'running', null, null, null, null, null, null, '1', null, null, null, null);
 
 -- ----------------------------
@@ -904,6 +972,7 @@ CREATE TABLE `jbos_func` (
   `FUNCTYPE` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '功能类型(01：目录；02：功能)',
   `FUNCPATH` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '功能路径',
   `FUNCURL` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '功能URL',
+  `ICON` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `ORDERNO` decimal(3,0) DEFAULT NULL COMMENT '排序号',
   `ISVALID` decimal(1,0) DEFAULT '1' COMMENT '是否有效(1：是；0：否)',
   `CREATEUSERID` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建用户',
@@ -916,27 +985,27 @@ CREATE TABLE `jbos_func` (
 -- ----------------------------
 -- Records of jbos_func
 -- ----------------------------
-INSERT INTO `jbos_func` VALUES ('0006ba5a-4f38-4369-aaa6-86ab9227af97', '265cfe1f-71e3-4a0f-883b-c8b146ff06bd', 'memberList', '会员列表', '1', null, 'mm/memberMgr', '1', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('1', '0', 'sysManage', '系统管理', '0', '', null, '1', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('19855a0f-f067-4370-812b-8ae84a80ce3b', '0', 'productMgr', '商品管理', '0', null, '', '3', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('265cfe1f-71e3-4a0f-883b-c8b146ff06bd', '0', 'memberMgr', '会员管理', '0', null, '', '2', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('3', '1', 'orgManage', '机构管理', '0', '', 'sm/orgMgr', '1', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('4', '1', 'funcManage', '功能管理', '1', '', 'sm/funcMgr', '2', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('4b0626f3-b6f6-412d-8335-752a67c9e5a7', '619fe121-1bbe-473c-9f54-181afb594288', 'orderAfterSale', '售后订单', '1', null, '', '2', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('5', '1', 'roleManage', '角色管理', '1', '', 'sm/roleMgr', '3', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('5c110bba-8965-4f69-82eb-89fe2bf4f83c', '8', 'picStorage', '图片空间', '1', null, '', '1', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('6', '1', 'dataDict', '数据字典', '1', '', 'sm/dictMgr', '4', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('619fe121-1bbe-473c-9f54-181afb594288', '0', 'orderMgr', '订单管理', '0', null, '', '4', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('7b373d32-4531-4ff1-a849-543aa8e12115', '8', 'materialMgr', '物品管理', '1', '', 'im/materialMgr/index', '3', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('8', '0', 'unionMgr', '综合管理', '0', '', null, '99', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('87dba888-6aa3-43a9-8452-4f812f6a912e', '19855a0f-f067-4370-812b-8ae84a80ce3b', 'propertyCategory', '属性规格', '1', null, '', '3', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('92b6529e-9cc7-4097-bd9c-dc61275d6d4c', '8', 'regionInfo', '地区信息', '1', null, '', '2', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('95642962-c91f-4ea3-8ede-0cb739f45239', '19855a0f-f067-4370-812b-8ae84a80ce3b', 'productList', '商品列表', '1', null, 'pm/productMgr', '1', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('9839ae20-586b-4843-a100-f80e084e5ddd', '265cfe1f-71e3-4a0f-883b-c8b146ff06bd', 'intergalMgr', '积分管理', '1', null, '', '2', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('a991bf73-ea2e-45e0-9171-db88caf2da6f', '19855a0f-f067-4370-812b-8ae84a80ce3b', 'productCategory', '商品分类', '1', null, 'pm/categoryMgr', '2', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('dc5894bc-1483-4d62-83c7-2022d03e93b2', '7b373d32-4531-4ff1-a849-543aa8e12115', 'materialInStore', '物品领用', '1', null, 'sm/dictMgr/index', '2', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('e902b29a-5f43-4531-8c26-8bdeb379a887', '7b373d32-4531-4ff1-a849-543aa8e12115', 'materialBuy', '物品采购', '1', '', 'im/materialMgr/materialBuy/list', '1', '1', null, null, null, null);
-INSERT INTO `jbos_func` VALUES ('eb6e72f2-6faf-45c8-9141-42820c9a6cb1', '619fe121-1bbe-473c-9f54-181afb594288', 'orderList', '订单列表', '1', null, '', '1', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('0006ba5a-4f38-4369-aaa6-86ab9227af97', '265cfe1f-71e3-4a0f-883b-c8b146ff06bd', 'memberList', '会员列表', '1', null, 'mm/memberMgr', null, '1', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('1', '0', 'sysManage', '系统管理', '0', '', null, 'chart', '1', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('19855a0f-f067-4370-812b-8ae84a80ce3b', '0', 'productMgr', '商品管理', '0', null, '', 'chart', '3', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('265cfe1f-71e3-4a0f-883b-c8b146ff06bd', '0', 'memberMgr', '会员管理', '0', null, '', 'chart', '2', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('3', '1', 'orgManage', '机构管理', '1', '', 'sm/orgMgr', null, '1', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('4', '1', 'funcManage', '功能管理', '1', '', 'sm/funcMgr', null, '2', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('4b0626f3-b6f6-412d-8335-752a67c9e5a7', '619fe121-1bbe-473c-9f54-181afb594288', 'orderAfterSale', '售后订单', '1', null, '', null, '2', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('5', '1', 'roleManage', '角色管理', '1', '', 'sm/roleMgr', null, '3', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('5c110bba-8965-4f69-82eb-89fe2bf4f83c', '8', 'picStorage', '图片空间', '1', null, '', null, '1', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('6', '1', 'dataDict', '数据字典', '1', '', 'sm/dictMgr', null, '4', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('619fe121-1bbe-473c-9f54-181afb594288', '0', 'orderMgr', '订单管理', '0', null, '', 'chart', '4', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('7b373d32-4531-4ff1-a849-543aa8e12115', '8', 'materialMgr', '物品管理', '1', '', 'im/materialMgr/index', null, '3', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('8', '0', 'unionMgr', '综合管理', '0', '', null, 'chart', '99', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('87dba888-6aa3-43a9-8452-4f812f6a912e', '19855a0f-f067-4370-812b-8ae84a80ce3b', 'propertyCategory', '属性规格', '1', null, '', null, '3', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('92b6529e-9cc7-4097-bd9c-dc61275d6d4c', '8', 'regionInfo', '地区信息', '1', null, '', null, '2', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('95642962-c91f-4ea3-8ede-0cb739f45239', '19855a0f-f067-4370-812b-8ae84a80ce3b', 'productList', '商品列表', '1', null, 'pm/productMgr', null, '1', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('9839ae20-586b-4843-a100-f80e084e5ddd', '265cfe1f-71e3-4a0f-883b-c8b146ff06bd', 'intergalMgr', '积分管理', '1', null, '', null, '2', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('a991bf73-ea2e-45e0-9171-db88caf2da6f', '19855a0f-f067-4370-812b-8ae84a80ce3b', 'productCategory', '商品分类', '1', null, 'pm/categoryMgr', null, '2', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('dc5894bc-1483-4d62-83c7-2022d03e93b2', '7b373d32-4531-4ff1-a849-543aa8e12115', 'materialInStore', '物品领用', '1', null, 'sm/dictMgr/index', null, '2', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('e902b29a-5f43-4531-8c26-8bdeb379a887', '7b373d32-4531-4ff1-a849-543aa8e12115', 'materialBuy', '物品采购', '1', '', 'im/materialMgr/materialBuy/list', null, '1', '1', null, null, null, null);
+INSERT INTO `jbos_func` VALUES ('eb6e72f2-6faf-45c8-9141-42820c9a6cb1', '619fe121-1bbe-473c-9f54-181afb594288', 'orderList', '订单列表', '1', null, '', null, '1', '1', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for jbos_org
@@ -970,30 +1039,62 @@ INSERT INTO `jbos_org` VALUES ('2', '1', '10101', '总行', null, null, null, nu
 INSERT INTO `jbos_org` VALUES ('5', '1', '10102', '宁波地区支行', null, null, null, null, null, '2', null, '1', null, null, null, null);
 
 -- ----------------------------
--- Table structure for jbos_process_detail
+-- Table structure for jbos_process_inst
 -- ----------------------------
-DROP TABLE IF EXISTS `jbos_process_detail`;
-CREATE TABLE `jbos_process_detail` (
+DROP TABLE IF EXISTS `jbos_process_inst`;
+CREATE TABLE `jbos_process_inst` (
   `ID` varchar(64) NOT NULL COMMENT 'ID',
-  `PROC_DEF_KEY` varchar(256) DEFAULT NULL COMMENT '流程定义名称',
-  `BUSSINESS_KEY` varchar(256) DEFAULT NULL COMMENT '业务名称',
-  `PROC_INST_ID` varchar(64) DEFAULT NULL COMMENT '实例ID',
-  `TASK_ID` varchar(64) DEFAULT NULL COMMENT '任务ID',
-  `ACT_ID` varchar(64) DEFAULT NULL COMMENT '活动ID',
-  `ACT_NAME` varchar(64) DEFAULT NULL COMMENT '活动名称',
-  `ACT_INST_ID` varchar(64) DEFAULT NULL COMMENT '活动实例ID',
-  `ASSIGNEE` varchar(32) DEFAULT NULL COMMENT '领取人',
-  `ROUTE_URL` varchar(256) DEFAULT NULL COMMENT '路由URL',
-  `IS_ACTIVE` int DEFAULT NULL COMMENT '是否活动',
-  `START_TIME` timestamp NULL DEFAULT NULL COMMENT '开始时间',
-  `END_TIME` timestamp NULL DEFAULT NULL COMMENT '结束时间',
-  `APPROVE_OPINION` varchar(512) DEFAULT NULL COMMENT '审批意见',
+  `PROCINSTID` varchar(64) DEFAULT NULL COMMENT '流程实例ID',
+  `PROCDEFID` varchar(64) DEFAULT NULL COMMENT '流程定义ID',
+  `BIZID` varchar(64) DEFAULT NULL COMMENT '业务ID',
+  `BIZNO` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '业务编号',
+  `BIZTYPE` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '业务类型',
+  `USERID` varchar(64) DEFAULT NULL COMMENT '发起人',
+  `BUSINESSKEY` varchar(512) DEFAULT NULL COMMENT '业务描述',
+  `STARTTIME` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `ENDTIME` timestamp NULL DEFAULT NULL COMMENT '结束时间',
+  `PROCSTATE` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '状态',
+  `ISVALID` int DEFAULT '1' COMMENT '是否有效(1：是；0：否)',
+  `CREATEUSERID` varchar(64) DEFAULT NULL COMMENT '创建用户',
+  `CREATETIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATEUSERID` varchar(64) DEFAULT NULL COMMENT '更新用户',
+  `UPDATETIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='流程工作项表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='流程实例表';
 
 -- ----------------------------
--- Records of jbos_process_detail
+-- Records of jbos_process_inst
 -- ----------------------------
+INSERT INTO `jbos_process_inst` VALUES ('97ea64fd-02c4-453d-ad91-67db9cdd0ff6', '9288456e-d45b-11ed-a275-f46addef06a2', 'materialBuy:1:7c78b0ce-d2ae-11ed-833b-f46addef06a2', '65b6bf79-c115-49a7-a84f-56bd6d6babe6', 'BIZ_BUY_20211026150915', '100', 'k0091', 'BIZ_BUY_20211026150915', '2023-04-06 17:15:28', null, '20', '1', 'k0091', '2023-04-06 17:15:28', null, null);
+
+-- ----------------------------
+-- Table structure for jbos_process_task
+-- ----------------------------
+DROP TABLE IF EXISTS `jbos_process_task`;
+CREATE TABLE `jbos_process_task` (
+  `ID` varchar(64) NOT NULL COMMENT 'ID',
+  `PROCINSTID` varchar(64) DEFAULT NULL COMMENT '实例ID',
+  `ACTINSTID` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '活动实例ID',
+  `TASKID` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '任务ID',
+  `TASKNAME` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '任务名称',
+  `ASSIGNEE` varchar(32) DEFAULT NULL COMMENT '领取人',
+  `ROUTEURL` varchar(256) DEFAULT NULL COMMENT '路由URL',
+  `TASKSTATE` varchar(32) DEFAULT NULL COMMENT '状态',
+  `STARTTIME` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `ENDTIME` timestamp NULL DEFAULT NULL COMMENT '结束时间',
+  `OPINION` varchar(512) DEFAULT NULL COMMENT '审批意见',
+  `ISVALID` int DEFAULT '1' COMMENT '是否有效(1：是；0：否)',
+  `CREATEUSERID` varchar(64) DEFAULT NULL COMMENT '创建用户',
+  `CREATETIME` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `UPDATEUSERID` varchar(64) DEFAULT NULL COMMENT '更新用户',
+  `UPDATETIME` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='流程任务表';
+
+-- ----------------------------
+-- Records of jbos_process_task
+-- ----------------------------
+INSERT INTO `jbos_process_task` VALUES ('09b51010-7470-4150-9532-321ef732d6bc', '9288456e-d45b-11ed-a275-f46addef06a2', null, null, null, 'k0091', 'im/materialMgr/materialBuy/transOrUpdate.vue', '20', '2023-04-06 17:15:28', null, null, '1', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for jbos_role
@@ -1016,7 +1117,7 @@ CREATE TABLE `jbos_role` (
 -- ----------------------------
 -- Records of jbos_role
 -- ----------------------------
-INSERT INTO `jbos_role` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '3', 'ROLE_SUPERADMIN', '超级管理员', '100', '1', null, null, null, null);
+INSERT INTO `jbos_role` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '0', 'ROLE_SUPERADMIN', '超级管理员', '100', '1', null, null, null, null);
 INSERT INTO `jbos_role` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '0fc09c65-7667-450c-bcb3-a5a9f2350e7e', 'ROLE_DEFAULT', '默认角色', '100', '1', null, null, null, null);
 
 -- ----------------------------
@@ -1032,26 +1133,40 @@ CREATE TABLE `jbos_role_func` (
 -- ----------------------------
 -- Records of jbos_role_func
 -- ----------------------------
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '0006ba5a-4f38-4369-aaa6-86ab9227af97');
 INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '1');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '19855a0f-f067-4370-812b-8ae84a80ce3b');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '265cfe1f-71e3-4a0f-883b-c8b146ff06bd');
 INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '3');
 INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '4');
-INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '444635b2-1e97-4928-b785-ffc89b756541');
-INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '4b57002b-0f5b-4012-b0b6-bddd27e709eb');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '4b0626f3-b6f6-412d-8335-752a67c9e5a7');
 INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '5');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '5c110bba-8965-4f69-82eb-89fe2bf4f83c');
 INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '6');
-INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '7');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '619fe121-1bbe-473c-9f54-181afb594288');
 INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '7b373d32-4531-4ff1-a849-543aa8e12115');
 INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '8');
-INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', 'bc9f33f0-c8b8-4532-809c-15a2c9547a63');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '87dba888-6aa3-43a9-8452-4f812f6a912e');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '92b6529e-9cc7-4097-bd9c-dc61275d6d4c');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '95642962-c91f-4ea3-8ede-0cb739f45239');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', '9839ae20-586b-4843-a100-f80e084e5ddd');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', 'a991bf73-ea2e-45e0-9171-db88caf2da6f');
 INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', 'dc5894bc-1483-4d62-83c7-2022d03e93b2');
 INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', 'e902b29a-5f43-4531-8c26-8bdeb379a887');
+INSERT INTO `jbos_role_func` VALUES ('0fc09c65-7667-450c-bcb3-a5a9f2350e7e', 'eb6e72f2-6faf-45c8-9141-42820c9a6cb1');
 INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '19855a0f-f067-4370-812b-8ae84a80ce3b');
-INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '265cfe1f-71e3-4a0f-883b-c8b146ff06bd');
-INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '4b57002b-0f5b-4012-b0b6-bddd27e709eb');
+INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '4b0626f3-b6f6-412d-8335-752a67c9e5a7');
+INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '5c110bba-8965-4f69-82eb-89fe2bf4f83c');
+INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '619fe121-1bbe-473c-9f54-181afb594288');
 INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '7b373d32-4531-4ff1-a849-543aa8e12115');
 INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '8');
+INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '87dba888-6aa3-43a9-8452-4f812f6a912e');
+INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '92b6529e-9cc7-4097-bd9c-dc61275d6d4c');
+INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', '95642962-c91f-4ea3-8ede-0cb739f45239');
+INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', 'a991bf73-ea2e-45e0-9171-db88caf2da6f');
 INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', 'dc5894bc-1483-4d62-83c7-2022d03e93b2');
 INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', 'e902b29a-5f43-4531-8c26-8bdeb379a887');
+INSERT INTO `jbos_role_func` VALUES ('1a9a03cc-4313-4e88-8b30-1dd3c1817e7c', 'eb6e72f2-6faf-45c8-9141-42820c9a6cb1');
 
 -- ----------------------------
 -- Table structure for jbos_user
@@ -1081,9 +1196,9 @@ INSERT INTO `jbos_user` VALUES ('26cb451b-c835-44a7-82a9-a1f1edb58f22', null, nu
 INSERT INTO `jbos_user` VALUES ('3e3b17c2-32ff-4d38-8cf0-a627fffaae70', 'k0100', 'k0100', '$2a$10$VgsT9WTpLtoyJIaH21aIEe5EK5AHvGEoJmYUJM7S0lstdeMjjUCjG', 'gHFDNf6kmvmfFNITGODc', 'running', '1', null, null, null, null);
 INSERT INTO `jbos_user` VALUES ('57c3cb7f-bf05-4660-858d-50b1246582f2', 'k0097', 'k0097', '$2a$10$VgsT9WTpLtoyJIaH21aIEe5EK5AHvGEoJmYUJM7S0lstdeMjjUCjG', 'UuTKz7EJXk3CwAguPelU', 'running', '1', null, null, null, null);
 INSERT INTO `jbos_user` VALUES ('82470e24-4f71-4c75-8b7e-ff228d58e0f5', 'k0013', 'k0013', '$2a$10$VgsT9WTpLtoyJIaH21aIEe5EK5AHvGEoJmYUJM7S0lstdeMjjUCjG', 'Mkbwjakz05G3TqXBdAjM', 'running', '1', null, null, null, null);
-INSERT INTO `jbos_user` VALUES ('885ad986-af51-4b7d-ad49-f48a38d6ed09', 'l0091', 'l0091', '$2a$10$ryvsWPYDmJemMEqC4DcL3ec8Z2ZiVUh1gCg3DgoIZcHP9DxeR5CIi', 'beY9Ea7RMlochJgST0Iz', 'running', '1', null, null, null, null);
 INSERT INTO `jbos_user` VALUES ('917782f7-82d4-4510-9e5e-b5de2d25f89c', 'k0010', 'k0010', '$2a$10$VgsT9WTpLtoyJIaH21aIEe5EK5AHvGEoJmYUJM7S0lstdeMjjUCjG', 'yHMUc7TvVl0s8kLuchxn', 'running', '1', null, null, null, null);
 INSERT INTO `jbos_user` VALUES ('a76393f9-7624-4b75-8130-29da1cdd276b', 'k0096', 'k0096', '$2a$10$VgsT9WTpLtoyJIaH21aIEe5EK5AHvGEoJmYUJM7S0lstdeMjjUCjG', 'OsxfNsDwHhpmy5tWtBOy', 'running', '1', null, null, null, null);
+INSERT INTO `jbos_user` VALUES ('aa64ace4-7534-4024-b1eb-e6d5dc1b94c5', 'k0091', 'k0091', '$2a$10$bF7OylzGYCnkQ4GxV2TUzu.UoQTUQT6L6TSfohElKFgcBAsrF/FF2', 'JaDExbiWzKXiUdNWiW8Z', 'running', '1', null, null, null, null);
 INSERT INTO `jbos_user` VALUES ('bd388b87-7181-43b8-86f0-869e49107105', 'k0093', '王二', '$2a$10$VgsT9WTpLtoyJIaH21aIEe5EK5AHvGEoJmYUJM7S0lstdeMjjUCjG', 'sCNaFmqinBOmFzFvYXQR', 'running', '1', null, null, null, null);
 INSERT INTO `jbos_user` VALUES ('c7e6cf50-70c0-45cc-8ff0-7d2b727ab355', '18968365610', '18968365610', '$2a$10$NHNxNMesURUZpZHFD0c5QuYRSL1CWSZK7URXncsdERRKauooXbJHe', '3ZCkyYEQppLZZgNaW6rW', 'running', '1', null, null, null, null);
 INSERT INTO `jbos_user` VALUES ('f3fb305b-bed2-4cf0-8a3e-8db7dc26230c', '15258160564', '15258160564', '$2a$10$XNONv2Vyr2.OZp2.KnB4/.rWGsVmbNuTxXRfQmGcU9QJWGltdl4B2', 'P9vCIAEjeXf15T41Q94w', 'running', '1', null, null, null, null);
@@ -1109,6 +1224,7 @@ INSERT INTO `jbos_user_role` VALUES ('57c3cb7f-bf05-4660-858d-50b1246582f2', '1a
 INSERT INTO `jbos_user_role` VALUES ('82470e24-4f71-4c75-8b7e-ff228d58e0f5', '1a9a03cc-4313-4e88-8b30-1dd3c1817e7c');
 INSERT INTO `jbos_user_role` VALUES ('917782f7-82d4-4510-9e5e-b5de2d25f89c', '1a9a03cc-4313-4e88-8b30-1dd3c1817e7c');
 INSERT INTO `jbos_user_role` VALUES ('a76393f9-7624-4b75-8130-29da1cdd276b', '1a9a03cc-4313-4e88-8b30-1dd3c1817e7c');
+INSERT INTO `jbos_user_role` VALUES ('aa64ace4-7534-4024-b1eb-e6d5dc1b94c5', '1a9a03cc-4313-4e88-8b30-1dd3c1817e7c');
 INSERT INTO `jbos_user_role` VALUES ('bd388b87-7181-43b8-86f0-869e49107105', '1a9a03cc-4313-4e88-8b30-1dd3c1817e7c');
 INSERT INTO `jbos_user_role` VALUES ('c7e6cf50-70c0-45cc-8ff0-7d2b727ab355', '1a9a03cc-4313-4e88-8b30-1dd3c1817e7c');
 INSERT INTO `jbos_user_role` VALUES ('caef9062-581f-43d0-9cbe-0f89a6fac03f', '1a9a03cc-4313-4e88-8b30-1dd3c1817e7c');
@@ -1455,15 +1571,15 @@ CREATE TABLE `pm_product` (
 -- Records of pm_product
 -- ----------------------------
 INSERT INTO `pm_product` VALUES ('1db07be5-dc9f-4d7a-ba6e-2b3e34030ae5', '100', '2021122410011110007', null, '毛巾 ', null, null, null, null, '50', '1', '2021-12-24 10:25:32', '2021-12-24 11:02:01');
-INSERT INTO `pm_product` VALUES ('23b0be31-7924-4e8a-b387-570aaa238a6d', '100', '2021122410012120003', null, '洗脸盆', null, null, null, null, '50', '1', '2021-12-24 10:51:50', '2023-02-21 17:47:13');
+INSERT INTO `pm_product` VALUES ('23b0be31-7924-4e8a-b387-570aaa238a6d', '100', '2021122410012120003', null, '洗脸盆', null, null, null, null, '50', '1', '2021-12-24 10:51:50', '2023-04-03 17:09:35');
 INSERT INTO `pm_product` VALUES ('2df067d7-68e6-445c-970a-60c47ce663b0', '100101', '100027', null, '衣架', null, null, null, null, '99', '1', '2021-11-23 16:08:30', '2023-02-21 17:48:33');
 INSERT INTO `pm_product` VALUES ('32ab32cc-6cae-44b6-9458-26bfc0a0c8b9', '100', '2021122410011110004', null, '垃圾袋', null, null, null, null, '50', '1', '2021-12-24 10:23:50', '2021-12-24 11:01:58');
 INSERT INTO `pm_product` VALUES ('477bee67-c423-4e9e-9faf-6b4ef860c6e7', '100', '100029', null, '蓝子', null, null, null, null, '50', '1', '2021-11-23 16:21:05', '2023-02-21 17:48:30');
-INSERT INTO `pm_product` VALUES ('501f1fd6-c7d3-4913-be1a-a9edff13276e', '100', '2021122410012120004', null, '洗菜蓝', null, null, null, null, '20', '1', '2021-12-24 10:52:56', '2023-02-22 10:26:29');
+INSERT INTO `pm_product` VALUES ('501f1fd6-c7d3-4913-be1a-a9edff13276e', '100', '2021122410012120004', null, '洗菜蓝', null, null, null, null, '20', '1', '2021-12-24 10:52:56', '2023-04-03 15:49:45');
 INSERT INTO `pm_product` VALUES ('9590a1ed-78fb-4a2d-82d1-68d3f33c49e7', '100', '2021122410012120002', null, '牙膏', null, null, null, null, '50', '1', '2021-12-24 10:50:36', '2021-12-24 11:01:59');
 INSERT INTO `pm_product` VALUES ('b1f0bc26-f997-4deb-9b54-eb40d7f86587', '100', '2023022110017170013', null, 'dd', null, null, null, null, '99', '1', '2023-02-21 16:18:32', '2023-02-21 17:08:16');
-INSERT INTO `pm_product` VALUES ('bba07948-43dd-43fa-a9b8-2be579be77d7', '100', '2021122410011110009', null, '茶杯', null, null, null, null, '50', '1', '2021-12-24 10:29:01', '2021-12-24 11:01:57');
-INSERT INTO `pm_product` VALUES ('c527a6e6-fe21-4177-a0b0-7f580510474a', '200101', '20211125100330100', null, '小米电脑', null, null, null, null, '20', '1', '2021-11-25 14:20:19', '2023-02-21 17:47:10');
+INSERT INTO `pm_product` VALUES ('bba07948-43dd-43fa-a9b8-2be579be77d7', '100', '2021122410011110009', null, '茶杯', null, null, null, null, '50', '1', '2021-12-24 10:29:01', '2023-04-03 17:09:48');
+INSERT INTO `pm_product` VALUES ('c527a6e6-fe21-4177-a0b0-7f580510474a', '200101', '20211125100330100', null, '小米电脑', null, null, null, null, '20', '1', '2021-11-25 14:20:19', '2023-04-03 16:46:11');
 INSERT INTO `pm_product` VALUES ('db39938e-b2c2-4a93-8f56-1c310e640791', '300101', '20211125100330082', null, '休闲库', null, null, null, null, '50', '1', '2021-11-25 13:50:15', '2021-12-23 15:14:01');
 INSERT INTO `pm_product` VALUES ('e49d72af-c356-4ba8-8415-9bb11e007ffb', '200102', '20211125100330096', null, '小米8', null, null, null, null, '20', '1', '2021-11-25 14:11:51', '2021-12-27 11:08:34');
 INSERT INTO `pm_product` VALUES ('fab6e241-1a61-40d3-b901-ddf7590e4b84', '300', '2023022110017170004', null, 'dd', null, null, null, null, '99', '1', '2023-02-21 15:23:24', '2023-02-21 17:08:35');
@@ -1519,7 +1635,7 @@ CREATE TABLE `pm_product_list` (
 -- Records of pm_product_list
 -- ----------------------------
 INSERT INTO `pm_product_list` VALUES ('12206689-81db-41a3-94ae-e614dfb58329', '23b0be31-7924-4e8a-b387-570aaa238a6d', null, '0', '0', '1', '2021-12-24 10:51:50', '2021-12-24 10:55:27');
-INSERT INTO `pm_product_list` VALUES ('304e9f26-c598-44c6-ac03-a9bfe4ab0b5a', '501f1fd6-c7d3-4913-be1a-a9edff13276e', '¥8.80-8.80', '0', '297', '1', '2021-12-24 10:53:13', '2023-02-22 10:26:29');
+INSERT INTO `pm_product_list` VALUES ('304e9f26-c598-44c6-ac03-a9bfe4ab0b5a', '501f1fd6-c7d3-4913-be1a-a9edff13276e', '¥8.80-8.80', '0', '297', '1', '2021-12-24 10:53:13', '2023-04-03 15:49:45');
 INSERT INTO `pm_product_list` VALUES ('5fecf2c0-3b3a-448c-ab80-8109b3a74190', 'bba07948-43dd-43fa-a9b8-2be579be77d7', null, '0', '0', '1', '2021-12-24 10:29:01', '2021-12-24 10:30:45');
 INSERT INTO `pm_product_list` VALUES ('6beb0a8c-1dc1-4045-9267-3e286532e085', '32ab32cc-6cae-44b6-9458-26bfc0a0c8b9', null, '0', '0', '1', '2021-12-24 10:23:50', '2021-12-24 10:27:37');
 INSERT INTO `pm_product_list` VALUES ('77758f8d-0917-4e71-b6b1-356070f12a6f', 'b1f0bc26-f997-4deb-9b54-eb40d7f86587', null, '0', '0', '1', '2023-02-21 16:18:32', null);
@@ -1530,7 +1646,7 @@ INSERT INTO `pm_product_list` VALUES ('7fbd803f-af66-4fa7-ad13-055343d71103', '4
 INSERT INTO `pm_product_list` VALUES ('9a250883-7b92-4a33-a3e8-f69841fd0451', 'db39938e-b2c2-4a93-8f56-1c310e640791', null, '0', '0', '1', '2021-11-25 13:50:15', '2021-12-23 15:13:51');
 INSERT INTO `pm_product_list` VALUES ('a1e476c6-495d-41ab-a3ab-2e110735db27', '1db07be5-dc9f-4d7a-ba6e-2b3e34030ae5', null, '0', '0', '1', '2021-12-24 10:25:32', '2021-12-24 10:26:46');
 INSERT INTO `pm_product_list` VALUES ('e58cb2f6-ab86-4bf8-9723-63aa9c761296', '2df067d7-68e6-445c-970a-60c47ce663b0', null, '0', '0', '1', '2021-11-23 15:49:28', '2021-11-25 14:21:03');
-INSERT INTO `pm_product_list` VALUES ('fbfafebf-a2d2-4fc9-8945-a79b1a961878', 'c527a6e6-fe21-4177-a0b0-7f580510474a', '¥3500.00-4999.00', '0', '20', '1', '2021-11-25 14:20:19', '2021-12-24 15:32:59');
+INSERT INTO `pm_product_list` VALUES ('fbfafebf-a2d2-4fc9-8945-a79b1a961878', 'c527a6e6-fe21-4177-a0b0-7f580510474a', '¥3500.00-4999.00', '0', '20', '1', '2021-11-25 14:20:19', '2023-04-03 16:46:11');
 
 -- ----------------------------
 -- Table structure for pm_product_pic
@@ -1550,15 +1666,9 @@ CREATE TABLE `pm_product_pic` (
 -- ----------------------------
 -- Records of pm_product_pic
 -- ----------------------------
-INSERT INTO `pm_product_pic` VALUES ('1177277e-4975-42da-9ca9-17eab2d89a55', 'e49d72af-c356-4ba8-8415-9bb11e007ffb', '781bbbf6-9125-4236-978d-bad2fb7e8b29', null, '1', null, null);
-INSERT INTO `pm_product_pic` VALUES ('1a57bf28-2970-4d1e-babd-37a386fcb72c', '501f1fd6-c7d3-4913-be1a-a9edff13276e', 'd67d2d18-8baf-4043-a1d3-6f67f6d899b4', '2', '1', null, null);
-INSERT INTO `pm_product_pic` VALUES ('28c83158-c9c5-4e78-a248-72e9bd6d850d', '501f1fd6-c7d3-4913-be1a-a9edff13276e', '141a69c1-1171-4941-a97b-b748340da4c4', '4', '1', null, null);
-INSERT INTO `pm_product_pic` VALUES ('3bbb93af-05f1-4bb1-84eb-98679017d5b9', '501f1fd6-c7d3-4913-be1a-a9edff13276e', '6ec911ca-3f52-4973-bad6-d2c6567209e3', '3', '1', null, null);
-INSERT INTO `pm_product_pic` VALUES ('43493287-4219-4a97-bb4f-fbf6ee4b0e5f', '501f1fd6-c7d3-4913-be1a-a9edff13276e', 'afae050b-dea4-43d1-803d-28eb2a1db45e', '5', '1', null, null);
-INSERT INTO `pm_product_pic` VALUES ('58aa5527-3c70-45fb-9f5f-776038c6e60a', 'e49d72af-c356-4ba8-8415-9bb11e007ffb', '7f764bb5-53c4-4f80-9b09-51431473357d', null, '1', null, null);
-INSERT INTO `pm_product_pic` VALUES ('61432d8e-9a2a-4d2d-8d99-468af78fda9a', '501f1fd6-c7d3-4913-be1a-a9edff13276e', '73fa821d-fc04-4917-ae68-05af858d3657', '1', '1', null, null);
-INSERT INTO `pm_product_pic` VALUES ('92577283-4263-44b5-901a-780657edc9f6', 'e49d72af-c356-4ba8-8415-9bb11e007ffb', 'c944580a-85df-4dfa-8361-a03e3aac42d1', null, '1', null, null);
-INSERT INTO `pm_product_pic` VALUES ('a8b6eafd-63c7-41e0-8fe8-4b7f4e90f56c', 'e49d72af-c356-4ba8-8415-9bb11e007ffb', 'bcf09c87-d98c-4bb1-8a97-66cf3bc5272f', null, '1', null, null);
+INSERT INTO `pm_product_pic` VALUES ('35d0b2a0-5e5b-414f-a2f1-7e5886113e06', '501f1fd6-c7d3-4913-be1a-a9edff13276e', 'e61d48e0-8993-4aa2-8b43-7957cc50f0e0', null, '1', null, null);
+INSERT INTO `pm_product_pic` VALUES ('ccd520a2-fc6c-4d1a-93a6-dd3595638a92', 'c527a6e6-fe21-4177-a0b0-7f580510474a', 'a0cc6104-e961-4b28-a8db-034610f362fe', null, '1', null, null);
+INSERT INTO `pm_product_pic` VALUES ('e0dd75df-bacf-4745-84b9-e5c2e4400b19', 'c527a6e6-fe21-4177-a0b0-7f580510474a', 'd8da513a-442d-4125-bfe8-96b47e904700', null, '1', null, null);
 
 -- ----------------------------
 -- Table structure for pm_product_sku
@@ -1585,14 +1695,14 @@ CREATE TABLE `pm_product_sku` (
 -- ----------------------------
 -- Records of pm_product_sku
 -- ----------------------------
-INSERT INTO `pm_product_sku` VALUES ('01fc257a-95b0-4b62-8f59-2cf476a24b9c', 'c527a6e6-fe21-4177-a0b0-7f580510474a', null, '笔计本I7', '4999.00', '0.00', '10', '0', null, null, '0', '1', null, null);
 INSERT INTO `pm_product_sku` VALUES ('06f89362-0568-4155-a977-d48893f72f71', 'e49d72af-c356-4ba8-8415-9bb11e007ffb', null, '蓝色旗舰版', '3999.00', '0.00', '100', '0', null, null, '0', '1', null, null);
-INSERT INTO `pm_product_sku` VALUES ('173a864b-4650-49c8-a1ab-ced211239864', '501f1fd6-c7d3-4913-be1a-a9edff13276e', null, '北欧紫', '8.80', '0.00', '99', '0', null, null, '2', '1', null, null);
-INSERT INTO `pm_product_sku` VALUES ('4f36cf08-7f42-4f2f-93b3-984589e840d6', 'c527a6e6-fe21-4177-a0b0-7f580510474a', null, '笔计本I5', '3500.00', '0.00', '10', '0', null, null, '1', '1', null, null);
+INSERT INTO `pm_product_sku` VALUES ('0c66706b-4810-40b3-9539-2ca1b5506c4e', '501f1fd6-c7d3-4913-be1a-a9edff13276e', null, '北欧绿', '8.80', '0.00', '99', '0', null, null, '1', '1', null, null);
+INSERT INTO `pm_product_sku` VALUES ('39eda1f5-8e14-4e00-b1a6-bf1d9e391d7b', '501f1fd6-c7d3-4913-be1a-a9edff13276e', null, '北欧紫', '8.80', '0.00', '99', '0', null, null, '0', '1', null, null);
 INSERT INTO `pm_product_sku` VALUES ('88f4581b-283d-4411-88ee-2d59f0c67d11', 'b1f0bc26-f997-4deb-9b54-eb40d7f86587', null, '', '0.00', '0.00', '1', '0', null, null, '0', '1', null, null);
+INSERT INTO `pm_product_sku` VALUES ('8966eafe-d268-4930-ae62-138ed6b81239', 'c527a6e6-fe21-4177-a0b0-7f580510474a', null, '笔计本I5', '3500.00', '0.00', '10', '0', null, null, '1', '1', null, null);
 INSERT INTO `pm_product_sku` VALUES ('8c2a3e05-b842-4242-9ff2-bc1320a7bb4e', 'e49d72af-c356-4ba8-8415-9bb11e007ffb', null, '黑色普通版', '1999.00', '0.00', '100', '0', null, null, '1', '1', null, null);
-INSERT INTO `pm_product_sku` VALUES ('c8a5e69f-a437-4841-b00a-c38b87c79774', '501f1fd6-c7d3-4913-be1a-a9edff13276e', null, '北欧绿', '8.80', '0.00', '99', '0', null, null, '1', '1', null, null);
-INSERT INTO `pm_product_sku` VALUES ('ce910fcf-6e46-46ab-9eff-c78e7e58fc31', '501f1fd6-c7d3-4913-be1a-a9edff13276e', null, '灰蓝色', '8.80', '0.00', '99', '0', null, null, '0', '1', null, null);
+INSERT INTO `pm_product_sku` VALUES ('cd530bdc-bfd8-48c5-a02e-cc638f5006ec', 'c527a6e6-fe21-4177-a0b0-7f580510474a', null, '笔计本I7', '4999.00', '0.00', '10', '0', null, null, '0', '1', null, null);
+INSERT INTO `pm_product_sku` VALUES ('ee4f6ec0-6c5d-47c8-9e4a-d2cec727f444', '501f1fd6-c7d3-4913-be1a-a9edff13276e', null, '灰蓝色', '8.80', '0.00', '99', '0', null, null, '2', '1', null, null);
 
 -- ----------------------------
 -- Table structure for pm_product_specs

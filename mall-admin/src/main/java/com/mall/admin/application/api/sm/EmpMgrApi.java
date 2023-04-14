@@ -136,6 +136,9 @@ public class EmpMgrApi extends BaseApi {
         Map<String,String> titles=new HashMap<>();
         titles.put("badge","员工号");
         titles.put("empName","姓名");
+        titles.put("orgName","所属机构");
+        titles.put("depName","所属部门");
+        titles.put("headShipName","职务");
         PageExcelHandler pageExcelHandler=new PageExcelHandler(titles);
         try{
             pageExcelHandler.generateExcelSheet(response.getOutputStream(), new IPageExcel() {
