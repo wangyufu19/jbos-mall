@@ -3,7 +3,7 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 8080
+  port: 8081
 spring:
   application:
     name: mall-admin
@@ -18,6 +18,8 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+app:
+  id: ${spring.application.name}
 ---
 spring:
   profiles: dev
@@ -45,6 +47,14 @@ spring:
 #    registry-fetch-interval-seconds: 10 #间隔多久拉取服务注册信息，默认为30秒
 #    service-url:
 #      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+#Apollo 配置
+apollo:
+  meta: http://127.0.0.1:8080
+  bootstrap:
+    enabled: false                            #是否开启 Apollo
+    namespaces: mall-admin.yml,application #设置 Namespace
+    eagerLoad:
+      enabled: false                         #将 Apollo 加载提到初始化日志系统之前
 ---
 spring:
   profiles: sit
