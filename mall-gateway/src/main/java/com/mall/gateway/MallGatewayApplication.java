@@ -1,6 +1,7 @@
 package com.mall.gateway;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
+import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.mall.gateway.common.spring.ApplicationContextListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableZuulProxy
+//@EnableApolloConfig
 public class MallGatewayApplication extends SpringBootServletInitializer {
     @LoadBalanced
     @Bean

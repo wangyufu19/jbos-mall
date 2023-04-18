@@ -18,6 +18,8 @@ management:
   endpoint:
     health:
       show-details: ALWAYS #对所有用户暴露详细信息
+app:
+  id: ${spring.application.name}
 ---
 spring:
   profiles: dev
@@ -46,6 +48,14 @@ spring:
 ##    service-url:
 ##      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
 #
+#Apollo 配置
+#apollo:
+#  meta: http://127.0.0.1:8080
+#  bootstrap:
+#    enabled: true                            #是否开启 Apollo
+#    namespaces: mall-gateway.yml,application #设置 Namespace
+#    eagerLoad:
+#      enabled: false                         #将 Apollo 加载提到初始化日志系统之前
 ---
 spring:
   profiles: sit
