@@ -44,6 +44,7 @@
         <jsqlparser.version>4.3</jsqlparser.version>
         <swagger.version>2.7.0</swagger.version>
         <fastjson.version>1.2.45</fastjson.version>
+        <jackson.version>2.9.8</jackson.version>
         <commons.codec.version>1.10</commons.codec.version>
         <commons.lang.version>2.6</commons.lang.version>
         <lombok.version>1.18.6</lombok.version>

@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
-
 /**
  * GeneratorApplication
  * @author youfu.wang
@@ -19,7 +18,7 @@ public class GeneratorApplication extends SpringBootServletInitializer {
         return application.sources(GeneratorApplication.class);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         ApplicationContext applicationContext=SpringApplication.run(GeneratorApplication.class, args);
         System.out.println("UserController="+applicationContext.getBean(UserController.class));
     }

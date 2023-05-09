@@ -1,12 +1,12 @@
 package com.mall.admin.application.api.sm;
 
 import com.github.pagehelper.PageInfo;
-import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.external.camunda.IdentityMgrService;
 import com.mall.admin.application.service.sm.EmpMgrService;
 import com.mall.admin.domain.entity.sm.Emp;
 import com.mall.common.office.excel.IPageExcel;
 import com.mall.common.office.excel.PageExcelHandler;
+import com.mall.common.response.BaseApi;
 import com.mall.common.response.PageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;

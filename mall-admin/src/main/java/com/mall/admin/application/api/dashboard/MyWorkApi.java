@@ -1,8 +1,8 @@
 package com.mall.admin.application.api.dashboard;
 
-import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.sm.ProcessTaskService;
 import com.mall.admin.domain.entity.sm.ProcessTask;
+import com.mall.common.response.BaseApi;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;

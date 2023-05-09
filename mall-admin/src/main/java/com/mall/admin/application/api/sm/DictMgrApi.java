@@ -1,12 +1,12 @@
 package com.mall.admin.application.api.sm;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.mall.admin.application.api.BaseApi;
 import com.mall.admin.application.service.sm.BusinessDict;
 import com.mall.admin.application.service.sm.DictCodeService;
 import com.mall.admin.application.service.sm.DictTypeService;
 import com.mall.admin.domain.entity.sm.DictCode;
 import com.mall.admin.domain.entity.sm.DictType;
+import com.mall.common.response.BaseApi;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
