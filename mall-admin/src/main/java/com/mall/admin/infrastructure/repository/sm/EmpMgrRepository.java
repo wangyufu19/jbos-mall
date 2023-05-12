@@ -3,6 +3,7 @@ package com.mall.admin.infrastructure.repository.sm;
 import com.mall.admin.domain.entity.sm.Emp;
 import com.mall.admin.infrastructure.repository.sm.mapper.EmpMapper;
 import com.mall.admin.infrastructure.repository.sm.mapper.UserMapper;
+import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class EmpMgrRepository {
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public void addEmp(Map<String, Object> parameterObject){
         parameterObject.put("id", UUID.randomUUID().toString());
+        parameterObject.put("createTime",DateUtils.format(DateUtils.getCurrentDate(),DateUtils.YYYYMMDDHIMMSS));
         empMapper.addEmp(parameterObject);
         String salt = RandomStringUtils.randomAlphanumeric(20);
         parameterObject.put("salt",salt);

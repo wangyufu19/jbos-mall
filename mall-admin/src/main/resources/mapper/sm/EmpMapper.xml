@@ -28,9 +28,9 @@
     <!--新增人员信息-->
     <insert id="addEmp" parameterType="java.util.Map">
         INSERT INTO JBOS_EMP(
-            ID,BADGE,EMPNAME,ORGID,DEPID,HEADSHIP,EMPSTATUS
+            ID,BADGE,EMPNAME,ORGID,DEPID,HEADSHIP,EMPSTATUS,CREATETIME
         )VALUES(
-            #{id},#{badge},#{empName},#{orgId},#{depId},#{headShip},'running'
+            #{id},#{badge},#{empName},#{orgId},#{depId},#{headShip},'running',#{createTime}
         )
     </insert>
     <!--新增人员用户信息-->
