@@ -20,6 +20,12 @@ management:
       show-details: ALWAYS #对所有用户暴露详细信息
 app:
   id: ${spring.application.name}
+jasypt:
+  encryptor:
+    bootstrap: false
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+    password: 123456
 ---
 spring:
   profiles: dev
