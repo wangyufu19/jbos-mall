@@ -1,6 +1,7 @@
 package com.mall.admin;
 
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
+//import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -25,6 +26,11 @@ public class MallAdminApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(MallAdminApplication.class, args);
+//        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+//        textEncryptor.setPassword("123456");
+//        String encryptStr=textEncryptor.encrypt("jbos");
+//        System.out.println("encryptStr="+encryptStr);
+//        System.out.println("decryptStr="+textEncryptor.decrypt(encryptStr));
     }
 }
 
