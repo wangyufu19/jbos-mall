@@ -77,7 +77,7 @@ public class BusinessDict {
             if(null!=dictCodes){
                 for(Map<String, Object> dictCode:dictCodes){
                     if(dictCode.containsValue(dictId)){
-                        dictValue=String.valueOf(dictCode.get(typeId));
+                        dictValue=String.valueOf(dictCode.get("DICTNAME"));
                         break;
                     }
                 }

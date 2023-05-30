@@ -32,12 +32,19 @@ public class MyWorkApi extends BaseApi {
     @ApiOperation("查询我的待办列表")
     public ResponseResult getMyWorkList(@RequestParam Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
+        String workType=StringUtils.replaceNull(params.get("workType"));
         String isPage= StringUtils.replaceNull(params.get("isPage"));
         try{
             if("true".equals(isPage)){
                 this.doStartPage(params);
             }
-            List<ProcessTask> processTasks=processTaskService.getUserTaskList(params);
+            List<ProcessTask> processTasks;
+            if("yb".equals(workType)){
+                processTasks=processTaskService.getUserTaskProcessedList(params);
+            }else{
+                processTasks=processTaskService.getUserTaskList(params);
+            }
+
             if("true".equals(isPage)){
                 this.doFinishPage(res,processTasks);
             }else{

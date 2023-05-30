@@ -15,21 +15,27 @@ public class JwtUser implements UserDetails {
     private String username;
     private String nickName;
     private String password;
+    private String depId;
+    private String orgId;
     private Collection<? extends GrantedAuthority> authorities;
     private boolean accountNonExpired=true;
     private boolean accountNonLocked=true;
     private boolean credentialsNonExpired=true;
     private boolean enabled=true;
 
-    public JwtUser(String username, String password,Collection<? extends GrantedAuthority> authorities){
+    public JwtUser(String username, String password,String depId,String orgId,Collection<? extends GrantedAuthority> authorities){
         this.username=username;
         this.password=password;
+        this.depId=depId;
+        this.orgId=orgId;
         this.authorities=authorities;
     }
-    public JwtUser(String username, String nickName,String password,Collection<? extends GrantedAuthority> authorities){
+    public JwtUser(String username, String nickName,String password,String depId,String orgId,Collection<? extends GrantedAuthority> authorities){
         this.username=username;
         this.nickName=nickName;
         this.password=password;
+        this.depId=depId;
+        this.orgId=orgId;
         this.authorities=authorities;
     }
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -46,6 +52,12 @@ public class JwtUser implements UserDetails {
     }
     public String getNickName(){
             return this.nickName;
+    }
+    public String getDepId(){
+        return this.depId;
+    }
+    public String getOrgId(){
+        return this.orgId;
     }
     public boolean isAccountNonExpired() {
         return accountNonExpired;

@@ -1,10 +1,12 @@
 package com.mall.admin.application.service.external.camunda;
 
 import com.mall.common.response.ResponseResult;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -31,4 +33,12 @@ public interface ProcessInstanceService {
      */
     @PostMapping(value = "/process/startAndFinishProcessInstance")
     public ResponseResult startAndFinishProcessInstance(@RequestBody Map<String, Object> params);
+
+    /**
+     * 查询流程实例状态
+     * @param params
+     * @return
+     */
+    @PostMapping(value = "/process/getProcessInstanceState")
+    public ResponseResult getProcessInstanceState(@RequestBody Map<String, Object> params);
 }

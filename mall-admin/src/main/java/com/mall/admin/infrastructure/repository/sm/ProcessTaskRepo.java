@@ -21,12 +21,17 @@ public class ProcessTaskRepo {
     public List<ProcessTask> getUserTaskList(Map<String,Object> parameterObject){
         return processTaskMapper.getUserTaskList(parameterObject);
     }
-
+    public List<ProcessTask> getUserTaskProcessedList(Map<String,Object> parameterObject){
+        return processTaskMapper.getUserTaskProcessedList(parameterObject);
+    }
+    public List<Map> getTaskAssigneeList(Map<String,Object> parameterObject){
+        return processTaskMapper.getTaskAssigneeList(parameterObject);
+    }
     public void addProcessTask(ProcessTask processTask){
         processTaskMapper.addProcessTask(processTask);
     }
 
-    public void updateProcessTaskOpinion(Map<String,String> parameterObject){
-        processTaskMapper.updateProcessTaskOpinion(parameterObject);
+    public void updateProcessTaskOpinion(ProcessTask processTask){
+        processTaskMapper.updateProcessTaskOpinion(processTask);
     }
 }

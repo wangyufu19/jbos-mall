@@ -5,11 +5,13 @@ import com.mall.common.utils.StringUtils;
 import com.mall.workflow.common.exception.CamundaException;
 import lombok.Data;
 import org.camunda.bpm.engine.HistoryService;
+import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.history.HistoricTaskInstance;
 import org.camunda.bpm.engine.runtime.ActivityInstance;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstanceModificationBuilder;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,7 +167,7 @@ public class TaskMgrService {
         String assignees = StringUtils.replaceNull(params.get("assignees"));
         String assigneeName = StringUtils.replaceNull(params.get("assigneeName"));
         String multiInstance = StringUtils.replaceNull(params.get("multiInstance"));
-        String assigneeCollectionName = StringUtils.replaceNull(params.get("assigneeCollectionName"));
+
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
             return;
@@ -174,14 +176,18 @@ public class TaskMgrService {
         if ("true".equals(multiInstance)) {
             String[] assigneeList = assignees.split(",");
             if (assigneeList != null && assigneeList.length > 0) {
-                params.put(assigneeCollectionName, Arrays.asList(assigneeList));
+                params.put(assigneeName, Arrays.asList(assigneeList));
             }
         } else {
             params.put(assigneeName, assignees);
         }
         Task task = this.get(userId,processInstanceId,taskId);
         if(task!=null){
-            taskService.complete(taskId, params);
+            try {
+                taskService.complete(taskId, params);
+            } catch (ProcessEngineException e){
+                throw e;
+            }
         }
     }
     /**

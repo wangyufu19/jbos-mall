@@ -21,7 +21,7 @@ public interface UserAuthMapper {
 	 * @param parameterObject
 	 * @return
 	 */
-	public Map<String,Object> getUserAuthInfoById(Map<String, Object> parameterObject);
+	public Map<String,Object> getUserAuthInfo(Map<String, Object> parameterObject);
 	/**
 	 * 得到认证用户角色
 	 * @param parameterObject

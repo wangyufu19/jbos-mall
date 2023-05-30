@@ -31,11 +31,11 @@ public class UserMgrService {
 	}
 	/**
 	 * 根据ID查询用户信息
-	 * @param userid
+	 * @param userId
 	 * @return
 	 */
-	public UserInfo getUserInfoById(String userid){
-		return userMgrRepository.getUserInfoById(userid);
+	public UserInfo getUserInfoById(String userId){
+		return userMgrRepository.getUserInfoById(userId);
 	}
 	/**
 	 * 根据登录名称查询用户信息

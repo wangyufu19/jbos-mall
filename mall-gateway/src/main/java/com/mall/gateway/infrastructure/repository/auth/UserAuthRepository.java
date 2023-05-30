@@ -35,12 +35,12 @@ public class UserAuthRepository {
     }
     /**
      * 得到用户认证信息
-     * @param userid
+     * @param username
      * @return
      */
-    public Map<String,Object> getUserAuthInfoById(String userid){
+    public Map<String,Object> getUserAuthInfo(String username){
         Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("userid",userid);
-        return userAuthMapper.getUserAuthInfoById(parameterObject);
+        parameterObject.put("username",username);
+        return userAuthMapper.getUserAuthInfo(parameterObject);
     }
 }

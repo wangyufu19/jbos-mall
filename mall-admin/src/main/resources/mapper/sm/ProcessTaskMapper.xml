@@ -1,33 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mall.admin.infrastructure.repository.sm.mapper.ProcessTaskMapper">
-    <!--查询用户流程任务数据-->
+    <!--查询用户待办任务数据-->
     <select id="getUserTaskList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessTask">
         SELECT * FROM (
             SELECT
-            task.ID_ ID,
-            task.PROC_INST_ID_ PROCINSTID,
-            task.PROC_DEF_ID_ PROCDEFID,
-            T1.BIZID,
-            T1.BIZNO,
-            CASE
-            WHEN T1.BIZTYPE='100' THEN '物品采购'
-            END BIZTYPE,
-            task.ID_ TASKID,
-            task.NAME_ TASKNAME,
-            task.CREATE_TIME_ STARTTIME,
-            T.ASSIGNEE,
-            T.ROUTEURL,
-            CASE
-            WHEN T.TASKSTATE='10' THEN '待领取'
-            WHEN T.TASKSTATE='20' THEN '处理中'
-            WHEN T.TASKSTATE='30' THEN '已处理'
-            END TASKSTATE,
-            T.ENDTIME,
-            T.OPINION
+                task.ID_ ID,
+                task.PROC_INST_ID_ PROCINSTID,
+                task.PROC_DEF_ID_ PROCDEFID,
+                T1.BIZID,
+                T1.BIZNO,
+                CASE
+                WHEN T1.BIZTYPE='materialBuy' THEN '物品采购'
+                END BIZTYPE,
+                task.ID_ TASKID,
+                task.NAME_ TASKNAME,
+                task.TASK_DEF_KEY_ TASKDEFKEY,
+                task.CREATE_TIME_ STARTTIME,
+                task.ASSIGNEE_ ASSIGNEE,
+                T1.ROUTEURL,
+                '处理中' TASKSTATE
             FROM camunda.act_ru_task task
-            LEFT JOIN JBOS_PROCESS_TASK T ON task.PROC_INST_ID_=T.PROCINSTID
-            LEFT JOIN JBOS_PROCESS_INST T1 ON T.PROCINSTID=T1.PROCINSTID
+            LEFT JOIN JBOS_PROCESS_INST T1 ON task.PROC_INST_ID_=T1.PROCINSTID
             WHERE task.ASSIGNEE_=#{userId}
             <if test="bizNoS != null and bizNoS != ''">
                 AND T1.BIZNO LIKE '%${bizNoS}%'
@@ -35,14 +29,64 @@
             <if test="bizTypeS != null and bizTypeS != ''">
                 AND T1.BIZTYPE=#{bizTypeS}
             </if>
-        ) T5
-        ORDER BY T5.STARTTIME
+        ) T
+        ORDER BY T.STARTTIME
+    </select>
+    <!--查询用户已办任务数据-->
+    <select id="getUserTaskProcessedList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessTask">
+        SELECT * FROM (
+            SELECT
+                hi.ID_ ID,
+                hi.PROC_INST_ID_ PROCINSTID,
+                hi.PROC_DEF_ID_ PROCDEFID,
+                T1.BIZID,
+                T1.BIZNO,
+                CASE
+                WHEN T1.BIZTYPE='materialBuy' THEN '物品采购'
+                END BIZTYPE,
+                hi.TASK_ID_ TASKID,
+                hi.ACT_NAME_ TASKNAME,
+                hi.ACT_ID_ TASKDEFKEY,
+                hi.START_TIME_ STARTTIME,
+                hi.END_TIME_ ENDTIME,
+                hi.ASSIGNEE_ ASSIGNEE,
+                T1.ROUTEURL,
+                '已处理' TASKSTATE
+            FROM camunda.act_hi_actinst hi
+            LEFT JOIN JBOS_PROCESS_INST T1 ON hi.PROC_INST_ID_=T1.PROCINSTID
+            WHERE hi.ASSIGNEE_=#{userId} and hi.ACT_INST_STATE_=4
+            <if test="bizNoS != null and bizNoS != ''">
+                AND T1.BIZNO LIKE '%${bizNoS}%'
+            </if>
+            <if test="bizTypeS != null and bizTypeS != ''">
+                AND T1.BIZTYPE=#{bizTypeS}
+            </if>
+        ) T
+        ORDER BY T.STARTTIME
+    </select>
+    <!--查询流程任务的领取人-->
+    <select id="getTaskAssigneeList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+			T.ID,
+            T.BADGE,
+            T.EMPNAME,
+            T2.ROLECODE,
+            T2.ROLENAME
+        FROM JBOS_EMP T
+        INNER JOIN JBOS_USER_ROLE T1 ON T.ID=T1.USERID
+        LEFT JOIN JBOS_ROLE T2 ON T1.ROLEID=T2.ID
+        WHERE T.ISVALID=1 AND T2.ROLECODE=#{taskDefKey}
+        <if test="taskDefKey == 'ROLE_DEP_LEADER' or taskDefKey == 'ROLE_CHARGE_LEADER'">
+            AND T.DEPID=#{depId}
+        </if>
+
     </select>
     <!--新增流程任务数据-->
     <insert id="addProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
         INSERT JBOS_PROCESS_TASK(
             ID,
             PROCINSTID,
+            TASKDEFKEY,
             ASSIGNEE,
             ROUTEURL,
             TASKSTATE,
@@ -50,6 +94,7 @@
         )VALUE(
             #{id},
             #{procInstId},
+            #{taskDefKey},
             #{assignee},
             #{routeUrl},
            '20',
@@ -59,7 +104,7 @@
     <!--更新流程任务审批意见-->
     <update id="updateProcessTaskOpinion" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
         UPDATE JBOS_PROCESS_TASK
-        SET TASKID=#{taskId},OPINION=#{opinion},ENDTIME=#{endTime}
+        SET TASKID=#{taskId},OPINION=#{opinion},ENDTIME=#{endTime},TASKSTATE='90'
         WHERE ASSIGNEE=#{assignee} AND PROCINSTID=#{procInstId} AND TASKSTATE='20'
     </update>
 </mapper>

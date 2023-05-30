@@ -36,10 +36,10 @@ public class UserAuthService {
     }
     /**
      * 得到用户认证信息
-     * @param id
+     * @param username
      * @return
      */
-    public Map<String,Object> getUserAuthInfoById(String id){
-        return userAuthRepository.getUserAuthInfoById(id);
+    public Map<String,Object> getUserAuthInfo(String username){
+        return userAuthRepository.getUserAuthInfo(username);
     }
 }

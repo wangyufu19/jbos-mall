@@ -14,7 +14,11 @@ public interface ProcessTaskMapper {
 
     public List<ProcessTask> getUserTaskList(Map<String,Object> parameterObject);
 
+    public List<ProcessTask> getUserTaskProcessedList(Map<String,Object> parameterObject);
+
+    public List<Map> getTaskAssigneeList(Map<String,Object> parameterObject);
+
     public void addProcessTask(ProcessTask processTask);
 
-    public void updateProcessTaskOpinion(Map<String,String> parameterObject);
+    public void updateProcessTaskOpinion(ProcessTask processTask);
 }

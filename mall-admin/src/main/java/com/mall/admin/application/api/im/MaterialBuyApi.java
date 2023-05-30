@@ -1,6 +1,8 @@
 package com.mall.admin.application.api.im;
 
+import com.mall.admin.application.service.ProcessDefConstants;
 import com.mall.admin.application.service.external.camunda.ProcessInstanceService;
+import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.common.response.BaseApi;
@@ -31,6 +33,7 @@ public class MaterialBuyApi extends BaseApi {
     private MaterialBuyService materialBuyService;
     @Autowired
     private ProcessInstanceService processInstanceService;
+
     /**
      * 查询物采购业务列表
      * @return
@@ -111,7 +114,7 @@ public class MaterialBuyApi extends BaseApi {
             Map<String, Object> processParams=new HashMap<String, Object>();
             processParams.put("userId",applyUserId);
             processParams.put("applyUserId",applyUserId);
-            processParams.put("processDefinitionKey","materialBuy");
+            processParams.put("processDefinitionKey", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY);
             processParams.put("businessKey",bizNo);
             processParams.put("amount",totalAmt);
 
@@ -188,6 +191,20 @@ public class MaterialBuyApi extends BaseApi {
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping("/doTrans")
+    @ApiOperation("处理流转物品采购业务")
+    public ResponseResult doTrans(@RequestBody Map<String, Object> params) {
+        ResponseResult res;
+        Map<String, Object> materialBuyMap = (Map<String, Object>) params.get("formObj");
+        try{
+            res=materialBuyService.handleMaterialBuyProcessTask(materialBuyMap);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

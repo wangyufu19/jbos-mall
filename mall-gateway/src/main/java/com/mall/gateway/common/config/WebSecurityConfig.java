@@ -147,6 +147,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 Map<String,String> signData=new HashMap<String,String>();
                 signData.put("username",principal.getUsername());
                 signData.put("nickName",principal.getNickName());
+                signData.put("depId",principal.getDepId());
+                signData.put("orgId",principal.getOrgId());
                 String token = jwtTokenProvider.generateToken(signData,principal.getAuthorities());
                 ResponseResult r= ResponseResult.ok("登录成功！");
                 Map<String,Object> data=new HashMap<String,Object>();
@@ -295,8 +297,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //解码JWT用户数据
             String username = jwtTokenProvider.getSignDataFromJWT(token, "username");
             String nickName = jwtTokenProvider.getSignDataFromJWT(token, "nickName");
+            String depId = jwtTokenProvider.getSignDataFromJWT(token,"depId");
+            String orgId = jwtTokenProvider.getSignDataFromJWT(token, "orgId");
             List<GrantedAuthority> grantedAuthorities=jwtTokenProvider.getGrantedAuthorityFromJWT(token,JwtUser.AUTHORITIES);
-            UserDetails userDetails = new JwtUser(username, nickName,null, grantedAuthorities);
+            UserDetails userDetails = new JwtUser(username, nickName,null, depId,orgId,grantedAuthorities);
             // 构建认证过的token
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             if (authentication != null) {

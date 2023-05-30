@@ -28,10 +28,12 @@
             PROCDEFID,
             BIZID,
             BIZNO,
+            BIZTYPE,
             USERID,
             BUSINESSKEY,
             STARTTIME,
             PROCSTATE,
+            ROUTEURL,
             CREATEUSERID,
             CREATETIME
         )VALUE(
@@ -40,10 +42,12 @@
             #{procDefId},
             #{bizId},
             #{bizNo},
+            #{bizType},
             #{userId},
             #{businessKey},
             #{startTime},
             '20',
+            #{routeUrl},
             #{createUserId},
             #{createTime}
         )

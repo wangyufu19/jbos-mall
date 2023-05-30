@@ -2,6 +2,7 @@ package com.mall.admin.application.service.sm;
 
 import com.mall.admin.domain.entity.sm.ProcessTask;
 import com.mall.admin.infrastructure.repository.sm.ProcessTaskRepo;
+import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,28 @@ public class ProcessTaskService {
     public List<ProcessTask> getUserTaskList(Map<String,Object> parameterObject){
         return processTaskRepo.getUserTaskList(parameterObject);
     }
-
+    public List<ProcessTask> getUserTaskProcessedList(Map<String,Object> parameterObject){
+        return processTaskRepo.getUserTaskProcessedList(parameterObject);
+    }
+    public String getTaskAssigneeList(Map<String,Object> parameterObject){
+        String assignees="";
+        List<Map> assigneeList=processTaskRepo.getTaskAssigneeList(parameterObject);
+        if(assigneeList!=null){
+            for(int i=0;i<assigneeList.size();i++){
+                if(i==assigneeList.size()-1){
+                    assignees=assignees+StringUtils.replaceNull(assigneeList.get(i).get("BADGE"));
+                }else{
+                    assignees=assignees+StringUtils.replaceNull(assigneeList.get(i).get("BADGE"))+",";
+                }
+            }
+        }
+        return assignees;
+    }
     public void addProcessTask(ProcessTask processTask){
         processTaskRepo.addProcessTask(processTask);
     }
 
-    public void updateProcessTaskOpinion(Map<String,String> parameterObject) {
-        processTaskRepo.updateProcessTaskOpinion(parameterObject);
+    public void updateProcessTaskOpinion(ProcessTask processTask) {
+        processTaskRepo.updateProcessTaskOpinion(processTask);
     }
 }

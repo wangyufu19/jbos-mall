@@ -49,7 +49,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
             String nickName=StringUtils.replaceNull(userMap.get("NICKNAME"));
             String password=StringUtils.replaceNull(userMap.get("PASSWORD"));
-            return new JwtUser(username,nickName,password,grantedAuthorities);
+            String depId=StringUtils.replaceNull(userMap.get("DEPID"));
+            String orgId=StringUtils.replaceNull(userMap.get("ORGID"));
+            return new JwtUser(username,nickName,password,depId,orgId,grantedAuthorities);
         }
     }
     public class AccountGrantException extends AuthenticationException{

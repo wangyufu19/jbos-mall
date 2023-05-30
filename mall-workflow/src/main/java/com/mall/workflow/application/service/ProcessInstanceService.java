@@ -58,4 +58,17 @@ public class ProcessInstanceService {
         taskService.complete(task.getId());
         return processInstance;
     }
+
+    /**
+     * 查询流程实例状态
+     * @param processInstanceId
+     * @return
+     */
+    public boolean getProcessInstanceState(String processInstanceId){
+        ProcessInstance processInstance= runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        if(processInstance!=null){
+            return processInstance.isEnded();
+        }
+        return true;
+    }
 }
