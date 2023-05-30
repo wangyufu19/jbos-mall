@@ -109,7 +109,6 @@
             PROCINSTID,
             TASKDEFKEY,
             ASSIGNEE,
-            ROUTEURL,
             TASKSTATE,
             STARTTIME
         )VALUE(
@@ -117,7 +116,6 @@
             #{procInstId},
             #{taskDefKey},
             #{assignee},
-            #{routeUrl},
            '20',
             #{startTime}
         )
