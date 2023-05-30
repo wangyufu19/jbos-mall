@@ -26,7 +26,7 @@ public class ProcessInstRepo {
         processInstMapper.addProcessInst(processInst);
     }
 
-    public void updateProcState(Map<String,String> parameterObject){
-        processInstMapper.updateProcState(parameterObject);
+    public void updateProcState(ProcessInst processInst){
+        processInstMapper.updateProcState(processInst);
     }
 }

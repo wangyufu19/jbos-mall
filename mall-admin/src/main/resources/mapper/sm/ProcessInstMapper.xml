@@ -55,7 +55,7 @@
     <!--更新流程状态-->
     <update id="updateProcState" parameterType="com.mall.admin.domain.entity.sm.ProcessInst">
         UPDATE JBOS_PROCESS_INST
-        SET PROCSTATE=#{procState}
+        SET PROCSTATE=#{procState},ENDTIME=#{endTime}
         WHERE PROCINSTID=#{procInstId}
     </update>
 </mapper>

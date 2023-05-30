@@ -15,5 +15,5 @@ public interface ProcessInstMapper {
 
     public void addProcessInst(ProcessInst processInst);
 
-    public void updateProcState(Map<String,String> parameterObject);
+    public void updateProcState(ProcessInst processInst);
 }

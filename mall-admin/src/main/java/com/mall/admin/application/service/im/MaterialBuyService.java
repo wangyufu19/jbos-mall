@@ -176,6 +176,7 @@ public class MaterialBuyService {
         this.processTaskService.updateProcessTaskOpinion(processTask);
         //判断流程实例是否结束
         if("true".equals(processInstanceState)){
+            ProcessInst processInst=new ProcessInst();
             Map<String, Object> parameterObject=new HashMap<>();
             parameterObject.put("BIZNO",bizNo);
             parameterObject.put("INSTID",processInstanceId);
@@ -183,7 +184,10 @@ public class MaterialBuyService {
             //更新物品采购业务状态
             this.updateMaterialBizState(parameterObject);
             //更新业务流程实例状态
-            processMgrService.updateProcState(processInstanceId,ProcessInst.PROCESS_STATE_COMPLETED);
+            processInst.setProcInstId(processInstanceId);
+            processInst.setEndTime(currentTime);
+            processInst.setProcState(ProcessInst.PROCESS_STATE_COMPLETED);
+            processMgrService.updateProcState(processInst);
         }else{
             //新增物品采购流程下一个任务数据
             String assigneeName=StringUtils.replaceNull(materialBuyMap.get("assigneeName"));
