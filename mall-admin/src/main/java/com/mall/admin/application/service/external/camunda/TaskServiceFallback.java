@@ -19,4 +19,8 @@ public class TaskServiceFallback implements TaskService{
     public ResponseResult complete(@RequestBody Map<String, Object> params){
         return ResponseResult.error();
     }
+
+    public ResponseResult drawback(@RequestBody Map<String, Object> params){
+        return ResponseResult.error();
+    }
 }

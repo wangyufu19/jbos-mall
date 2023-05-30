@@ -27,4 +27,13 @@ public interface TaskService {
     @ResponseBody
     @PostMapping(value = "/task/complete")
     public ResponseResult complete(@RequestBody Map<String, Object> params);
+
+    /**
+     * 撤回任务
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/task/drawback")
+    public ResponseResult drawback(@RequestBody Map<String, Object> params);
 }

@@ -33,7 +33,8 @@ public class MaterialBuyApi extends BaseApi {
     private MaterialBuyService materialBuyService;
     @Autowired
     private ProcessInstanceService processInstanceService;
-
+    @Autowired
+    private TaskService taskService;
     /**
      * 查询物采购业务列表
      * @return
@@ -208,4 +209,19 @@ public class MaterialBuyApi extends BaseApi {
         }
         return res;
     }
+    @ResponseBody
+    @PostMapping("/doDrawback")
+    @ApiOperation("撤回流转物品采购业务")
+    public ResponseResult doDrawback(@RequestBody Map<String, Object> params) {
+        ResponseResult res;
+        Map<String, Object> materialBuyMap = (Map<String, Object>) params.get("formObj");
+        try{
+            res=taskService.drawback(materialBuyMap);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
 }

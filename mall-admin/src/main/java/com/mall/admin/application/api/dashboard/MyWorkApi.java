@@ -1,5 +1,6 @@
 package com.mall.admin.application.api.dashboard;
 
+import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.sm.ProcessTaskService;
 import com.mall.admin.domain.entity.sm.ProcessTask;
 import com.mall.admin.domain.entity.sm.TaskStep;
@@ -23,6 +24,8 @@ public class MyWorkApi extends BaseApi {
 
     @Autowired
     private ProcessTaskService processTaskService;
+    @Autowired
+    private TaskService taskService;
 
     /**
      * 查询我的待办列表
@@ -76,4 +79,22 @@ public class MyWorkApi extends BaseApi {
         return res;
     }
 
+    /**
+     * 撤回用户任务
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/drawbackUserTask")
+    @ApiOperation("撤回用户任务")
+    public ResponseResult drawbackUserTask(@RequestBody Map<String, Object> params){
+        ResponseResult res = ResponseResult.ok();
+        try{
+            res = taskService.drawback(params);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
 }

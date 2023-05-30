@@ -62,7 +62,7 @@
                 AND T1.BIZTYPE=#{bizTypeS}
             </if>
         ) T
-        ORDER BY T.STARTTIME
+        ORDER BY T.STARTTIME DESC
     </select>
     <!--查询流程任务处理步骤-->
     <select id="getUserTaskStepList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.TaskStep">
@@ -75,14 +75,14 @@
             hi.ACT_ID_ TASKDEFKEY,
             hi.START_TIME_ STARTTIME,
             hi.END_TIME_ ENDTIME,
-            (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,')')FROM JBOS_EMP emp WHERE emp.BADGE=hi.ASSIGNEE_  limit 1) description,
+            (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,') ',IFNULL(hi.END_TIME_,''))FROM JBOS_EMP emp WHERE emp.BADGE=hi.ASSIGNEE_  limit 1) description,
             hi.ACT_INST_STATE_ TASKSTATE,
             CASE
             WHEN hi.ACT_INST_STATE_='4' || hi.ACT_INST_STATE_='1' THEN 'finish'
             ELSE 'process'
             END status
         FROM camunda.act_hi_actinst hi
-        WHERE hi.PROC_INST_ID_=#{procInstId} and hi.ACT_TYPE_='userTask'
+        WHERE hi.PROC_INST_ID_=#{procInstId} and hi.ACT_TYPE_='userTask' and hi.ACT_INST_STATE_ IN (0,1,4)
         ORDER BY hi.START_TIME_
     </select>
     <!--查询流程任务的领取人-->

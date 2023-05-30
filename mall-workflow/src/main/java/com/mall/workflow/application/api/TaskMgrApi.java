@@ -128,8 +128,7 @@ public class TaskMgrApi{
         return res;
     }
     @ResponseBody
-    @PostMapping(value = "/" +
-            "")
+    @PostMapping(value = "/drawback")
     @ApiOperation("撤回任务")
     public ResponseResult drawback(@RequestBody Map<String, Object> params){
         ResponseResult res=ResponseResult.ok();
