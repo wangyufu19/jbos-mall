@@ -54,7 +54,7 @@
                 '已处理' TASKSTATE
             FROM camunda.act_hi_actinst hi
             LEFT JOIN JBOS_PROCESS_INST T1 ON hi.PROC_INST_ID_=T1.PROCINSTID
-            WHERE hi.ASSIGNEE_=#{userId} and hi.ACT_INST_STATE_=4
+            WHERE hi.ASSIGNEE_=#{userId} and hi.ACT_INST_STATE_ IN (1,4)
             <if test="bizNoS != null and bizNoS != ''">
                 AND T1.BIZNO LIKE '%${bizNoS}%'
             </if>
@@ -63,6 +63,27 @@
             </if>
         ) T
         ORDER BY T.STARTTIME
+    </select>
+    <!--查询流程任务处理步骤-->
+    <select id="getUserTaskStepList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.TaskStep">
+        SELECT
+            hi.ID_ ID,
+            hi.PROC_INST_ID_ PROCINSTID,
+            hi.PROC_DEF_ID_ PROCDEFID,
+            hi.TASK_ID_ TASKID,
+            hi.ACT_NAME_ title,
+            hi.ACT_ID_ TASKDEFKEY,
+            hi.START_TIME_ STARTTIME,
+            hi.END_TIME_ ENDTIME,
+            (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,')')FROM JBOS_EMP emp WHERE emp.BADGE=hi.ASSIGNEE_  limit 1) description,
+            hi.ACT_INST_STATE_ TASKSTATE,
+            CASE
+            WHEN hi.ACT_INST_STATE_='4' || hi.ACT_INST_STATE_='1' THEN 'finish'
+            ELSE 'process'
+            END status
+        FROM camunda.act_hi_actinst hi
+        WHERE hi.PROC_INST_ID_=#{procInstId} and hi.ACT_TYPE_='userTask'
+        ORDER BY hi.START_TIME_
     </select>
     <!--查询流程任务的领取人-->
     <select id="getTaskAssigneeList" parameterType="java.util.Map" resultType="java.util.Map">

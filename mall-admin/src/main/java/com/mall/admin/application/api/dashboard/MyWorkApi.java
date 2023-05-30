@@ -2,6 +2,7 @@ package com.mall.admin.application.api.dashboard;
 
 import com.mall.admin.application.service.sm.ProcessTaskService;
 import com.mall.admin.domain.entity.sm.ProcessTask;
+import com.mall.admin.domain.entity.sm.TaskStep;
 import com.mall.common.response.BaseApi;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
@@ -56,4 +57,23 @@ public class MyWorkApi extends BaseApi {
         }
         return res;
     }
+    /**
+     * 查询流程任务处理步骤
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getUserTaskStepList")
+    @ApiOperation("查询流程任务处理步骤")
+    public ResponseResult getUserTaskStepList(@RequestParam Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try{
+            List<TaskStep> taskSteps=processTaskService.getUserTaskStepList(params);
+            res.setData(taskSteps);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
 }

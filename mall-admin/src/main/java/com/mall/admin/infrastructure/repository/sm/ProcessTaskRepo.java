@@ -1,6 +1,7 @@
 package com.mall.admin.infrastructure.repository.sm;
 
 import com.mall.admin.domain.entity.sm.ProcessTask;
+import com.mall.admin.domain.entity.sm.TaskStep;
 import com.mall.admin.infrastructure.repository.sm.mapper.ProcessTaskMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,9 @@ public class ProcessTaskRepo {
     }
     public List<ProcessTask> getUserTaskProcessedList(Map<String,Object> parameterObject){
         return processTaskMapper.getUserTaskProcessedList(parameterObject);
+    }
+    public List<TaskStep> getUserTaskStepList(Map<String,Object> parameterObject){
+        return processTaskMapper.getUserTaskStepList(parameterObject);
     }
     public List<Map> getTaskAssigneeList(Map<String,Object> parameterObject){
         return processTaskMapper.getTaskAssigneeList(parameterObject);

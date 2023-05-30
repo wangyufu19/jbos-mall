@@ -1,11 +1,13 @@
 package com.mall.admin.application.service.sm;
 
 import com.mall.admin.domain.entity.sm.ProcessTask;
+import com.mall.admin.domain.entity.sm.TaskStep;
 import com.mall.admin.infrastructure.repository.sm.ProcessTaskRepo;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +26,10 @@ public class ProcessTaskService {
     }
     public List<ProcessTask> getUserTaskProcessedList(Map<String,Object> parameterObject){
         return processTaskRepo.getUserTaskProcessedList(parameterObject);
+    }
+    public List<TaskStep> getUserTaskStepList(Map<String,Object> parameterObject){
+        List<TaskStep> taskSteps=processTaskRepo.getUserTaskStepList(parameterObject);
+        return taskSteps;
     }
     public String getTaskAssigneeList(Map<String,Object> parameterObject){
         String assignees="";
