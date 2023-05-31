@@ -4,8 +4,8 @@
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_0jhxoy7</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0jhxoy7" sourceRef="StartEvent_1" targetRef="applyPerson" />
-    <bpmn:sequenceFlow id="Flow_0z1u4b4" sourceRef="applyPerson" targetRef="ROLE_DEP_LEADER" />
+    <bpmn:sequenceFlow id="Flow_0jhxoy7" sourceRef="StartEvent_1" targetRef="ROLE_PROCESS_STARTER" />
+    <bpmn:sequenceFlow id="Flow_0z1u4b4" sourceRef="ROLE_PROCESS_STARTER" targetRef="ROLE_DEP_LEADER" />
     <bpmn:exclusiveGateway id="Gateway_1bshp5k">
       <bpmn:incoming>Flow_1alqqq4</bpmn:incoming>
       <bpmn:outgoing>Flow_0sf87ar</bpmn:outgoing>
@@ -21,7 +21,7 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_01jxf17" sourceRef="ROLE_REPO_ADMIN" targetRef="Event_0n98i2s" />
     <bpmn:sequenceFlow id="Flow_094azi0" sourceRef="ROLE_CHARGE_LEADER" targetRef="ROLE_REPO_ADMIN" />
-    <bpmn:userTask id="applyPerson" name="申请人" camunda:assignee="${applyUserId}">
+    <bpmn:userTask id="ROLE_PROCESS_STARTER" name="申请人" camunda:assignee="${ROLE_PROCESS_STARTER}">
       <bpmn:incoming>Flow_0jhxoy7</bpmn:incoming>
       <bpmn:outgoing>Flow_0z1u4b4</bpmn:outgoing>
     </bpmn:userTask>
@@ -89,7 +89,7 @@
       <bpmndi:BPMNShape id="Event_0n98i2s_di" bpmnElement="Event_0n98i2s">
         <dc:Bounds x="982" y="102" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1mkpwx9_di" bpmnElement="applyPerson">
+      <bpmndi:BPMNShape id="Activity_1mkpwx9_di" bpmnElement="ROLE_PROCESS_STARTER">
         <dc:Bounds x="270" y="177" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_01ok3do_di" bpmnElement="ROLE_DEP_LEADER">

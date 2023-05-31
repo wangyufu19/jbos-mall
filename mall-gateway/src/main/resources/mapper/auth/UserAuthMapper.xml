@@ -3,9 +3,19 @@
 <mapper namespace="com.mall.gateway.infrastructure.repository.mapper.auth.UserAuthMapper">
     <!--用户登录-->
     <select id="login" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT A.ID,A.USERNAME,A.PASSWORD,A.NICKNAME,A.SALT,A.USERSTATUS,B.DEPID,B.ORGID
+        SELECT
+            A.ID,
+            A.USERNAME,
+            A.PASSWORD,
+            A.NICKNAME,
+            A.SALT,
+            A.USERSTATUS,
+            B.DEPID,
+            C.DEPNAME,
+            B.ORGID
         FROM JBOS_USER A
         LEFT JOIN JBOS_EMP B ON A.USERNAME=B.BADGE
+        LEFT JOIN JBOS_DEP C ON B.DEPID=C.ID
         WHERE A.USERNAME=#{username}
     </select>
     <!--查询认证信息-->

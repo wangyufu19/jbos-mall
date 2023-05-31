@@ -17,7 +17,7 @@
            T.GMOTIME,
            T.BIZSTATE
         FROM IM_MATERIAL_BUY T
-        WHERE T.ISVALID=1
+        WHERE T.ISVALID=1 AND T.APPLYUSERID=#{userId}
         <if test="bizNoS != null and bizNoS != ''">
             AND T.BIZNO LIKE '%${bizNoS}%'
         </if>

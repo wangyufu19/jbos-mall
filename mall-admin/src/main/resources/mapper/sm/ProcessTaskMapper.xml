@@ -108,6 +108,7 @@
             ID,
             PROCINSTID,
             TASKDEFKEY,
+            TASKNAME,
             ASSIGNEE,
             TASKSTATE,
             STARTTIME
@@ -115,6 +116,7 @@
             #{id},
             #{procInstId},
             #{taskDefKey},
+            #{taskName},
             #{assignee},
            '20',
             #{startTime}
@@ -124,6 +126,6 @@
     <update id="updateProcessTaskOpinion" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
         UPDATE JBOS_PROCESS_TASK
         SET TASKID=#{taskId},OPINION=#{opinion},ENDTIME=#{endTime},TASKSTATE='90'
-        WHERE ASSIGNEE=#{assignee} AND PROCINSTID=#{procInstId} AND TASKSTATE='20'
+        WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
     </update>
 </mapper>

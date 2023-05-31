@@ -164,8 +164,8 @@ public class TaskMgrService {
         String userId = StringUtils.replaceNull(params.get("userId"));
         String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
         String taskId = StringUtils.replaceNull(params.get("taskId"));
+        String taskDefKey = StringUtils.replaceNull(params.get("taskDefKey"));
         String assignees = StringUtils.replaceNull(params.get("assignees"));
-        String assigneeName = StringUtils.replaceNull(params.get("assigneeName"));
         String multiInstance = StringUtils.replaceNull(params.get("multiInstance"));
 
         //用户认证
@@ -176,10 +176,10 @@ public class TaskMgrService {
         if ("true".equals(multiInstance)) {
             String[] assigneeList = assignees.split(",");
             if (assigneeList != null && assigneeList.length > 0) {
-                params.put(assigneeName, Arrays.asList(assigneeList));
+                params.put(taskDefKey, Arrays.asList(assigneeList));
             }
         } else {
-            params.put(assigneeName, assignees);
+            params.put(taskDefKey, assignees);
         }
         Task task = this.get(userId,processInstanceId,taskId);
         if(task!=null){

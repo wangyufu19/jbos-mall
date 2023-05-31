@@ -1,6 +1,7 @@
 package com.mall.admin.domain.entity.sm;
 
 import com.mall.admin.domain.entity.comm.BaseEntity;
+import com.mall.common.utils.DateUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,12 +15,15 @@ import java.io.Serializable;
 @Getter
 public class ProcessTask extends BaseEntity implements Serializable {
     /**
-     * 10：审批中
-     * 20：审批退回
+     * 10：NONE
+     * 20：审批中
+     * 99：审批退回
      * 90：审批成功
      */
-    public static final String PROCESS_STATE_ACTIVE="10";
+    public static final String PROCESS_STATE_NONE="10";
+    public static final String PROCESS_STATE_ACTIVE="20";
     public static final String PROCESS_STATE_COMPLETED="90";
+    public static final String PROCESS_STATE_REJECT="99";
     private String procInstId;
     private String bizId;
     private String bizNo;
@@ -33,4 +37,27 @@ public class ProcessTask extends BaseEntity implements Serializable {
     private String startTime;
     private String endTime;
     private String opinion;
+
+    public static ProcessTask build(
+            String id,
+            String processInstanceId,
+            String taskId,
+            String taskDefKey,
+            String taskName,
+            String assignee,
+            String taskState){
+        String currentTime= DateUtils.format(DateUtils.getCurrentDate(),DateUtils.YYYYMMDDHIMMSS);
+        ProcessTask processTask=new ProcessTask();
+        processTask.setId(id);
+        processTask.setProcInstId(processInstanceId);
+        processTask.setTaskId(taskId);
+        processTask.setTaskDefKey(taskDefKey);
+        processTask.setTaskName(taskName);
+        processTask.setAssignee(assignee);
+        processTask.setTaskState(taskState);
+        processTask.setStartTime(currentTime);
+        processTask.setCreateUserId(assignee);
+        processTask.setCreateTime(currentTime);
+        return processTask;
+    }
 }

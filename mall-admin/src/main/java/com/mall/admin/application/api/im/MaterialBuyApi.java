@@ -1,10 +1,13 @@
 package com.mall.admin.application.api.im;
 
+import com.mall.admin.application.request.im.MaterialBuyDto;
 import com.mall.admin.application.service.ProcessDefConstants;
 import com.mall.admin.application.service.external.camunda.ProcessInstanceService;
 import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.domain.entity.im.MaterialBuy;
+import com.mall.admin.domain.entity.sm.ProcessTask;
+import com.mall.admin.domain.entity.sm.Role;
 import com.mall.common.response.BaseApi;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
@@ -14,7 +17,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,21 +80,8 @@ public class MaterialBuyApi extends BaseApi {
         ResponseResult res = ResponseResult.ok();
         try{
             Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
-            String applyUserId=StringUtils.replaceNull(materialBuyMap.get("applyUserId"));
-            String bizNo=StringUtils.replaceNull(materialBuyMap.get("bizNo"));
-            double totalAmt=Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt")));
-            List<Map<String,Object>> materials=(ArrayList<Map<String,Object>>)params.get("materials");
-            MaterialBuy materialBuy=new MaterialBuy();
-            materialBuy.setId(StringUtils.getUUID());
-            materialBuy.setBizNo(bizNo);
-            materialBuy.setApplyUserId(applyUserId);
-            materialBuy.setApplyDepId(StringUtils.replaceNull(materialBuyMap.get("applyDepId")));
-            materialBuy.setApplyTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("applyTime"))));
-            materialBuy.setGmoTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("gmoTime"))));
-            materialBuy.setTotalAmt(totalAmt);
-            materialBuy.setPurpose(StringUtils.replaceNull(materialBuyMap.get("purpose")));
-            materialBuy.setBizState("10");
-            materialBuyService.addMaterialBuy(materialBuy,materials);
+            MaterialBuyDto materialBuyDto=MaterialBuyDto.build(materialBuyMap);
+            materialBuyService.addMaterialBuy(materialBuyDto);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -104,34 +93,25 @@ public class MaterialBuyApi extends BaseApi {
     @ApiOperation("流转物品采购业务")
     public ResponseResult startTrans(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String action=StringUtils.replaceNull(params.get("action"));
         Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
-        String applyUserId=StringUtils.replaceNull(materialBuyMap.get("applyUserId"));
-        String bizId=StringUtils.replaceNull(materialBuyMap.get("id"));
-        String bizNo=StringUtils.replaceNull(materialBuyMap.get("bizNo"));
-        double totalAmt=Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt")));
+        String action=StringUtils.replaceNull(params.get("action"));
+        MaterialBuyDto materialBuyDto=MaterialBuyDto.build(materialBuyMap);
         try {
             //启动物品采购流程
-            Map<String, Object> processParams=new HashMap<String, Object>();
-            processParams.put("userId",applyUserId);
-            processParams.put("applyUserId",applyUserId);
-            processParams.put("processDefinitionKey", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY);
-            processParams.put("businessKey",bizNo);
-            processParams.put("amount",totalAmt);
+            Map<String, Object> processMap=new HashMap<String, Object>();
+            processMap.put("processDefinitionKey", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY);
+            processMap.put("businessKey",materialBuyDto.getMaterialBuy().getBizNo());
+            processMap.put("userId",materialBuyDto.getMaterialBuy().getApplyDepId());
+            processMap.put(Role.ROLE_PROCESS_STARTER,materialBuyDto.getMaterialBuy().getApplyDepId());
+            processMap.put("amount",materialBuyDto.getMaterialBuy().getTotalAmt());
 
-            if("create".equals(action)){
-                res=this.add(params);
-            }else if("update".equals(action)){
-                res=this.update(params);
-            }
-            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
-                res=processInstanceService.startProcessInstance(processParams);
-            }
+            res=processInstanceService.startProcessInstance(processMap);
+
             if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
                 Map<String,String> data=(Map<String,String>)res.getData();
                 if(data!=null){
-                    //处理物品采购业务流程数据
-                    materialBuyService.handleMaterialStartProcess(bizId,bizNo,applyUserId,data.get("processInstanceId"),data.get("processDefinitionId"));
+                    //处理物品采购业务数据
+                    materialBuyService.handleMaterialStartProcess(action,data.get("processInstanceId"),data.get("processDefinitionId"),materialBuyDto);
                 }
             }
         } catch (Exception e) {
@@ -165,17 +145,8 @@ public class MaterialBuyApi extends BaseApi {
         ResponseResult res = ResponseResult.ok();
         try{
             Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
-            List<Map<String,Object>> materials=(ArrayList<Map<String,Object>>)params.get("materials");
-            MaterialBuy materialBuy=new MaterialBuy();
-            materialBuy.setId(StringUtils.replaceNull(materialBuyMap.get("id")));
-            materialBuy.setBizNo(StringUtils.replaceNull(materialBuyMap.get("bizNo")));
-            materialBuy.setApplyUserId(StringUtils.replaceNull(materialBuyMap.get("applyUserId")));
-            materialBuy.setApplyDepId(StringUtils.replaceNull(materialBuyMap.get("applyDepId")));
-            materialBuy.setApplyTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("applyTime"))));
-            materialBuy.setGmoTime(DateUtils.parse(StringUtils.replaceNull(materialBuyMap.get("gmoTime"))));
-            materialBuy.setTotalAmt(Double.parseDouble(StringUtils.replaceNull(materialBuyMap.get("totalAmt"))));
-            materialBuy.setPurpose(StringUtils.replaceNull(materialBuyMap.get("purpose")));
-            materialBuyService.updateMaterialBuy(materialBuy,materials);
+            MaterialBuyDto materialBuyDto=MaterialBuyDto.build(materialBuyMap);
+            materialBuyService.updateMaterialBuy(materialBuyDto);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -201,8 +172,39 @@ public class MaterialBuyApi extends BaseApi {
     public ResponseResult doTrans(@RequestBody Map<String, Object> params) {
         ResponseResult res;
         Map<String, Object> materialBuyMap = (Map<String, Object>) params.get("formObj");
+        String processDefinitionId=StringUtils.replaceNull(materialBuyMap.get("processDefinitionId"));
+        String processInstanceId = StringUtils.replaceNull(materialBuyMap.get("processInstanceId"));
+        String processInstanceState="active";
+        String taskId = StringUtils.replaceNull(materialBuyMap.get("taskId"));
+        String taskDefKey=StringUtils.replaceNull(materialBuyMap.get("taskDefKey"));
+        String userId = StringUtils.replaceNull(materialBuyMap.get("userId"));
+        String depId = StringUtils.replaceNull(materialBuyMap.get("depId"));
+        String opinion = StringUtils.replaceNull(materialBuyMap.get("opinion"));
+        MaterialBuyDto materialBuyDto=MaterialBuyDto.build(materialBuyMap);
+        double amount=materialBuyDto.getMaterialBuy().getTotalAmt();
         try{
-            res=materialBuyService.handleMaterialBuyProcessTask(materialBuyMap);
+            //查询物品采购业务流程变量
+            Map<String,Object> variables=materialBuyService.getMaterialBuyProcessVariables(
+                    processDefinitionId,processInstanceId,taskId,taskDefKey,userId,depId,amount);
+            if(!Role.ROLE_REPO_ADMIN.equals(taskDefKey)&&StringUtils.isNUll(variables.get("assignees"))){
+                res=ResponseResult.error(ResponseResult.CODE_FAILURE,"对不起，实例任务下一个候选人不能为空！");
+                return res;
+            }
+            //审批物品采购业务任务
+            res=taskService.complete(variables);
+            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+                //查询流程实例状态(active;isEnd)
+                res = processInstanceService.getProcessInstanceState(variables);
+                if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+                    processInstanceState = StringUtils.replaceNull(((Map<String, Object>) res.getData()).get("processInstanceState"));
+                }
+            }
+            //处理物品采购业务任务数据
+            ProcessTask processCurrentTask = ProcessTask.build(
+                    null,processInstanceId,taskId,taskDefKey,null,userId,ProcessTask.PROCESS_STATE_COMPLETED);
+            processCurrentTask.setOpinion(opinion);
+            materialBuyService.handleMaterialBuyProcessTask(processInstanceState,variables,processCurrentTask,
+                    materialBuyDto.getMaterialBuy().getBizNo());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

@@ -43,11 +43,13 @@ public class UserAuthApi {
         JwtUser principal = (JwtUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String nickName = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "nickName");
         String depId = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "depId");
+        String depName = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "depName");
         String orgId = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "orgId");
         Map<String,Object> data=new HashMap<String,Object>();
         data.put("username",principal.getUsername());
         data.put("nickName",nickName);
         data.put("depId",depId);
+        data.put("depName",depName);
         data.put("orgId",orgId);
         res.setData(data);
         return res;
