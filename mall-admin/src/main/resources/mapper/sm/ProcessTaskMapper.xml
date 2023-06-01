@@ -36,25 +36,25 @@
     <select id="getUserTaskProcessedList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessTask">
         SELECT * FROM (
             SELECT
-                hi.ID_ ID,
-                hi.PROC_INST_ID_ PROCINSTID,
-                hi.PROC_DEF_ID_ PROCDEFID,
+                t.ID,
+                t.PROCINSTID,
+                t1.PROCDEFID,
                 T1.BIZID,
                 T1.BIZNO,
                 CASE
                 WHEN T1.BIZTYPE='materialBuy' THEN '物品采购'
                 END BIZTYPE,
-                hi.TASK_ID_ TASKID,
-                hi.ACT_NAME_ TASKNAME,
-                hi.ACT_ID_ TASKDEFKEY,
-                hi.START_TIME_ STARTTIME,
-                hi.END_TIME_ ENDTIME,
-                hi.ASSIGNEE_ ASSIGNEE,
+                t.TASKID,
+                t.TASKDEFKEY,
+                t.TASKNAME,
+                t.STARTTIME,
+                t.ENDTIME,
+                t.ASSIGNEE,
                 T1.ROUTEURL,
                 '已处理' TASKSTATE
-            FROM camunda.act_hi_actinst hi
-            LEFT JOIN JBOS_PROCESS_INST T1 ON hi.PROC_INST_ID_=T1.PROCINSTID
-            WHERE hi.ASSIGNEE_=#{userId} and hi.ACT_INST_STATE_ IN (1,4)
+            FROM JBOS_PROCESS_TASK t
+            LEFT JOIN JBOS_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
+            WHERE t.ASSIGNEE=#{userId} and t.TASKSTATE IN ('90')
             <if test="bizNoS != null and bizNoS != ''">
                 AND T1.BIZNO LIKE '%${bizNoS}%'
             </if>

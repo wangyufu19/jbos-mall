@@ -98,7 +98,7 @@ public class ProcessInstanceMgrApi {
         ResponseResult res= ResponseResult.ok();
         String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
         try{
-            boolean processInstanceState=processInstanceService.getProcessInstanceState(processInstanceId);
+            String processInstanceState=processInstanceService.getProcessInstanceState(processInstanceId);
             Map<String,Object> data=new HashMap<String,Object>();
             data.put("processInstanceState",processInstanceState);
             res.setData(data);

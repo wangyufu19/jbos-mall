@@ -128,29 +128,23 @@ public class MaterialBuyService {
         if ("create".equals(action)) {
             //新增物品采购业务数据
             this.addMaterialBuy(materialBuyDto);
-            //新增物品采购流程实例数据
-            ProcessInst processInst = ProcessInst.build(
-                    processInstanceId,
-                    processDefinitionId,
-                    materialBuyDto.getMaterialBuy().getApplyUserId(),
-                    materialBuyDto.getMaterialBuy().getId(),
-                    materialBuyDto.getMaterialBuy().getBizNo(),
-                    ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY,
-                    businessDict.getDictValue("JBOS_PROC_ROUTE", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY));
-            processMgrService.addProcessInst(processInst);
         } else {
             //更新物品采购业务数据
             this.updateMaterialBuy(materialBuyDto);
         }
-
-        //新增物品采购流程任务数据
-        ProcessTask processTask = ProcessTask.build(
+        //新增物品采购流程实例数据
+        ProcessInst processInst = ProcessInst.build(
                 processInstanceId,
-                StringUtils.getUUID(),
-                null,
-                Role.ROLE_PROCESS_STARTER,
-                Role.ROLE_PROCESS_STARTER_DESC,
+                processDefinitionId,
                 materialBuyDto.getMaterialBuy().getApplyUserId(),
+                materialBuyDto.getMaterialBuy().getId(),
+                materialBuyDto.getMaterialBuy().getBizNo(),
+                ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY,
+                businessDict.getDictValue("JBOS_PROC_ROUTE", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY));
+        processMgrService.addProcessInst(processInst);
+        //新增物品采购流程任务数据
+        ProcessTask processTask = ProcessTask.build(StringUtils.getUUID(),processInstanceId,null,
+                Role.ROLE_PROCESS_STARTER,Role.ROLE_PROCESS_STARTER_DESC,materialBuyDto.getMaterialBuy().getApplyUserId(),
                 ProcessTask.PROCESS_STATE_ACTIVE
         );
         processTaskService.addProcessTask(processTask);
