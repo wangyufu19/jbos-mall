@@ -2,6 +2,7 @@ package com.mall.admin.infrastructure.repository.im;
 
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.admin.infrastructure.repository.im.mapper.MaterialBuyMapper;
+import com.mall.common.page.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ import java.util.Map;
 public class MaterialBuyRepo {
     @Autowired
     private MaterialBuyMapper materialBuyMapper;
-
+    @Paging
     public List<MaterialBuy> getMaterialBuyList(Map<String, Object> parameterObject){
         return materialBuyMapper.getMaterialBuyList(parameterObject);
     }

@@ -64,9 +64,9 @@ public class MaterialBuyApi extends BaseApi {
     public ResponseResult getMaterialBuyList(@RequestParam Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
         try{
-            this.doStartPage(params);
+//            this.doStartPage(params);
             List<MaterialBuy> materialBuys=materialBuyService.getMaterialBuyList(params);
-            this.doFinishPage(res,materialBuys);
+//            this.doFinishPage(res,materialBuys);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -84,37 +84,6 @@ public class MaterialBuyApi extends BaseApi {
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
-        }
-        return res;
-    }
-    @ResponseBody
-    @PostMapping("/startTrans")
-    @ApiOperation("流转物品采购业务")
-    public ResponseResult startTrans(@RequestBody Map<String, Object> params) {
-        ResponseResult res;
-        String action=StringUtils.replaceNull(params.get("action"));
-        MaterialBuyDto materialBuyDto=MaterialBuyDto.build(params);
-        try {
-            //启动物品采购流程
-            Map<String, Object> processMap=new HashMap<String, Object>();
-            processMap.put("processDefinitionKey", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY);
-            processMap.put("businessKey",materialBuyDto.getMaterialBuy().getBizNo());
-            processMap.put("userId",materialBuyDto.getMaterialBuy().getApplyUserId());
-            processMap.put(Role.ROLE_PROCESS_STARTER,materialBuyDto.getMaterialBuy().getApplyUserId());
-            processMap.put("amount",materialBuyDto.getMaterialBuy().getTotalAmt());
-            res=processInstanceService.startProcessInstance(processMap);
-
-            //处理物品采购业务数据
-            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
-                Map<String,String> data=(Map<String,String>)res.getData();
-                if(data!=null){
-                    materialBuyService.handleMaterialStartProcess(
-                            action,data.get("processInstanceId"),data.get("processDefinitionId"),materialBuyDto);
-                }
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -164,6 +133,37 @@ public class MaterialBuyApi extends BaseApi {
         return res;
     }
     @ResponseBody
+    @PostMapping("/startTrans")
+    @ApiOperation("流转物品采购业务")
+    public ResponseResult startTrans(@RequestBody Map<String, Object> params) {
+        ResponseResult res;
+        String action=StringUtils.replaceNull(params.get("action"));
+        MaterialBuyDto materialBuyDto=MaterialBuyDto.build(params);
+        try {
+            //启动物品采购流程
+            Map<String, Object> processMap=new HashMap<String, Object>();
+            processMap.put("processDefinitionKey", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY);
+            processMap.put("businessKey",materialBuyDto.getMaterialBuy().getBizNo());
+            processMap.put("userId",materialBuyDto.getMaterialBuy().getApplyUserId());
+            processMap.put(Role.ROLE_PROCESS_STARTER,materialBuyDto.getMaterialBuy().getApplyUserId());
+            processMap.put("amount",materialBuyDto.getMaterialBuy().getTotalAmt());
+            res=processInstanceService.startProcessInstance(processMap);
+
+            //处理物品采购业务数据
+            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
+                Map<String,String> data=(Map<String,String>)res.getData();
+                if(data!=null){
+                    materialBuyService.handleMaterialStartProcess(
+                            action,data.get("processInstanceId"),data.get("processDefinitionId"),materialBuyDto);
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
     @PostMapping("/doTrans")
     @ApiOperation("处理流转物品采购业务")
     public ResponseResult doTrans(@RequestBody Map<String, Object> params) {
@@ -190,11 +190,11 @@ public class MaterialBuyApi extends BaseApi {
             //审批物品采购业务任务
             res=taskService.complete(variables);
             if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-                //查询流程实例状态(active;isEnd)
-                res = processInstanceService.getProcessInstanceState(variables);
-                if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-                    processInstanceState = StringUtils.replaceNull(((Map<String, Object>) res.getData()).get("processInstanceState"));
-                }
+                //得到流程当前执行任务和实例状态(active;isEnd)
+                Map<String, Object> taskMap=(Map<String, Object>) res.getData();
+                taskId= StringUtils.replaceNull(taskMap.get("taskId"));
+                processInstanceState = StringUtils.replaceNull(taskMap.get("processInstanceState"));
+
             }
             //处理物品采购业务任务数据
             ProcessTask processCurrentTask = ProcessTask.build(

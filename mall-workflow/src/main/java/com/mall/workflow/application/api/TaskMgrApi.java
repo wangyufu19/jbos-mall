@@ -3,6 +3,7 @@ package com.mall.workflow.application.api;
 import com.github.pagehelper.PageInfo;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
+import com.mall.workflow.application.service.ProcessInstanceService;
 import com.mall.workflow.application.service.TaskMgrService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;;
@@ -21,6 +22,8 @@ import java.util.*;
 @RequestMapping("/task")
 @Api("任务管理接口")
 public class TaskMgrApi{
+    @Autowired
+    private ProcessInstanceService processInstanceService;
     @Autowired
     private TaskMgrService taskMgrService;
 
@@ -90,11 +93,16 @@ public class TaskMgrApi{
     public ResponseResult complete(@RequestBody Map<String, Object> params){
         ResponseResult res=ResponseResult.ok();
         String userId = StringUtils.replaceNull(params.get("userId"));
+        String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
         try {
             if(log.isDebugEnabled()){
                 log.info("============["+userId+"]用户完成任务");
             }
-            taskMgrService.complete(params);
+            String taskId=taskMgrService.complete(params);
+            String processInstanceState=processInstanceService.getProcessInstanceState(processInstanceId);
+            Map<String,Object> data=new HashMap<String,Object>();
+            data.put("taskId",taskId);
+            data.put("processInstanceState",processInstanceState);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());

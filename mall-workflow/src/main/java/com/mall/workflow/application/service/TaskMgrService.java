@@ -143,6 +143,25 @@ public class TaskMgrService {
         }
         return task;
     }
+
+    /**
+     * 得到任务
+     * @param userId
+     * @param processInstanceId
+     * @return
+     * @throws CamundaException
+     */
+    private Task get(String userId, String processInstanceId) throws CamundaException {
+        Task task = taskService.createTaskQuery()
+                .active()
+                .taskAssignee(userId)
+                .processInstanceId(processInstanceId)
+                .singleResult();
+        if (task == null) {
+            throw new CamundaException("Camunda["+userId+"]用户任务不存在！");
+        }
+        return task;
+    }
     /**
      * 领取任务
      * @param taskId
@@ -160,7 +179,7 @@ public class TaskMgrService {
      * 完成任务
      * @param params
      */
-    public void complete(Map<String, Object> params) throws CamundaException {
+    public String complete(Map<String, Object> params) throws CamundaException {
         String userId = StringUtils.replaceNull(params.get("userId"));
         String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
         String taskId = StringUtils.replaceNull(params.get("taskId"));
@@ -170,7 +189,7 @@ public class TaskMgrService {
 
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
-            return;
+            return taskId;
         }
         //判断下一个任务是否多实例任务
         if ("true".equals(multiInstance)) {
@@ -189,6 +208,7 @@ public class TaskMgrService {
                 throw e;
             }
         }
+        return task.getId();
     }
     /**
      * 是否可撤回任务
