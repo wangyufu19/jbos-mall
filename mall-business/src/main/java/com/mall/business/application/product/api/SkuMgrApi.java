@@ -1,6 +1,5 @@
 package com.mall.business.application.product.api;
 
-import com.mall.common.response.BaseApi;
 import com.mall.common.response.ResponseResult;
 import com.mall.business.application.product.service.SkuService;
 import com.mall.business.domain.entity.product.Sku;

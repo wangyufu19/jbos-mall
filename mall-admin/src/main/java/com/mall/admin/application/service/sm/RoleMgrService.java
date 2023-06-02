@@ -1,8 +1,10 @@
 package com.mall.admin.application.service.sm;
-import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.admin.domain.entity.sm.Emp;
 import com.mall.admin.domain.entity.sm.Role;
+import com.mall.common.page.PageParam;
+import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.admin.infrastructure.repository.sm.RoleMgrRepository;
+import com.mall.common.response.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +33,9 @@ public class RoleMgrService {
      * @param parameterObject
      * @return
      */
-    public List<Role> getRoleList(Map<String, Object> parameterObject) {
-        return roleMgrRepository.getRoleList(parameterObject);
+    public ResponseResult getRoleList(PageParam pageParam, Map<String, Object> parameterObject) {
+        List<Role> roleList=roleMgrRepository.getRoleList(pageParam,parameterObject);
+        return ResponseResult.ok().isPage(true).data(roleList);
     }
 
     /**
@@ -77,16 +80,18 @@ public class RoleMgrService {
      * @param parameterObject
      * @return
      */
-    public List<Emp> getRoleEmpList(Map<String, Object> parameterObject){
-        return roleMgrRepository.getRoleEmpList(parameterObject);
+    public ResponseResult getRoleEmpList(PageParam pageParam,Map<String, Object> parameterObject){
+        List<Emp> empList=roleMgrRepository.getRoleEmpList(pageParam,parameterObject);
+        return ResponseResult.ok().isPage(true).data(empList);
     }
     /**
      * 查询选择角色用户列表
      * @param parameterObject
      * @return
      */
-    public List<Emp> getSelectRoleEmpList(Map<String, Object> parameterObject){
-        return roleMgrRepository.getSelectRoleEmpList(parameterObject);
+    public ResponseResult getSelectRoleEmpList(PageParam pageParam,Map<String, Object> parameterObject){
+        List<Emp> empList=roleMgrRepository.getSelectRoleEmpList(pageParam,parameterObject);
+        return ResponseResult.ok().isPage(true).data(empList);
     }
     /**
      * 新增角色用户

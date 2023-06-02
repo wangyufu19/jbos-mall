@@ -1,8 +1,10 @@
 package com.mall.admin.application.service.sm;
 
+import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.sm.Org;
 import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.admin.infrastructure.repository.sm.OrgMgrRepository;
+import com.mall.common.response.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -28,8 +30,9 @@ public class OrgMgrService{
      * 查询组织机构数据
      * @return
      */
-    public List<Org> getOrgList(String parentId){
-        return orgMgrRepository.getOrgList(parentId);
+    public ResponseResult getOrgList(PageParam pageParam, String parentId){
+        List<Org> orgList=orgMgrRepository.getOrgList(pageParam,parentId);
+        return ResponseResult.ok().isPage(true).data(orgList);
     }
     /**
      * 查询组织机构数据

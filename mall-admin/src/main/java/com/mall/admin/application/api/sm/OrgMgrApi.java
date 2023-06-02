@@ -1,8 +1,8 @@
 package com.mall.admin.application.api.sm;
 import com.mall.admin.application.service.sm.OrgMgrService;
+import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.sm.Org;
 import com.mall.admin.domain.entity.comm.TreeNode;
-import com.mall.common.response.BaseApi;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -22,7 +22,7 @@ import java.util.Map;
 @RequestMapping("/org")
 @Slf4j
 @Api("机构管理接口")
-public class OrgMgrApi extends BaseApi {
+public class OrgMgrApi{
 
     @Autowired
     private OrgMgrService orgMgrService;
@@ -64,16 +64,15 @@ public class OrgMgrApi extends BaseApi {
     @RequestMapping("/getOrgList")
     @ApiOperation("查询组织机构列表")
     public ResponseResult getOrgList(@RequestParam Map<String, Object> params){
-        ResponseResult ret= ResponseResult.ok();
+        ResponseResult res;
         try{
-            this.doStartPage(params);
-            List<Org> orgs=orgMgrService.getOrgList(Org.ROOTORG_ID);
-            this.doFinishPage(ret,orgs);
+            PageParam pageParam=PageParam.getPageParam(params);
+            res=orgMgrService.getOrgList(pageParam,Org.ROOTORG_ID);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            ret= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
-        return ret;
+        return res;
     }
     /**
      * 查询组织机构数据

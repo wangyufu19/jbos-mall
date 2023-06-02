@@ -4,28 +4,35 @@ import com.mall.admin.application.request.im.MaterialBuyDto;
 import com.mall.admin.application.service.ProcessDefConstants;
 import com.mall.admin.application.service.sm.ProcessMgrService;
 import com.mall.admin.application.service.sm.ProcessTaskService;
+import com.mall.common.base.BaseService;
+import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.admin.domain.entity.im.MaterialList;
 import com.mall.admin.domain.entity.sm.ProcessInst;
 import com.mall.admin.domain.entity.sm.ProcessTask;
 import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.infrastructure.repository.im.MaterialBuyRepo;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.mall.admin.application.service.sm.BusinessDict;
+
 /**
  * MaterialBuyService
+ *
  * @author youfu.wang
  * @date 2020-06-24
  */
 @Service
-public class MaterialBuyService {
+public class MaterialBuyService extends BaseService {
     @Autowired
     private ProcessMgrService processMgrService;
     @Autowired
@@ -43,8 +50,9 @@ public class MaterialBuyService {
      * @param parameterObject
      * @return
      */
-    public List<MaterialBuy> getMaterialBuyList(Map<String, Object> parameterObject) {
-        return materialBuyRepo.getMaterialBuyList(parameterObject);
+    public ResponseResult getMaterialBuyList(PageParam pageParam, Map<String, Object> parameterObject) {
+        List<MaterialBuy> materialBuyList=materialBuyRepo.getMaterialBuyList(pageParam, parameterObject);
+        return ResponseResult.ok().isPage(true).data(materialBuyList);
     }
 
     /**
@@ -143,8 +151,8 @@ public class MaterialBuyService {
                 businessDict.getDictValue("JBOS_PROC_ROUTE", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY));
         processMgrService.addProcessInst(processInst);
         //新增物品采购流程任务数据
-        ProcessTask processTask = ProcessTask.build(StringUtils.getUUID(),processInstanceId,null,
-                Role.ROLE_PROCESS_STARTER,Role.ROLE_PROCESS_STARTER_DESC,materialBuyDto.getMaterialBuy().getApplyUserId(),
+        ProcessTask processTask = ProcessTask.build(StringUtils.getUUID(), processInstanceId, null,
+                Role.ROLE_PROCESS_STARTER, Role.ROLE_PROCESS_STARTER_DESC, materialBuyDto.getMaterialBuy().getApplyUserId(),
                 ProcessTask.PROCESS_STATE_ACTIVE
         );
         processTaskService.addProcessTask(processTask);
@@ -162,7 +170,7 @@ public class MaterialBuyService {
      */
     @Transactional
     public void handleMaterialBuyProcessTask(String processInstanceState,
-                                             Map<String,Object> variables,
+                                             Map<String, Object> variables,
                                              ProcessTask processCurrentTask,
                                              String bizNo) {
         //更新流程当前任务处理状态
@@ -178,7 +186,7 @@ public class MaterialBuyService {
             //更新业务流程实例状态
             ProcessInst processInst = new ProcessInst();
             processInst.setProcInstId(processCurrentTask.getProcInstId());
-            processInst.setEndTime(DateUtils.format(DateUtils.getCurrentDate(),DateUtils.YYYYMMDDHIMMSS));
+            processInst.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
             processInst.setProcState(ProcessInst.PROCESS_STATE_COMPLETED);
             processMgrService.updateProcState(processInst);
         } else {
@@ -190,8 +198,8 @@ public class MaterialBuyService {
             if (assigneeList != null && assigneeList.length > 0) {
                 for (String assignee : assigneeList) {
                     ProcessTask processNextTask = ProcessTask.build(
-                            StringUtils.getUUID(),processCurrentTask.getProcInstId(),null,taskDefKey,taskName,
-                            assignee,ProcessTask.PROCESS_STATE_ACTIVE);
+                            StringUtils.getUUID(), processCurrentTask.getProcInstId(), null, taskDefKey, taskName,
+                            assignee, ProcessTask.PROCESS_STATE_ACTIVE);
                     processTaskService.addProcessTask(processNextTask);
                 }
             }

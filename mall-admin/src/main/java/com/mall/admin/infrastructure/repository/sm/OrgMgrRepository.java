@@ -1,5 +1,7 @@
 package com.mall.admin.infrastructure.repository.sm;
 
+import com.mall.common.page.PageParam;
+import com.mall.common.page.Paging;
 import com.mall.admin.domain.entity.sm.Org;
 import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.admin.infrastructure.repository.sm.mapper.OrgMapper;
@@ -39,7 +41,8 @@ public class OrgMgrRepository {
      * 查询组织机构数据
      * @return
      */
-    public List<Org> getOrgList(String parentId){
+    @Paging
+    public List<Org> getOrgList(PageParam pageParam,String parentId){
         List<Org> orgList=null;
         Map<String, Object> parameterObject=new HashMap<String, Object>();
         parameterObject.put("parentId",parentId);

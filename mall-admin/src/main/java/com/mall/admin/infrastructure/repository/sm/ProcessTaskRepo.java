@@ -1,5 +1,7 @@
 package com.mall.admin.infrastructure.repository.sm;
 
+import com.mall.common.page.PageParam;
+import com.mall.common.page.Paging;
 import com.mall.admin.domain.entity.sm.ProcessTask;
 import com.mall.admin.domain.entity.sm.TaskStep;
 import com.mall.admin.infrastructure.repository.sm.mapper.ProcessTaskMapper;
@@ -18,11 +20,12 @@ import java.util.Map;
 public class ProcessTaskRepo {
     @Autowired
     private ProcessTaskMapper processTaskMapper;
-
-    public List<ProcessTask> getUserTaskList(Map<String,Object> parameterObject){
+    @Paging
+    public List<ProcessTask> getUserTaskList(PageParam pageParam,Map<String,Object> parameterObject){
         return processTaskMapper.getUserTaskList(parameterObject);
     }
-    public List<ProcessTask> getUserTaskProcessedList(Map<String,Object> parameterObject){
+    @Paging
+    public List<ProcessTask>  getUserTaskProcessedList(PageParam pageParam,Map<String, Object> parameterObject){
         return processTaskMapper.getUserTaskProcessedList(parameterObject);
     }
     public List<TaskStep> getUserTaskStepList(Map<String,Object> parameterObject){

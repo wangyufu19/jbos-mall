@@ -1,7 +1,9 @@
 package com.mall.common.office.excel;
 
 import com.github.pagehelper.PageInfo;
-import com.mall.common.response.PageResult;
+import com.github.pagehelper.page.PageParams;
+import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.common.utils.bean.BeanFactory;
 import com.mall.common.utils.bean.Getter;
@@ -68,16 +70,18 @@ public class PageExcelHandler {
             this.setCellValue(titleRow,this.titles);
             //工作表行数据
             Map<String,Object> params=new HashMap<>();
-            params.put("page", PageResult.DEFAULT_PAGE_NUM);
-            params.put("limit", PageResult.DEFAULT_PAGE_SIZE);
+            params.put("page", PageParam.DEFAULT_PAGE_NUM);
+            params.put("limit", PageParam.DEFAULT_PAGE_SIZE);
             while (true) {
                 if (startRow>=IPageExcel.length){
                     sheet=workbook.createSheet();
                     startRow=0;
                 }
-                List<Map<String, String>> dataList = null;
-                PageInfo pageInfo = iPageExcel.getSheetRowDataList(params);
-                if (null != pageInfo) {
+                List<Map<String, String>> dataList;
+                ResponseResult res = iPageExcel.getSheetRowDataList(params);
+                PageInfo pageInfo;
+                if (null != res) {
+                    pageInfo=(PageInfo)res.getData();
                     dataList = pageInfo.getList();
                 }else{
                     break;
@@ -124,8 +128,8 @@ public class PageExcelHandler {
             this.setTitleCell(sheet,startRow);
             //工作表行数据
             Map<String,Object> params=new HashMap<>();
-            params.put("page", PageResult.DEFAULT_PAGE_NUM);
-            params.put("limit", PageResult.DEFAULT_PAGE_SIZE);
+            params.put("page", PageParam.DEFAULT_PAGE_NUM);
+            params.put("limit", PageParam.DEFAULT_PAGE_SIZE);
             while (true) {
                 if (startRow >= IPageExcel.length) {
                     sheet = workbook.createSheet();
@@ -134,8 +138,11 @@ public class PageExcelHandler {
                     this.setTitleCell(sheet,startRow);
                 }
                 List<Map<String, String>> dataList;
-                PageInfo pageInfo = iPageExcel.getSheetRowDataList(params);
-                if (null != pageInfo) {
+                ResponseResult res = iPageExcel.getSheetRowDataList(params);
+                PageInfo pageInfo;
+
+                if (null != res) {
+                    pageInfo=(PageInfo)res.getData();
                     dataList = pageInfo.getList();
                 }else{
                     break;

@@ -1,6 +1,5 @@
 package com.mall.business.application.product.api;
 
-import com.mall.common.response.BaseApi;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.business.application.product.service.CategoryService;

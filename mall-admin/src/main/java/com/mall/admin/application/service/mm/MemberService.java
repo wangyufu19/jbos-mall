@@ -1,7 +1,9 @@
 package com.mall.admin.application.service.mm;
 
+import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.mm.Member;
 import com.mall.admin.infrastructure.repository.mm.MemberRepo;
+import com.mall.common.response.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +20,9 @@ public class MemberService {
     @Autowired
     private MemberRepo memberRepo;
 
-    public List<Member> getMemberList(Map<String, Object> parameterObject){
-        return this.memberRepo.getMemberList(parameterObject);
+    public ResponseResult getMemberList(PageParam pageParam, Map<String, Object> parameterObject){
+        List<Member> memberList=this.memberRepo.getMemberList(pageParam,parameterObject);
+        return ResponseResult.ok().isPage(true).data(memberList);
     }
     public Member getMemberInfo(Map<String, Object> parameterObject){
         return this.memberRepo.getMemberInfo(parameterObject);

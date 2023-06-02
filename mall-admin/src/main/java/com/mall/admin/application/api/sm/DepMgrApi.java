@@ -2,7 +2,6 @@ package com.mall.admin.application.api.sm;
 
 import com.mall.admin.application.service.sm.DepMgrService;
 import com.mall.admin.domain.entity.sm.Dep;
-import com.mall.common.response.BaseApi;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -23,7 +22,7 @@ import java.util.UUID;
 @RequestMapping("/dep")
 @Slf4j
 @Api("部门管理接口")
-public class DepMgrApi extends BaseApi {
+public class DepMgrApi{
     @Autowired
     private DepMgrService depMgrService;
     /**

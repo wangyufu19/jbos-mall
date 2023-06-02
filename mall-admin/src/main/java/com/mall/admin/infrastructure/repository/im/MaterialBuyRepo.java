@@ -1,5 +1,7 @@
 package com.mall.admin.infrastructure.repository.im;
 
+
+import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.admin.infrastructure.repository.im.mapper.MaterialBuyMapper;
 import com.mall.common.page.Paging;
@@ -19,7 +21,7 @@ public class MaterialBuyRepo {
     @Autowired
     private MaterialBuyMapper materialBuyMapper;
     @Paging
-    public List<MaterialBuy> getMaterialBuyList(Map<String, Object> parameterObject){
+    public List<MaterialBuy> getMaterialBuyList(PageParam pageParam, Map<String, Object> parameterObject){
         return materialBuyMapper.getMaterialBuyList(parameterObject);
     }
     public MaterialBuy getMaterialBuyById(String id){

@@ -6,7 +6,6 @@ import com.mall.admin.application.service.sm.DictCodeService;
 import com.mall.admin.application.service.sm.DictTypeService;
 import com.mall.admin.domain.entity.sm.DictCode;
 import com.mall.admin.domain.entity.sm.DictType;
-import com.mall.common.response.BaseApi;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +27,7 @@ import java.util.Map;
 @RequestMapping("/dict")
 @Slf4j
 @Api("字典管理接口")
-public class DictMgrApi extends BaseApi {
+public class DictMgrApi {
     @Autowired
     private BusinessDict businessDict;
     @Autowired

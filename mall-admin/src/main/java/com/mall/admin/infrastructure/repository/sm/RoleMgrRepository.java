@@ -1,5 +1,7 @@
 package com.mall.admin.infrastructure.repository.sm;
 
+import com.mall.common.page.PageParam;
+import com.mall.common.page.Paging;
 import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.admin.domain.entity.sm.Emp;
 import com.mall.admin.domain.entity.sm.Role;
@@ -42,7 +44,8 @@ public class RoleMgrRepository {
      * @param parameterObject
      * @return
      */
-    public List<Role> getRoleList(Map<String, Object> parameterObject) {
+    @Paging
+    public List<Role> getRoleList(PageParam pageParam,Map<String, Object> parameterObject) {
         List<Role> roles=null;
         roles=roleMapper.getRoleList(parameterObject);
         return roles;
@@ -111,7 +114,8 @@ public class RoleMgrRepository {
      * @param parameterObject
      * @return
      */
-    public List<Emp> getRoleEmpList(Map<String, Object> parameterObject){
+    @Paging
+    public List<Emp> getRoleEmpList(PageParam pageParam,Map<String, Object> parameterObject){
         return roleMapper.getRoleEmpList(parameterObject);
     }
     /**
@@ -119,7 +123,8 @@ public class RoleMgrRepository {
      * @param parameterObject
      * @return
      */
-    public List<Emp> getSelectRoleEmpList(Map<String, Object> parameterObject){
+    @Paging
+    public List<Emp> getSelectRoleEmpList(PageParam pageParam,Map<String, Object> parameterObject){
         return roleMapper.getSelectRoleEmpList(parameterObject);
     }
     /**

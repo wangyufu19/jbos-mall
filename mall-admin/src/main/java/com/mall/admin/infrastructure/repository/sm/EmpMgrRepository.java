@@ -1,5 +1,7 @@
 package com.mall.admin.infrastructure.repository.sm;
 
+import com.mall.common.page.PageParam;
+import com.mall.common.page.Paging;
 import com.mall.admin.domain.entity.sm.Emp;
 import com.mall.admin.infrastructure.repository.sm.mapper.EmpMapper;
 import com.mall.admin.infrastructure.repository.sm.mapper.UserMapper;
@@ -34,9 +36,10 @@ public class EmpMgrRepository {
      * @param parameterObject
      * @return
      */
-    public List<Emp> getEmpList(Map<String, Object> parameterObject){
-        List<Emp> emps=empMapper.getEmpList(parameterObject);
-        return emps;
+    @Paging
+    public List<Emp> getEmpList(PageParam pageParam,Map<String, Object> parameterObject){
+        List<Emp> empList=empMapper.getEmpList(parameterObject);
+        return empList;
     }
     /**
      * 新增人员信息
