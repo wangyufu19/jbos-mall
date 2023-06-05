@@ -66,7 +66,7 @@ public class ProcessInstanceService {
      */
     public String getProcessInstanceState(String processInstanceId){
         ProcessInstance processInstance= runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-        if(processInstance!=null&&processInstance.isEnded()){
+        if(processInstance==null||processInstance.isEnded()){
            return "isEnd";
         }
         return "active";

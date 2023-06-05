@@ -200,10 +200,10 @@ public class TaskMgrService {
         } else {
             params.put(taskDefKey, assignees);
         }
-        Task task = this.get(userId,processInstanceId,taskId);
+        Task task = this.get(userId,processInstanceId);
         if(task!=null){
             try {
-                taskService.complete(taskId, params);
+                taskService.complete(task.getId(), params);
             } catch (ProcessEngineException e){
                 throw e;
             }

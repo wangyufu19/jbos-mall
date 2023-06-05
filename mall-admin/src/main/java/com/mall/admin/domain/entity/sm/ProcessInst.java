@@ -1,8 +1,6 @@
 package com.mall.admin.domain.entity.sm;
 
 import com.mall.admin.domain.entity.comm.BaseEntity;
-import com.mall.common.utils.DateUtils;
-import com.mall.common.utils.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,28 +33,4 @@ public class ProcessInst extends BaseEntity implements Serializable {
     private String procState;
     private String routeUrl;
 
-    public static ProcessInst build(
-            String processInstanceId,
-            String processDefinitionId,
-            String userId,
-            String bizId,
-            String bizNo,
-            String bizType,
-            String routeUrl){
-        String currentTime= DateUtils.format(DateUtils.getCurrentDate(),DateUtils.YYYYMMDDHIMMSS);
-        ProcessInst processInst=new ProcessInst();
-        processInst.setId(StringUtils.getUUID());
-        processInst.setProcInstId(processInstanceId);
-        processInst.setProcDefId(processDefinitionId);
-        processInst.setUserId(userId);
-        processInst.setBizId(bizId);
-        processInst.setBizNo(bizNo);
-        processInst.setBizType(bizType);
-        processInst.setBusinessKey(bizNo);
-        processInst.setRouteUrl(routeUrl);
-        processInst.setStartTime(currentTime);
-        processInst.setCreateUserId(userId);
-        processInst.setCreateTime(currentTime);
-        return processInst;
-    }
 }

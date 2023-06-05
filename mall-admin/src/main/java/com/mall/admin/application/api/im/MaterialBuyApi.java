@@ -1,14 +1,12 @@
 package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.request.im.MaterialBuyDto;
-import com.mall.admin.application.service.ProcessDefConstants;
-import com.mall.admin.application.service.external.camunda.ProcessInstanceService;
+import com.mall.admin.application.request.im.ProcessTaskDto;
 import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.admin.domain.entity.sm.ProcessTask;
-import com.mall.admin.domain.entity.sm.Role;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
@@ -17,8 +15,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,11 +27,9 @@ import java.util.Map;
 @RequestMapping("/material/buy")
 @Slf4j
 @Api("物品采购业务接口")
-public class MaterialBuyApi{
+public class MaterialBuyApi {
     @Autowired
     private MaterialBuyService materialBuyService;
-    @Autowired
-    private ProcessInstanceService processInstanceService;
     @Autowired
     private TaskService taskService;
 
@@ -150,23 +144,7 @@ public class MaterialBuyApi{
         String action = StringUtils.replaceNull(params.get("action"));
         MaterialBuyDto materialBuyDto = MaterialBuyDto.build(params);
         try {
-            //启动物品采购流程
-            Map<String, Object> processMap = new HashMap<String, Object>();
-            processMap.put("processDefinitionKey", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY);
-            processMap.put("businessKey", materialBuyDto.getMaterialBuy().getBizNo());
-            processMap.put("userId", materialBuyDto.getMaterialBuy().getApplyUserId());
-            processMap.put(Role.ROLE_PROCESS_STARTER, materialBuyDto.getMaterialBuy().getApplyUserId());
-            processMap.put("amount", materialBuyDto.getMaterialBuy().getTotalAmt());
-            res = processInstanceService.startProcessInstance(processMap);
-
-            //处理物品采购业务数据
-            if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-                Map<String, String> data = (Map<String, String>) res.getData();
-                if (data != null) {
-                    materialBuyService.handleMaterialStartProcess(
-                            action, data.get("processInstanceId"), data.get("processDefinitionId"), materialBuyDto);
-                }
-            }
+            res = materialBuyService.handleMaterialStartProcess(action, materialBuyDto);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -179,40 +157,10 @@ public class MaterialBuyApi{
     @ApiOperation("处理流转物品采购业务")
     public ResponseResult doTrans(@RequestBody Map<String, Object> params) {
         ResponseResult res;
-        Map<String, Object> materialBuyMap = (Map<String, Object>) params.get("formObj");
-        String processDefinitionId = StringUtils.replaceNull(materialBuyMap.get("processDefinitionId"));
-        String processInstanceId = StringUtils.replaceNull(materialBuyMap.get("processInstanceId"));
-        String processInstanceState = "active";
-        String taskId = StringUtils.replaceNull(materialBuyMap.get("taskId"));
-        String taskDefKey = StringUtils.replaceNull(materialBuyMap.get("taskDefKey"));
-        String userId = StringUtils.replaceNull(materialBuyMap.get("userId"));
-        String depId = StringUtils.replaceNull(materialBuyMap.get("depId"));
-        String opinion = StringUtils.replaceNull(materialBuyMap.get("opinion"));
-        MaterialBuyDto materialBuyDto = MaterialBuyDto.build(params);
-        double amount = materialBuyDto.getMaterialBuy().getTotalAmt();
         try {
-            //查询物品采购业务流程变量
-            Map<String, Object> variables = materialBuyService.getMaterialBuyProcessVariables(
-                    processDefinitionId, processInstanceId, taskId, taskDefKey, userId, depId, amount);
-            if (!Role.ROLE_REPO_ADMIN.equals(taskDefKey) && StringUtils.isNUll(variables.get("assignees"))) {
-                res = ResponseResult.error(ResponseResult.CODE_FAILURE, "对不起，实例任务下一个候选人不能为空！");
-                return res;
-            }
-            //审批物品采购业务任务
-            res = taskService.complete(variables);
-            if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-                //得到流程当前执行任务和实例状态(active;isEnd)
-                Map<String, Object> taskMap = (Map<String, Object>) res.getData();
-                taskId = StringUtils.replaceNull(taskMap.get("taskId"));
-                processInstanceState = StringUtils.replaceNull(taskMap.get("processInstanceState"));
-
-            }
-            //处理物品采购业务任务数据
-            ProcessTask processCurrentTask = ProcessTask.build(
-                    null, processInstanceId, taskId, taskDefKey, null, userId, ProcessTask.PROCESS_STATE_COMPLETED);
-            processCurrentTask.setOpinion(opinion);
-            materialBuyService.handleMaterialBuyProcessTask(processInstanceState, variables, processCurrentTask,
-                    materialBuyDto.getMaterialBuy().getBizNo());
+            ProcessTaskDto processTaskDto = ProcessTaskDto.build(params);
+            MaterialBuyDto materialBuyDto = MaterialBuyDto.build(params);
+            res = materialBuyService.handleMaterialBuyProcessTask(processTaskDto, materialBuyDto);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

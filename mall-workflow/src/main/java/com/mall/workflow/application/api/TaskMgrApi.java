@@ -103,6 +103,7 @@ public class TaskMgrApi{
             Map<String,Object> data=new HashMap<String,Object>();
             data.put("taskId",taskId);
             data.put("processInstanceState",processInstanceState);
+            res.setData(data);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
