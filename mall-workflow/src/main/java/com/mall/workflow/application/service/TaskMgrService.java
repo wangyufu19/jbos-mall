@@ -235,7 +235,7 @@ public class TaskMgrService {
      * @param processInstanceId
      * @param taskId
      */
-    public void drawback(String userId, String processDefinitionId,String processInstanceId, String taskId) {
+    public boolean drawback(String userId, String processDefinitionId,String processInstanceId, String taskId) {
        //是否可撤回任务
        if(this.isDrawback(userId,processInstanceId,taskId)){
            //得到用户任务活动实例
@@ -246,7 +246,9 @@ public class TaskMgrService {
            //用户任务撤回后，重新领取该任务
            Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).active().singleResult();
            taskService.setAssignee(task.getId(), userId);
+           return true;
        }
+       return false;
     }
     /**
      * 驳回任务

@@ -41,4 +41,7 @@ public class ProcessTaskRepo {
     public void updateProcessTaskOpinion(ProcessTask processTask){
         processTaskMapper.updateProcessTaskOpinion(processTask);
     }
+    public void updateDrawbackPostProcessTask(ProcessTask processTask){
+        processTaskMapper.updateDrawbackPostProcessTask(processTask);
+    }
 }

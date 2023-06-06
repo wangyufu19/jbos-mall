@@ -5,6 +5,7 @@ import com.mall.business.domain.entity.product.Product;
 import com.mall.business.domain.entity.product.ProductList;
 import com.mall.business.infrastructure.repository.product.mapper.ProductListMapper;
 import com.mall.business.infrastructure.repository.product.mapper.ProductMapper;
+import com.mall.common.page.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,7 @@ public class ProductRepo {
     private ProductListMapper productListMapper;
     @Autowired
     private ProductMapper productMapper;
-
+    @Paging
     public List<ProductList> getProductList(Map<String,Object> parameterObject){
         return productListMapper.getProductList(parameterObject);
     }

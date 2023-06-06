@@ -23,7 +23,7 @@ import java.util.Map;
 @RequestMapping("/product/category")
 @Api("商品分类接口")
 @Slf4j
-public class CategoryMgrApi extends BaseApi {
+public class CategoryMgrApi{
     @Autowired
     private CategoryService categoryService;
     /**
@@ -58,22 +58,13 @@ public class CategoryMgrApi extends BaseApi {
     @GetMapping(value = "/list")
     @ApiOperation("得到商品列表")
     public ResponseResult list(@RequestParam Map<String, Object> params){
-        ResponseResult res= ResponseResult.ok();
-        String isPage= StringUtils.replaceNull(params.get("isPage"));
+        ResponseResult res;
         String parentCode=StringUtils.replaceNull(params.get("parentCode"));
         if(StringUtils.isNUll(parentCode)){
             parentCode="0";
         }
         try{
-            if("true".equals(isPage)){
-                this.doStartPage(params);
-            }
-            List<Category> categoryList=categoryService.getProductCategory(parentCode);
-            if("true".equals(isPage)){
-                this.doFinishPage(res,categoryList);
-            }else{
-                res.setData(categoryList);
-            }
+            res=categoryService.getProductCategory(parentCode);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

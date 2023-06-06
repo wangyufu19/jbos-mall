@@ -145,11 +145,17 @@ public class TaskMgrApi{
         String processDefinitionId= StringUtils.replaceNull(params.get("processDefinitionId"));
         String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
         String taskId=StringUtils.replaceNull(params.get("taskId"));
+        boolean isDrawback;
         try {
             if(log.isDebugEnabled()){
                 log.info("============["+userId+"]用户撤回任务["+taskId+"]");
             }
-            taskMgrService.drawback(userId,processDefinitionId,processInstanceId,taskId);
+            isDrawback=taskMgrService.drawback(userId,processDefinitionId,processInstanceId,taskId);
+            Map<String,Object> data=new HashMap<String,Object>();
+            data.put("processInstanceId",processInstanceId);
+            data.put("taskId",taskId);
+            data.put("isDrawback",isDrawback);
+            res.setData(data);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());

@@ -2,11 +2,10 @@ package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.request.im.MaterialBuyDto;
 import com.mall.admin.application.request.im.ProcessTaskDto;
-import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
+import com.mall.admin.application.service.sm.ProcessTaskService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.im.MaterialBuy;
-import com.mall.admin.domain.entity.sm.ProcessTask;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
@@ -31,7 +30,8 @@ public class MaterialBuyApi {
     @Autowired
     private MaterialBuyService materialBuyService;
     @Autowired
-    private TaskService taskService;
+    private ProcessTaskService processTaskService;
+
 
     /**
      * 查询物采购业务列表
@@ -173,9 +173,9 @@ public class MaterialBuyApi {
     @ApiOperation("撤回流转物品采购业务")
     public ResponseResult doDrawback(@RequestBody Map<String, Object> params) {
         ResponseResult res;
-        Map<String, Object> materialBuyMap = (Map<String, Object>) params.get("formObj");
+        ProcessTaskDto processTaskDto = ProcessTaskDto.build(params);
         try {
-            res = taskService.drawback(materialBuyMap);
+            res = processTaskService.handleDrawbackProcessTask(processTaskDto);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

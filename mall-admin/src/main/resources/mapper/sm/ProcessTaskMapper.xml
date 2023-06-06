@@ -129,4 +129,13 @@
         SET TASKID=#{taskId},OPINION=#{opinion},ENDTIME=#{endTime},TASKSTATE='90'
         WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
     </update>
+
+    <!--更新流程任务撤回任务后未审批的任务状态为NONE-->
+    <update id="updateDrawbackPostProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+        <![CDATA[
+        UPDATE JBOS_PROCESS_TASK
+        SET ENDTIME=#{endTime},TASKSTATE='10'
+        WHERE PROCINSTID=#{procInstId} AND TASKSTATE='20' AND STARTTIME<#{startTime}
+        ]]>
+    </update>
 </mapper>

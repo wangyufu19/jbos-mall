@@ -16,8 +16,8 @@ public class ProcessTask extends BaseEntity implements Serializable {
     /**
      * 10：NONE
      * 20：审批中
-     * 99：审批退回
      * 90：审批成功
+     * 99：审批退回
      */
     public static final String PROCESS_STATE_NONE="10";
     public static final String PROCESS_STATE_ACTIVE="20";

@@ -30,7 +30,7 @@ import java.util.Map;
 @RequestMapping("/product")
 @Api("商品管理接口")
 @Slf4j
-public class ProductMgrApi extends BaseApi {
+public class ProductMgrApi {
 
     @Autowired
     private IdGeneratorService idGeneratorService;
@@ -47,18 +47,10 @@ public class ProductMgrApi extends BaseApi {
     @GetMapping(value = "/list")
     @ApiOperation("得到商品列表")
     public ResponseResult list(@RequestParam Map<String, Object> params){
-        ResponseResult res= ResponseResult.ok();
+        ResponseResult res;
         String isPage= StringUtils.replaceNull(params.get("isPage"));
         try{
-            if("true".equals(isPage)){
-                this.doStartPage(params);
-            }
-            List<ProductList> productLists=productService.getProductList(params);
-            if("true".equals(isPage)){
-                this.doFinishPage(res,productLists);
-            }else{
-                res.setData(productLists);
-            }
+            res=productService.getProductList(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

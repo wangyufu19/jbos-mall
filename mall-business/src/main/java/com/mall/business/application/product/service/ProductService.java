@@ -1,4 +1,5 @@
 package com.mall.business.application.product.service;
+import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.NumberUtils;
 import com.mall.common.utils.StringUtils;
@@ -38,11 +39,12 @@ public class ProductService {
      * @param parameterObject
      * @return
      */
-    public List<ProductList> getProductList(Map<String,Object> parameterObject){
+    public ResponseResult getProductList(Map<String,Object> parameterObject){
         if(StringUtils.isNUll(parameterObject.get("status"))){
             parameterObject.put("status",Product.PRODUCT_STATUS_SHELF);
         }
-        return productRepo.getProductList(parameterObject);
+        List<ProductList> productListList=productRepo.getProductList(parameterObject);
+        return ResponseResult.ok().isPage(true).data(productListList);
     }
 
     /**

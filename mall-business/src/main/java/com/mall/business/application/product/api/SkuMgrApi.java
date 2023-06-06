@@ -21,7 +21,7 @@ import java.util.Map;
 @RequestMapping("/product/sku")
 @Api("商品管理接口")
 @Slf4j
-public class SkuMgrApi extends BaseApi {
+public class SkuMgrApi {
     @Autowired
     private SkuService skuService;
     /**

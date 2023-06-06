@@ -36,6 +36,7 @@ public class ProcessTaskDto {
         dto.setProcInstId(StringUtils.replaceNull(formMap.get("processInstanceId")));
         dto.setTaskId(StringUtils.replaceNull(formMap.get("taskId")));
         dto.setTaskDefKey(StringUtils.replaceNull(formMap.get("taskDefKey")));
+        dto.setTaskName(StringUtils.replaceNull(formMap.get("taskName")));
         dto.setAssignee(StringUtils.replaceNull(formMap.get("userId")));
         dto.setAssigneeDepId(StringUtils.replaceNull(formMap.get("depId")));
         dto.setOpinion(StringUtils.replaceNull(formMap.get("opinion")));
