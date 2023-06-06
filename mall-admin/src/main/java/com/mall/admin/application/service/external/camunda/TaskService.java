@@ -29,6 +29,14 @@ public interface TaskService {
     public ResponseResult complete(@RequestBody Map<String, Object> params);
 
     /**
+     * 是否可撤回任务
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/task/isDrawback")
+    public ResponseResult isDrawback(@RequestBody Map<String, Object> params);
+    /**
      * 撤回任务
      * @param params
      * @return

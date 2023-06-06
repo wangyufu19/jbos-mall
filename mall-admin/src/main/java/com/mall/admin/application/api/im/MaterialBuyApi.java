@@ -2,6 +2,7 @@ package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.request.im.MaterialBuyDto;
 import com.mall.admin.application.request.im.ProcessTaskDto;
+import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.application.service.sm.ProcessTaskService;
 import com.mall.common.page.PageParam;
@@ -14,6 +15,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,7 +34,8 @@ public class MaterialBuyApi {
     private MaterialBuyService materialBuyService;
     @Autowired
     private ProcessTaskService processTaskService;
-
+    @Autowired
+    private TaskService taskService;
 
     /**
      * 查询物采购业务列表
@@ -98,8 +102,20 @@ public class MaterialBuyApi {
     public ResponseResult infoById(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            MaterialBuy materialBuy = materialBuyService.getMaterialBuyById(StringUtils.replaceNull(params.get("id")));
-            res.setData(materialBuy);
+            MaterialBuyDto materialBuyDto = materialBuyService.getMaterialBuyById(StringUtils.replaceNull(params.get("id")));
+            Map<String, Object> formObj = new HashMap<>();
+            formObj.put("materialBuyDto", materialBuyDto);
+            //查询实例任务是否可撤回
+            String isDrawback = "false";
+            ResponseResult taskRes = taskService.isDrawback(params);
+            if (ResponseResult.CODE_SUCCESS.equals(taskRes.getRetCode())
+                    && taskRes.getData() != null
+                    && "true".equals(StringUtils.replaceNull(((Map<String, Object>) taskRes.getData()).get("isDrawback")))
+            ) {
+                isDrawback = StringUtils.replaceNull(((Map<String, Object>) taskRes.getData()).get("isDrawback"));
+            }
+            formObj.put("isDrawback", isDrawback);
+            res.setData(formObj);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

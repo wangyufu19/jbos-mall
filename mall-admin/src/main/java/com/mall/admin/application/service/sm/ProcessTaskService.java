@@ -78,9 +78,10 @@ public class ProcessTaskService extends BaseService {
         params.put("processInstanceId", processTaskDto.getProcInstId());
         params.put("taskId", processTaskDto.getTaskId());
         res = taskService.drawback(params);
+        String isDrawback=StringUtils.replaceNull(((Map<String,Object>)res.getData()).get("isDrawback"));
         if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())
                 &&res.getData()!=null
-                &&"true".equals(((Map<String,Object>)res.getData()).get("isDrawback"))
+                &&"true".equals(StringUtils.replaceNull(((Map<String,Object>)res.getData()).get("isDrawback")))
         ) {
             //新增流程任务数据
             ProcessTask processTask = new ProcessTask();

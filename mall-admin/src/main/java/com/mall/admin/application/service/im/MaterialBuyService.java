@@ -68,8 +68,15 @@ public class MaterialBuyService extends BaseService {
      * @param id
      * @return
      */
-    public MaterialBuy getMaterialBuyById(String id) {
-        return materialBuyRepo.getMaterialBuyById(id);
+    public MaterialBuyDto getMaterialBuyById(String id) {
+        MaterialBuyDto materialBuyDto=new MaterialBuyDto();
+        MaterialBuy materialBuy = materialBuyRepo.getMaterialBuyById(id);
+        Map<String, Object> parameterObject = new HashMap<>();
+        parameterObject.put("bizid", id);
+        List<MaterialList> materialListList = materialListService.getMaterialListList(parameterObject);
+        materialBuyDto.setMaterialBuy(materialBuy);
+        materialBuyDto.setMaterialList(materialListList);
+        return materialBuyDto;
     }
 
     /**
@@ -141,7 +148,7 @@ public class MaterialBuyService extends BaseService {
         ResponseResult res;
         String processInstanceId = null;
         String processDefinitionId = null;
-        String businessKey="KEY_"+materialBuyDto.getMaterialBuy().getBizNo();
+        String businessKey = "KEY_" + materialBuyDto.getMaterialBuy().getBizNo();
         //启动物品采购流程
         Map<String, Object> processMap = new HashMap<String, Object>();
         processMap.put("processDefinitionKey", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY);
@@ -168,8 +175,8 @@ public class MaterialBuyService extends BaseService {
             this.updateMaterialBuy(materialBuyDto);
         }
         //新增物品采购流程实例数据
-        String currentTime= DateUtils.format(DateUtils.getCurrentDate(),DateUtils.YYYYMMDDHIMMSS);
-        ProcessInst processInst=new ProcessInst();
+        String currentTime = DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS);
+        ProcessInst processInst = new ProcessInst();
         processInst.setId(StringUtils.getUUID());
         processInst.setProcInstId(processInstanceId);
         processInst.setProcDefId(processDefinitionId);
@@ -187,10 +194,10 @@ public class MaterialBuyService extends BaseService {
         ProcessTask processTask = new ProcessTask();
         processTask.setId(StringUtils.getUUID());
         processTask.setProcInstId(processInstanceId);
-        processTask.setTaskDefKey( Role.ROLE_PROCESS_STARTER);
+        processTask.setTaskDefKey(Role.ROLE_PROCESS_STARTER);
         processTask.setTaskName(Role.ROLE_PROCESS_STARTER_DESC);
         processTask.setAssignee(materialBuyDto.getMaterialBuy().getApplyUserId());
-        processTask.setTaskState( ProcessTask.PROCESS_STATE_ACTIVE);
+        processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
         processTask.setStartTime(currentTime);
         processTaskService.addProcessTask(processTask);
 
@@ -236,7 +243,7 @@ public class MaterialBuyService extends BaseService {
         processCurrentTask.setAssignee(processTaskDto.getAssignee());
         processCurrentTask.setTaskState(ProcessTask.PROCESS_STATE_COMPLETED);
         processCurrentTask.setOpinion(processTaskDto.getOpinion());
-        processCurrentTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(),DateUtils.YYYYMMDDHIMMSS));
+        processCurrentTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
         this.processTaskService.updateProcessTaskOpinion(processCurrentTask);
 
         //判断流程实例是否结束
@@ -268,7 +275,7 @@ public class MaterialBuyService extends BaseService {
                     processNextTask.setTaskName(taskName);
                     processNextTask.setAssignee(assignee);
                     processNextTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
-                    processNextTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(),DateUtils.YYYYMMDDHIMMSS));
+                    processNextTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
                     processTaskService.addProcessTask(processNextTask);
                 }
             }

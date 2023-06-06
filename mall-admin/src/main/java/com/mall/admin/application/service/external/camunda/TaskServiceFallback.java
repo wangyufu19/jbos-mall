@@ -20,6 +20,10 @@ public class TaskServiceFallback implements TaskService{
         return ResponseResult.error();
     }
 
+    public ResponseResult isDrawback(@RequestBody Map<String, Object> params){
+        return ResponseResult.error();
+    }
+
     public ResponseResult drawback(@RequestBody Map<String, Object> params){
         return ResponseResult.error();
     }
