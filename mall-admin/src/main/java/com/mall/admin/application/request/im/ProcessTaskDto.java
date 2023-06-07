@@ -28,6 +28,7 @@ public class ProcessTaskDto {
     private String startTime;
     private String endTime;
     private String opinion;
+    private String opinionDesc;
 
     public static ProcessTaskDto build(Map<String, Object> params){
         Map<String, Object> formMap = (Map<String, Object>) params.get("formObj");
@@ -40,6 +41,7 @@ public class ProcessTaskDto {
         dto.setAssignee(StringUtils.replaceNull(formMap.get("userId")));
         dto.setAssigneeDepId(StringUtils.replaceNull(formMap.get("depId")));
         dto.setOpinion(StringUtils.replaceNull(formMap.get("opinion")));
+        dto.setOpinionDesc(StringUtils.replaceNull(formMap.get("opinionDesc")));
         return dto;
     }
 }

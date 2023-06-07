@@ -174,7 +174,8 @@ public class TaskMgrApi{
             if(log.isDebugEnabled()){
                 log.info("============["+userId+"]用户驳回任务["+taskId+"]");
             }
-            taskMgrService.reject(userId,processInstanceId,taskId);
+            Map<String,Object> data=taskMgrService.reject(userId,processInstanceId,taskId);
+            res.setData(data);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());

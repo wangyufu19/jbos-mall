@@ -44,4 +44,10 @@ public class ProcessTaskRepo {
     public void updateDrawbackPostProcessTask(ProcessTask processTask){
         processTaskMapper.updateDrawbackPostProcessTask(processTask);
     }
+    public void updateRejectPostProcessTask(ProcessTask processTask){
+        processTaskMapper.updateRejectPostProcessTask(processTask);
+    }
+    public void updateProcessTaskState(ProcessTask processTask){
+        processTaskMapper.updateProcessTaskState(processTask);
+    }
 }

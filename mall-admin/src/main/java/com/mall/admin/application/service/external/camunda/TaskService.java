@@ -12,6 +12,7 @@ import java.util.Map;
 public interface TaskService {
     /**
      * 查询待办任务
+     *
      * @param params
      * @return
      */
@@ -21,6 +22,7 @@ public interface TaskService {
 
     /**
      * 完成任务
+     *
      * @param params
      * @return
      */
@@ -30,18 +32,30 @@ public interface TaskService {
 
     /**
      * 是否可撤回任务
+     *
      * @param params
      * @return
      */
     @ResponseBody
     @PostMapping(value = "/task/isDrawback")
     public ResponseResult isDrawback(@RequestBody Map<String, Object> params);
+
     /**
      * 撤回任务
+     *
      * @param params
      * @return
      */
     @ResponseBody
     @PostMapping(value = "/task/drawback")
     public ResponseResult drawback(@RequestBody Map<String, Object> params);
+
+    /**
+     * 驳回任务
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/task/reject")
+    public ResponseResult reject(@RequestBody Map<String, Object> params);
 }

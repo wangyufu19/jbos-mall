@@ -55,7 +55,7 @@
                 '已处理' TASKSTATE
             FROM JBOS_PROCESS_TASK t
             LEFT JOIN JBOS_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
-            WHERE t.ASSIGNEE=#{userId} and t.TASKSTATE IN ('90')
+            WHERE t.ASSIGNEE=#{userId} and t.TASKSTATE IN ('90','99')
             <if test="bizNoS != null and bizNoS != ''">
                 AND T1.BIZNO LIKE '%${bizNoS}%'
             </if>
@@ -68,23 +68,22 @@
     <!--查询流程任务处理步骤-->
     <select id="getUserTaskStepList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.TaskStep">
         SELECT
-            hi.ID_ ID,
-            hi.PROC_INST_ID_ PROCINSTID,
-            hi.PROC_DEF_ID_ PROCDEFID,
-            hi.TASK_ID_ TASKID,
-            hi.ACT_NAME_ title,
-            hi.ACT_ID_ TASKDEFKEY,
-            hi.START_TIME_ STARTTIME,
-            hi.END_TIME_ ENDTIME,
-            (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,') ',IFNULL(hi.END_TIME_,''))FROM JBOS_EMP emp WHERE emp.BADGE=hi.ASSIGNEE_  limit 1) description,
-            hi.ACT_INST_STATE_ TASKSTATE,
+            t.ID,
+            t.PROCINSTID,
+            t.TASKID,
+            t.TASKNAME title,
+            t.TASKDEFKEY TASKDEFKEY,
+            t.STARTTIME,
+            t.ENDTIME,
+            (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,') ',IFNULL(t.ENDTIME,''))FROM JBOS_EMP emp WHERE emp.BADGE=t.ASSIGNEE  limit 1) description,
+            t.TASKSTATE,
             CASE
-            WHEN hi.ACT_INST_STATE_='4' || hi.ACT_INST_STATE_='1' THEN 'finish'
+            WHEN t.TASKSTATE='90' || t.TASKSTATE='99' THEN 'success'
             ELSE 'process'
             END status
-        FROM camunda.act_hi_actinst hi
-        WHERE hi.PROC_INST_ID_=#{procInstId} and hi.ACT_TYPE_='userTask' and hi.ACT_INST_STATE_ IN (0,1,4)
-        ORDER BY hi.START_TIME_
+        FROM JBOS_PROCESS_TASK t
+        WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
+        ORDER BY t.STARTTIME
     </select>
     <!--查询流程任务的领取人-->
     <select id="getTaskAssigneeList" parameterType="java.util.Map" resultType="java.util.Map">
@@ -126,11 +125,11 @@
     <!--更新流程任务审批意见-->
     <update id="updateProcessTaskOpinion" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
         UPDATE JBOS_PROCESS_TASK
-        SET TASKID=#{taskId},OPINION=#{opinion},ENDTIME=#{endTime},TASKSTATE='90'
+        SET TASKID=#{taskId},OPINION=#{opinion},OPINIONDESC=#{opinionDesc},ENDTIME=#{endTime},TASKSTATE='90'
         WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
     </update>
 
-    <!--更新流程任务撤回任务后未审批的任务状态为NONE-->
+    <!--更新流程任务撤回后未审批的任务状态为NONE-->
     <update id="updateDrawbackPostProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
         <![CDATA[
         UPDATE JBOS_PROCESS_TASK
@@ -138,4 +137,19 @@
         WHERE PROCINSTID=#{procInstId} AND TASKSTATE='20' AND STARTTIME<#{startTime}
         ]]>
     </update>
+    <!--更新流程任务驳回后未审批的所有任务状态为NONE(除当前用户任务)-->
+    <update id="updateRejectPostProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+        <![CDATA[
+        UPDATE JBOS_PROCESS_TASK
+        SET ENDTIME=#{endTime},TASKSTATE='10'
+        WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE!=#{assignee} AND TASKSTATE='20'
+        ]]>
+    </update>
+    <!--更新流程任务审批状态-->
+    <update id="updateProcessTaskState" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+        UPDATE JBOS_PROCESS_TASK
+        SET TASKSTATE=#{taskState},ENDTIME=#{endTime}
+        WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
+    </update>
+
 </mapper>

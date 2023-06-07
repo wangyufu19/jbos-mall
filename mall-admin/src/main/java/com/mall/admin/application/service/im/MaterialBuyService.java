@@ -165,48 +165,47 @@ public class MaterialBuyService extends BaseService {
                 processInstanceId = data.get("processInstanceId");
                 processDefinitionId = data.get("processDefinitionId");
             }
-        }
+            if ("create".equals(action)) {
+                //新增物品采购业务数据
+                this.addMaterialBuy(materialBuyDto);
+            } else {
+                //更新物品采购业务数据
+                this.updateMaterialBuy(materialBuyDto);
+            }
+            //新增物品采购流程实例数据
+            String currentTime = DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS);
+            ProcessInst processInst = new ProcessInst();
+            processInst.setId(StringUtils.getUUID());
+            processInst.setProcInstId(processInstanceId);
+            processInst.setProcDefId(processDefinitionId);
+            processInst.setUserId(materialBuyDto.getMaterialBuy().getApplyUserId());
+            processInst.setBizId(materialBuyDto.getMaterialBuy().getId());
+            processInst.setBizNo(materialBuyDto.getMaterialBuy().getBizNo());
+            processInst.setBizType(ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY);
+            processInst.setBusinessKey(businessKey);
+            processInst.setRouteUrl(businessDict.getDictValue("JBOS_PROC_ROUTE", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY));
+            processInst.setStartTime(currentTime);
+            processInst.setCreateUserId(materialBuyDto.getMaterialBuy().getApplyUserId());
+            processInst.setCreateTime(currentTime);
+            processMgrService.addProcessInst(processInst);
+            //新增物品采购流程任务数据
+            ProcessTask processTask = new ProcessTask();
+            processTask.setId(StringUtils.getUUID());
+            processTask.setProcInstId(processInstanceId);
+            processTask.setTaskDefKey(Role.ROLE_PROCESS_STARTER);
+            processTask.setTaskName(Role.ROLE_PROCESS_STARTER_DESC);
+            processTask.setAssignee(materialBuyDto.getMaterialBuy().getApplyUserId());
+            processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
+            processTask.setStartTime(currentTime);
+            processTaskService.addProcessTask(processTask);
 
-        if ("create".equals(action)) {
-            //新增物品采购业务数据
-            this.addMaterialBuy(materialBuyDto);
-        } else {
-            //更新物品采购业务数据
-            this.updateMaterialBuy(materialBuyDto);
+            //更新物品采购业务实例ID和业务状态
+            Map<String, Object> parameterObject = new HashMap<>();
+            parameterObject.put("BIZNO", materialBuyDto.getMaterialBuy().getBizNo());
+            parameterObject.put("INSTID", processInstanceId);
+            parameterObject.put("BIZSTATE", ProcessInst.PROCESS_STATE_ACTIVE);
+            this.updateMaterialInstIdAndBizState(parameterObject);
         }
-        //新增物品采购流程实例数据
-        String currentTime = DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS);
-        ProcessInst processInst = new ProcessInst();
-        processInst.setId(StringUtils.getUUID());
-        processInst.setProcInstId(processInstanceId);
-        processInst.setProcDefId(processDefinitionId);
-        processInst.setUserId(materialBuyDto.getMaterialBuy().getApplyUserId());
-        processInst.setBizId(materialBuyDto.getMaterialBuy().getId());
-        processInst.setBizNo(materialBuyDto.getMaterialBuy().getBizNo());
-        processInst.setBizType(ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY);
-        processInst.setBusinessKey(businessKey);
-        processInst.setRouteUrl(businessDict.getDictValue("JBOS_PROC_ROUTE", ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY));
-        processInst.setStartTime(currentTime);
-        processInst.setCreateUserId(materialBuyDto.getMaterialBuy().getApplyUserId());
-        processInst.setCreateTime(currentTime);
-        processMgrService.addProcessInst(processInst);
-        //新增物品采购流程任务数据
-        ProcessTask processTask = new ProcessTask();
-        processTask.setId(StringUtils.getUUID());
-        processTask.setProcInstId(processInstanceId);
-        processTask.setTaskDefKey(Role.ROLE_PROCESS_STARTER);
-        processTask.setTaskName(Role.ROLE_PROCESS_STARTER_DESC);
-        processTask.setAssignee(materialBuyDto.getMaterialBuy().getApplyUserId());
-        processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
-        processTask.setStartTime(currentTime);
-        processTaskService.addProcessTask(processTask);
-
-        //更新物品采购业务实例ID和业务状态
-        Map<String, Object> parameterObject = new HashMap<>();
-        parameterObject.put("BIZNO", materialBuyDto.getMaterialBuy().getBizNo());
-        parameterObject.put("INSTID", processInstanceId);
-        parameterObject.put("BIZSTATE", ProcessInst.PROCESS_STATE_ACTIVE);
-        this.updateMaterialInstIdAndBizState(parameterObject);
         return res;
     }
 
@@ -218,6 +217,7 @@ public class MaterialBuyService extends BaseService {
         ResponseResult res;
         String taskId = null;
         String processInstanceState = "active";
+        String bizNo=materialBuyDto.getMaterialBuy().getBizNo();
         double amount = materialBuyDto.getMaterialBuy().getTotalAmt();
 
         //查询物品采购业务流程变量
@@ -233,51 +233,34 @@ public class MaterialBuyService extends BaseService {
             Map<String, Object> taskMap = (Map<String, Object>) res.getData();
             taskId = StringUtils.replaceNull(taskMap.get("taskId"));
             processInstanceState = StringUtils.replaceNull(taskMap.get("processInstanceState"));
-
-        }
-        //更新流程当前任务状态和审批意见
-        ProcessTask processCurrentTask = new ProcessTask();
-        processCurrentTask.setProcInstId(processTaskDto.getProcInstId());
-        processCurrentTask.setTaskId(taskId);
-        processCurrentTask.setTaskDefKey(processTaskDto.getTaskDefKey());
-        processCurrentTask.setAssignee(processTaskDto.getAssignee());
-        processCurrentTask.setTaskState(ProcessTask.PROCESS_STATE_COMPLETED);
-        processCurrentTask.setOpinion(processTaskDto.getOpinion());
-        processCurrentTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
-        this.processTaskService.updateProcessTaskOpinion(processCurrentTask);
-
-        //判断流程实例是否结束
-        if ("isEnd".equals(processInstanceState)) {
-            Map<String, Object> parameterObject = new HashMap<>();
-            parameterObject.put("BIZNO", materialBuyDto.getMaterialBuy().getBizNo());
-            parameterObject.put("INSTID", processCurrentTask.getProcInstId());
-            parameterObject.put("BIZSTATE", ProcessInst.PROCESS_STATE_COMPLETED);
-            //更新物品采购业务状态
-            this.updateMaterialBizState(parameterObject);
-            //更新业务流程实例状态
-            ProcessInst processInst = new ProcessInst();
-            processInst.setProcInstId(processCurrentTask.getProcInstId());
-            processInst.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
-            processInst.setProcState(ProcessInst.PROCESS_STATE_COMPLETED);
-            processMgrService.updateProcState(processInst);
-        } else {
-            //新增物品采购流程下一个任务数据
-            String taskDefKey = StringUtils.replaceNull(variables.get("taskDefKey"));
-            String taskName = StringUtils.replaceNull(variables.get("taskName"));
-            String assignees = StringUtils.replaceNull(variables.get("assignees"));
-            String[] assigneeList = assignees.split(",");
-            if (assigneeList != null && assigneeList.length > 0) {
-                for (String assignee : assigneeList) {
-                    ProcessTask processNextTask = new ProcessTask();
-                    processNextTask.setId(StringUtils.getUUID());
-                    processNextTask.setProcInstId(processCurrentTask.getProcInstId());
-                    processNextTask.setTaskDefKey(taskDefKey);
-                    processNextTask.setTaskName(taskName);
-                    processNextTask.setAssignee(assignee);
-                    processNextTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
-                    processNextTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
-                    processTaskService.addProcessTask(processNextTask);
-                }
+            //更新流程当前任务状态和审批意见
+            ProcessTask processCurrentTask = new ProcessTask();
+            processCurrentTask.setProcInstId(processTaskDto.getProcInstId());
+            processCurrentTask.setTaskId(taskId);
+            processCurrentTask.setTaskDefKey(processTaskDto.getTaskDefKey());
+            processCurrentTask.setAssignee(processTaskDto.getAssignee());
+            processCurrentTask.setTaskState(ProcessTask.PROCESS_STATE_COMPLETED);
+            processCurrentTask.setOpinion(processTaskDto.getOpinion());
+            processCurrentTask.setOpinionDesc(processTaskDto.getOpinionDesc());
+            processCurrentTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+            this.processTaskService.updateProcessTaskOpinion(processCurrentTask);
+            //判断流程实例是否结束
+            if ("isEnd".equals(processInstanceState)) {
+                Map<String, Object> parameterObject = new HashMap<>();
+                parameterObject.put("BIZNO", bizNo);
+                parameterObject.put("INSTID", processTaskDto.getProcInstId());
+                parameterObject.put("BIZSTATE", ProcessInst.PROCESS_STATE_COMPLETED);
+                //更新物品采购业务状态
+                this.updateMaterialBizState(parameterObject);
+                //更新业务流程实例状态
+                ProcessInst processInst = new ProcessInst();
+                processInst.setProcInstId(processTaskDto.getProcInstId());
+                processInst.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+                processInst.setProcState(ProcessInst.PROCESS_STATE_COMPLETED);
+                processMgrService.updateProcState(processInst);
+            } else {
+                //新增物品采购流程下一个任务数据
+                processTaskService.addProcessNexTask(processTaskDto.getProcInstId(),variables);
             }
         }
         return res;

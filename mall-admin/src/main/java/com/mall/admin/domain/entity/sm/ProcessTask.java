@@ -38,6 +38,6 @@ public class ProcessTask extends BaseEntity implements Serializable {
     private String startTime;
     private String endTime;
     private String opinion;
-
+    private String opinionDesc;
 
 }

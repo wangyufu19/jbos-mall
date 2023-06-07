@@ -4,10 +4,13 @@ import com.mall.workflow.common.exception.CamundaException;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.engine.impl.util.StringUtil;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 import java.util.Map;
 
 /**
@@ -37,6 +40,9 @@ public class ProcessInstanceService {
             return null;
         }
         ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(processDefinitionKey,businessKey,variables);
+        if(processInstance==null|| StringUtils.isEmpty(processInstance.getProcessInstanceId())){
+            throw new CamundaException("Camunda["+userId+"]用户启动实例失败！");
+        }
         Task task = taskService.createTaskQuery().processInstanceId(processInstance.getProcessInstanceId()).active().singleResult();
         taskService.setAssignee(task.getId(), userId);
         return processInstance;
@@ -53,6 +59,9 @@ public class ProcessInstanceService {
             return null;
         }
         ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(processDefinitionKey,businessKey,variables);
+        if(processInstance==null|| StringUtils.isEmpty(processInstance.getProcessInstanceId())){
+            throw new CamundaException("Camunda["+userId+"]用户启动实例失败！");
+        }
         String processInstanceId=processInstance.getProcessInstanceId();
         Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).active().singleResult();
         taskService.complete(task.getId());

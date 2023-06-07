@@ -26,4 +26,9 @@ public interface ProcessTaskMapper {
     public void updateProcessTaskOpinion(ProcessTask processTask);
 
     public void updateDrawbackPostProcessTask(ProcessTask processTask);
+
+    public void updateRejectPostProcessTask(ProcessTask processTask);
+
+    public void updateProcessTaskState(ProcessTask processTask);
+
 }

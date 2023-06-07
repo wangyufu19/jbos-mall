@@ -6,7 +6,6 @@ import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.application.service.sm.ProcessTaskService;
 import com.mall.common.page.PageParam;
-import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
@@ -176,7 +175,13 @@ public class MaterialBuyApi {
         try {
             ProcessTaskDto processTaskDto = ProcessTaskDto.build(params);
             MaterialBuyDto materialBuyDto = MaterialBuyDto.build(params);
-            res = materialBuyService.handleMaterialBuyProcessTask(processTaskDto, materialBuyDto);
+            //审批驳回
+            if("101".equals(processTaskDto.getOpinion())){
+                res = processTaskService.handleRejectProcessTask(processTaskDto);
+            }else{
+                res = materialBuyService.handleMaterialBuyProcessTask(processTaskDto, materialBuyDto);
+            }
+
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -192,6 +197,20 @@ public class MaterialBuyApi {
         ProcessTaskDto processTaskDto = ProcessTaskDto.build(params);
         try {
             res = processTaskService.handleDrawbackProcessTask(processTaskDto);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping("/doReject")
+    @ApiOperation("驳回流转物品采购业务")
+    public ResponseResult doReject(@RequestBody Map<String, Object> params) {
+        ResponseResult res;
+        ProcessTaskDto processTaskDto = ProcessTaskDto.build(params);
+        try {
+            res = processTaskService.handleRejectProcessTask(processTaskDto);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

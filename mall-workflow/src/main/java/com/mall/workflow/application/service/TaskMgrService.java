@@ -216,7 +216,11 @@ public class TaskMgrService {
      * @param processInstanceId
      * @param taskId
      */
-    public boolean isDrawback(String userId, String processInstanceId, String taskId){
+    public boolean isDrawback(String userId, String processInstanceId, String taskId) throws CamundaException {
+        //用户认证
+        if (!this.identityMgrService.auth(userId)) {
+            return false;
+        }
         //判断用户任务是否最后完成的任务，如果不是则不能撤回
         HistoricActivityInstance historicActivityInstance = this.activityInstanceService.getActivityInstance(userId,processInstanceId,taskId);
         if(historicActivityInstance==null||!taskId.equals(historicActivityInstance.getTaskId())){
@@ -227,6 +231,11 @@ public class TaskMgrService {
         if(parentHistoricActivityInstance!=null&&"multiInstanceBody".equals(parentHistoricActivityInstance.getActivityType())){
             return false;
         }
+        //得到实例当前活动实例
+        ActivityInstance activityInstance=runtimeService.getActivityInstance(processInstanceId);
+        if(activityInstance==null){
+            return false;
+        }
         return true;
     }
     /**
@@ -235,14 +244,17 @@ public class TaskMgrService {
      * @param processInstanceId
      * @param taskId
      */
-    public boolean drawback(String userId, String processDefinitionId,String processInstanceId, String taskId) {
+    public boolean drawback(String userId, String processDefinitionId,String processInstanceId, String taskId) throws CamundaException {
        //是否可撤回任务
        if(this.isDrawback(userId,processInstanceId,taskId)){
            //得到用户任务活动实例
            HistoricActivityInstance historicActivityInstance = this.activityInstanceService.getActivityInstance(userId,processInstanceId,taskId);
            //得到实例当前活动实例
            ActivityInstance activityInstance=runtimeService.getActivityInstance(processInstanceId);
-           this.reject(userId,processInstanceId,(activityInstance.getChildActivityInstances()[0]).getActivityId(),historicActivityInstance.getActivityId());
+           if(activityInstance==null){
+               throw new CamundaException("Camunda["+processInstanceId+"]实例已结束或失效，不能撤回！");
+           }
+           this.executeActivityToActivity(userId,processInstanceId,(activityInstance.getChildActivityInstances()[0]).getActivityId(),historicActivityInstance.getActivityId());
            //用户任务撤回后，重新领取该任务
            Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).active().singleResult();
            taskService.setAssignee(task.getId(), userId);
@@ -251,13 +263,18 @@ public class TaskMgrService {
        return false;
     }
     /**
-     * 驳回任务
+     * 驳回任务(默认驳回至发起人)
      * @param userId
      * @param processInstanceId
      * @param taskId
      */
-    public void reject(String userId, String processInstanceId, String taskId) throws CamundaException {
-        Task task = this.get(userId,processInstanceId,taskId);
+    public Map<String,Object> reject(String userId, String processInstanceId, String taskId) throws CamundaException {
+        //用户认证
+        if (!this.identityMgrService.auth(userId)) {
+            return null;
+        }
+        Map<String,Object> data=new HashMap<String,Object>();
+        Task task = this.get(userId,processInstanceId);
         List<HistoricActivityInstance> historicActivityInstances = historyService
                 .createHistoricActivityInstanceQuery()
                 .processInstanceId(processInstanceId)
@@ -266,19 +283,34 @@ public class TaskMgrService {
                 .asc()
                 .list();
         HistoricActivityInstance historicActivityInstance = historicActivityInstances.get(0);
+        String toTaskId=historicActivityInstance.getTaskId();
+        String toActivityId=historicActivityInstance.getActivityId();
+        String toActivityName=historicActivityInstance.getActivityName();
         String toActId = historicActivityInstance.getActivityId();
-        reject(userId,processInstanceId,task.getTaskDefinitionKey(),toActId);
+        String toAssignee=historicActivityInstance.getAssignee();
+        this.executeActivityToActivity(userId,processInstanceId,task.getTaskDefinitionKey(),toActId);
+        data.put("processInstanceId",processInstanceId);
+        data.put("taskId",task.getId());
+        data.put("toTaskId",toTaskId);
+        data.put("toActivityId",toActivityId);
+        data.put("toActivityName",toActivityName);
+        data.put("toActId",toActId);
+        data.put("toAssignee",toAssignee);
+        return data;
     }
     /**
-     * 驳回任务
+     * 执行实例当前活动变更到目标活动
      * @param userId
      * @param processInstanceId
      * @param srcActId
      * @param toActId
      */
-    public void reject(String userId, String processInstanceId,String srcActId,String toActId){
+    private void executeActivityToActivity(String userId, String processInstanceId,String srcActId,String toActId) throws CamundaException {
         ProcessInstanceModificationBuilder builder = runtimeService.createProcessInstanceModification(processInstanceId);
-        builder.cancelAllForActivity(srcActId);
+        if(srcActId.equals(toActId)){
+            throw new CamundaException("Camunda["+userId+"]用户变更实例活动任务和目标任务不能相同！");
+        }
+        builder.cancelAllForActivity(srcActId);//取消当前活动节点
         builder.startBeforeActivity(toActId);//启动目标活动节点
         builder.execute();
     }
