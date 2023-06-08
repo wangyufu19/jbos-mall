@@ -11,7 +11,7 @@ import java.util.Map;
  **/
 public interface ProcessInstMapper {
 
-    public List<ProcessInst> getProcessInstList(Map<String,String> parameterObject);
+    public List<ProcessInst> getProcessInstList(Map<String,Object> parameterObject);
 
     public void addProcessInst(ProcessInst processInst);
 

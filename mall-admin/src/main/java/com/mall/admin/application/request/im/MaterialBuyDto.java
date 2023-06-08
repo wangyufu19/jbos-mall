@@ -1,6 +1,6 @@
 package com.mall.admin.application.request.im;
 
-import com.mall.admin.application.service.ProcessDefConstants;
+import com.mall.admin.application.service.wf.ProcessDefConstants;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.admin.domain.entity.im.MaterialList;
 import com.mall.common.utils.DateUtils;

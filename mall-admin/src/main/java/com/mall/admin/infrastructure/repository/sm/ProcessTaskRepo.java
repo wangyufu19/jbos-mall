@@ -31,6 +31,9 @@ public class ProcessTaskRepo {
     public List<TaskStep> getUserTaskStepList(Map<String,Object> parameterObject){
         return processTaskMapper.getUserTaskStepList(parameterObject);
     }
+    public List<Map> getInstanceTaskProcessedAssigneeList(Map<String,Object> parameterObject){
+        return processTaskMapper.getInstanceTaskProcessedAssigneeList(parameterObject);
+    }
     public List<Map> getTaskAssigneeList(Map<String,Object> parameterObject){
         return processTaskMapper.getTaskAssigneeList(parameterObject);
     }
@@ -44,8 +47,8 @@ public class ProcessTaskRepo {
     public void updateDrawbackPostProcessTask(ProcessTask processTask){
         processTaskMapper.updateDrawbackPostProcessTask(processTask);
     }
-    public void updateRejectPostProcessTask(ProcessTask processTask){
-        processTaskMapper.updateRejectPostProcessTask(processTask);
+    public void updateHandlePostProcessTask(ProcessTask processTask){
+        processTaskMapper.updateHandlePostProcessTask(processTask);
     }
     public void updateProcessTaskState(ProcessTask processTask){
         processTaskMapper.updateProcessTaskState(processTask);

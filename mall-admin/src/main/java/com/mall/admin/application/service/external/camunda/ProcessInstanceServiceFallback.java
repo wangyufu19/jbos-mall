@@ -25,4 +25,11 @@ public class ProcessInstanceServiceFallback implements ProcessInstanceService{
     public ResponseResult getProcessInstanceState(@RequestBody Map<String, Object> params){
         return ResponseResult.error();
     }
+    public ResponseResult suspendProcessInstanceById(@RequestBody Map<String, Object> params){
+        return ResponseResult.error();
+    }
+
+    public ResponseResult activateProcessInstanceById(@RequestBody Map<String, Object> params){
+        return ResponseResult.error();
+    }
 }

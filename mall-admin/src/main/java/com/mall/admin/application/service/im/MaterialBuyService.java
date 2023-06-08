@@ -1,12 +1,12 @@
 package com.mall.admin.application.service.im;
 
 import com.mall.admin.application.request.im.MaterialBuyDto;
-import com.mall.admin.application.request.im.ProcessTaskDto;
-import com.mall.admin.application.service.ProcessDefConstants;
+import com.mall.admin.application.request.wf.ProcessTaskDto;
+import com.mall.admin.application.service.wf.ProcessDefConstants;
 import com.mall.admin.application.service.external.camunda.ProcessInstanceService;
 import com.mall.admin.application.service.external.camunda.TaskService;
-import com.mall.admin.application.service.sm.ProcessMgrService;
-import com.mall.admin.application.service.sm.ProcessTaskService;
+import com.mall.admin.application.service.wf.ProcessMgrService;
+import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.common.base.BaseService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.im.MaterialBuy;
@@ -222,7 +222,7 @@ public class MaterialBuyService extends BaseService {
 
         //查询物品采购业务流程变量
         Map<String, Object> variables = this.getMaterialBuyProcessVariables(processTaskDto, amount);
-        if (!Role.ROLE_REPO_ADMIN.equals(processTaskDto.getTaskDefKey()) && StringUtils.isNUll(variables.get("assignees"))) {
+        if (!Role.ROLE_REPO_ADMIN.equals(processTaskDto.getTaskDefKey()) && StringUtils.isNUll(variables.get("nextAssignees"))) {
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, "对不起，实例任务下一个候选人不能为空！");
             return res;
         }
@@ -244,8 +244,12 @@ public class MaterialBuyService extends BaseService {
             processCurrentTask.setOpinionDesc(processTaskDto.getOpinionDesc());
             processCurrentTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
             this.processTaskService.updateProcessTaskOpinion(processCurrentTask);
+            //多实例节点更新流程任务处理后未审批的所有任务状态为NONE(除当前用户任务)
+            if (Role.ROLE_DEP_LEADER.equals(processTaskDto.getTaskDefKey())) {
+                processTaskService.updateHandlePostProcessTask(processCurrentTask);
+            }
             //判断流程实例是否结束
-            if ("isEnd".equals(processInstanceState)) {
+            if ("isEnded".equals(processInstanceState)) {
                 Map<String, Object> parameterObject = new HashMap<>();
                 parameterObject.put("BIZNO", bizNo);
                 parameterObject.put("INSTID", processTaskDto.getProcInstId());
@@ -253,11 +257,7 @@ public class MaterialBuyService extends BaseService {
                 //更新物品采购业务状态
                 this.updateMaterialBizState(parameterObject);
                 //更新业务流程实例状态
-                ProcessInst processInst = new ProcessInst();
-                processInst.setProcInstId(processTaskDto.getProcInstId());
-                processInst.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
-                processInst.setProcState(ProcessInst.PROCESS_STATE_COMPLETED);
-                processMgrService.updateProcState(processInst);
+                processMgrService.updateProcState(processTaskDto.getProcInstId(),ProcessInst.PROCESS_STATE_COMPLETED);
             } else {
                 //新增物品采购流程下一个任务数据
                 processTaskService.addProcessNexTask(processTaskDto.getProcInstId(),variables);
@@ -294,31 +294,34 @@ public class MaterialBuyService extends BaseService {
         variables.put("processDefinitionId", processTaskDto.getProcDefId());
         variables.put("processInstanceId", processTaskDto.getProcInstId());
 
-        String assignees;
+        String nextAssignees;
         variables.put("depId", processTaskDto.getAssigneeDepId());
         if (Role.ROLE_PROCESS_STARTER.equals(processTaskDto.getTaskDefKey())) {
-            variables.put("taskDefKey", Role.ROLE_DEP_LEADER);
-            assignees = processTaskService.getTaskAssigneeList(variables);
+            variables.put("currentTaskDefKey", Role.ROLE_PROCESS_STARTER);
+            variables.put("nextTaskDefKey", Role.ROLE_DEP_LEADER);
+            nextAssignees = processTaskService.getTaskAssigneeList(variables,false);
             variables.put("multiInstance", "true");
-            variables.put("taskName", Role.ROLE_DEP_LEADER_DESC);
-            variables.put("assignees", assignees);
+            variables.put("nextTaskName", Role.ROLE_DEP_LEADER_DESC);
+            variables.put("nextAssignees", nextAssignees);
         } else if (Role.ROLE_DEP_LEADER.equals(processTaskDto.getTaskDefKey())) {
+            variables.put("currentTaskDefKey", Role.ROLE_DEP_LEADER);
             if (amount <= 5000) {
-                variables.put("taskDefKey", Role.ROLE_REPO_ADMIN);
-                assignees = processTaskService.getTaskAssigneeList(variables);
-                variables.put("taskName", Role.ROLE_REPO_ADMIN_DESC);
+                variables.put("nextTaskDefKey", Role.ROLE_REPO_ADMIN);
+                nextAssignees = processTaskService.getTaskAssigneeList(variables,false);
+                variables.put("nextTaskName", Role.ROLE_REPO_ADMIN_DESC);
             } else {
-                variables.put("taskDefKey", Role.ROLE_CHARGE_LEADER);
-                assignees = processTaskService.getTaskAssigneeList(variables);
+                variables.put("nextTaskDefKey", Role.ROLE_CHARGE_LEADER);
+                nextAssignees = processTaskService.getTaskAssigneeList(variables,false);
                 variables.put("multiInstance", "true");
-                variables.put("taskName", Role.ROLE_CHARGE_LEADER_DESC);
+                variables.put("nextTaskName", Role.ROLE_CHARGE_LEADER_DESC);
             }
-            variables.put("assignees", assignees);
+            variables.put("nextAssignees", nextAssignees);
         } else if (Role.ROLE_CHARGE_LEADER.equals(processTaskDto.getTaskDefKey())) {
-            variables.put("taskDefKey", Role.ROLE_REPO_ADMIN);
-            assignees = processTaskService.getTaskAssigneeList(variables);
-            variables.put("taskName", Role.ROLE_REPO_ADMIN_DESC);
-            variables.put("assignees", assignees);
+            variables.put("currentTaskDefKey", Role.ROLE_CHARGE_LEADER);
+            variables.put("nextTaskDefKey", Role.ROLE_REPO_ADMIN);
+            nextAssignees = processTaskService.getTaskAssigneeList(variables,true);
+            variables.put("nextTaskName", Role.ROLE_REPO_ADMIN_DESC);
+            variables.put("nextAssignees", nextAssignees);
         }
         return variables;
     }

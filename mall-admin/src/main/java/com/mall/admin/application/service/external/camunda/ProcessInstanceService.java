@@ -1,6 +1,7 @@
 package com.mall.admin.application.service.external.camunda;
 
 import com.mall.common.response.ResponseResult;
+import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -41,4 +42,11 @@ public interface ProcessInstanceService {
      */
     @PostMapping(value = "/process/getProcessInstanceState")
     public ResponseResult getProcessInstanceState(@RequestBody Map<String, Object> params);
+
+    @PostMapping("/process/suspendProcessInstanceById")
+    public ResponseResult suspendProcessInstanceById(@RequestBody Map<String, Object> params);
+
+
+    @PostMapping("/process/activateProcessInstanceById")
+    public ResponseResult activateProcessInstanceById(@RequestBody Map<String, Object> params);
 }

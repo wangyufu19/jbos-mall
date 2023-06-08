@@ -2,6 +2,8 @@ package com.mall.admin.infrastructure.repository.sm;
 
 import com.mall.admin.domain.entity.sm.ProcessInst;
 import com.mall.admin.infrastructure.repository.sm.mapper.ProcessInstMapper;
+import com.mall.common.page.PageParam;
+import com.mall.common.page.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +19,8 @@ import java.util.Map;
 public class ProcessInstRepo {
     @Autowired
     private ProcessInstMapper processInstMapper;
-
-    public List<ProcessInst> getProcessInstList(Map<String,String> parameterObject){
+    @Paging
+    public List<ProcessInst> getProcessInstList(PageParam pageParam,Map<String, Object> parameterObject){
         return processInstMapper.getProcessInstList(parameterObject);
     }
 

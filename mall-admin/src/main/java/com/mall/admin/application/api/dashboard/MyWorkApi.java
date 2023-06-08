@@ -1,7 +1,7 @@
 package com.mall.admin.application.api.dashboard;
 
 import com.mall.admin.application.service.external.camunda.TaskService;
-import com.mall.admin.application.service.sm.ProcessTaskService;
+import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.sm.TaskStep;
 import com.mall.common.response.ResponseResult;

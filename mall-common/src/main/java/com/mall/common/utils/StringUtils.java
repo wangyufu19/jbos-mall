@@ -83,7 +83,7 @@ public class StringUtils {
 					num++;
 				}
 			}					
-			strArray=new String[num];						
+			strArray=new String[num+1];
 			for(int i=0;i<strArray.length;i++){		
 				if(s.indexOf(ch)!=-1){
 					strArray[i]=s.substring(0, s.indexOf(ch));						

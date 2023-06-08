@@ -19,6 +19,8 @@ public interface ProcessTaskMapper {
 
     public List<TaskStep> getUserTaskStepList(Map<String,Object> parameterObject);
 
+    public List<Map> getInstanceTaskProcessedAssigneeList(Map<String,Object> parameterObject);
+
     public List<Map> getTaskAssigneeList(Map<String,Object> parameterObject);
 
     public void addProcessTask(ProcessTask processTask);
@@ -27,7 +29,7 @@ public interface ProcessTaskMapper {
 
     public void updateDrawbackPostProcessTask(ProcessTask processTask);
 
-    public void updateRejectPostProcessTask(ProcessTask processTask);
+    public void updateHandlePostProcessTask(ProcessTask processTask);
 
     public void updateProcessTaskState(ProcessTask processTask);
 

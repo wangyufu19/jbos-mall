@@ -1,4 +1,4 @@
-package com.mall.admin.application.service;
+package com.mall.admin.application.service.wf;
 
 /**
  * ProcessDefConstants

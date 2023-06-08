@@ -1,10 +1,10 @@
 package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.request.im.MaterialBuyDto;
-import com.mall.admin.application.request.im.ProcessTaskDto;
+import com.mall.admin.application.request.wf.ProcessTaskDto;
 import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
-import com.mall.admin.application.service.sm.ProcessTaskService;
+import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;

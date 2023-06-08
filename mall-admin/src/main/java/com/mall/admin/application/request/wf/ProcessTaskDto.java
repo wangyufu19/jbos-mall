@@ -1,4 +1,4 @@
-package com.mall.admin.application.request.im;
+package com.mall.admin.application.request.wf;
 
 import com.mall.common.utils.StringUtils;
 import lombok.Data;

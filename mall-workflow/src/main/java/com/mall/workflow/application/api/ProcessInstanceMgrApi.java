@@ -108,4 +108,33 @@ public class ProcessInstanceMgrApi {
         }
         return res;
     }
+    @ResponseBody
+    @PostMapping("/suspendProcessInstanceById")
+    @ApiOperation("暂停流程")
+    public ResponseResult suspendProcessInstanceById(@RequestBody Map<String, Object> params){
+        ResponseResult res = ResponseResult.ok();
+        try {
+            String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+            processInstanceService.suspendProcessInstanceById(processInstanceId);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
+    @ResponseBody
+    @PostMapping("/activateProcessInstanceById")
+    @ApiOperation("激活流程")
+    public ResponseResult activateProcessInstanceById(@RequestBody Map<String, Object> params){
+        ResponseResult res = ResponseResult.ok();
+        try {
+            String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+            processInstanceService.activateProcessInstanceById(processInstanceId);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
 }

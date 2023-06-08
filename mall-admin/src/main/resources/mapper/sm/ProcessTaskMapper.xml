@@ -85,6 +85,21 @@
         WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
         ORDER BY t.STARTTIME
     </select>
+    <!--查询实例任务的所有已处理的任务数据(除当前处理用户任务)-->
+    <select id="getInstanceTaskProcessedAssigneeList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessTask">
+        SELECT
+            t.ID,
+            t.PROCINSTID,
+            t.TASKID,
+            t.TASKDEFKEY,
+            t.TASKNAME,
+            t.STARTTIME,
+            t.ENDTIME,
+            t.ASSIGNEE
+        FROM JBOS_PROCESS_TASK t
+        LEFT JOIN JBOS_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
+        WHERE t.TASKDEFKEY=#{currentTaskDefKey} AND t.ASSIGNEE!=#{userId} AND t.TASKSTATE NOT IN ('90','99')
+    </select>
     <!--查询流程任务的领取人-->
     <select id="getTaskAssigneeList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT
@@ -96,11 +111,10 @@
         FROM JBOS_EMP T
         INNER JOIN JBOS_USER_ROLE T1 ON T.ID=T1.USERID
         LEFT JOIN JBOS_ROLE T2 ON T1.ROLEID=T2.ID
-        WHERE T.ISVALID=1 AND T2.ROLECODE=#{taskDefKey}
-        <if test="taskDefKey == 'ROLE_DEP_LEADER' or taskDefKey == 'ROLE_CHARGE_LEADER'">
+        WHERE T.ISVALID=1 AND T2.ROLECODE=#{nextTaskDefKey}
+        <if test="nextTaskDefKey == 'ROLE_DEP_LEADER' or nextTaskDefKey == 'ROLE_CHARGE_LEADER'">
             AND T.DEPID=#{depId}
         </if>
-
     </select>
     <!--新增流程任务数据-->
     <insert id="addProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
@@ -125,7 +139,7 @@
     <!--更新流程任务审批意见-->
     <update id="updateProcessTaskOpinion" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
         UPDATE JBOS_PROCESS_TASK
-        SET TASKID=#{taskId},OPINION=#{opinion},OPINIONDESC=#{opinionDesc},ENDTIME=#{endTime},TASKSTATE='90'
+        SET TASKID=#{taskId},OPINION=#{opinion},OPINIONDESC=#{opinionDesc},ENDTIME=#{endTime},TASKSTATE=#{taskState}
         WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
     </update>
 
@@ -137,8 +151,8 @@
         WHERE PROCINSTID=#{procInstId} AND TASKSTATE='20' AND STARTTIME<#{startTime}
         ]]>
     </update>
-    <!--更新流程任务驳回后未审批的所有任务状态为NONE(除当前用户任务)-->
-    <update id="updateRejectPostProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+    <!--更新流程节点处理后未审批的所有任务状态为NONE(除当前用户任务)-->
+    <update id="updateHandlePostProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
         <![CDATA[
         UPDATE JBOS_PROCESS_TASK
         SET ENDTIME=#{endTime},TASKSTATE='10'

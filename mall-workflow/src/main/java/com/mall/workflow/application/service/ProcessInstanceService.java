@@ -75,9 +75,30 @@ public class ProcessInstanceService {
      */
     public String getProcessInstanceState(String processInstanceId){
         ProcessInstance processInstance= runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-        if(processInstance==null||processInstance.isEnded()){
-           return "isEnd";
+        if(processInstance==null){
+            return "isEnded";
+        }
+        if(processInstance.isEnded()){
+           return "isEnded";
+        }else if(processInstance.isSuspended()){
+            return "isSuspended";
         }
         return "active";
+    }
+
+    /**
+     * 暂停流程
+     * @param processInstanceId
+     */
+    public void suspendProcessInstanceById(String processInstanceId){
+        runtimeService.suspendProcessInstanceById(processInstanceId);
+    }
+
+    /**
+     * 激活流程
+     * @param processInstanceId
+     */
+    public void activateProcessInstanceById(String processInstanceId){
+        runtimeService.activateProcessInstanceById(processInstanceId);
     }
 }

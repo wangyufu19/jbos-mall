@@ -3,22 +3,33 @@
 <mapper namespace="com.mall.admin.infrastructure.repository.sm.mapper.ProcessInstMapper">
     <!--查询流程实例数据-->
     <select id="getProcessInstList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessInst">
-        SELECT
-           T.ID,
-           T.PROCINSTID,
-           T.PROCDEFID,
-           T.BIZNO,
-           T.USERID,
-           T.BUSINESSKEY,
-           T.STARTTIME,
-           T.ENDTIME,
-           T.PROCSTATE
-        FROM JBOS_PROCESS_INST T
-        WHERE T.ISVALID=1
-        <if test="userId != null and userId != ''">
-            AND T.USERID=#{userId}
-        </if>
-        ORDER BY T.STARTTIME
+        SELECT * FROM (
+            SELECT
+                T.ID,
+                T.PROCINSTID,
+                T.PROCDEFID,
+                T.BIZNO,
+                CASE
+                WHEN T.BIZTYPE='materialBuy' THEN '物品采购'
+                END BIZTYPE,
+                T.USERID,
+                T.BUSINESSKEY,
+                T.STARTTIME,
+                T.ENDTIME,
+                T.PROCSTATE
+            FROM JBOS_PROCESS_INST T
+            WHERE T.ISVALID=1
+            <if test="userId != null and userId != ''">
+                AND T.USERID=#{userId}
+            </if>
+            <if test="bizNoS != null and bizNoS != ''">
+                AND T.BIZNO LIKE '%${bizNoS}%'
+            </if>
+            <if test="bizTypeS != null and bizTypeS != ''">
+                AND T.BIZTYPE=#{bizTypeS}
+            </if>
+        ) T1
+        ORDER BY T1.STARTTIME
     </select>
     <!--新增流程实例数据-->
     <insert id="addProcessInst" parameterType="com.mall.admin.domain.entity.sm.ProcessInst">

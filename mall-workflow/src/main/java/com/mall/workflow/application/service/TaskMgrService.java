@@ -183,22 +183,27 @@ public class TaskMgrService {
         String userId = StringUtils.replaceNull(params.get("userId"));
         String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
         String taskId = StringUtils.replaceNull(params.get("taskId"));
-        String taskDefKey = StringUtils.replaceNull(params.get("taskDefKey"));
-        String assignees = StringUtils.replaceNull(params.get("assignees"));
+        String nextTaskDefKey = StringUtils.replaceNull(params.get("nextTaskDefKey"));
+        String nextAssignees = StringUtils.replaceNull(params.get("nextAssignees"));
         String multiInstance = StringUtils.replaceNull(params.get("multiInstance"));
 
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
             return taskId;
         }
+        //查询实例状态
+        ProcessInstance processInstance= runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        if(processInstance==null||processInstance.isSuspended()||processInstance.isEnded()){
+            throw new CamundaException("Camunda["+processInstanceId+"]实例已暂停或已结束！");
+        }
         //判断下一个任务是否多实例任务
         if ("true".equals(multiInstance)) {
-            String[] assigneeList = assignees.split(",");
+            String[] assigneeList = nextAssignees.split(",");
             if (assigneeList != null && assigneeList.length > 0) {
-                params.put(taskDefKey, Arrays.asList(assigneeList));
+                params.put(nextTaskDefKey, Arrays.asList(assigneeList));
             }
         } else {
-            params.put(taskDefKey, assignees);
+            params.put(nextTaskDefKey, nextAssignees);
         }
         Task task = this.get(userId,processInstanceId);
         if(task!=null){
