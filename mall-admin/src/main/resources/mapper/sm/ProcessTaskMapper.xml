@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mall.admin.infrastructure.repository.sm.mapper.ProcessTaskMapper">
+<mapper namespace="com.mall.admin.infrastructure.repository.wf.mapper.ProcessTaskMapper">
     <!--查询用户待办任务数据-->
-    <select id="getUserTaskList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessTask">
+    <select id="getUserTaskList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.wf.ProcessTask">
         SELECT * FROM (
             SELECT
                 t.ID,
@@ -34,7 +34,7 @@
         ORDER BY T.STARTTIME
     </select>
     <!--查询用户已办任务数据-->
-    <select id="getUserTaskProcessedList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessTask">
+    <select id="getUserTaskProcessedList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.wf.ProcessTask">
         SELECT * FROM (
             SELECT
                 t.ID,
@@ -65,14 +65,30 @@
         ) T
         ORDER BY T.STARTTIME DESC
     </select>
+    <!--查询流程任务处理明细列表-->
+    <select id="getProcessTaskDetailList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.wf.ProcessTask">
+        SELECT
+            t.ID,
+            t.PROCINSTID,
+            t.TASKID,
+            t.TASKNAME,
+            t.TASKDEFKEY,
+            t.STARTTIME,
+            t.ENDTIME,
+            (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,') ')FROM JBOS_EMP emp WHERE emp.BADGE=t.ASSIGNEE  limit 1) EMPNAME,
+            t.TASKSTATE
+        FROM JBOS_PROCESS_TASK t
+        WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
+        ORDER BY t.STARTTIME
+    </select>
     <!--查询流程任务处理步骤-->
-    <select id="getUserTaskStepList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.TaskStep">
+    <select id="getProcessTaskStepList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.wf.TaskStep">
         SELECT
             t.ID,
             t.PROCINSTID,
             t.TASKID,
             t.TASKNAME title,
-            t.TASKDEFKEY TASKDEFKEY,
+            t.TASKDEFKEY,
             t.STARTTIME,
             t.ENDTIME,
             (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,') ',IFNULL(t.ENDTIME,''))FROM JBOS_EMP emp WHERE emp.BADGE=t.ASSIGNEE  limit 1) description,
@@ -85,8 +101,9 @@
         WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
         ORDER BY t.STARTTIME
     </select>
+
     <!--查询实例任务的所有已处理的任务数据(除当前处理用户任务)-->
-    <select id="getInstanceTaskProcessedAssigneeList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.ProcessTask">
+    <select id="getInstanceTaskProcessedAssigneeList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.wf.ProcessTask">
         SELECT
             t.ID,
             t.PROCINSTID,
@@ -117,7 +134,7 @@
         </if>
     </select>
     <!--新增流程任务数据-->
-    <insert id="addProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+    <insert id="addProcessTask" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
         INSERT JBOS_PROCESS_TASK(
             ID,
             PROCINSTID,
@@ -137,14 +154,14 @@
         )
     </insert>
     <!--更新流程任务审批意见-->
-    <update id="updateProcessTaskOpinion" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+    <update id="updateProcessTaskOpinion" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
         UPDATE JBOS_PROCESS_TASK
         SET TASKID=#{taskId},OPINION=#{opinion},OPINIONDESC=#{opinionDesc},ENDTIME=#{endTime},TASKSTATE=#{taskState}
         WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
     </update>
 
     <!--更新流程任务撤回后未审批的任务状态为NONE-->
-    <update id="updateDrawbackPostProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+    <update id="updateDrawbackPostProcessTask" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
         <![CDATA[
         UPDATE JBOS_PROCESS_TASK
         SET ENDTIME=#{endTime},TASKSTATE='10'
@@ -152,7 +169,7 @@
         ]]>
     </update>
     <!--更新流程节点处理后未审批的所有任务状态为NONE(除当前用户任务)-->
-    <update id="updateHandlePostProcessTask" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+    <update id="updateHandlePostProcessTask" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
         <![CDATA[
         UPDATE JBOS_PROCESS_TASK
         SET ENDTIME=#{endTime},TASKSTATE='10'
@@ -160,7 +177,7 @@
         ]]>
     </update>
     <!--更新流程任务审批状态-->
-    <update id="updateProcessTaskState" parameterType="com.mall.admin.domain.entity.sm.ProcessTask">
+    <update id="updateProcessTaskState" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
         UPDATE JBOS_PROCESS_TASK
         SET TASKSTATE=#{taskState},ENDTIME=#{endTime}
         WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'

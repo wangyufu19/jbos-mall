@@ -1,9 +1,9 @@
-package com.mall.admin.application.api.dashboard;
+package com.mall.admin.application.api.wf;
 
 import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.wf.ProcessTaskService;
+import com.mall.admin.domain.entity.wf.TaskStep;
 import com.mall.common.page.PageParam;
-import com.mall.admin.domain.entity.sm.TaskStep;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -15,25 +15,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * ProcessTaskApi
+ *
+ * @author youfu.wang
+ * @date 2023/6/9
+ **/
 @RestController
-@RequestMapping("/dashboard")
+@RequestMapping("/workflow/task")
 @Slf4j
-@Api("我的工作台接口")
-public class MyWorkApi {
-
+@Api("实例任务接口")
+public class ProcessTaskApi {
     @Autowired
     private ProcessTaskService processTaskService;
     @Autowired
     private TaskService taskService;
-
     /**
-     * 查询我的待办列表
+     * 查询我的工作列表
      *
      * @return
      */
     @ResponseBody
     @GetMapping("/getMyWorkList")
-    @ApiOperation("查询我的待办列表")
+    @ApiOperation("查询我的工作列表")
     public ResponseResult getMyWorkList(@RequestParam Map<String, Object> params) {
         ResponseResult res;
         String workType = StringUtils.replaceNull(params.get("workType"));
@@ -62,7 +66,7 @@ public class MyWorkApi {
     public ResponseResult getUserTaskStepList(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            List<TaskStep> taskSteps = processTaskService.getUserTaskStepList(params);
+            List<TaskStep> taskSteps = processTaskService.getProcessTaskStepList(params);
             res.setData(taskSteps);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -71,6 +75,25 @@ public class MyWorkApi {
         return res;
     }
 
+    /**
+     * 查询实例任务明细列表
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getProcessTaskDetailList")
+    @ApiOperation("查询实例任务明细列表")
+    public ResponseResult getProcessTaskDetailList(@RequestParam Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            PageParam pageParam = PageParam.getPageParam(params);
+            res=processTaskService.getProcessTaskDetailList(pageParam,params);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
     /**
      * 撤回用户任务
      *

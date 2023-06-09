@@ -1,5 +1,5 @@
-package com.mall.admin.infrastructure.repository.sm.mapper;
-import com.mall.admin.domain.entity.sm.ProcessInst;
+package com.mall.admin.infrastructure.repository.wf.mapper;
+import com.mall.admin.domain.entity.wf.ProcessInst;
 
 import java.util.List;
 import java.util.Map;

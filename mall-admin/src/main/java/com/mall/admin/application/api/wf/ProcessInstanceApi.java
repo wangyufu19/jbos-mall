@@ -2,7 +2,7 @@ package com.mall.admin.application.api.wf;
 
 import com.mall.admin.application.service.external.camunda.ProcessInstanceService;
 import com.mall.admin.application.service.wf.ProcessMgrService;
-import com.mall.admin.domain.entity.sm.ProcessInst;
+import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;

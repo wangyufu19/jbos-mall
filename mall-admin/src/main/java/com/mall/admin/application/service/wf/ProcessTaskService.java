@@ -4,9 +4,9 @@ import com.mall.admin.application.request.wf.ProcessTaskDto;
 import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.common.base.BaseService;
 import com.mall.common.page.PageParam;
-import com.mall.admin.domain.entity.sm.ProcessTask;
-import com.mall.admin.domain.entity.sm.TaskStep;
-import com.mall.admin.infrastructure.repository.sm.ProcessTaskRepo;
+import com.mall.admin.domain.entity.wf.ProcessTask;
+import com.mall.admin.domain.entity.wf.TaskStep;
+import com.mall.admin.infrastructure.repository.wf.ProcessTaskRepo;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
@@ -40,9 +40,12 @@ public class ProcessTaskService extends BaseService {
         List<ProcessTask> processTasks = processTaskRepo.getUserTaskProcessedList(pageParam, parameterObject);
         return ResponseResult.ok().isPage(true).data(processTasks);
     }
-
-    public List<TaskStep> getUserTaskStepList(Map<String, Object> parameterObject) {
-        List<TaskStep> taskSteps = processTaskRepo.getUserTaskStepList(parameterObject);
+    public ResponseResult getProcessTaskDetailList(PageParam pageParam,Map<String,Object> parameterObject){
+        List<ProcessTask> processTasks = processTaskRepo.getProcessTaskDetailList(pageParam,parameterObject);
+        return ResponseResult.ok().isPage(true).data(processTasks);
+    }
+    public List<TaskStep> getProcessTaskStepList(Map<String, Object> parameterObject) {
+        List<TaskStep> taskSteps = processTaskRepo.getProcessTaskStepList(parameterObject);
         return taskSteps;
     }
 

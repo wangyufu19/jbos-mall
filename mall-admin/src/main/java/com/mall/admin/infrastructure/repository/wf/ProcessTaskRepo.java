@@ -1,10 +1,10 @@
-package com.mall.admin.infrastructure.repository.sm;
+package com.mall.admin.infrastructure.repository.wf;
 
 import com.mall.common.page.PageParam;
 import com.mall.common.page.Paging;
-import com.mall.admin.domain.entity.sm.ProcessTask;
-import com.mall.admin.domain.entity.sm.TaskStep;
-import com.mall.admin.infrastructure.repository.sm.mapper.ProcessTaskMapper;
+import com.mall.admin.domain.entity.wf.ProcessTask;
+import com.mall.admin.domain.entity.wf.TaskStep;
+import com.mall.admin.infrastructure.repository.wf.mapper.ProcessTaskMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +28,13 @@ public class ProcessTaskRepo {
     public List<ProcessTask>  getUserTaskProcessedList(PageParam pageParam,Map<String, Object> parameterObject){
         return processTaskMapper.getUserTaskProcessedList(parameterObject);
     }
-    public List<TaskStep> getUserTaskStepList(Map<String,Object> parameterObject){
-        return processTaskMapper.getUserTaskStepList(parameterObject);
+    @Paging
+    public List<ProcessTask> getProcessTaskDetailList(PageParam pageParam,Map<String,Object> parameterObject){
+        return processTaskMapper.getProcessTaskDetailList(parameterObject);
+    }
+
+    public List<TaskStep> getProcessTaskStepList(Map<String,Object> parameterObject){
+        return processTaskMapper.getProcessTaskStepList(parameterObject);
     }
     public List<Map> getInstanceTaskProcessedAssigneeList(Map<String,Object> parameterObject){
         return processTaskMapper.getInstanceTaskProcessedAssigneeList(parameterObject);

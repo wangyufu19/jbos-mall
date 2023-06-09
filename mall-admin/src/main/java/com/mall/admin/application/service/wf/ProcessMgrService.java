@@ -1,7 +1,7 @@
 package com.mall.admin.application.service.wf;
 
-import com.mall.admin.domain.entity.sm.ProcessInst;
-import com.mall.admin.infrastructure.repository.sm.ProcessInstRepo;
+import com.mall.admin.domain.entity.wf.ProcessInst;
+import com.mall.admin.infrastructure.repository.wf.ProcessInstRepo;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;

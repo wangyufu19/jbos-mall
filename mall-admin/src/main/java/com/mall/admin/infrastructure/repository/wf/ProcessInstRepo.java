@@ -1,7 +1,7 @@
-package com.mall.admin.infrastructure.repository.sm;
+package com.mall.admin.infrastructure.repository.wf;
 
-import com.mall.admin.domain.entity.sm.ProcessInst;
-import com.mall.admin.infrastructure.repository.sm.mapper.ProcessInstMapper;
+import com.mall.admin.domain.entity.wf.ProcessInst;
+import com.mall.admin.infrastructure.repository.wf.mapper.ProcessInstMapper;
 import com.mall.common.page.PageParam;
 import com.mall.common.page.Paging;
 import org.springframework.beans.factory.annotation.Autowired;

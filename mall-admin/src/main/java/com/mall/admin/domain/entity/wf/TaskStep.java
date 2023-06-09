@@ -1,4 +1,4 @@
-package com.mall.admin.domain.entity.sm;
+package com.mall.admin.domain.entity.wf;
 
 import lombok.Getter;
 import lombok.Setter;
