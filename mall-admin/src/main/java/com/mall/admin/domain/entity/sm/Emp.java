@@ -9,6 +9,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class Emp extends BaseEntity implements Serializable{
+    private String userId;
     private String badge;
     private String empName;
     private String orgId;

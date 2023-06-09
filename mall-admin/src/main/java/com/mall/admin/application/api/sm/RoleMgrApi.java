@@ -246,4 +246,23 @@ public class RoleMgrApi {
         }
         return res;
     }
+    /**
+     * 删除角色用户
+     *
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteRoleUser", method = RequestMethod.POST)
+    @ApiOperation("删除角色用户")
+    public ResponseResult deleteRoleUser(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            roleMgrService.deleteRoleUser(params);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
 }

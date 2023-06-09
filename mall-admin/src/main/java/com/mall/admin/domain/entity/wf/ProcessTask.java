@@ -32,6 +32,7 @@ public class ProcessTask extends BaseEntity implements Serializable {
     private String taskDefKey;
     private String taskName;
     private String assignee;
+    private String assigneeName;
     private String assigneeDepId;
     private String routeUrl;
     private String taskState;

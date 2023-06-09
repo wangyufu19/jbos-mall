@@ -65,7 +65,7 @@
     </insert>
     <!--查询角色用户列表-->
     <select id="getRoleEmpList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.Emp">
-        SELECT T.ID,T.BADGE,T.EMPNAME,T.ORGID,
+        SELECT T.ID,T1.USERID,T.BADGE,T.EMPNAME,T.ORGID,
         (SELECT B.ORGNAME FROM JBOS_ORG B WHERE B.ID=T.ORGID) AS ORGNAME,
         T.DEPID,
         (SELECT B.DEPNAME FROM JBOS_DEP B WHERE B.ID=T.DEPID) AS DEPNAME,
@@ -86,7 +86,7 @@
     </select>
     <!--查询选择角色用户列表-->
     <select id="getSelectRoleEmpList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.sm.Emp">
-        SELECT T.ID,T.BADGE,T.EMPNAME,T.ORGID,
+        SELECT T.ID,T2.ID USERID,T.BADGE,T.EMPNAME,T.ORGID,
         (SELECT B.ORGNAME FROM JBOS_ORG B WHERE B.ID=T.ORGID) AS ORGNAME,
         T.DEPID,
         (SELECT B.DEPNAME FROM JBOS_DEP B WHERE B.ID=T.DEPID) AS DEPNAME,
@@ -96,6 +96,7 @@
         T.EMPSTATUS,
         (SELECT B.DICTNAME FROM JBOS_DICT_CODE B WHERE B.TYPEID='JBOS_EMP_STATUS' AND B.DICTID=T.EMPSTATUS) AS EMPSTATUSNAME
         FROM JBOS_EMP T
+        LEFT JOIN JBOS_USER T2 ON T.BADGE=T2.USERNAME
         WHERE T.ISVALID =1 AND T.ID NOT IN (
         SELECT T1.ID
         FROM JBOS_EMP T1 INNER JOIN JBOS_USER_ROLE T2 ON T1.ID=T2.USERID
@@ -122,5 +123,9 @@
         <foreach collection="list" item="userRole" separator =",">
             (#{userRole.userId}, #{userRole.roleId})
         </foreach>
+    </insert>
+    <!--删除角色用户-->
+    <insert id="deleteRoleUser" parameterType="java.util.Map">
+        DELETE FROM JBOS_USER_ROLE WHERE ROLEID=#{roleId} AND USERID=#{userId}
     </insert>
 </mapper>

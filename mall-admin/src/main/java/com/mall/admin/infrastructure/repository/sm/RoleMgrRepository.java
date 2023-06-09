@@ -146,4 +146,11 @@ public class RoleMgrRepository {
             roleMapper.insertRoleUser(userRoleList);
         }
     }
+    /**
+     * 删除角色用户
+     * @param parameterObject
+     */
+    public void deleteRoleUser(Map<String, Object> parameterObject){
+        roleMapper.deleteRoleUser(parameterObject);
+    }
 }

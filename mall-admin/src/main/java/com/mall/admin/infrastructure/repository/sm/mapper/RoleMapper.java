@@ -79,4 +79,11 @@ public interface RoleMapper {
      * @param roleUsers
      */
     public void insertRoleUser(List<UserRole> roleUsers);
+
+    /**
+     * 删除角色用户
+     * @param parameterObject
+     */
+    public void deleteRoleUser(Map<String, Object> parameterObject);
+
 }

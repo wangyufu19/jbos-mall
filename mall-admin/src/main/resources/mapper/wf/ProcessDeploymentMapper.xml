@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.wf.mapper.ProcessDeploymentMapper">
+    <!--查询流程部署数据-->
+    <select id="getProcessDeploymentList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.wf.ProcessDeployment">
+        SELECT * FROM (
+            SELECT
+                T.ID,
+                T.PROCNAME,
+                T.PROCKEY,
+                T.VERSION,
+                T.DEPLOYTIME,
+                T.RESOURCE,
+                T.CREATEUSERID
+            FROM WF_PROCESS_DEPLOYMENT T
+            WHERE T.ISVALID=1
+        ) T1
+        ORDER BY T1.DEPLOYTIME
+    </select>
+    <!--新增流程部署数据-->
+    <insert id="addProcessDeployment" parameterType="com.mall.admin.domain.entity.wf.ProcessDeployment">
+    </insert>
+</mapper>

@@ -20,8 +20,8 @@
                 t.ASSIGNEE,
                 T1.ROUTEURL,
                 '处理中' TASKSTATE
-            FROM JBOS_PROCESS_TASK t
-            LEFT JOIN JBOS_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
+            FROM WF_PROCESS_TASK t
+            LEFT JOIN WF_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
             WHERE t.ASSIGNEE=#{userId} and t.TASKSTATE='20'
 
             <if test="bizNoS != null and bizNoS != ''">
@@ -53,8 +53,8 @@
                 t.ASSIGNEE,
                 T1.ROUTEURL,
                 '已处理' TASKSTATE
-            FROM JBOS_PROCESS_TASK t
-            LEFT JOIN JBOS_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
+            FROM WF_PROCESS_TASK t
+            LEFT JOIN WF_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
             WHERE t.ASSIGNEE=#{userId} and t.TASKSTATE IN ('90','99')
             <if test="bizNoS != null and bizNoS != ''">
                 AND T1.BIZNO LIKE '%${bizNoS}%'
@@ -75,9 +75,11 @@
             t.TASKDEFKEY,
             t.STARTTIME,
             t.ENDTIME,
-            (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,') ')FROM JBOS_EMP emp WHERE emp.BADGE=t.ASSIGNEE  limit 1) EMPNAME,
-            t.TASKSTATE
-        FROM JBOS_PROCESS_TASK t
+            (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,') ')FROM JBOS_EMP emp WHERE emp.BADGE=t.ASSIGNEE  limit 1) ASSIGNEENAME,
+            t.TASKSTATE,
+            t.OPINION,
+            t.OPINIONDESC
+        FROM WF_PROCESS_TASK t
         WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
         ORDER BY t.STARTTIME
     </select>
@@ -97,7 +99,7 @@
             WHEN t.TASKSTATE='90' || t.TASKSTATE='99' THEN 'success'
             ELSE 'process'
             END status
-        FROM JBOS_PROCESS_TASK t
+        FROM WF_PROCESS_TASK t
         WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
         ORDER BY t.STARTTIME
     </select>
@@ -113,8 +115,8 @@
             t.STARTTIME,
             t.ENDTIME,
             t.ASSIGNEE
-        FROM JBOS_PROCESS_TASK t
-        LEFT JOIN JBOS_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
+        FROM WF_PROCESS_TASK t
+        LEFT JOIN WF_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
         WHERE t.TASKDEFKEY=#{currentTaskDefKey} AND t.ASSIGNEE!=#{userId} AND t.TASKSTATE NOT IN ('90','99')
     </select>
     <!--查询流程任务的领取人-->
@@ -135,7 +137,7 @@
     </select>
     <!--新增流程任务数据-->
     <insert id="addProcessTask" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
-        INSERT JBOS_PROCESS_TASK(
+        INSERT WF_PROCESS_TASK(
             ID,
             PROCINSTID,
             TASKDEFKEY,
@@ -155,7 +157,7 @@
     </insert>
     <!--更新流程任务审批意见-->
     <update id="updateProcessTaskOpinion" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
-        UPDATE JBOS_PROCESS_TASK
+        UPDATE WF_PROCESS_TASK
         SET TASKID=#{taskId},OPINION=#{opinion},OPINIONDESC=#{opinionDesc},ENDTIME=#{endTime},TASKSTATE=#{taskState}
         WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
     </update>
@@ -163,7 +165,7 @@
     <!--更新流程任务撤回后未审批的任务状态为NONE-->
     <update id="updateDrawbackPostProcessTask" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
         <![CDATA[
-        UPDATE JBOS_PROCESS_TASK
+        UPDATE WF_PROCESS_TASK
         SET ENDTIME=#{endTime},TASKSTATE='10'
         WHERE PROCINSTID=#{procInstId} AND TASKSTATE='20' AND STARTTIME<#{startTime}
         ]]>
@@ -171,14 +173,14 @@
     <!--更新流程节点处理后未审批的所有任务状态为NONE(除当前用户任务)-->
     <update id="updateHandlePostProcessTask" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
         <![CDATA[
-        UPDATE JBOS_PROCESS_TASK
+        UPDATE WF_PROCESS_TASK
         SET ENDTIME=#{endTime},TASKSTATE='10'
         WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE!=#{assignee} AND TASKSTATE='20'
         ]]>
     </update>
     <!--更新流程任务审批状态-->
     <update id="updateProcessTaskState" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
-        UPDATE JBOS_PROCESS_TASK
+        UPDATE WF_PROCESS_TASK
         SET TASKSTATE=#{taskState},ENDTIME=#{endTime}
         WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
     </update>

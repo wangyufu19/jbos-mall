@@ -100,4 +100,11 @@ public class RoleMgrService {
     public void addRoleUser(Map<String, Object> parameterObject){
         roleMgrRepository.addRoleUser(parameterObject);
     }
+    /**
+     * 删除角色用户
+     * @param parameterObject
+     */
+    public void deleteRoleUser(Map<String, Object> parameterObject){
+        roleMgrRepository.deleteRoleUser(parameterObject);
+    }
 }

@@ -17,7 +17,7 @@
                 T.STARTTIME,
                 T.ENDTIME,
                 T.PROCSTATE
-            FROM JBOS_PROCESS_INST T
+            FROM WF_PROCESS_INST T
             WHERE T.ISVALID=1
             <if test="userId != null and userId != ''">
                 AND T.USERID=#{userId}
@@ -33,7 +33,7 @@
     </select>
     <!--新增流程实例数据-->
     <insert id="addProcessInst" parameterType="com.mall.admin.domain.entity.wf.ProcessInst">
-        INSERT JBOS_PROCESS_INST(
+        INSERT WF_PROCESS_INST(
             ID,
             PROCINSTID,
             PROCDEFID,
@@ -65,7 +65,7 @@
     </insert>
     <!--更新流程状态-->
     <update id="updateProcState" parameterType="com.mall.admin.domain.entity.wf.ProcessInst">
-        UPDATE JBOS_PROCESS_INST
+        UPDATE WF_PROCESS_INST
         SET PROCSTATE=#{procState},ENDTIME=#{endTime}
         WHERE PROCINSTID=#{procInstId}
     </update>
