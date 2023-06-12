@@ -4,6 +4,7 @@ import com.mall.workflow.common.exception.CamundaException;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.util.StringUtil;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,6 +88,25 @@ public class ProcessInstanceService {
         return "active";
     }
 
+    /**
+     * 查询流程实例当前活动
+     * @param processInstanceId
+     * @return
+     */
+    public String getProcessInstanceCurrentActivityId(String processInstanceId){
+        List<HistoricActivityInstance> historicActivityInstances = historyService
+                .createHistoricActivityInstanceQuery()
+                .processInstanceId(processInstanceId)
+                .activityType("userTask")
+                .orderByHistoricActivityInstanceStartTime()
+                .desc()
+                .list();
+        HistoricActivityInstance historicActivityInstance = historicActivityInstances.get(0);
+        if(historicActivityInstance!=null){
+            return historicActivityInstance.getActivityId();
+        }
+        return null;
+    }
     /**
      * 暂停流程
      * @param processInstanceId

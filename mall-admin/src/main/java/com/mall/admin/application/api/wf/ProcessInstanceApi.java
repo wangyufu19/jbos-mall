@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,6 +46,24 @@ public class ProcessInstanceApi {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @GetMapping(value = "/getProcessInstanceCurrentActivityId")
+    @ApiOperation("查询流程实例当前活动")
+    public ResponseResult getProcessInstanceCurrentActivityId(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
+        try{
+            res=processInstanceService.getProcessInstanceCurrentActivityId(params);
+            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+                Map<String, Object> data=(Map<String,Object>)res.getData();
+                res.setData(data);
+            }
+
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
         }
         return res;
     }

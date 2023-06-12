@@ -2,8 +2,10 @@ package com.mall.admin.application.service.external.camunda;
 
 import com.mall.common.response.ResponseResult;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
@@ -22,9 +24,15 @@ public class ProcessInstanceServiceFallback implements ProcessInstanceService{
         return ResponseResult.error();
     }
 
-    public ResponseResult getProcessInstanceState(@RequestBody Map<String, Object> params){
+    public ResponseResult getProcessInstanceState(@RequestParam Map<String, Object> params){
         return ResponseResult.error();
     }
+
+    public ResponseResult getProcessInstanceCurrentActivityId(@RequestParam Map<String, Object> params){
+        return ResponseResult.error();
+    }
+
+
     public ResponseResult suspendProcessInstanceById(@RequestBody Map<String, Object> params){
         return ResponseResult.error();
     }

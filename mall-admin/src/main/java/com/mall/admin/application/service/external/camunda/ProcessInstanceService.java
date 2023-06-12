@@ -5,9 +5,7 @@ import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -40,8 +38,16 @@ public interface ProcessInstanceService {
      * @param params
      * @return
      */
-    @PostMapping(value = "/process/getProcessInstanceState")
-    public ResponseResult getProcessInstanceState(@RequestBody Map<String, Object> params);
+    @GetMapping(value = "/process/getProcessInstanceState")
+    public ResponseResult getProcessInstanceState(@RequestParam Map<String, Object> params);
+
+    /**
+     * 查询流程实例当前活动
+     * @param params
+     * @return
+     */
+    @GetMapping(value = "/process/getProcessInstanceCurrentActivityId")
+    public ResponseResult getProcessInstanceCurrentActivityId(@RequestParam Map<String, Object> params);
 
     @PostMapping("/process/suspendProcessInstanceById")
     public ResponseResult suspendProcessInstanceById(@RequestBody Map<String, Object> params);

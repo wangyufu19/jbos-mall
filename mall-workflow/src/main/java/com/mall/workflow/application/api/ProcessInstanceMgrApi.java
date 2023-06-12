@@ -92,15 +92,32 @@ public class ProcessInstanceMgrApi {
         return res;
     }
     @ResponseBody
-    @PostMapping(value = "/getProcessInstanceState")
+    @GetMapping(value = "/getProcessInstanceState")
     @ApiOperation("查询流程实例状态")
-    public ResponseResult getProcessInstanceState(@RequestBody Map<String, Object> params){
+    public ResponseResult getProcessInstanceState(@RequestParam Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
         String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
         try{
             String processInstanceState=processInstanceService.getProcessInstanceState(processInstanceId);
             Map<String,Object> data=new HashMap<String,Object>();
             data.put("processInstanceState",processInstanceState);
+            res.setData(data);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        }
+        return res;
+    }
+    @ResponseBody
+    @GetMapping(value = "/getProcessInstanceCurrentActivityId")
+    @ApiOperation("查询流程实例当前活动")
+    public ResponseResult getProcessInstanceCurrentActivityId(@RequestParam Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
+        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        try{
+            String currentActivityId=processInstanceService.getProcessInstanceCurrentActivityId(processInstanceId);
+            Map<String,Object> data=new HashMap<String,Object>();
+            data.put("currentActivityId",currentActivityId);
             res.setData(data);
         }catch (Exception e){
             log.error(e.getMessage(),e);
