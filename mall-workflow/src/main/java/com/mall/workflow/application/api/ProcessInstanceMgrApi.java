@@ -51,8 +51,8 @@ public class ProcessInstanceMgrApi {
             log.info("============启动流程实例[" +
                     "userId="+userId+";" +
                     "processDefinitionKey="+processDefinitionKey+";" +
-                    "businessKey="+businessKey+
-                    "processDefinitionId="+processDefinitionId+
+                    "businessKey="+businessKey+";" +
+                    "processDefinitionId="+processDefinitionId+";" +
                     "processInstanceId="+processInstanceId+
                     "]");
         }
@@ -84,8 +84,8 @@ public class ProcessInstanceMgrApi {
             log.info("============启动和完成流程实例[" +
                     "userId="+userId+";" +
                     "processDefinitionKey="+processDefinitionKey+";" +
-                    "businessKey="+businessKey+
-                    "processDefinitionId="+processDefinitionId+
+                    "businessKey="+businessKey+";" +
+                    "processDefinitionId="+processDefinitionId+";" +
                     "processInstanceId="+processInstanceId+
                     "]");
         }

@@ -1,17 +1,16 @@
 package com.mall.workflow.application.service;
 
-import org.apache.commons.io.FileUtils;
 import org.camunda.bpm.engine.RepositoryService;
-import org.camunda.bpm.engine.repository.Deployment;
+import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
+import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ProcessDeploymentService
@@ -36,18 +35,46 @@ public class ProcessDeploymentService {
         }
     }
 
-    public Deployment deploy(MultipartFile file) throws IOException {
-        File dest;
-        try {
-            ClassPathResource deploymentResource = new ClassPathResource("processes");
-            String destPath=deploymentResource.getFile().getPath();
-            dest=new File(destPath,file.getOriginalFilename());
-            FileUtils.writeByteArrayToFile(dest,file.getBytes());
-        } catch (IOException e) {
-            throw e;
-        }
-        return repositoryService.createDeployment()
-                .addInputStream(file.getOriginalFilename(),new FileInputStream(dest))
+    /**
+     * 部署流程
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public Map<String,Object> deploy(MultipartFile file) throws IOException {
+        Map<String,Object> data=new HashMap<String,Object>();
+        List<ProcessDefinitionEntity> processDefinitionEntityList = null;
+
+        DeploymentEntity deploymentEntity= (DeploymentEntity)repositoryService.createDeployment()
+                .addInputStream(file.getOriginalFilename(),file.getInputStream())
                 .deploy();
+        Map<Class<?>, List> artifacts=deploymentEntity.getDeployedArtifacts();
+        if(!ObjectUtils.isEmpty(artifacts)){
+            for(Map.Entry<Class<?>, List> artifact:artifacts.entrySet()){
+                processDefinitionEntityList=artifact.getValue();
+                break;
+            }
+        }
+        if(!ObjectUtils.isEmpty(processDefinitionEntityList)&&processDefinitionEntityList.size()>0){
+            for(ProcessDefinitionEntity processDefinitionEntity:processDefinitionEntityList){
+                data.put("id",processDefinitionEntity.getId());
+                data.put("deploymentId",processDefinitionEntity.getDeploymentId());
+                data.put("key",processDefinitionEntity.getKey());
+                data.put("name",processDefinitionEntity.getName());
+                data.put("source",processDefinitionEntity.getResourceName());
+                data.put("version",processDefinitionEntity.getVersion());
+                break;
+            }
+        }
+        return data;
+    }
+
+    /**
+     * 删除流程
+     * @param id
+     * @param cascade
+     */
+    public void deleteDeployment(String id,boolean cascade){
+        repositoryService.deleteDeployment(id,cascade);
     }
 }

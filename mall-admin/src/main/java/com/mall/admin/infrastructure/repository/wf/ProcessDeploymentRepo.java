@@ -1,4 +1,6 @@
 package com.mall.admin.infrastructure.repository.wf;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mall.admin.domain.entity.wf.ProcessDeployment;
 import com.mall.admin.infrastructure.repository.wf.mapper.ProcessDeploymentMapper;
 import com.mall.common.page.PageParam;
@@ -15,7 +17,7 @@ import java.util.Map;
  * @date 2023/4/6
  **/
 @Component
-public class ProcessDeploymentRepo {
+public class ProcessDeploymentRepo extends ServiceImpl<ProcessDeploymentMapper, ProcessDeployment> {
     @Autowired
     private ProcessDeploymentMapper processDeploymentMapper;
     @Paging
@@ -23,11 +25,4 @@ public class ProcessDeploymentRepo {
         return processDeploymentMapper.getProcessDeploymentList(parameterObject);
     }
 
-    public void addProcessDeployment(ProcessDeployment processDeployment){
-        processDeploymentMapper.addProcessDeployment(processDeployment);
-    }
-
-    public void deleteProcessDeployment(ProcessDeployment processDeployment){
-        processDeploymentMapper.deleteProcessDeployment(processDeployment);
-    }
 }

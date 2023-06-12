@@ -9879,13 +9879,13 @@ Shadow=0</a:DisplayPreferences>
 </o:Table>
 <o:Table Id="o432">
 <a:ObjectID>303A4DD5-EB84-4F21-A932-FAC53ED5BD9F</a:ObjectID>
-<a:Name>流程定义表</a:Name>
-<a:Code>WF_PROCESS_DEF</a:Code>
+<a:Name>流程部署表</a:Name>
+<a:Code>WF_PROCESS_DEPLOYMENT</a:Code>
 <a:CreationDate>1686291182</a:CreationDate>
 <a:Creator>wangy</a:Creator>
-<a:ModificationDate>1686291399</a:ModificationDate>
+<a:ModificationDate>1686292621</a:ModificationDate>
 <a:Modifier>wangy</a:Modifier>
-<a:Comment>流程定义表</a:Comment>
+<a:Comment>流程部署表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
 <o:Column Id="o433">

@@ -1,3 +1,7 @@
+delete from act_re_deployment;
+delete from act_re_procdef;
+delete from act_ge_bytearray;
+delete from act_hi_identitylink;
 delete from act_hi_procinst;
 delete from act_hi_actinst;
 delete from act_hi_detail;

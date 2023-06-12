@@ -3,7 +3,7 @@ spring:
     filter:
       loginUri: /**/login
       logoutUri: /**/logout
-      excludeUri: /**/captcha,/**/demo/**,/**/swagger-ui.html,/**/webjars/**,/**/swagger-resources/**
+      excludeUri: /**/captcha,/**/demo/**,/**/swagger-ui.html,/**/webjars/**,/**/swagger-resources/**,/**/engine-rest/**
 
   jwt:
     secret: 123456  #密钥
@@ -110,7 +110,7 @@ zuul:
       path: /api/business/**
       serviceId: mall-business
   filter:
-    excludeUri: /**/login,/**/logout,/**/captcha,/**/registry,/**/error/,/**/swagger-ui.html,/**/webjars/**,/**/swagger-resources/**
+    excludeUri: /**/login,/**/logout,/**/captcha,/**/registry,/**/error/,/**/swagger-ui.html,/**/webjars/**,/**/swagger-resources/**,/**/engine-rest/**
 
 ribbon:
   http:

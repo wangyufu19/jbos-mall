@@ -37,9 +37,6 @@
     <bpmn:userTask id="depManager" name="部门经理" camunda:assignee="${depManager}">
       <bpmn:incoming>Flow_1i1b6h6</bpmn:incoming>
       <bpmn:outgoing>Flow_028kqcb</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics camunda:collection="depManagerList" camunda:elementVariable="depManager">
-        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${nrOfCompletedInstances==1}</bpmn:completionCondition>
-      </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:userTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">

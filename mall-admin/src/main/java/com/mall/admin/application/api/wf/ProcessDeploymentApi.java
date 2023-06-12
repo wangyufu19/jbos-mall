@@ -5,6 +5,7 @@ import com.mall.admin.application.service.wf.ProcessDeploymentService;
 import com.mall.admin.domain.entity.wf.ProcessDeployment;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
+import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -56,8 +57,17 @@ public class ProcessDeploymentApi {
         try {
             res = deploymentService.deploy(file,params);
             if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
-                ProcessDeployment processDeployment=new ProcessDeployment();
-                processDeploymentService.deployProcess(processDeployment);
+                Map<String,Object> deploymentMap=(Map<String,Object>)res.getData();
+                if(deploymentMap!=null){
+                    ProcessDeployment processDeployment=new ProcessDeployment();
+                    processDeployment.setId(StringUtils.replaceNull(deploymentMap.get("id")));
+                    processDeployment.setDeploymentId(StringUtils.replaceNull(deploymentMap.get("deploymentId")));
+                    processDeployment.setProcKey(StringUtils.replaceNull(deploymentMap.get("key")));
+                    processDeployment.setProcName(StringUtils.replaceNull(deploymentMap.get("name")));
+                    processDeployment.setResource(StringUtils.replaceNull(deploymentMap.get("source")));
+                    processDeployment.setVersion(StringUtils.replaceNull(deploymentMap.get("version")));
+                    processDeploymentService.deployProcessDeployment(processDeployment);
+                }
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -71,8 +81,13 @@ public class ProcessDeploymentApi {
     @ApiOperation("下架流程")
     public ResponseResult unDeploy(@RequestBody Map<String, Object> params){
         ResponseResult res = ResponseResult.ok();
+        String id=StringUtils.replaceNull(params.get("id"));
         try {
-
+            params.put("cascade","true");
+            res=deploymentService.unDeploy(params);
+            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
+                processDeploymentService.deployProcessDeployment(id);
+            }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
