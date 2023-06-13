@@ -94,6 +94,10 @@ public class ProcessInstanceService {
      * @return
      */
     public String getProcessInstanceCurrentActivityId(String processInstanceId){
+        String processInstanceState=this.getProcessInstanceState(processInstanceId);
+        if("isEnded".equals(processInstanceState)){
+            return "";
+        }
         List<HistoricActivityInstance> historicActivityInstances = historyService
                 .createHistoricActivityInstanceQuery()
                 .processInstanceId(processInstanceId)
