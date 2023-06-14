@@ -127,7 +127,7 @@ public class ProcessInstanceMgrApi {
     }
     @ResponseBody
     @PostMapping("/suspendProcessInstanceById")
-    @ApiOperation("暂停流程")
+    @ApiOperation("暂停流程实例")
     public ResponseResult suspendProcessInstanceById(@RequestBody Map<String, Object> params){
         ResponseResult res = ResponseResult.ok();
         try {
@@ -142,12 +142,26 @@ public class ProcessInstanceMgrApi {
 
     @ResponseBody
     @PostMapping("/activateProcessInstanceById")
-    @ApiOperation("激活流程")
+    @ApiOperation("激活流程实例")
     public ResponseResult activateProcessInstanceById(@RequestBody Map<String, Object> params){
         ResponseResult res = ResponseResult.ok();
         try {
             String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
             processInstanceService.activateProcessInstanceById(processInstanceId);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping("/deleteProcessInstance")
+    @ApiOperation("删除流程实例")
+    public ResponseResult deleteProcessInstance(@RequestBody Map<String, Object> params){
+        ResponseResult res = ResponseResult.ok();
+        try {
+            String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+            processInstanceService.deleteProcessInstance(processInstanceId,"作废流程实例");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

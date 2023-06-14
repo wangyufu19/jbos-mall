@@ -2,8 +2,6 @@ package com.mall.admin.application.service.external.camunda;
 
 import com.mall.common.response.ResponseResult;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,6 +36,10 @@ public class ProcessInstanceServiceFallback implements ProcessInstanceService{
     }
 
     public ResponseResult activateProcessInstanceById(@RequestBody Map<String, Object> params){
+        return ResponseResult.error();
+    }
+
+    public ResponseResult deleteProcessInstance(@RequestBody Map<String, Object> params){
         return ResponseResult.error();
     }
 }

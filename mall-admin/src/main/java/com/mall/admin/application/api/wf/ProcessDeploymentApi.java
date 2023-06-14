@@ -94,4 +94,17 @@ public class ProcessDeploymentApi {
         }
         return res;
     }
+    @ResponseBody
+    @GetMapping(value = "/getProcessDefinitionList")
+    @ApiOperation("得到流程定义任务")
+    public ResponseResult getProcessDefinitionList(@RequestParam Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try{
+            res=deploymentService.getProcessDefinitionList(params);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        }
+        return res;
+    }
 }

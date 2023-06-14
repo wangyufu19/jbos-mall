@@ -3,11 +3,13 @@ package com.mall.workflow.application.service;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.camunda.bpm.engine.impl.task.TaskDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,4 +79,25 @@ public class ProcessDeploymentService {
     public void deleteDeployment(String id,boolean cascade){
         repositoryService.deleteDeployment(id,cascade);
     }
+
+    /**
+     * 得到流程定义任务
+     * @param processDefinitionId
+     * @return
+     */
+    public List<Map<String, String>> getProcessDefinitionList(String processDefinitionId){
+        List<Map<String, String>> taskDefList=new ArrayList<>();
+        ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)repositoryService.getProcessDefinition(processDefinitionId);
+        Map<String, TaskDefinition> taskDefs=processDefinition.getTaskDefinitions();
+        for(Map.Entry<String,TaskDefinition> taskDefinition:taskDefs.entrySet()){
+            Map<String, String> taskDef=new HashMap<>();
+            taskDef.put("activityId",taskDefinition.getKey());
+            taskDef.put("activityName",taskDefinition.getValue().getNameExpression().getExpressionText());
+            taskDefList.add(taskDef);
+        }
+        return taskDefList;
+    }
+
+
+
 }

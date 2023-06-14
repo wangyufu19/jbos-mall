@@ -2,10 +2,10 @@ package com.mall.workflow.application.service;
 
 import com.mall.workflow.common.exception.CamundaException;
 import org.camunda.bpm.engine.HistoryService;
+import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.engine.impl.util.StringUtil;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,8 @@ public class ProcessInstanceService {
     private TaskService taskService;
     @Autowired
     private IdentityMgrService identityMgrService;
+    @Autowired
+    private RepositoryService repositoryService;
     /**
      * 启动流程实例
      * @param processDefinitionKey
@@ -94,25 +96,23 @@ public class ProcessInstanceService {
      * @return
      */
     public String getProcessInstanceCurrentActivityId(String processInstanceId){
-        String processInstanceState=this.getProcessInstanceState(processInstanceId);
-        if("isEnded".equals(processInstanceState)){
-            return "";
-        }
         List<HistoricActivityInstance> historicActivityInstances = historyService
                 .createHistoricActivityInstanceQuery()
                 .processInstanceId(processInstanceId)
-                .activityType("userTask")
                 .orderByHistoricActivityInstanceStartTime()
                 .desc()
                 .list();
-        HistoricActivityInstance historicActivityInstance = historicActivityInstances.get(0);
-        if(historicActivityInstance!=null){
-            return historicActivityInstance.getActivityId();
+
+        for(HistoricActivityInstance historicActivityInstance:historicActivityInstances){
+            if("userTask".equals(historicActivityInstance.getActivityType())
+                    ||"noneEndEvent".equals(historicActivityInstance.getActivityType())){
+                return historicActivityInstance.getActivityId();
+            }
         }
         return null;
     }
     /**
-     * 暂停流程
+     * 暂停流程实例
      * @param processInstanceId
      */
     public void suspendProcessInstanceById(String processInstanceId){
@@ -120,10 +120,20 @@ public class ProcessInstanceService {
     }
 
     /**
-     * 激活流程
+     * 激活流程实例
      * @param processInstanceId
      */
     public void activateProcessInstanceById(String processInstanceId){
         runtimeService.activateProcessInstanceById(processInstanceId);
     }
+
+    /**
+     * 删除流程实例
+     * @param processInstanceId
+     * @param deleteReason
+     */
+    public void deleteProcessInstance(String processInstanceId, String deleteReason){
+        runtimeService.deleteProcessInstance(processInstanceId,deleteReason);
+    }
+
 }

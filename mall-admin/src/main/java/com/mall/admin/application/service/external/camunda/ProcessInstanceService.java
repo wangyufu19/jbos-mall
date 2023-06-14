@@ -55,4 +55,7 @@ public interface ProcessInstanceService {
 
     @PostMapping("/process/activateProcessInstanceById")
     public ResponseResult activateProcessInstanceById(@RequestBody Map<String, Object> params);
+
+    @PostMapping("/process/deleteProcessInstance")
+    public ResponseResult deleteProcessInstance(@RequestBody Map<String, Object> params);
 }

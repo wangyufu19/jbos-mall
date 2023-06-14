@@ -30,6 +30,9 @@ public class IdGeneratorService {
             //首次或用完号段,从数据库中得到最新号码
             if (this.id.getCurrentId() == this.id.getMaxId()+this.id.getStep()) {
                 id=idRepo.getId(bizType);
+                if(id==null){
+                    id=new Id();
+                }
                 id.setBizType(bizType);
                 id.setCurrentId(id.getMaxId()+1);
                 idRepo.updateId(bizType,id.getVersion());

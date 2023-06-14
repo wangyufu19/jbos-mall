@@ -16,11 +16,13 @@ public class ProcessInst extends BaseEntity implements Serializable {
     /**
      * 10：NONE
      * 20：活动中
+     * 90：被作废或删除
      * 90：已结束
-     * 88：已暂停
+     * 99：已暂停
      */
     public static final String PROCESS_STATE_START="NONE";
     public static final String PROCESS_STATE_ACTIVE="20";
+    public static final String PROCESS_STATE_CANCELED="80";
     public static final String PROCESS_STATE_COMPLETED="90";
     public static final String PROCESS_STATE_SUSPENDED="99";
 

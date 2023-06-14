@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 
 /**
@@ -28,8 +29,24 @@ public class ProcessInstanceApi {
     private ProcessInstanceService processInstanceService;
     @Autowired
     private ProcessMgrService processMgrService;
+
+    @ResponseBody
+    @PostMapping(value = "/startProcessInstance")
+    @ApiOperation("启动流程实例")
+    public ResponseResult startProcessInstance(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            res = processMgrService.startProcessInstance(params, null);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
     /**
      * 查询流程实例列表
+     *
      * @param params
      * @return
      */
@@ -40,40 +57,42 @@ public class ProcessInstanceApi {
         ResponseResult res = ResponseResult.ok();
         try {
             PageParam pageParam = PageParam.getPageParam(params);
-            res=processMgrService.getProcessInstList(pageParam,params);
+            res = processMgrService.getProcessInstList(pageParam, params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
+
     @ResponseBody
     @GetMapping(value = "/getProcessInstanceCurrentActivityId")
     @ApiOperation("查询流程实例当前活动")
-    public ResponseResult getProcessInstanceCurrentActivityId(@RequestParam Map<String, Object> params){
-        ResponseResult res= ResponseResult.ok();
-        try{
-            res=processInstanceService.getProcessInstanceCurrentActivityId(params);
-            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-                Map<String, Object> data=(Map<String,Object>)res.getData();
+    public ResponseResult getProcessInstanceCurrentActivityId(@RequestParam Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            res = processInstanceService.getProcessInstanceCurrentActivityId(params);
+            if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+                Map<String, Object> data = (Map<String, Object>) res.getData();
                 res.setData(data);
             }
 
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, e.getMessage());
         }
         return res;
     }
+
     @ResponseBody
     @PostMapping("/suspendProcessInstance")
     @ApiOperation("查询流程实例列表")
-    public ResponseResult suspendProcessInstance(@RequestBody Map<String, Object> params){
+    public ResponseResult suspendProcessInstance(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            res=processInstanceService.suspendProcessInstanceById(params);
-            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
-                String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
+            res = processInstanceService.suspendProcessInstanceById(params);
+            if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+                String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
                 processMgrService.updateProcState(processInstanceId, ProcessInst.PROCESS_STATE_SUSPENDED);
             }
         } catch (Exception e) {
@@ -86,13 +105,31 @@ public class ProcessInstanceApi {
     @ResponseBody
     @PostMapping("/activateProcessInstance")
     @ApiOperation("查询流程实例列表")
-    public ResponseResult activateProcessInstance(@RequestBody Map<String, Object> params){
+    public ResponseResult activateProcessInstance(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            res=processInstanceService.activateProcessInstanceById(params);
-            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
-                String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
+            res = processInstanceService.activateProcessInstanceById(params);
+            if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+                String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
                 processMgrService.updateProcState(processInstanceId, ProcessInst.PROCESS_STATE_ACTIVE);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
+    @ResponseBody
+    @PostMapping("/deleteProcessInstance")
+    @ApiOperation("删除流程实例")
+    public ResponseResult deleteProcessInstance(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            res = processInstanceService.deleteProcessInstance(params);
+            if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+                String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
+                processMgrService.updateProcState(processInstanceId, ProcessInst.PROCESS_STATE_CANCELED);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

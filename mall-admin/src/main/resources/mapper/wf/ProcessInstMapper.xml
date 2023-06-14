@@ -29,7 +29,7 @@
                 AND T.BIZTYPE=#{bizTypeS}
             </if>
         ) T1
-        ORDER BY T1.STARTTIME
+        ORDER BY T1.STARTTIME DESC
     </select>
     <!--新增流程实例数据-->
     <insert id="addProcessInst" parameterType="com.mall.admin.domain.entity.wf.ProcessInst">
