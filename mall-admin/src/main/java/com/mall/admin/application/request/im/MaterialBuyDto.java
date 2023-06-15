@@ -52,7 +52,7 @@ public class MaterialBuyDto {
                 MaterialList material=new MaterialList();
                 material.setId(StringUtils.getUUID());
                 material.setBizId(materialBuy.getId());
-                material.setBizType(ProcessDefConstants.PROC_BIZTYPE_MATERIAL_BUY);
+                material.setBizType(ProcessDefConstants.PROC_DEF_MATERIAL_BUY);
                 material.setMaterialName(StringUtils.replaceNull(materialMap.get("materialName")));
                 material.setAmount(Double.parseDouble(StringUtils.replaceNull(materialMap.get("amount"))));
                 material.setPrice(Double.parseDouble(StringUtils.replaceNull(materialMap.get("price"))));

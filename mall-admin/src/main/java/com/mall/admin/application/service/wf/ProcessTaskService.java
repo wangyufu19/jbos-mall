@@ -1,7 +1,9 @@
 package com.mall.admin.application.service.wf;
 
-import com.mall.admin.application.request.wf.ProcessTaskDto;
+
 import com.mall.admin.application.service.external.camunda.TaskService;
+import com.mall.admin.domain.entity.sm.Role;
+import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.common.base.BaseService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.wf.ProcessTask;
@@ -27,28 +29,61 @@ import java.util.Map;
 @Service
 public class ProcessTaskService extends BaseService {
     @Autowired
+    private ProcessMgrService processMgrService;
+    @Autowired
     private ProcessTaskRepo processTaskRepo;
     @Autowired
     private TaskService taskService;
 
+    /**
+     * 查询用户待办列表
+     * @param pageParam
+     * @param parameterObject
+     * @return
+     */
     public ResponseResult getUserTaskList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<ProcessTask> processTasks = processTaskRepo.getUserTaskList(pageParam, parameterObject);
         return ResponseResult.ok().isPage(true).data(processTasks);
     }
 
+    /**
+     * 查询用户已办列表
+     * @param pageParam
+     * @param parameterObject
+     * @return
+     */
     public ResponseResult getUserTaskProcessedList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<ProcessTask> processTasks = processTaskRepo.getUserTaskProcessedList(pageParam, parameterObject);
         return ResponseResult.ok().isPage(true).data(processTasks);
     }
+
+    /**
+     * 查询流程任务处理明细
+     * @param pageParam
+     * @param parameterObject
+     * @return
+     */
     public ResponseResult getProcessTaskDetailList(PageParam pageParam,Map<String,Object> parameterObject){
         List<ProcessTask> processTasks = processTaskRepo.getProcessTaskDetailList(pageParam,parameterObject);
         return ResponseResult.ok().isPage(true).data(processTasks);
     }
+
+    /**
+     * 查询流程任务处理步骤
+     * @param parameterObject
+     * @return
+     */
     public List<TaskStep> getProcessTaskStepList(Map<String, Object> parameterObject) {
         List<TaskStep> taskSteps = processTaskRepo.getProcessTaskStepList(parameterObject);
         return taskSteps;
     }
 
+    /**
+     * 查询除当前处理用户必须全部已处理才能得到下一个任务的领取人
+     * @param parameterObject
+     * @param multiInstance
+     * @return
+     */
     public String getTaskAssigneeList(Map<String, Object> parameterObject, boolean multiInstance) {
         List<Map> processedAssigneeList;
         String assignees = "";
@@ -72,14 +107,27 @@ public class ProcessTaskService extends BaseService {
         return assignees;
     }
 
+    /**
+     * 新增实例任务
+     * @param processTask
+     */
     public void addProcessTask(ProcessTask processTask) {
         processTaskRepo.addProcessTask(processTask);
     }
 
+    /**
+     * 更新实例任务审批意见
+     * @param processTask
+     */
     public void updateProcessTaskOpinion(ProcessTask processTask) {
         processTaskRepo.updateProcessTaskOpinion(processTask);
     }
 
+    /**
+     * 新增流程实例下一任务领取人
+     * @param processInstanceId
+     * @param variables
+     */
     public void addProcessNexTask(String processInstanceId, Map<String, Object> variables) {
         //新增物品采购流程下一个任务数据
         String nextTaskDefKey = StringUtils.replaceNull(variables.get("nextTaskDefKey"));
@@ -100,15 +148,61 @@ public class ProcessTaskService extends BaseService {
             }
         }
     }
+    /**
+     * 处理审批任务
+     * @param variables
+     * @param processCallback
+     * @return
+     */
+    public ResponseResult handleCompleteTask(ProcessTask processCurrentTask,
+                                             Map<String, Object> variables,
+                                             ProcessCallback processCallback){
+        ResponseResult res;
+        res = taskService.complete(variables);
+        if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+            //得到流程当前执行任务和实例状态(active;isEnd)
+            Map<String, String> data = (Map<String, String>) res.getData();
+            String taskId = StringUtils.replaceNull(data.get("taskId"));
+            String processInstanceState = StringUtils.replaceNull(data.get("processInstanceState"));
+            //更新流程当前任务状态和审批意见
+            processCurrentTask.setTaskId(taskId);
+            processCurrentTask.setTaskState(ProcessTask.PROCESS_STATE_COMPLETED);
+            processCurrentTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+            this.updateProcessTaskOpinion(processCurrentTask);
 
+            //多实例节点更新流程任务处理后未审批的所有任务状态为NONE(除当前用户任务)
+            if (Role.ROLE_DEP_LEADER.equals(processCurrentTask.getTaskDefKey())) {
+                this.updateNoneStatePostHandleTask(processCurrentTask);
+            }
+
+            //判断流程实例是否结束
+            if ("isEnded".equals(processInstanceState)) {
+                //更新回调业务
+                if(processCallback!=null){
+                    processCallback.call(data);
+                }
+                //更新业务流程实例状态
+                processMgrService.updateProcState(processCurrentTask.getProcInstId(),ProcessInst.PROCESS_STATE_COMPLETED);
+            } else {
+                //新增物品采购流程下一个任务数据
+                this.addProcessNexTask(processCurrentTask.getProcInstId(),variables);
+            }
+        }
+        return res;
+    }
+    /**
+     * 处理撤回流程任务
+     * @param processCurrentTask
+     * @return
+     */
     @Transactional
-    public ResponseResult handleDrawbackProcessTask(ProcessTaskDto processTaskDto) {
+    public ResponseResult handleDrawbackProcessTask(ProcessTask processCurrentTask) {
         ResponseResult res;
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", processTaskDto.getAssignee());
-        params.put("processDefinitionId", processTaskDto.getProcDefId());
-        params.put("processInstanceId", processTaskDto.getProcInstId());
-        params.put("taskId", processTaskDto.getTaskId());
+        params.put("userId", processCurrentTask.getAssignee());
+        params.put("processDefinitionId", processCurrentTask.getProcDefId());
+        params.put("processInstanceId", processCurrentTask.getProcInstId());
+        params.put("taskId", processCurrentTask.getTaskId());
         res = taskService.drawback(params);
         if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())
                 && res.getData() != null
@@ -117,10 +211,10 @@ public class ProcessTaskService extends BaseService {
             //新增流程任务数据
             ProcessTask processTask = new ProcessTask();
             processTask.setId(StringUtils.getUUID());
-            processTask.setProcInstId(processTaskDto.getProcInstId());
-            processTask.setTaskDefKey(processTaskDto.getTaskDefKey());
-            processTask.setTaskName(processTaskDto.getTaskName());
-            processTask.setAssignee(processTaskDto.getAssignee());
+            processTask.setProcInstId(processCurrentTask.getProcInstId());
+            processTask.setTaskDefKey(processCurrentTask.getTaskDefKey());
+            processTask.setTaskName(processCurrentTask.getTaskName());
+            processTask.setAssignee(processCurrentTask.getAssignee());
             processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
             processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
             this.addProcessTask(processTask);
@@ -130,20 +224,25 @@ public class ProcessTaskService extends BaseService {
         return res;
     }
 
+    /**
+     * 驳回流程任务
+     * @param processCurrentTask
+     * @return
+     */
     @Transactional
-    public ResponseResult handleRejectProcessTask(ProcessTaskDto processTaskDto) {
+    public ResponseResult handleRejectProcessTask(ProcessTask processCurrentTask) {
         ResponseResult res;
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", processTaskDto.getAssignee());
-        params.put("processDefinitionId", processTaskDto.getProcDefId());
-        params.put("processInstanceId", processTaskDto.getProcInstId());
+        params.put("userId", processCurrentTask.getAssignee());
+        params.put("processDefinitionId", processCurrentTask.getProcDefId());
+        params.put("processInstanceId", processCurrentTask.getProcInstId());
         res = taskService.reject(params);
         if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode()) && res.getData() != null) {
             Map<String, Object> data = (Map<String, Object>) res.getData();
             //新增流程任务数据
             ProcessTask processTask = new ProcessTask();
             processTask.setId(StringUtils.getUUID());
-            processTask.setProcInstId(processTaskDto.getProcInstId());
+            processTask.setProcInstId(processCurrentTask.getProcInstId());
             processTask.setTaskDefKey(StringUtils.replaceNull(data.get("toActivityId")));
             processTask.setTaskName(StringUtils.replaceNull(data.get("toActivityName")));
             processTask.setAssignee(StringUtils.replaceNull(data.get("toAssignee")));
@@ -151,23 +250,21 @@ public class ProcessTaskService extends BaseService {
             processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
             this.addProcessTask(processTask);
             //更新流程驳回任务审批状态数据
-            ProcessTask processCurrentTask = new ProcessTask();
-            processCurrentTask.setProcInstId(processTaskDto.getProcInstId());
             processCurrentTask.setTaskId(StringUtils.replaceNull(data.get("taskId")));
-            processCurrentTask.setTaskDefKey(processTaskDto.getTaskDefKey());
-            processCurrentTask.setAssignee(processTaskDto.getAssignee());
             processCurrentTask.setTaskState(ProcessTask.PROCESS_STATE_REJECT);
-            processCurrentTask.setOpinion(processTaskDto.getOpinion());
-            processCurrentTask.setOpinionDesc(processTaskDto.getOpinionDesc());
             processCurrentTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
             processTaskRepo.updateProcessTaskOpinion(processCurrentTask);
             //更新流程任务驳回后未审批的所有任务状态为NONE(除当前用户任务)
-            processTaskRepo.updateHandlePostProcessTask(processCurrentTask);
+            processTaskRepo.updateNoneStatePostHandleTask(processCurrentTask);
         }
         return res;
     }
 
-    public void updateHandlePostProcessTask(ProcessTask processTask) {
-        processTaskRepo.updateHandlePostProcessTask(processTask);
+    /**
+     * 更新流程节点处理后未审批的所有任务状态为NONE(除当前用户任务)
+     * @param processTask
+     */
+    public void updateNoneStatePostHandleTask(ProcessTask processTask) {
+        processTaskRepo.updateNoneStatePostHandleTask(processTask);
     }
 }

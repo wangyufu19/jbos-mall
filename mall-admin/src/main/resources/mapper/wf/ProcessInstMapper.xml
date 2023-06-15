@@ -9,9 +9,7 @@
                 T.PROCINSTID,
                 T.PROCDEFID,
                 T.BIZNO,
-                CASE
-                WHEN T.BIZTYPE='materialBuy' THEN '物品采购'
-                END BIZTYPE,
+                (SELECT DICTNAME FROM JBOS_DICT_CODE WHERE TYPEID='JBOS_PROC_BIZTYPE' AND DICTID=T.BIZTYPE  LIMIT 1) BIZTYPE,
                 T.USERID,
                 T.BUSINESSKEY,
                 T.STARTTIME,

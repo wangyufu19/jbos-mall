@@ -35,8 +35,9 @@ public class ProcessInstanceApi {
     @ApiOperation("启动流程实例")
     public ResponseResult startProcessInstance(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
+        Map<String, Object> formMap = (Map<String, Object>) params.get("formObj");
         try {
-            res = processMgrService.startProcessInstance(params, null);
+            res = processMgrService.startProcessInstance(formMap, null);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

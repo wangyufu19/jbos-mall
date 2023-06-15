@@ -5,6 +5,7 @@ import com.mall.admin.application.request.wf.ProcessTaskDto;
 import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.application.service.wf.ProcessTaskService;
+import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
@@ -156,10 +157,8 @@ public class MaterialBuyApi {
     @ApiOperation("流转物品采购业务")
     public ResponseResult startTrans(@RequestBody Map<String, Object> params) {
         ResponseResult res;
-        String action = StringUtils.replaceNull(params.get("action"));
-        MaterialBuyDto materialBuyDto = MaterialBuyDto.build(params);
         try {
-            res = materialBuyService.handleMaterialStartProcess(action, materialBuyDto);
+            res = materialBuyService.handleMaterialStartProcess(params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -173,15 +172,7 @@ public class MaterialBuyApi {
     public ResponseResult doTrans(@RequestBody Map<String, Object> params) {
         ResponseResult res;
         try {
-            ProcessTaskDto processTaskDto = ProcessTaskDto.build(params);
-            MaterialBuyDto materialBuyDto = MaterialBuyDto.build(params);
-            //审批驳回
-            if("101".equals(processTaskDto.getOpinion())){
-                res = processTaskService.handleRejectProcessTask(processTaskDto);
-            }else{
-                res = materialBuyService.handleMaterialBuyProcessTask(processTaskDto, materialBuyDto);
-            }
-
+            res=materialBuyService.handleMaterialBuyProcessTask(params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -194,9 +185,9 @@ public class MaterialBuyApi {
     @ApiOperation("撤回流转物品采购业务")
     public ResponseResult doDrawback(@RequestBody Map<String, Object> params) {
         ResponseResult res;
-        ProcessTaskDto processTaskDto = ProcessTaskDto.build(params);
+        ProcessTask processTask = ProcessTaskDto.build(params);
         try {
-            res = processTaskService.handleDrawbackProcessTask(processTaskDto);
+            res = processTaskService.handleDrawbackProcessTask(processTask);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -208,9 +199,9 @@ public class MaterialBuyApi {
     @ApiOperation("驳回流转物品采购业务")
     public ResponseResult doReject(@RequestBody Map<String, Object> params) {
         ResponseResult res;
-        ProcessTaskDto processTaskDto = ProcessTaskDto.build(params);
+        ProcessTask processTask = ProcessTaskDto.build(params);
         try {
-            res = processTaskService.handleRejectProcessTask(processTaskDto);
+            res = processTaskService.handleRejectProcessTask(processTask);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

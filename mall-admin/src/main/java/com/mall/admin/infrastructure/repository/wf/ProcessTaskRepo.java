@@ -52,8 +52,8 @@ public class ProcessTaskRepo {
     public void updateDrawbackPostProcessTask(ProcessTask processTask){
         processTaskMapper.updateDrawbackPostProcessTask(processTask);
     }
-    public void updateHandlePostProcessTask(ProcessTask processTask){
-        processTaskMapper.updateHandlePostProcessTask(processTask);
+    public void updateNoneStatePostHandleTask(ProcessTask processTask){
+        processTaskMapper.updateNoneStatePostHandleTask(processTask);
     }
     public void updateProcessTaskState(ProcessTask processTask){
         processTaskMapper.updateProcessTaskState(processTask);

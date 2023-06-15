@@ -10,9 +10,7 @@
                 t1.PROCDEFID,
                 T1.BIZID,
                 T1.BIZNO,
-                CASE
-                WHEN T1.BIZTYPE='materialBuy' THEN '物品采购'
-                END BIZTYPE,
+                (SELECT DICTNAME FROM JBOS_DICT_CODE WHERE TYPEID='JBOS_PROC_BIZTYPE' AND DICTID=T1.BIZTYPE  LIMIT 1) BIZTYPE,
                 t.TASKID,
                 t.TASKDEFKEY,
                 t.TASKNAME,
@@ -42,9 +40,7 @@
                 t1.PROCDEFID,
                 T1.BIZID,
                 T1.BIZNO,
-                CASE
-                WHEN T1.BIZTYPE='materialBuy' THEN '物品采购'
-                END BIZTYPE,
+                (SELECT DICTNAME FROM JBOS_DICT_CODE WHERE TYPEID='JBOS_PROC_BIZTYPE' AND DICTID=T1.BIZTYPE  LIMIT 1) BIZTYPE,
                 t.TASKID,
                 t.TASKDEFKEY,
                 t.TASKNAME,
@@ -171,7 +167,7 @@
         ]]>
     </update>
     <!--更新流程节点处理后未审批的所有任务状态为NONE(除当前用户任务)-->
-    <update id="updateHandlePostProcessTask" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
+    <update id="updateNoneStatePostHandleTask" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
         <![CDATA[
         UPDATE WF_PROCESS_TASK
         SET ENDTIME=#{endTime},TASKSTATE='10'

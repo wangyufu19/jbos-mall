@@ -16,24 +16,23 @@ import java.util.Map;
 @Data
 public class ProcessInstanceDto {
 
-    public static ProcessInst build(Map<String, Object> params) {
+    public static ProcessInst build(Map<String, Object> variable) {
         String currentTime = DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS);
-        Map<String, Object> formMap = (Map<String, Object>) params.get("formObj");
         ProcessInst processInst = new ProcessInst();
         String id=StringUtils.getUUID();
         processInst.setId(id);
-        processInst.setProcDefId(StringUtils.replaceNull(formMap.get("id")));
-        if(StringUtils.isNUll(formMap.get("bizId"))){
+        processInst.setProcDefId(StringUtils.replaceNull(variable.get("id")));
+        if(StringUtils.isNUll(variable.get("bizId"))){
             processInst.setBizId(id);
         }else{
-            processInst.setBizId(StringUtils.replaceNull(formMap.get("bizId")));
+            processInst.setBizId(StringUtils.replaceNull(variable.get("bizId")));
         }
-        processInst.setBizNo(StringUtils.replaceNull(formMap.get("bizNo")));
-        processInst.setBizType(StringUtils.replaceNull(formMap.get("bizType")));
-        processInst.setBusinessKey(StringUtils.replaceNull(formMap.get("businessKey")));
-        processInst.setRouteUrl(StringUtils.replaceNull(formMap.get("routeUrl")));
+        processInst.setBizNo(StringUtils.replaceNull(variable.get("bizNo")));
+        processInst.setBizType(StringUtils.replaceNull(variable.get("bizType")));
+        processInst.setBusinessKey(StringUtils.replaceNull(variable.get("businessKey")));
+        processInst.setRouteUrl(StringUtils.replaceNull(variable.get("routeUrl")));
         processInst.setStartTime(currentTime);
-        processInst.setCreateUserId(StringUtils.replaceNull(formMap.get("userId")));
+        processInst.setCreateUserId(StringUtils.replaceNull(variable.get("userId")));
         processInst.setCreateTime(currentTime);
         return processInst;
     }

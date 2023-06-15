@@ -8,6 +8,6 @@ package com.mall.admin.application.service.wf;
  **/
 public class ProcessDefConstants {
 
-    public static final String PROC_BIZTYPE_MATERIAL_BUY="materialBuy";
-    public static final String PROC_BIZTYPE_NOPAPTER="NoPaper";
+    public static final String PROC_DEF_MATERIAL_BUY="materialBuy";
+    public static final String PROC_DEF_NO_PAPER="NoPaper";
 }

@@ -1,5 +1,6 @@
 package com.mall.admin.application.request.wf;
 
+import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.common.utils.StringUtils;
 import lombok.Data;
 
@@ -13,35 +14,19 @@ import java.util.Map;
  **/
 @Data
 public class ProcessTaskDto {
-    private String procDefId;
-    private String procInstId;
-    private String bizId;
-    private String bizNo;
-    private String bizType;
-    private String taskId;
-    private String taskDefKey;
-    private String taskName;
-    private String assignee;
-    private String assigneeDepId;
-    private String routeUrl;
-    private String taskState;
-    private String startTime;
-    private String endTime;
-    private String opinion;
-    private String opinionDesc;
 
-    public static ProcessTaskDto build(Map<String, Object> params){
+    public static ProcessTask build(Map<String, Object> params){
         Map<String, Object> formMap = (Map<String, Object>) params.get("formObj");
-        ProcessTaskDto dto=new ProcessTaskDto();
-        dto.setProcDefId(StringUtils.replaceNull(formMap.get("processDefinitionId")));
-        dto.setProcInstId(StringUtils.replaceNull(formMap.get("processInstanceId")));
-        dto.setTaskId(StringUtils.replaceNull(formMap.get("taskId")));
-        dto.setTaskDefKey(StringUtils.replaceNull(formMap.get("taskDefKey")));
-        dto.setTaskName(StringUtils.replaceNull(formMap.get("taskName")));
-        dto.setAssignee(StringUtils.replaceNull(formMap.get("userId")));
-        dto.setAssigneeDepId(StringUtils.replaceNull(formMap.get("depId")));
-        dto.setOpinion(StringUtils.replaceNull(formMap.get("opinion")));
-        dto.setOpinionDesc(StringUtils.replaceNull(formMap.get("opinionDesc")));
-        return dto;
+        ProcessTask processTask=new ProcessTask();
+        processTask.setProcDefId(StringUtils.replaceNull(formMap.get("processDefinitionId")));
+        processTask.setProcInstId(StringUtils.replaceNull(formMap.get("processInstanceId")));
+        processTask.setTaskId(StringUtils.replaceNull(formMap.get("taskId")));
+        processTask.setTaskDefKey(StringUtils.replaceNull(formMap.get("taskDefKey")));
+        processTask.setTaskName(StringUtils.replaceNull(formMap.get("taskName")));
+        processTask.setAssignee(StringUtils.replaceNull(formMap.get("userId")));
+        processTask.setAssigneeDepId(StringUtils.replaceNull(formMap.get("depId")));
+        processTask.setOpinion(StringUtils.replaceNull(formMap.get("opinion")));
+        processTask.setOpinionDesc(StringUtils.replaceNull(formMap.get("opinionDesc")));
+        return processTask;
     }
 }

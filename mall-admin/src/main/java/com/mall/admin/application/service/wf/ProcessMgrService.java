@@ -43,18 +43,17 @@ public class ProcessMgrService {
 
     /**
      * 启动流程实例
-     * @param params
+     * @param variable
      * @return
      */
     @Transactional
-    public ResponseResult startProcessInstance(Map<String, Object> params,ProcessCallback processCallback){
+    public ResponseResult startProcessInstance(Map<String, Object> variable,ProcessCallback processCallback){
         ResponseResult res;
-        Map<String, Object> formMap = (Map<String, Object>) params.get("formObj");
-        String userId= StringUtils.replaceNull(formMap.get("userId"));
-        String startActivityId=StringUtils.replaceNull(formMap.get("startActivityId"));
-        formMap.put(startActivityId,userId);
+        String userId= StringUtils.replaceNull(variable.get("userId"));
+        String startActivityId=StringUtils.replaceNull(variable.get("startActivityId"));
+        variable.put(startActivityId,userId);
         //启动流程实例
-        res=processInstanceService.startProcessInstance(formMap);
+        res=processInstanceService.startProcessInstance(variable);
         //启动实例成功，则处理相关业务逻辑
         if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
             Map<String, String> data=(Map<String,String>)res.getData();
@@ -66,10 +65,10 @@ public class ProcessMgrService {
             }
             res.setData(data);
             //处理流程启动数据
-            this.handleStartProcessInstance(processDefinitionId,processInstanceId,startActivityId,userId,params);
+            this.handleStartProcessInstance(processDefinitionId,processInstanceId,startActivityId,userId,variable);
             //处理流程回调业务
             if(processCallback!=null){
-                processCallback.call();
+                processCallback.call(data);
             }
         }
         return res;
@@ -79,15 +78,15 @@ public class ProcessMgrService {
      * 处理流程启动数据
      * @param processDefinitionId
      * @param processInstanceId
-     * @param params
+     * @param variable
      */
     private void handleStartProcessInstance(String processDefinitionId,
                                             String processInstanceId,
                                             String startActivityId,
                                             String userId,
-                                            Map<String, Object> params){
+                                            Map<String, Object> variable){
         //新增流程实例数据
-        ProcessInst processInst=ProcessInstanceDto.build(params);
+        ProcessInst processInst=ProcessInstanceDto.build(variable);
         processInst.setProcDefId(processDefinitionId);
         processInst.setProcInstId(processInstanceId);
         this.addProcessInst(processInst);

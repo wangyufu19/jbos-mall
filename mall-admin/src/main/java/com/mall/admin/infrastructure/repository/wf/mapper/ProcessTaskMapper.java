@@ -31,7 +31,7 @@ public interface ProcessTaskMapper {
 
     public void updateDrawbackPostProcessTask(ProcessTask processTask);
 
-    public void updateHandlePostProcessTask(ProcessTask processTask);
+    public void updateNoneStatePostHandleTask(ProcessTask processTask);
 
     public void updateProcessTaskState(ProcessTask processTask);
 
