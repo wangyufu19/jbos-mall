@@ -59,8 +59,8 @@ public class IdGeneratorApi {
         try {
             Id id = idGeneratorService.getId(bizType);
             if(id!=null){
-                //业务编号=业务类型+YYYYMMDD+ID版本+ID
-                String bizNo = bizType + DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDD) +
+                //业务编号=YYYYMMDD+业务类型+ID版本+ID
+                String bizNo = DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDD) +bizType+
                         "" + id.getVersion() + "" + id.getCurrentId();
                 Map<String, String> data=new HashMap();
                 data.put("bizNo",bizNo);
