@@ -1,7 +1,9 @@
 package com.mall.admin.application.api.wf;
 
+import com.mall.admin.application.request.wf.ProcessTaskDto;
 import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.wf.ProcessTaskService;
+import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.domain.entity.wf.TaskStep;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
@@ -108,15 +110,14 @@ public class ProcessTaskApi {
     public ResponseResult completeUserTask(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            List<Map<String,Object>> variables=(ArrayList<Map<String,Object>>)params.get("variables");
+            ProcessTask processCurrentTask= ProcessTaskDto.build(params);
+            List<Map<String,String>> variables=(ArrayList<Map<String,String>>)params.get("variables");
             if(!CollectionUtils.isEmpty(variables)) {
-                for (Map<String, Object> variableMap : variables) {
-                    for(Map.Entry<String,Object> variable:variableMap.entrySet()){
-                        params.put(variable.getKey(),variable.getValue());
-                    }
+                for (Map<String, String> variableMap : variables) {
+                    params.put(variableMap.get("DICTID"),variableMap.get("variableValue"));
                 }
             }
-            res = taskService.complete(params);
+            res = processTaskService.handleCompleteTask(processCurrentTask,params,null);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

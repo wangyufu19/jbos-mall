@@ -15,8 +15,7 @@ import java.util.Map;
 @Data
 public class ProcessTaskDto {
 
-    public static ProcessTask build(Map<String, Object> params){
-        Map<String, Object> formMap = (Map<String, Object>) params.get("formObj");
+    public static ProcessTask build(Map<String, Object> formMap){
         ProcessTask processTask=new ProcessTask();
         processTask.setProcDefId(StringUtils.replaceNull(formMap.get("processDefinitionId")));
         processTask.setProcInstId(StringUtils.replaceNull(formMap.get("processInstanceId")));

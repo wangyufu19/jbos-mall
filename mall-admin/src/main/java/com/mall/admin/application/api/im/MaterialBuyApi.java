@@ -185,8 +185,9 @@ public class MaterialBuyApi {
     @ApiOperation("撤回流转物品采购业务")
     public ResponseResult doDrawback(@RequestBody Map<String, Object> params) {
         ResponseResult res;
-        ProcessTask processTask = ProcessTaskDto.build(params);
         try {
+            Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
+            ProcessTask processTask = ProcessTaskDto.build(materialBuyMap);
             res = processTaskService.handleDrawbackProcessTask(processTask);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -199,8 +200,9 @@ public class MaterialBuyApi {
     @ApiOperation("驳回流转物品采购业务")
     public ResponseResult doReject(@RequestBody Map<String, Object> params) {
         ResponseResult res;
-        ProcessTask processTask = ProcessTaskDto.build(params);
         try {
+            Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
+            ProcessTask processTask = ProcessTaskDto.build(materialBuyMap);
             res = processTaskService.handleRejectProcessTask(processTask);
         } catch (Exception e) {
             log.error(e.getMessage(), e);

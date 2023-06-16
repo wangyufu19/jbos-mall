@@ -139,6 +139,24 @@ public class DictMgrApi {
         return res;
     }
     /**
+     * 刷新业务字典缓存
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
+    @ApiOperation("刷新业务字典缓存")
+    public ResponseResult refresh(@RequestBody Map<String, String> params){
+        ResponseResult res= ResponseResult.ok();
+        try{
+            this.businessDict.refresh();
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+    /**
      * 删除字典类型
      * @param params
      * @return

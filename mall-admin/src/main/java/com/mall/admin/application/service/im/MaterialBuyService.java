@@ -183,8 +183,8 @@ public class MaterialBuyService extends BaseService {
      */
     public ResponseResult handleMaterialBuyProcessTask(Map<String, Object> params) {
         ResponseResult res;
-
-        ProcessTask processTask = ProcessTaskDto.build(params);
+        Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
+        ProcessTask processTask = ProcessTaskDto.build(materialBuyMap);
         MaterialBuyDto materialBuyDto = MaterialBuyDto.build(params);
 
         //审批驳回
