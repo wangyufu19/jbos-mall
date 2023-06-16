@@ -1,6 +1,7 @@
 package com.mall.admin.application.api.wf;
 
 import com.mall.admin.application.service.external.camunda.ProcessInstanceService;
+import com.mall.admin.application.service.sm.BusinessDict;
 import com.mall.admin.application.service.wf.ProcessMgrService;
 import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.common.page.PageParam;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +31,8 @@ public class ProcessInstanceApi {
     private ProcessInstanceService processInstanceService;
     @Autowired
     private ProcessMgrService processMgrService;
+    @Autowired
+    private BusinessDict businessDict;
 
     @ResponseBody
     @PostMapping(value = "/startProcessInstance")
@@ -65,7 +69,27 @@ public class ProcessInstanceApi {
         }
         return res;
     }
-
+    /**
+     * 查询流程实例默认变量列表
+     *
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getProcessInstanceVariableList")
+    @ApiOperation("查询流程实例默认变量列表")
+    public ResponseResult getProcessInstanceVariableList(@RequestParam Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            String typeId=StringUtils.replaceNull(params.get("typeId"));
+            List<Map<String, Object>> dictList= businessDict.getDictCodeList(typeId);
+            res.setData(dictList);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
     @ResponseBody
     @GetMapping(value = "/getProcessInstanceCurrentActivityId")
     @ApiOperation("查询流程实例当前活动")

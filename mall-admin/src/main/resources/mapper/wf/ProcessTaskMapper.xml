@@ -20,7 +20,7 @@
                 '处理中' TASKSTATE
             FROM WF_PROCESS_TASK t
             LEFT JOIN WF_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
-            WHERE t.ASSIGNEE=#{userId} and t.TASKSTATE='20'
+            WHERE t.ASSIGNEE=#{userId} and t.TASKSTATE='20' AND T1.PROCSTATE!='80'
 
             <if test="bizNoS != null and bizNoS != ''">
                 AND T1.BIZNO LIKE '%${bizNoS}%'
@@ -71,12 +71,16 @@
             t.TASKDEFKEY,
             t.STARTTIME,
             t.ENDTIME,
+            t.ASSIGNEE,
             (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,') ')FROM JBOS_EMP emp WHERE emp.BADGE=t.ASSIGNEE  limit 1) ASSIGNEENAME,
             t.TASKSTATE,
             t.OPINION,
             t.OPINIONDESC
         FROM WF_PROCESS_TASK t
         WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
+        <if test="taskDefKey != null and taskDefKey != ''">
+            AND T.TASKDEFKEY=#{taskDefKey}
+        </if>
         ORDER BY t.STARTTIME
     </select>
     <!--查询流程任务处理步骤-->
@@ -99,7 +103,6 @@
         WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
         ORDER BY t.STARTTIME
     </select>
-
     <!--查询实例任务的所有已处理的任务数据(除当前处理用户任务)-->
     <select id="getInstanceTaskProcessedAssigneeList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.wf.ProcessTask">
         SELECT

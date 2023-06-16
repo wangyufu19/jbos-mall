@@ -64,8 +64,21 @@ public class ProcessMgrService {
                 processInstanceId = data.get("processInstanceId");
             }
             res.setData(data);
-            //处理流程启动数据
-            this.handleStartProcessInstance(processDefinitionId,processInstanceId,startActivityId,userId,variable);
+            //新增流程实例数据
+            ProcessInst processInst=ProcessInstanceDto.build(variable);
+            processInst.setProcDefId(processDefinitionId);
+            processInst.setProcInstId(processInstanceId);
+            this.addProcessInst(processInst);
+            //新增流程任务数据
+            ProcessTask processTask = new ProcessTask();
+            processTask.setId(StringUtils.getUUID());
+            processTask.setProcInstId(processInstanceId);
+            processTask.setTaskDefKey(startActivityId);
+            processTask.setTaskName(Role.ROLE_PROCESS_STARTER_DESC);
+            processTask.setAssignee(userId);
+            processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
+            processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+            processTaskService.addProcessTask(processTask);
             //处理流程回调业务
             if(processCallback!=null){
                 processCallback.call(data);
@@ -73,35 +86,6 @@ public class ProcessMgrService {
         }
         return res;
     }
-
-    /**
-     * 处理流程启动数据
-     * @param processDefinitionId
-     * @param processInstanceId
-     * @param variable
-     */
-    private void handleStartProcessInstance(String processDefinitionId,
-                                            String processInstanceId,
-                                            String startActivityId,
-                                            String userId,
-                                            Map<String, Object> variable){
-        //新增流程实例数据
-        ProcessInst processInst=ProcessInstanceDto.build(variable);
-        processInst.setProcDefId(processDefinitionId);
-        processInst.setProcInstId(processInstanceId);
-        this.addProcessInst(processInst);
-        //新增流程任务数据
-        ProcessTask processTask = new ProcessTask();
-        processTask.setId(StringUtils.getUUID());
-        processTask.setProcInstId(processInstanceId);
-        processTask.setTaskDefKey(startActivityId);
-        processTask.setTaskName(Role.ROLE_PROCESS_STARTER_DESC);
-        processTask.setAssignee(userId);
-        processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
-        processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
-        processTaskService.addProcessTask(processTask);
-    }
-
     /**
      * 新增流程实例业务数据
      * @param processInst

@@ -10,8 +10,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -88,6 +90,33 @@ public class ProcessTaskApi {
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res=processTaskService.getProcessTaskDetailList(pageParam,params);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+    /**
+     * 完成用户任务
+     *
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/completeUserTask")
+    @ApiOperation("完成用户任务")
+    public ResponseResult completeUserTask(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            List<Map<String,Object>> variables=(ArrayList<Map<String,Object>>)params.get("variables");
+            if(!CollectionUtils.isEmpty(variables)) {
+                for (Map<String, Object> variableMap : variables) {
+                    for(Map.Entry<String,Object> variable:variableMap.entrySet()){
+                        params.put(variable.getKey(),variable.getValue());
+                    }
+                }
+            }
+            res = taskService.complete(params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

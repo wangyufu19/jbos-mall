@@ -154,6 +154,7 @@ public class ProcessTaskService extends BaseService {
      * @param processCallback
      * @return
      */
+    @Transactional
     public ResponseResult handleCompleteTask(ProcessTask processCurrentTask,
                                              Map<String, Object> variables,
                                              ProcessCallback processCallback){

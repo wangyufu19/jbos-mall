@@ -181,7 +181,6 @@ public class MaterialBuyService extends BaseService {
     /**
      * 处理物品采购业务流程任务数据
      */
-    @Transactional
     public ResponseResult handleMaterialBuyProcessTask(Map<String, Object> params) {
         ResponseResult res;
 
