@@ -98,6 +98,34 @@ public class ProcessTaskApi {
         }
         return res;
     }
+    @ResponseBody
+    @PostMapping(value = "/assignee")
+    @ApiOperation("领取任务")
+    public ResponseResult assignee(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
+        try {
+            ProcessTask processTask= ProcessTaskDto.build(params);
+            res=processTaskService.handleAssigneeTask(processTask);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping(value = "/addAssignee")
+    @ApiOperation("新增任务领取人")
+    public ResponseResult addAssignee(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
+        try {
+            ProcessTask processTask= ProcessTaskDto.build(params);
+            res=processTaskService.handleTaskAddAssignee(processTask);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        }
+        return res;
+    }
     /**
      * 完成用户任务
      *
@@ -143,4 +171,6 @@ public class ProcessTaskApi {
         }
         return res;
     }
+
+
 }

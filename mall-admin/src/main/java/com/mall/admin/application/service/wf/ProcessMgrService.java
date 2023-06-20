@@ -73,8 +73,8 @@ public class ProcessMgrService {
             ProcessTask processTask = new ProcessTask();
             processTask.setId(StringUtils.getUUID());
             processTask.setProcInstId(processInstanceId);
-            processTask.setTaskDefKey(startActivityId);
-            processTask.setTaskName(Role.ROLE_PROCESS_STARTER_DESC);
+            processTask.setActivityId(startActivityId);
+            processTask.setActivityName(Role.ROLE_PROCESS_STARTER_DESC);
             processTask.setAssignee(userId);
             processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
             processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));

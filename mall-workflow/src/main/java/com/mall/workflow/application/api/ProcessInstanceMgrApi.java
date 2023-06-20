@@ -115,9 +115,7 @@ public class ProcessInstanceMgrApi {
         ResponseResult res= ResponseResult.ok();
         String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
         try{
-            String currentActivityId=processInstanceService.getProcessInstanceCurrentActivityId(processInstanceId);
-            Map<String,Object> data=new HashMap<String,Object>();
-            data.put("currentActivityId",currentActivityId);
+            Map<String,Object> data=processInstanceService.getProcessInstanceCurrentActivityId(processInstanceId);
             res.setData(data);
         }catch (Exception e){
             log.error(e.getMessage(),e);

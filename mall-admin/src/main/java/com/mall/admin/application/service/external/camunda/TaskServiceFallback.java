@@ -16,6 +16,12 @@ public class TaskServiceFallback implements TaskService{
         return ResponseResult.error();
     }
 
+    public ResponseResult assignee(@RequestBody Map<String, Object> params){
+        return ResponseResult.error();
+    }
+    public ResponseResult addAssignee(@RequestBody Map<String, Object> params){
+        return ResponseResult.error();
+    }
     public ResponseResult complete(@RequestBody Map<String, Object> params){
         return ResponseResult.error();
     }

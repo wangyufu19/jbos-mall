@@ -21,6 +21,23 @@ public interface TaskService {
     public ResponseResult listForPage(@RequestParam Map<String, Object> params);
 
     /**
+     * 领取任务
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/task/assignee")
+    public ResponseResult assignee(@RequestBody Map<String, Object> params);
+
+    /**
+     * 新增任务领取人
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/task/addAssignee")
+    public ResponseResult addAssignee(@RequestBody Map<String, Object> params);
+    /**
      * 完成任务
      *
      * @param params

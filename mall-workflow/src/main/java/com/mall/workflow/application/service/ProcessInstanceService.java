@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,8 @@ public class ProcessInstanceService {
     private IdentityMgrService identityMgrService;
     @Autowired
     private RepositoryService repositoryService;
+    @Autowired
+    private ActivityInstanceService activityInstanceService;
     /**
      * 启动流程实例
      * @param processDefinitionKey
@@ -95,7 +98,12 @@ public class ProcessInstanceService {
      * @param processInstanceId
      * @return
      */
-    public String getProcessInstanceCurrentActivityId(String processInstanceId){
+    public Map<String,Object> getProcessInstanceCurrentActivityId(String processInstanceId){
+        String currentActivityId="";
+        String currentActivityName="";
+        String multiInstance="false";
+        Map<String,Object> data=new HashMap<String,Object>();
+
         List<HistoricActivityInstance> historicActivityInstances = historyService
                 .createHistoricActivityInstanceQuery()
                 .processInstanceId(processInstanceId)
@@ -106,10 +114,20 @@ public class ProcessInstanceService {
         for(HistoricActivityInstance historicActivityInstance:historicActivityInstances){
             if("userTask".equals(historicActivityInstance.getActivityType())
                     ||"noneEndEvent".equals(historicActivityInstance.getActivityType())){
-                return historicActivityInstance.getActivityId();
+                currentActivityId=historicActivityInstance.getActivityId();
+                currentActivityName=historicActivityInstance.getActivityName();
+                //得到用户任务活动实例的父活动实例,如果父活动实例是多实例任务则multiInstance值为true，否则为false
+                HistoricActivityInstance parentHistoricActivityInstance=this.activityInstanceService.getActivityInstance(processInstanceId,historicActivityInstance.getParentActivityInstanceId());
+                if(parentHistoricActivityInstance!=null&&"multiInstanceBody".equals(parentHistoricActivityInstance.getActivityType())){
+                    multiInstance="true";
+                }
+                break;
             }
         }
-        return null;
+        data.put("currentActivityId",currentActivityId);
+        data.put("currentActivityName",currentActivityName);
+        data.put("multiInstance",multiInstance);
+        return data;
     }
     /**
      * 暂停流程实例

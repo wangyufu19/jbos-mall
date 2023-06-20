@@ -12,8 +12,8 @@
                 T1.BIZNO,
                 (SELECT DICTNAME FROM JBOS_DICT_CODE WHERE TYPEID='JBOS_PROC_BIZTYPE' AND DICTID=T1.BIZTYPE  LIMIT 1) BIZTYPE,
                 t.TASKID,
-                t.TASKDEFKEY,
-                t.TASKNAME,
+                t.ACTIVITYID,
+                t.ACTIVITYNAME,
                 t.STARTTIME,
                 t.ASSIGNEE,
                 T1.ROUTEURL,
@@ -42,8 +42,8 @@
                 T1.BIZNO,
                 (SELECT DICTNAME FROM JBOS_DICT_CODE WHERE TYPEID='JBOS_PROC_BIZTYPE' AND DICTID=T1.BIZTYPE  LIMIT 1) BIZTYPE,
                 t.TASKID,
-                t.TASKDEFKEY,
-                t.TASKNAME,
+                t.ACTIVITYID,
+                t.ACTIVITYNAME,
                 t.STARTTIME,
                 t.ENDTIME,
                 t.ASSIGNEE,
@@ -67,8 +67,8 @@
             t.ID,
             t.PROCINSTID,
             t.TASKID,
-            t.TASKNAME,
-            t.TASKDEFKEY,
+            t.ACTIVITYNAME,
+            t.ACTIVITYID,
             t.STARTTIME,
             t.ENDTIME,
             t.ASSIGNEE,
@@ -78,8 +78,8 @@
             t.OPINIONDESC
         FROM WF_PROCESS_TASK t
         WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
-        <if test="taskDefKey != null and taskDefKey != ''">
-            AND T.TASKDEFKEY=#{taskDefKey}
+        <if test="activityId != null and activityId != ''">
+            AND T.ACTIVITYID=#{activityId}
         </if>
         ORDER BY t.STARTTIME
     </select>
@@ -89,8 +89,8 @@
             t.ID,
             t.PROCINSTID,
             t.TASKID,
-            t.TASKNAME title,
-            t.TASKDEFKEY,
+            t.ACTIVITYNAME title,
+            t.ACTIVITYID,
             t.STARTTIME,
             t.ENDTIME,
             (SELECT CONCAT(emp.EMPNAME,'(',emp.BADGE,') ',IFNULL(t.ENDTIME,''))FROM JBOS_EMP emp WHERE emp.BADGE=t.ASSIGNEE  limit 1) description,
@@ -109,14 +109,14 @@
             t.ID,
             t.PROCINSTID,
             t.TASKID,
-            t.TASKDEFKEY,
-            t.TASKNAME,
+            t.ACTIVITYID,
+            t.ACTIVITYNAME,
             t.STARTTIME,
             t.ENDTIME,
             t.ASSIGNEE
         FROM WF_PROCESS_TASK t
         LEFT JOIN WF_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
-        WHERE t.TASKDEFKEY=#{currentTaskDefKey} AND t.ASSIGNEE!=#{userId} AND t.TASKSTATE NOT IN ('90','99')
+        WHERE t.ACTIVITYID=#{currentActivityId} AND t.ASSIGNEE!=#{userId} AND t.TASKSTATE NOT IN ('90','99')
     </select>
     <!--查询流程任务的领取人-->
     <select id="getTaskAssigneeList" parameterType="java.util.Map" resultType="java.util.Map">
@@ -129,8 +129,8 @@
         FROM JBOS_EMP T
         INNER JOIN JBOS_USER_ROLE T1 ON T.ID=T1.USERID
         LEFT JOIN JBOS_ROLE T2 ON T1.ROLEID=T2.ID
-        WHERE T.ISVALID=1 AND T2.ROLECODE=#{nextTaskDefKey}
-        <if test="nextTaskDefKey == 'ROLE_DEP_LEADER' or nextTaskDefKey == 'ROLE_CHARGE_LEADER'">
+        WHERE T.ISVALID=1 AND T2.ROLECODE=#{nextActivityId}
+        <if test="nextActivityId == 'ROLE_DEP_LEADER' or nextActivityId == 'ROLE_CHARGE_LEADER'">
             AND T.DEPID=#{depId}
         </if>
     </select>
@@ -139,16 +139,16 @@
         INSERT WF_PROCESS_TASK(
             ID,
             PROCINSTID,
-            TASKDEFKEY,
-            TASKNAME,
+            ACTIVITYID,
+            ACTIVITYNAME,
             ASSIGNEE,
             TASKSTATE,
             STARTTIME
         )VALUE(
             #{id},
             #{procInstId},
-            #{taskDefKey},
-            #{taskName},
+            #{activityId},
+            #{activityName},
             #{assignee},
            '20',
             #{startTime}
@@ -158,7 +158,7 @@
     <update id="updateProcessTaskOpinion" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
         UPDATE WF_PROCESS_TASK
         SET TASKID=#{taskId},OPINION=#{opinion},OPINIONDESC=#{opinionDesc},ENDTIME=#{endTime},TASKSTATE=#{taskState}
-        WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
+        WHERE PROCINSTID=#{procInstId} AND ACTIVITYID=#{activityId} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
     </update>
 
     <!--更新流程任务撤回后未审批的任务状态为NONE-->
@@ -174,14 +174,14 @@
         <![CDATA[
         UPDATE WF_PROCESS_TASK
         SET ENDTIME=#{endTime},TASKSTATE='10'
-        WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE!=#{assignee} AND TASKSTATE='20'
+        WHERE PROCINSTID=#{procInstId} AND ACTIVITYID=#{activityId} AND ASSIGNEE!=#{assignee} AND TASKSTATE='20'
         ]]>
     </update>
     <!--更新流程任务审批状态-->
     <update id="updateProcessTaskState" parameterType="com.mall.admin.domain.entity.wf.ProcessTask">
         UPDATE WF_PROCESS_TASK
         SET TASKSTATE=#{taskState},ENDTIME=#{endTime}
-        WHERE PROCINSTID=#{procInstId} AND TASKDEFKEY=#{taskDefKey} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
+        WHERE PROCINSTID=#{procInstId} AND ACTIVITYID=#{activityId} AND ASSIGNEE=#{assignee} AND TASKSTATE='20'
     </update>
 
 </mapper>

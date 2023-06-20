@@ -73,20 +73,42 @@ public class TaskMgrApi{
     @ApiOperation("领取任务")
     public ResponseResult assignee(@RequestBody Map<String, Object> params){
         ResponseResult res=ResponseResult.ok();
-        String taskId=StringUtils.replaceNull(params.get("taskId"));
         String userId=StringUtils.replaceNull(params.get("userId"));
+        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        String taskId=StringUtils.replaceNull(params.get("taskId"));
+        String assignee=StringUtils.replaceNull(params.get("assignee"));
         try {
             if(log.isDebugEnabled()){
                 log.info("============["+userId+"]用户领取任务");
             }
-            taskMgrService.assignee(taskId,userId);
+            taskMgrService.assignee(userId,processInstanceId,taskId,assignee);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
         }
         return res;
     }
-
+    @ResponseBody
+    @PostMapping(value = "/addAssignee")
+    @ApiOperation("新增任务领取人")
+    public ResponseResult addAssignee(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
+        String userId=StringUtils.replaceNull(params.get("userId"));
+        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        String activityId=StringUtils.replaceNull(params.get("activityId"));
+        String activityName=StringUtils.replaceNull(params.get("activityName"));
+        String assignee=StringUtils.replaceNull(params.get("assignee"));
+        try {
+            if(log.isDebugEnabled()){
+                log.info("============["+userId+"]用户新增任务领取人");
+            }
+            taskMgrService.addAssignee(userId,processInstanceId,activityId,activityName,assignee);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        }
+        return res;
+    }
     @ResponseBody
     @PostMapping(value = "/complete")
     @ApiOperation("完成任务")

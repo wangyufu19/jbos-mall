@@ -130,8 +130,8 @@ public class ProcessTaskService extends BaseService {
      */
     public void addProcessNexTask(String processInstanceId, Map<String, Object> variables) {
         //新增物品采购流程下一个任务数据
-        String nextTaskDefKey = StringUtils.replaceNull(variables.get("nextTaskDefKey"));
-        String nextTaskName = StringUtils.replaceNull(variables.get("nextTaskName"));
+        String nextActivityId = StringUtils.replaceNull(variables.get("nextActivityId"));
+        String nextActivityName = StringUtils.replaceNull(variables.get("nextActivityName"));
         String nextAssignees = StringUtils.replaceNull(variables.get("nextAssignees"));
         String[] assigneeList = StringUtils.split(nextAssignees,',');
         if (assigneeList != null && assigneeList.length > 0) {
@@ -139,14 +139,63 @@ public class ProcessTaskService extends BaseService {
                 ProcessTask processNextTask = new ProcessTask();
                 processNextTask.setId(StringUtils.getUUID());
                 processNextTask.setProcInstId(processInstanceId);
-                processNextTask.setTaskDefKey(nextTaskDefKey);
-                processNextTask.setTaskName(nextTaskName);
+                processNextTask.setActivityId(nextActivityId);
+                processNextTask.setActivityName(nextActivityName);
                 processNextTask.setAssignee(assignee);
                 processNextTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
                 processNextTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
                 this.addProcessTask(processNextTask);
             }
         }
+    }
+
+    /**
+     * 处理领取任务
+     * @param processTask
+     */
+    public ResponseResult handleAssigneeTask(ProcessTask processTask){
+        ResponseResult res;
+        Map<String, Object> params=new HashMap<>();
+        params.put("userId",processTask.getUserId());
+        params.put("processInstanceId",processTask.getProcInstId());
+        params.put("taskId",processTask.getTaskId());
+        params.put("assignee",processTask.getAssignee());
+        res=taskService.assignee(params);
+        if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+            //领取成功则新增流程任务数据,同时授权的用户任务状态标记NONE
+            processTask.setId(StringUtils.getUUID());
+            processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
+            processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+            this.addProcessTask(processTask);
+            //更新授权的用户任务状态标记NONE
+            processTask.setAssignee(processTask.getUserId());
+            processTask.setTaskState(ProcessTask.PROCESS_STATE_NONE);
+            processTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+            this.updateProcessTaskOpinion(processTask);
+        }
+        return res;
+    }
+    /**
+     * 处理新增任务领取人
+     * @param processTask
+     */
+    public ResponseResult handleTaskAddAssignee(ProcessTask processTask){
+        ResponseResult res;
+        Map<String, Object> params=new HashMap<>();
+        params.put("userId",processTask.getUserId());
+        params.put("processInstanceId",processTask.getProcInstId());
+        params.put("activityId",processTask.getActivityId());
+        params.put("activityName",processTask.getActivityName());
+        params.put("assignee",processTask.getAssignee());
+        res=taskService.addAssignee(params);
+        if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+            //领取成功则新增流程任务数据
+            processTask.setId(StringUtils.getUUID());
+            processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
+            processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+            this.addProcessTask(processTask);
+        }
+        return res;
     }
     /**
      * 处理审批任务
@@ -172,7 +221,7 @@ public class ProcessTaskService extends BaseService {
             this.updateProcessTaskOpinion(processCurrentTask);
 
             //多实例节点更新流程任务处理后未审批的所有任务状态为NONE(除当前用户任务)
-            if (Role.ROLE_DEP_LEADER.equals(processCurrentTask.getTaskDefKey())) {
+            if (Role.ROLE_DEP_LEADER.equals(processCurrentTask.getActivityId())) {
                 this.updateNoneStatePostHandleTask(processCurrentTask);
             }
 
@@ -213,8 +262,8 @@ public class ProcessTaskService extends BaseService {
             ProcessTask processTask = new ProcessTask();
             processTask.setId(StringUtils.getUUID());
             processTask.setProcInstId(processCurrentTask.getProcInstId());
-            processTask.setTaskDefKey(processCurrentTask.getTaskDefKey());
-            processTask.setTaskName(processCurrentTask.getTaskName());
+            processTask.setActivityId(processCurrentTask.getActivityId());
+            processTask.setActivityName(processCurrentTask.getActivityName());
             processTask.setAssignee(processCurrentTask.getAssignee());
             processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
             processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
@@ -244,8 +293,8 @@ public class ProcessTaskService extends BaseService {
             ProcessTask processTask = new ProcessTask();
             processTask.setId(StringUtils.getUUID());
             processTask.setProcInstId(processCurrentTask.getProcInstId());
-            processTask.setTaskDefKey(StringUtils.replaceNull(data.get("toActivityId")));
-            processTask.setTaskName(StringUtils.replaceNull(data.get("toActivityName")));
+            processTask.setActivityId(StringUtils.replaceNull(data.get("toActivityId")));
+            processTask.setActivityName(StringUtils.replaceNull(data.get("toActivityName")));
             processTask.setAssignee(StringUtils.replaceNull(data.get("toAssignee")));
             processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
             processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));

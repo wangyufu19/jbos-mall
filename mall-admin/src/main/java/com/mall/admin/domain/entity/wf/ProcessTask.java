@@ -23,14 +23,15 @@ public class ProcessTask extends BaseEntity implements Serializable {
     public static final String PROCESS_STATE_ACTIVE="20";
     public static final String PROCESS_STATE_COMPLETED="90";
     public static final String PROCESS_STATE_REJECT="99";
+    private String userId;
     private String procDefId;
     private String procInstId;
     private String bizId;
     private String bizNo;
     private String bizType;
     private String taskId;
-    private String taskDefKey;
-    private String taskName;
+    private String activityId;
+    private String activityName;
     private String assignee;
     private String assigneeName;
     private String assigneeDepId;

@@ -167,14 +167,32 @@ public class TaskMgrService {
      * @param taskId
      * @param userId
      */
-    public void assignee(String taskId, String userId) throws CamundaException {
+    public void assignee(String userId,String processInstanceId,String taskId,String assignee) throws CamundaException {
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
             return;
         }
-        taskService.setAssignee(taskId, userId);
+        Task task = this.get(userId,processInstanceId);
+        if(task!=null){
+            taskService.setAssignee(task.getId(),assignee);
+        }
     }
-
+    /**
+     * 新增任务领取人
+     * @param activityId
+     * @param assignee
+     */
+    public void addAssignee(String userId,String processInstanceId,String activityId,String activityName,String assignee) throws CamundaException {
+        //用户认证
+        if (!this.identityMgrService.auth(userId)) {
+            return;
+        }
+        runtimeService.createProcessInstanceModification(processInstanceId)
+                .startBeforeActivity(activityId)
+                .setVariable("processLeader",assignee)
+                .setAnnotation(activityName)
+                .execute();
+    }
     /**
      * 完成任务
      * @param params
@@ -183,7 +201,7 @@ public class TaskMgrService {
         String userId = StringUtils.replaceNull(params.get("userId"));
         String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
         String taskId = StringUtils.replaceNull(params.get("taskId"));
-        String nextTaskDefKey = StringUtils.replaceNull(params.get("nextTaskDefKey"));
+        String nextActivityId = StringUtils.replaceNull(params.get("nextActivityId"));
         String nextAssignees = StringUtils.replaceNull(params.get("nextAssignees"));
         String multiInstance = StringUtils.replaceNull(params.get("multiInstance"));
 
@@ -200,10 +218,10 @@ public class TaskMgrService {
         if ("true".equals(multiInstance)) {
             String[] assigneeList = nextAssignees.split(",");
             if (assigneeList != null && assigneeList.length > 0) {
-                params.put(nextTaskDefKey, Arrays.asList(assigneeList));
+                params.put(nextActivityId, Arrays.asList(assigneeList));
             }
         } else {
-            params.put(nextTaskDefKey, nextAssignees);
+            params.put(nextActivityId, nextAssignees);
         }
         Task task = this.get(userId,processInstanceId);
         if(task!=null){
