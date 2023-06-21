@@ -37,6 +37,15 @@ public interface TaskService {
     @ResponseBody
     @PostMapping(value = "/task/addAssignee")
     public ResponseResult addAssignee(@RequestBody Map<String, Object> params);
+
+    /**
+     * 减去任务领取人
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/task/reduceAssignee")
+    public ResponseResult reduceAssignee(@RequestBody Map<String, Object> params);
     /**
      * 完成任务
      *

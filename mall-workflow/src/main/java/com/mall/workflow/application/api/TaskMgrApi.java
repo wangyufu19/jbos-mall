@@ -97,12 +97,32 @@ public class TaskMgrApi{
         String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
         String activityId=StringUtils.replaceNull(params.get("activityId"));
         String activityName=StringUtils.replaceNull(params.get("activityName"));
-        String assignee=StringUtils.replaceNull(params.get("assignee"));
+        String elementVariable=StringUtils.replaceNull(params.get("elementVariable"));
+        String assignees=StringUtils.replaceNull(params.get("assignees"));
         try {
             if(log.isDebugEnabled()){
                 log.info("============["+userId+"]用户新增任务领取人");
             }
-            taskMgrService.addAssignee(userId,processInstanceId,activityId,activityName,assignee);
+            taskMgrService.addAssignee(userId,processInstanceId,activityId,activityName,elementVariable,assignees);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping(value = "/reduceAssignee")
+    @ApiOperation("减去任务领取人")
+    public ResponseResult reduceAssignee(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
+        String userId=StringUtils.replaceNull(params.get("userId"));
+        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        String assignee=StringUtils.replaceNull(params.get("assignee"));
+        try {
+            if(log.isDebugEnabled()){
+                log.info("============["+userId+"]用户减去任务领取人");
+            }
+            taskMgrService.reduceAssignee(userId,processInstanceId,assignee);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());

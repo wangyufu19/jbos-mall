@@ -1,6 +1,5 @@
 package com.mall.common.utils;
 
-import java.io.File;
 import java.util.UUID;
 
 /**
@@ -105,4 +104,5 @@ public class StringUtils {
 		UUID uuid = UUID.randomUUID();
 		return uuid.toString();
 	}
+
 }

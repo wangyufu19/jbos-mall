@@ -113,9 +113,12 @@ public class ProcessInstanceMgrApi {
     @ApiOperation("查询流程实例当前活动")
     public ResponseResult getProcessInstanceCurrentActivityId(@RequestParam Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
+        String processDefinitionId=StringUtils.replaceNull(params.get("processDefinitionId"));
         String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+
         try{
-            Map<String,Object> data=processInstanceService.getProcessInstanceCurrentActivityId(processInstanceId);
+            Map<String,Object> data=processInstanceService.getProcessInstanceCurrentActivityId(
+                    processDefinitionId,processInstanceId);
             res.setData(data);
         }catch (Exception e){
             log.error(e.getMessage(),e);

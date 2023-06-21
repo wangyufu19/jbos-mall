@@ -1,11 +1,12 @@
 package com.mall.workflow.application.service;
 
+import com.mall.common.utils.PlaceholderUtils;
 import com.mall.workflow.common.exception.CamundaException;
 import org.camunda.bpm.engine.HistoryService;
-import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
+import org.camunda.bpm.engine.impl.task.TaskDefinition;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ProcessInstanceService {
     @Autowired
     private IdentityMgrService identityMgrService;
     @Autowired
-    private RepositoryService repositoryService;
+    private ProcessDeploymentService processDeploymentService;
     @Autowired
     private ActivityInstanceService activityInstanceService;
     /**
@@ -41,7 +42,11 @@ public class ProcessInstanceService {
      * @param businessKey
      * @return
      */
-    public ProcessInstance startProcessInstance(String userId,String processDefinitionKey, String businessKey, Map<String,Object> variables) throws CamundaException {
+    public ProcessInstance startProcessInstance(
+            String userId,
+            String processDefinitionKey,
+            String businessKey,
+            Map<String,Object> variables) throws CamundaException {
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
             return null;
@@ -60,7 +65,11 @@ public class ProcessInstanceService {
      * @param businessKey
      * @return
      */
-    public ProcessInstance startAndFinishProcessInstance(String userId,String processDefinitionKey,String businessKey,Map<String,Object> variables) throws CamundaException {
+    public ProcessInstance startAndFinishProcessInstance(
+            String userId,
+            String processDefinitionKey,
+            String businessKey,
+            Map<String,Object> variables) throws CamundaException {
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
             return null;
@@ -98,10 +107,12 @@ public class ProcessInstanceService {
      * @param processInstanceId
      * @return
      */
-    public Map<String,Object> getProcessInstanceCurrentActivityId(String processInstanceId){
+    public Map<String,Object> getProcessInstanceCurrentActivityId(String processDefinitionId,String processInstanceId){
         String currentActivityId="";
         String currentActivityName="";
         String multiInstance="false";
+        String elementVariable="";
+
         Map<String,Object> data=new HashMap<String,Object>();
 
         List<HistoricActivityInstance> historicActivityInstances = historyService
@@ -116,9 +127,12 @@ public class ProcessInstanceService {
                     ||"noneEndEvent".equals(historicActivityInstance.getActivityType())){
                 currentActivityId=historicActivityInstance.getActivityId();
                 currentActivityName=historicActivityInstance.getActivityName();
-                //得到用户任务活动实例的父活动实例,如果父活动实例是多实例任务则multiInstance值为true，否则为false
-                HistoricActivityInstance parentHistoricActivityInstance=this.activityInstanceService.getActivityInstance(processInstanceId,historicActivityInstance.getParentActivityInstanceId());
-                if(parentHistoricActivityInstance!=null&&"multiInstanceBody".equals(parentHistoricActivityInstance.getActivityType())){
+                //得到用户任务活动实例的父活动实例,如果父活动实例是多实例任务multiInstance值为true，否则为false
+                HistoricActivityInstance parentHistoricActivityInstance=
+                        this.activityInstanceService.getActivityInstance(
+                                processInstanceId,historicActivityInstance.getParentActivityInstanceId());
+                if(parentHistoricActivityInstance!=null
+                        &&"multiInstanceBody".equals(parentHistoricActivityInstance.getActivityType())){
                     multiInstance="true";
                 }
                 break;
@@ -127,6 +141,16 @@ public class ProcessInstanceService {
         data.put("currentActivityId",currentActivityId);
         data.put("currentActivityName",currentActivityName);
         data.put("multiInstance",multiInstance);
+        if("true".equals(multiInstance)){
+            TaskDefinition taskDefinition=processDeploymentService.getProcessDefinition(
+                    processDefinitionId,currentActivityId);
+            if(taskDefinition!=null){
+                elementVariable=taskDefinition.getAssigneeExpression().getExpressionText();
+                elementVariable=PlaceholderUtils.getPlaceholder(elementVariable,"${","}");
+                data.put("elementVariable",elementVariable);
+            }
+
+        }
         return data;
     }
     /**

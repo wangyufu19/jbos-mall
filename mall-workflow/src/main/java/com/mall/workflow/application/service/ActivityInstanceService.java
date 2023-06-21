@@ -42,15 +42,17 @@ public class ActivityInstanceService {
     }
 
     /**
-     * 得到活动实例
+     * 得到最后完成的活动实例
      *
      * @param userId
      * @param processInstanceId
      * @param taskId
      * @return
      */
-    public HistoricActivityInstance getActivityInstance(String userId, String processInstanceId, String taskId) {
-        HistoricActivityInstance activityInstance = null;
+    public HistoricActivityInstance getLastFinishedActivityInstance(
+            String userId,
+            String processInstanceId,
+            String taskId) {
         List<HistoricActivityInstance> historicActivityInstances = historyService
                 .createHistoricActivityInstanceQuery()
                 .activityType("userTask")
@@ -62,13 +64,41 @@ public class ActivityInstanceService {
         if (historicActivityInstances == null || historicActivityInstances.size() <= 0) {
             return null;
         }
+        HistoricActivityInstance activityInstance = null;
         activityInstance = historicActivityInstances.get(0);
         if (userId.equals(activityInstance.getAssignee())
                 && taskId.equals(activityInstance.getTaskId())) {
-           return activityInstance;
+            return activityInstance;
         }
         return null;
     }
+    /**
+     * 得到活动实例
+     *
+     * @param userId
+     * @param processInstanceId
+     * @param taskId
+     * @return
+     */
+    public HistoricActivityInstance getActiveActivityInstance(String userId, String processInstanceId, String taskId) {
+        List<HistoricActivityInstance> historicActivityInstances = historyService
+                .createHistoricActivityInstanceQuery()
+                .activityType("userTask")
+                .processInstanceId(processInstanceId)
+                .orderByHistoricActivityInstanceEndTime()
+                .desc()
+                .list();
+        if (historicActivityInstances != null&&historicActivityInstances.size()>0) {
+            for(HistoricActivityInstance activityInstance:historicActivityInstances){
+                if (userId.equals(activityInstance.getAssignee())
+                        && taskId.equals(activityInstance.getTaskId())) {
+                    return activityInstance;
+                }
+            }
+        }
+        return null;
+    }
+
 
     public ActivityInstance getActivityInstance(String processInstanceId) {
         ActivityInstance activityInstance = runtimeService.getActivityInstance(processInstanceId);

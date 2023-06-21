@@ -98,6 +98,23 @@ public class ProcessDeploymentService {
         return taskDefList;
     }
 
+    /**
+     * 得到流程定义任务
+     * @param processDefinitionId
+     * @param activityId
+     * @return
+     */
+    public TaskDefinition getProcessDefinition(String processDefinitionId,String activityId){
+        List<Map<String, String>> taskDefList=new ArrayList<>();
+        ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)repositoryService.getProcessDefinition(processDefinitionId);
+        Map<String, TaskDefinition> taskDefs=processDefinition.getTaskDefinitions();
+        for(Map.Entry<String,TaskDefinition> taskDefinition:taskDefs.entrySet()){
+            if(activityId.equals(taskDefinition.getKey())){
+                return taskDefinition.getValue();
+            }
+        }
+        return null;
+    }
 
 
 }

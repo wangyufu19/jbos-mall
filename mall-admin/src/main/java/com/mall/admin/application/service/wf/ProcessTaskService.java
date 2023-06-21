@@ -1,6 +1,7 @@
 package com.mall.admin.application.service.wf;
 
 
+import com.mall.admin.application.request.wf.ProcessTaskDto;
 import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.domain.entity.wf.ProcessInst;
@@ -177,23 +178,43 @@ public class ProcessTaskService extends BaseService {
     }
     /**
      * 处理新增任务领取人
-     * @param processTask
+     * @param params
      */
-    public ResponseResult handleTaskAddAssignee(ProcessTask processTask){
+    public ResponseResult handleTaskAddAssignee(Map<String, Object> params){
         ResponseResult res;
-        Map<String, Object> params=new HashMap<>();
-        params.put("userId",processTask.getUserId());
-        params.put("processInstanceId",processTask.getProcInstId());
-        params.put("activityId",processTask.getActivityId());
-        params.put("activityName",processTask.getActivityName());
-        params.put("assignee",processTask.getAssignee());
+        ProcessTask processTask= ProcessTaskDto.build(params);
         res=taskService.addAssignee(params);
         if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
             //领取成功则新增流程任务数据
-            processTask.setId(StringUtils.getUUID());
-            processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
-            processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
-            this.addProcessTask(processTask);
+            String assignees=StringUtils.replaceNull(params.get("assignees"));
+            String[] assigneeList = StringUtils.split(assignees,',');
+            if (assigneeList != null && assigneeList.length > 0) {
+                for (String assignee : assigneeList) {
+                    processTask.setId(StringUtils.getUUID());
+                    processTask.setAssignee(assignee);
+                    processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
+                    processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+                    this.addProcessTask(processTask);
+                }
+            }
+        }
+        return res;
+    }
+    /**
+     * 处理减去任务领取人
+     * @param params
+     */
+    public ResponseResult handleTaskReduceAssignee(Map<String, Object> params){
+        ResponseResult res;
+        ProcessTask processTask= ProcessTaskDto.build(params);
+        res=taskService.reduceAssignee(params);
+        if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+            //减去成功则标记该用户流程任务状态NONE
+            String assignee=StringUtils.replaceNull(params.get("assignee"));
+            processTask.setAssignee(assignee);
+            processTask.setTaskState(ProcessTask.PROCESS_STATE_NONE);
+            processTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+            this.processTaskRepo.updateProcessTaskState(processTask);
         }
         return res;
     }

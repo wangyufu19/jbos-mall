@@ -180,18 +180,56 @@ public class TaskMgrService {
     /**
      * 新增任务领取人
      * @param activityId
-     * @param assignee
+     * @param assignees
      */
-    public void addAssignee(String userId,String processInstanceId,String activityId,String activityName,String assignee) throws CamundaException {
+    public void addAssignee(
+            String userId,
+            String processInstanceId,
+            String activityId,
+            String activityName,
+            String elementVariable,
+            String assignees) throws CamundaException {
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
             return;
         }
-        runtimeService.createProcessInstanceModification(processInstanceId)
-                .startBeforeActivity(activityId)
-                .setVariable("processLeader",assignee)
-                .setAnnotation(activityName)
-                .execute();
+        String[] assigneeList = StringUtils.split(assignees,',');
+        if (assigneeList != null && assigneeList.length > 0) {
+            for(String assignee:assigneeList){
+                runtimeService.createProcessInstanceModification(processInstanceId)
+                        .startBeforeActivity(activityId)
+                        .setVariable(elementVariable,assignee)
+                        .setAnnotation(activityName)
+                        .execute();
+            }
+        }
+    }
+    /**
+     * 减去任务领取人
+     * @param processInstanceId
+     * @param assignee
+     */
+    public void reduceAssignee(
+            String userId,
+            String processInstanceId,
+            String assignee) throws CamundaException {
+        //用户认证
+        if (!this.identityMgrService.auth(userId)) {
+            return;
+        }
+        Task task = this.get(assignee,processInstanceId);
+        if(task!=null){
+            ActivityInstance activityInstance=activityInstanceService.getActivityInstance(processInstanceId);
+            //子必须保证有一个活动实例
+            int length=(activityInstance.getChildActivityInstances()[0]).getChildActivityInstances().length;
+            if(length>1){
+                HistoricActivityInstance historicActivityInstance=
+                        activityInstanceService.getActiveActivityInstance(assignee,processInstanceId,task.getId());
+                runtimeService.createProcessInstanceModification(processInstanceId)
+                        .cancelActivityInstance(historicActivityInstance.getId())
+                        .execute();
+            }
+        }
     }
     /**
      * 完成任务
@@ -210,7 +248,8 @@ public class TaskMgrService {
             return taskId;
         }
         //查询实例状态
-        ProcessInstance processInstance= runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        ProcessInstance processInstance=
+                runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
         if(processInstance==null||processInstance.isSuspended()||processInstance.isEnded()){
             throw new CamundaException("Camunda["+processInstanceId+"]实例已暂停或已结束！");
         }
@@ -245,7 +284,8 @@ public class TaskMgrService {
             return false;
         }
         //判断用户任务是否最后完成的任务，如果不是则不能撤回
-        HistoricActivityInstance historicActivityInstance = this.activityInstanceService.getActivityInstance(userId,processInstanceId,taskId);
+        HistoricActivityInstance historicActivityInstance =
+                this.activityInstanceService.getLastFinishedActivityInstance(userId,processInstanceId,taskId);
         if(historicActivityInstance==null||!taskId.equals(historicActivityInstance.getTaskId())){
             return false;
         }
@@ -267,17 +307,26 @@ public class TaskMgrService {
      * @param processInstanceId
      * @param taskId
      */
-    public boolean drawback(String userId, String processDefinitionId,String processInstanceId, String taskId) throws CamundaException {
+    public boolean drawback(
+            String userId,
+            String processDefinitionId,
+            String processInstanceId,
+            String taskId) throws CamundaException {
        //是否可撤回任务
        if(this.isDrawback(userId,processInstanceId,taskId)){
-           //得到用户任务活动实例
-           HistoricActivityInstance historicActivityInstance = this.activityInstanceService.getActivityInstance(userId,processInstanceId,taskId);
+           //得到用户已完成任务活动实例
+           HistoricActivityInstance historicActivityInstance =
+                   this.activityInstanceService.getLastFinishedActivityInstance(userId,processInstanceId,taskId);
            //得到实例当前活动实例
            ActivityInstance activityInstance=runtimeService.getActivityInstance(processInstanceId);
            if(activityInstance==null){
                throw new CamundaException("Camunda["+processInstanceId+"]实例已结束或失效，不能撤回！");
            }
-           this.executeActivityToActivity(userId,processInstanceId,(activityInstance.getChildActivityInstances()[0]).getActivityId(),historicActivityInstance.getActivityId());
+           this.executeActivityToActivity(
+                   userId,
+                   processInstanceId,
+                   (activityInstance.getChildActivityInstances()[0]).getActivityId(),
+                   historicActivityInstance.getActivityId());
            //用户任务撤回后，重新领取该任务
            Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).active().singleResult();
            taskService.setAssignee(task.getId(), userId);
@@ -328,7 +377,11 @@ public class TaskMgrService {
      * @param srcActId
      * @param toActId
      */
-    private void executeActivityToActivity(String userId, String processInstanceId,String srcActId,String toActId) throws CamundaException {
+    private void executeActivityToActivity(
+            String userId,
+            String processInstanceId,
+            String srcActId,
+            String toActId) throws CamundaException {
         ProcessInstanceModificationBuilder builder = runtimeService.createProcessInstanceModification(processInstanceId);
         if(srcActId.equals(toActId)){
             throw new CamundaException("Camunda["+userId+"]用户变更实例活动任务和目标任务不能相同！");
@@ -343,8 +396,8 @@ public class TaskMgrService {
     public class TaskEntity{
         private String processDefinitionId;
         private String processInstanceId;
-        private String taskDefinitionKey;
         private String taskId;
+        private String taskDefinitionKey;
         private String taskName;
         private String assignee;
         private String executionId;

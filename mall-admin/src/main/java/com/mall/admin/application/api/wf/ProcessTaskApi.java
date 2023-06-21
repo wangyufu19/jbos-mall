@@ -118,8 +118,20 @@ public class ProcessTaskApi {
     public ResponseResult addAssignee(@RequestBody Map<String, Object> params){
         ResponseResult res=ResponseResult.ok();
         try {
-            ProcessTask processTask= ProcessTaskDto.build(params);
-            res=processTaskService.handleTaskAddAssignee(processTask);
+            res=processTaskService.handleTaskAddAssignee(params);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping(value = "/reduceAssignee")
+    @ApiOperation("减去任务领取人")
+    public ResponseResult reduceAssignee(@RequestBody Map<String, Object> params){
+        ResponseResult res=ResponseResult.ok();
+        try {
+            res=processTaskService.handleTaskReduceAssignee(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
