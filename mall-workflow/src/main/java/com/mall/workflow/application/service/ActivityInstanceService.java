@@ -99,7 +99,11 @@ public class ActivityInstanceService {
         return null;
     }
 
-
+    /**
+     * 得到当前活动实例
+     * @param processInstanceId
+     * @return
+     */
     public ActivityInstance getActivityInstance(String processInstanceId) {
         ActivityInstance activityInstance = runtimeService.getActivityInstance(processInstanceId);
         return activityInstance;

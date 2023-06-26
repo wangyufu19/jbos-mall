@@ -209,27 +209,30 @@ public class TaskMgrService {
      * @param processInstanceId
      * @param assignee
      */
-    public void reduceAssignee(
+    public int reduceAssignee(
             String userId,
             String processInstanceId,
             String assignee) throws CamundaException {
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
-            return;
+            return 0;
         }
         Task task = this.get(assignee,processInstanceId);
         if(task!=null){
+            //得到当前活动实例
             ActivityInstance activityInstance=activityInstanceService.getActivityInstance(processInstanceId);
-            //子必须保证有一个活动实例
-            int length=(activityInstance.getChildActivityInstances()[0]).getChildActivityInstances().length;
-            if(length>1){
+            //当前活动实例必须包含一个子活动实例
+            int childActivityNum=(activityInstance.getChildActivityInstances()[0]).getChildActivityInstances().length;
+            if(childActivityNum>1){
                 HistoricActivityInstance historicActivityInstance=
                         activityInstanceService.getActiveActivityInstance(assignee,processInstanceId,task.getId());
                 runtimeService.createProcessInstanceModification(processInstanceId)
                         .cancelActivityInstance(historicActivityInstance.getId())
                         .execute();
+                return 1;
             }
         }
+        return 0;
     }
     /**
      * 完成任务
@@ -290,8 +293,10 @@ public class TaskMgrService {
             return false;
         }
         //得到用户任务活动实例的父活动实例,如果父活动实例是多实例任务则不能撤回
-        HistoricActivityInstance parentHistoricActivityInstance=this.activityInstanceService.getActivityInstance(processInstanceId,historicActivityInstance.getParentActivityInstanceId());
-        if(parentHistoricActivityInstance!=null&&"multiInstanceBody".equals(parentHistoricActivityInstance.getActivityType())){
+        HistoricActivityInstance parentHistoricActivityInstance=this.activityInstanceService.getActivityInstance(
+                processInstanceId,historicActivityInstance.getParentActivityInstanceId());
+        if(parentHistoricActivityInstance!=null
+                &&"multiInstanceBody".equals(parentHistoricActivityInstance.getActivityType())){
             return false;
         }
         //得到实例当前活动实例

@@ -122,7 +122,10 @@ public class TaskMgrApi{
             if(log.isDebugEnabled()){
                 log.info("============["+userId+"]用户减去任务领取人");
             }
-            taskMgrService.reduceAssignee(userId,processInstanceId,assignee);
+            int reduceNum=taskMgrService.reduceAssignee(userId,processInstanceId,assignee);
+            if(reduceNum<=0){
+                res=ResponseResult.error(ResponseResult.CODE_FAILURE,"当前活动实例必须包含一个子活动实例");
+            }
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
