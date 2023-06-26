@@ -14,6 +14,12 @@
                 T.CREATEUSERID
             FROM WF_PROCESS_DEPLOYMENT T
             WHERE T.ISVALID=1
+            <if test="procKeyS != null and procKeyS != ''">
+                AND T.PROCKEY LIKE '%${procKeyS}%'
+            </if>
+            <if test="procNameS != null and procNameS != ''">
+            AND T.PROCNAME LIKE '%${procNameS}%'
+            </if>
         ) T1
         ORDER BY T1.DEPLOYTIME
     </select>
