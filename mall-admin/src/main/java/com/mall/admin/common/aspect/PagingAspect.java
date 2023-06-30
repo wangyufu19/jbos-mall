@@ -2,7 +2,6 @@ package com.mall.admin.common.aspect;
 
 import com.github.pagehelper.PageHelper;
 import com.mall.common.page.PageParam;
-import com.mall.common.response.ResponseResult;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -25,7 +24,6 @@ public class PagingAspect {
 
     @Around("paging()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        ResponseResult res = ResponseResult.ok();
         int pageNum = PageParam.DEFAULT_PAGE_NUM;
         int pageSize = PageParam.DEFAULT_PAGE_SIZE;
 
