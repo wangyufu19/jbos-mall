@@ -44,9 +44,9 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     druid:
       camunda:
-        url: jdbc:mysql://localhost:3306/camunda?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
-        username: camunda
-        password: camunda
+        url: jdbc:mysql://localhost:3306/jbos?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+        username: jbos
+        password: ENC(z/dPUd+V2Exjh/dKtt/KFQ==)
       initial-size: 10
       max-active: 100
       min-idle: 10

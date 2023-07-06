@@ -105,14 +105,17 @@ public class MaterialBuyApi {
             MaterialBuyDto materialBuyDto = materialBuyService.getMaterialBuyById(StringUtils.replaceNull(params.get("id")));
             Map<String, Object> formObj = new HashMap<>();
             formObj.put("materialBuyDto", materialBuyDto);
+            //如果是待办处理路由则查询当前任务是否可撤回
             //查询实例任务是否可撤回
             String isDrawback = "false";
-            ResponseResult taskRes = taskService.isDrawback(params);
-            if (ResponseResult.CODE_SUCCESS.equals(taskRes.getRetCode())
-                    && taskRes.getData() != null
-                    && "true".equals(StringUtils.replaceNull(((Map<String, Object>) taskRes.getData()).get("isDrawback")))
-            ) {
-                isDrawback = StringUtils.replaceNull(((Map<String, Object>) taskRes.getData()).get("isDrawback"));
+            if ("trans".equals(params.get("action"))) {
+                ResponseResult taskRes = taskService.isDrawback(params);
+                if (ResponseResult.CODE_SUCCESS.equals(taskRes.getRetCode())
+                        && taskRes.getData() != null
+                        && "true".equals(StringUtils.replaceNull(((Map<String, Object>) taskRes.getData()).get("isDrawback")))
+                ) {
+                    isDrawback = StringUtils.replaceNull(((Map<String, Object>) taskRes.getData()).get("isDrawback"));
+                }
             }
             formObj.put("isDrawback", isDrawback);
             res.setData(formObj);
