@@ -1,7 +1,6 @@
 package com.mall.admin.application.api.wf;
 
 import com.mall.admin.application.request.wf.ProcessTaskDto;
-import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.domain.entity.wf.TaskStep;
@@ -16,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +32,6 @@ import java.util.Map;
 public class ProcessTaskApi {
     @Autowired
     private ProcessTaskService processTaskService;
-    @Autowired
-    private TaskService taskService;
     /**
      * 查询我的工作列表
      *
@@ -105,7 +103,7 @@ public class ProcessTaskApi {
         ResponseResult res=ResponseResult.ok();
         try {
             ProcessTask processTask= ProcessTaskDto.build(params);
-            res=processTaskService.handleAssigneeTask(processTask);
+            processTaskService.assigneeTask(processTask);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
@@ -118,7 +116,7 @@ public class ProcessTaskApi {
     public ResponseResult addAssignee(@RequestBody Map<String, Object> params){
         ResponseResult res=ResponseResult.ok();
         try {
-            res=processTaskService.handleTaskAddAssignee(params);
+            processTaskService.addTaskAssignee(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
@@ -131,7 +129,10 @@ public class ProcessTaskApi {
     public ResponseResult reduceAssignee(@RequestBody Map<String, Object> params){
         ResponseResult res=ResponseResult.ok();
         try {
-            res=processTaskService.handleTaskReduceAssignee(params);
+            int reduceNum=processTaskService.reduceTaskAssignee(params);
+            if(reduceNum<=0){
+                res=ResponseResult.error(ResponseResult.CODE_FAILURE,"当前活动实例必须包含一个子活动实例");
+            }
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
@@ -157,7 +158,7 @@ public class ProcessTaskApi {
                     params.put(variableMap.get("DICTID"),variableMap.get("variableValue"));
                 }
             }
-            res = processTaskService.handleCompleteTask(processCurrentTask,params,null);
+            res = processTaskService.completeTask(processCurrentTask,params,null);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -175,8 +176,17 @@ public class ProcessTaskApi {
     @ApiOperation("撤回用户任务")
     public ResponseResult drawbackUserTask(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
+        String userId=StringUtils.replaceNull(params.get("userId"));
+        String processDefinitionId= StringUtils.replaceNull(params.get("processDefinitionId"));
+        String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
+        String taskId=StringUtils.replaceNull(params.get("taskId"));
         try {
-            res = taskService.drawback(params);
+            boolean isDrawback = processTaskService.drawbackProcessTask(userId,processDefinitionId,processInstanceId,taskId);
+            Map<String,Object> data=new HashMap<String,Object>();
+            data.put("processInstanceId",processInstanceId);
+            data.put("taskId",taskId);
+            data.put("isDrawback",isDrawback);
+            res.setData(data);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

@@ -2,10 +2,10 @@ package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.request.im.MaterialBuyDto;
 import com.mall.admin.application.request.wf.ProcessTaskDto;
-import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.admin.domain.entity.wf.ProcessTask;
+import com.mall.admin.infrastructure.camunda.InstanceTaskService;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
@@ -35,7 +35,7 @@ public class MaterialBuyApi {
     @Autowired
     private ProcessTaskService processTaskService;
     @Autowired
-    private TaskService taskService;
+    private InstanceTaskService instanceTaskService;
 
     /**
      * 查询物采购业务列表
@@ -106,16 +106,13 @@ public class MaterialBuyApi {
             Map<String, Object> formObj = new HashMap<>();
             formObj.put("materialBuyDto", materialBuyDto);
             //如果是待办处理路由则查询当前任务是否可撤回
+            boolean isDrawback=false;
             //查询实例任务是否可撤回
-            String isDrawback = "false";
             if ("trans".equals(params.get("action"))) {
-                ResponseResult taskRes = taskService.isDrawback(params);
-                if (ResponseResult.CODE_SUCCESS.equals(taskRes.getRetCode())
-                        && taskRes.getData() != null
-                        && "true".equals(StringUtils.replaceNull(((Map<String, Object>) taskRes.getData()).get("isDrawback")))
-                ) {
-                    isDrawback = StringUtils.replaceNull(((Map<String, Object>) taskRes.getData()).get("isDrawback"));
-                }
+                String userId=StringUtils.replaceNull(params.get("userId"));
+                String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
+                String taskId=StringUtils.replaceNull(params.get("taskId"));
+                isDrawback = instanceTaskService.isDrawback(userId,processInstanceId,taskId);
             }
             formObj.put("isDrawback", isDrawback);
             res.setData(formObj);
@@ -191,7 +188,7 @@ public class MaterialBuyApi {
         try {
             Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
             ProcessTask processTask = ProcessTaskDto.build(materialBuyMap);
-            res = processTaskService.handleDrawbackProcessTask(processTask);
+            res = processTaskService.drawbackProcessTask(processTask);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -206,7 +203,7 @@ public class MaterialBuyApi {
         try {
             Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
             ProcessTask processTask = ProcessTaskDto.build(materialBuyMap);
-            res = processTaskService.handleRejectProcessTask(processTask);
+            res = processTaskService.rejectProcessTask(processTask);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

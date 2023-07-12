@@ -1,6 +1,5 @@
 package com.mall.admin.application.api.wf;
 
-import com.mall.admin.application.service.external.camunda.DeploymentService;
 import com.mall.admin.application.service.wf.ProcessDeploymentService;
 import com.mall.admin.domain.entity.wf.ProcessDeployment;
 import com.mall.common.page.PageParam;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,8 +28,7 @@ import java.util.Map;
 public class ProcessDeploymentApi {
     @Autowired
     private ProcessDeploymentService processDeploymentService;
-    @Autowired
-    private DeploymentService deploymentService;
+
     /**
      * 查询流程定义列表
      * @param params
@@ -55,20 +54,7 @@ public class ProcessDeploymentApi {
     public ResponseResult deploy(MultipartFile file, @RequestParam Map<String, Object> params){
         ResponseResult res = ResponseResult.ok();
         try {
-            res = deploymentService.deploy(file,params);
-            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
-                Map<String,Object> deploymentMap=(Map<String,Object>)res.getData();
-                if(deploymentMap!=null){
-                    ProcessDeployment processDeployment=new ProcessDeployment();
-                    processDeployment.setId(StringUtils.replaceNull(deploymentMap.get("id")));
-                    processDeployment.setDeploymentId(StringUtils.replaceNull(deploymentMap.get("deploymentId")));
-                    processDeployment.setProcKey(StringUtils.replaceNull(deploymentMap.get("key")));
-                    processDeployment.setProcName(StringUtils.replaceNull(deploymentMap.get("name")));
-                    processDeployment.setResource(StringUtils.replaceNull(deploymentMap.get("source")));
-                    processDeployment.setVersion(StringUtils.replaceNull(deploymentMap.get("version")));
-                    processDeploymentService.deployProcessDeployment(processDeployment);
-                }
-            }
+            res = processDeploymentService.deployProcessDeployment(file,params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -83,11 +69,7 @@ public class ProcessDeploymentApi {
         ResponseResult res = ResponseResult.ok();
         String id=StringUtils.replaceNull(params.get("id"));
         try {
-            params.put("cascade","true");
-            res=deploymentService.unDeploy(params);
-            if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())){
-                processDeploymentService.deployProcessDeployment(id);
-            }
+            processDeploymentService.unDeployProcessDeployment(id);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -99,8 +81,10 @@ public class ProcessDeploymentApi {
     @ApiOperation("得到流程定义任务")
     public ResponseResult getProcessDefinitionList(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
+        String processDefinitionId= StringUtils.replaceNull(params.get("processDefinitionId"));
         try{
-            res=deploymentService.getProcessDefinitionList(params);
+            List<Map<String, String>> data=processDeploymentService.getProcessDefinitionList(processDefinitionId);
+            res.setData(data);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());

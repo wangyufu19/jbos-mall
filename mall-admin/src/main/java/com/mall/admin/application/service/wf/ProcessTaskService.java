@@ -2,9 +2,11 @@ package com.mall.admin.application.service.wf;
 
 
 import com.mall.admin.application.request.wf.ProcessTaskDto;
-import com.mall.admin.application.service.external.camunda.TaskService;
+import com.mall.admin.common.exception.CamundaException;
 import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.domain.entity.wf.ProcessInst;
+import com.mall.admin.infrastructure.camunda.InstanceTaskService;
+import com.mall.admin.infrastructure.camunda.ProcessInstanceService;
 import com.mall.common.base.BaseService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.wf.ProcessTask;
@@ -30,11 +32,13 @@ import java.util.Map;
 @Service
 public class ProcessTaskService extends BaseService {
     @Autowired
+    private ProcessInstanceService processInstanceService;
+    @Autowired
     private ProcessMgrService processMgrService;
     @Autowired
     private ProcessTaskRepo processTaskRepo;
     @Autowired
-    private TaskService taskService;
+    private InstanceTaskService instanceTaskService;
 
     /**
      * 查询用户待办列表
@@ -154,69 +158,67 @@ public class ProcessTaskService extends BaseService {
      * 处理领取任务
      * @param processTask
      */
-    public ResponseResult handleAssigneeTask(ProcessTask processTask){
-        ResponseResult res;
-        Map<String, Object> params=new HashMap<>();
-        params.put("userId",processTask.getUserId());
-        params.put("processInstanceId",processTask.getProcInstId());
-        params.put("taskId",processTask.getTaskId());
-        params.put("assignee",processTask.getAssignee());
-        res=taskService.assignee(params);
-        if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-            //领取成功则新增流程任务数据,同时授权的用户任务状态标记NONE
-            processTask.setId(StringUtils.getUUID());
-            processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
-            processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
-            this.addProcessTask(processTask);
-            //更新授权的用户任务状态标记NONE
-            processTask.setAssignee(processTask.getUserId());
-            processTask.setTaskState(ProcessTask.PROCESS_STATE_NONE);
-            processTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
-            this.updateProcessTaskOpinion(processTask);
-        }
-        return res;
+    @Transactional
+    public void assigneeTask(ProcessTask processTask) throws CamundaException {
+        //领取任务
+        instanceTaskService.assignee(processTask.getUserId(),processTask.getProcInstId(),
+                processTask.getTaskId(),processTask.getAssignee());
+        //领取成功则新增流程任务数据,同时授权的用户任务状态标记NONE
+        processTask.setId(StringUtils.getUUID());
+        processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
+        processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+        this.addProcessTask(processTask);
+        //更新授权的用户任务状态标记NONE
+        processTask.setAssignee(processTask.getUserId());
+        processTask.setTaskState(ProcessTask.PROCESS_STATE_NONE);
+        processTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+        this.updateProcessTaskOpinion(processTask);
     }
     /**
      * 处理新增任务领取人
      * @param params
      */
-    public ResponseResult handleTaskAddAssignee(Map<String, Object> params){
-        ResponseResult res;
+    @Transactional
+    public void addTaskAssignee(Map<String, Object> params) throws CamundaException {
         ProcessTask processTask= ProcessTaskDto.build(params);
-        res=taskService.addAssignee(params);
-        if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-            //领取成功则新增流程任务数据
-            String assignees=StringUtils.replaceNull(params.get("assignees"));
-            String[] assigneeList = StringUtils.split(assignees,',');
-            if (assigneeList != null && assigneeList.length > 0) {
-                for (String assignee : assigneeList) {
-                    processTask.setId(StringUtils.getUUID());
-                    processTask.setAssignee(assignee);
-                    processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
-                    processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
-                    this.addProcessTask(processTask);
-                }
+        String userId=StringUtils.replaceNull(params.get("userId"));
+        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        String activityId=StringUtils.replaceNull(params.get("activityId"));
+        String activityName=StringUtils.replaceNull(params.get("activityName"));
+        String elementVariable=StringUtils.replaceNull(params.get("elementVariable"));
+        String assignees=StringUtils.replaceNull(params.get("assignees"));
+        //新增任务领取人
+        instanceTaskService.addAssignee(userId,processInstanceId,activityId,activityName,elementVariable,assignees);
+        //领取成功则新增流程任务数据
+        String[] assigneeList = StringUtils.split(assignees,',');
+        if (assigneeList != null && assigneeList.length > 0) {
+            for (String assignee : assigneeList) {
+                processTask.setId(StringUtils.getUUID());
+                processTask.setAssignee(assignee);
+                processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
+                processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+                this.addProcessTask(processTask);
             }
         }
-        return res;
     }
     /**
      * 处理减去任务领取人
      * @param params
      */
-    public ResponseResult handleTaskReduceAssignee(Map<String, Object> params){
-        ResponseResult res;
+    @Transactional
+    public int reduceTaskAssignee(Map<String, Object> params) throws CamundaException {
         ProcessTask processTask= ProcessTaskDto.build(params);
-        res=taskService.reduceAssignee(params);
-        if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
+        //减去任务领取人
+        int reduceNum=instanceTaskService.reduceAssignee(processTask.getUserId(),processTask.getProcInstId(),
+                processTask.getAssignee());
+        if (reduceNum>0){
             //减去成功则标记该用户流程任务状态NONE
-            String assignee=StringUtils.replaceNull(params.get("assignee"));
-            processTask.setAssignee(assignee);
+            processTask.setAssignee(processTask.getAssignee());
             processTask.setTaskState(ProcessTask.PROCESS_STATE_NONE);
             processTask.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
             this.processTaskRepo.updateProcessTaskState(processTask);
         }
-        return res;
+        return reduceNum;
     }
     /**
      * 处理审批任务
@@ -225,16 +227,21 @@ public class ProcessTaskService extends BaseService {
      * @return
      */
     @Transactional
-    public ResponseResult handleCompleteTask(ProcessTask processCurrentTask,
-                                             Map<String, Object> variables,
-                                             ProcessCallback processCallback){
-        ResponseResult res;
-        res = taskService.complete(variables);
-        if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-            //得到流程当前执行任务和实例状态(active;isEnd)
-            Map<String, String> data = (Map<String, String>) res.getData();
-            String taskId = StringUtils.replaceNull(data.get("taskId"));
-            String processInstanceState = StringUtils.replaceNull(data.get("processInstanceState"));
+    public ResponseResult completeTask(ProcessTask processCurrentTask,
+                                       Map<String, Object> variables,
+                                       ProcessCallback processCallback) throws CamundaException {
+        ResponseResult res=ResponseResult.ok();
+        String processInstanceId = StringUtils.replaceNull(variables.get("processInstanceId"));
+        //完成任务
+        String taskId = instanceTaskService.complete(variables);
+        //得到流程当前执行任务和实例状态(active;isEnd)
+        String processInstanceState=processInstanceService.getProcessInstanceState(processInstanceId);
+        Map<String,String> data=new HashMap();
+        data.put("taskId",taskId);
+        data.put("processInstanceState",processInstanceState);
+        res.setData(data);
+
+        if (!StringUtils.isNUll(taskId)) {
             //更新流程当前任务状态和审批意见
             processCurrentTask.setTaskId(taskId);
             processCurrentTask.setTaskState(ProcessTask.PROCESS_STATE_COMPLETED);
@@ -267,18 +274,20 @@ public class ProcessTaskService extends BaseService {
      * @return
      */
     @Transactional
-    public ResponseResult handleDrawbackProcessTask(ProcessTask processCurrentTask) {
-        ResponseResult res;
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", processCurrentTask.getAssignee());
-        params.put("processDefinitionId", processCurrentTask.getProcDefId());
-        params.put("processInstanceId", processCurrentTask.getProcInstId());
-        params.put("taskId", processCurrentTask.getTaskId());
-        res = taskService.drawback(params);
-        if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())
-                && res.getData() != null
-                && "true".equals(StringUtils.replaceNull(((Map<String, Object>) res.getData()).get("isDrawback")))
-        ) {
+    public ResponseResult drawbackProcessTask(ProcessTask processCurrentTask) throws CamundaException {
+        ResponseResult res=ResponseResult.ok();
+        String userId=processCurrentTask.getAssignee();
+        String processDefinitionId=processCurrentTask.getProcDefId();
+        String processInstanceId= processCurrentTask.getProcInstId();
+        String taskId=processCurrentTask.getTaskId();
+        //撤回任务
+        boolean isDrawback= instanceTaskService.drawback(userId,processDefinitionId,processInstanceId,taskId);
+        Map<String,Object> data=new HashMap<String,Object>();
+        data.put("processInstanceId",processInstanceId);
+        data.put("taskId",taskId);
+        data.put("isDrawback",isDrawback);
+        res.setData(data);
+        if (isDrawback) {
             //新增流程任务数据
             ProcessTask processTask = new ProcessTask();
             processTask.setId(StringUtils.getUUID());
@@ -296,20 +305,34 @@ public class ProcessTaskService extends BaseService {
     }
 
     /**
+     * 撤回流程任务
+     * @param userId
+     * @param processDefinitionId
+     * @param processInstanceId
+     * @param taskId
+     * @return
+     * @throws CamundaException
+     */
+    public boolean drawbackProcessTask(String userId,
+                                       String processDefinitionId,
+                                       String processInstanceId,
+                                       String taskId) throws CamundaException {
+        boolean isDrawback=instanceTaskService.drawback(userId,processDefinitionId,processInstanceId,taskId);
+        return isDrawback;
+    }
+    /**
      * 驳回流程任务
      * @param processCurrentTask
      * @return
      */
     @Transactional
-    public ResponseResult handleRejectProcessTask(ProcessTask processCurrentTask) {
-        ResponseResult res;
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", processCurrentTask.getAssignee());
-        params.put("processDefinitionId", processCurrentTask.getProcDefId());
-        params.put("processInstanceId", processCurrentTask.getProcInstId());
-        res = taskService.reject(params);
-        if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode()) && res.getData() != null) {
-            Map<String, Object> data = (Map<String, Object>) res.getData();
+    public ResponseResult rejectProcessTask(ProcessTask processCurrentTask) throws CamundaException {
+        ResponseResult res=ResponseResult.ok();
+        //驳回任务(默认驳回至发起人)
+        Map<String,Object> data = instanceTaskService.reject(
+                processCurrentTask.getAssignee(),processCurrentTask.getProcDefId(),processCurrentTask.getProcInstId());
+        if (data!= null) {
+            res.setData(data);
             //新增流程任务数据
             ProcessTask processTask = new ProcessTask();
             processTask.setId(StringUtils.getUUID());

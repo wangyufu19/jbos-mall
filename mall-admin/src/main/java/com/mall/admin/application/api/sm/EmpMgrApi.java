@@ -1,7 +1,7 @@
 package com.mall.admin.application.api.sm;
 
-import com.mall.admin.application.service.external.camunda.IdentityMgrService;
 import com.mall.admin.application.service.sm.EmpMgrService;
+import com.mall.admin.infrastructure.camunda.IdentityMgrService;
 import com.mall.common.page.PageParam;
 import com.mall.common.office.excel.IPageExcel;
 import com.mall.common.office.excel.PageExcelHandler;
@@ -122,8 +122,10 @@ public class EmpMgrApi {
     @ApiOperation("同步到CAMUNDA")
     public ResponseResult synchToCamunda(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
+        String userId=StringUtils.replaceNull(params.get("userId"));
+        String userName= StringUtils.replaceNull(params.get("userName"));
         try {
-            res = identityMgrService.create(params);
+            identityMgrService.createUser(userId,userName);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

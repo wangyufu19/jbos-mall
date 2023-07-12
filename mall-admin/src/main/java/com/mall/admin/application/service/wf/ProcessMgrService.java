@@ -1,19 +1,22 @@
 package com.mall.admin.application.service.wf;
 
 import com.mall.admin.application.request.wf.ProcessInstanceDto;
-import com.mall.admin.application.service.external.camunda.ProcessInstanceService;
+import com.mall.admin.common.exception.CamundaException;
 import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.admin.domain.entity.wf.ProcessTask;
+import com.mall.admin.infrastructure.camunda.ProcessInstanceService;
 import com.mall.admin.infrastructure.repository.wf.ProcessInstRepo;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,32 +50,30 @@ public class ProcessMgrService {
      * @return
      */
     @Transactional
-    public ResponseResult startProcessInstance(Map<String, Object> variable,ProcessCallback processCallback){
-        ResponseResult res;
+    public ResponseResult startProcessInstance(Map<String, Object> variable,ProcessCallback processCallback) throws CamundaException {
+        ResponseResult res=ResponseResult.ok();
         String userId= StringUtils.replaceNull(variable.get("userId"));
+        String processDefinitionKey= StringUtils.replaceNull(variable.get("processDefinitionKey"));
+        String businessKey= StringUtils.replaceNull(variable.get("businessKey"));
         String startActivityId=StringUtils.replaceNull(variable.get("startActivityId"));
         variable.put(startActivityId,userId);
         //启动流程实例
-        res=processInstanceService.startProcessInstance(variable);
+        ProcessInstance processInstance=processInstanceService.startProcessInstance(userId,processDefinitionKey,businessKey,variable);
         //启动实例成功，则处理相关业务逻辑
-        if(ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-            Map<String, String> data=(Map<String,String>)res.getData();
-            String processDefinitionId = null;
-            String processInstanceId=null;
-            if (data != null) {
-                processDefinitionId = data.get("processDefinitionId");
-                processInstanceId = data.get("processInstanceId");
-            }
+        if(processInstance!=null) {
+            Map<String, String> data=new HashMap<>();
+            data.put("processDefinitionId",processInstance.getProcessDefinitionId());
+            data.put("processInstanceId",processInstance.getProcessInstanceId());
             res.setData(data);
             //新增流程实例数据
             ProcessInst processInst=ProcessInstanceDto.build(variable);
-            processInst.setProcDefId(processDefinitionId);
-            processInst.setProcInstId(processInstanceId);
+            processInst.setProcDefId(processInstance.getProcessDefinitionId());
+            processInst.setProcInstId(processInstance.getProcessInstanceId());
             this.addProcessInst(processInst);
             //新增流程任务数据
             ProcessTask processTask = new ProcessTask();
             processTask.setId(StringUtils.getUUID());
-            processTask.setProcInstId(processInstanceId);
+            processTask.setProcInstId(processInstance.getProcessInstanceId());
             processTask.setActivityId(startActivityId);
             processTask.setActivityName(Role.ROLE_PROCESS_STARTER_DESC);
             processTask.setAssignee(userId);
@@ -105,5 +106,40 @@ public class ProcessMgrService {
         processInst.setProcState(procState);
         processInst.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
         processInstRepo.updateProcState(processInst);
+    }
+    /**
+     * 查询流程实例当前活动
+     * @param processInstanceId
+     * @return
+     */
+    public Map<String,Object> getProcessInstanceCurrentActivityId(String processDefinitionId,String processInstanceId){
+        return processInstanceService.getProcessInstanceCurrentActivityId(processDefinitionId,processInstanceId);
+    }
+    /**
+     * 暂停流程实例
+     * @param processInstanceId
+     */
+    @Transactional
+    public void suspendProcessInstanceById(String processInstanceId){
+        processInstanceService.suspendProcessInstanceById(processInstanceId);
+        this.updateProcState(processInstanceId, ProcessInst.PROCESS_STATE_SUSPENDED);
+    }
+    /**
+     * 激活流程实例
+     * @param processInstanceId
+     */
+    @Transactional
+    public void activateProcessInstanceById(String processInstanceId){
+        processInstanceService.activateProcessInstanceById(processInstanceId);
+        this.updateProcState(processInstanceId, ProcessInst.PROCESS_STATE_ACTIVE);
+    }
+    /**
+     * 删除流程实例
+     * @param processInstanceId
+     */
+    @Transactional
+    public void deleteProcessInstance(String processInstanceId){
+        processInstanceService.deleteProcessInstance(processInstanceId,"作废流程实例");
+        this.updateProcState(processInstanceId, ProcessInst.PROCESS_STATE_CANCELED);
     }
 }

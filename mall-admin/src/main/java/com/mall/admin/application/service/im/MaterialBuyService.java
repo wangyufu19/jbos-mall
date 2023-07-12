@@ -4,9 +4,9 @@ import com.mall.admin.application.request.im.MaterialBuyDto;
 import com.mall.admin.application.request.wf.ProcessTaskDto;
 import com.mall.admin.application.service.wf.ProcessCallback;
 import com.mall.admin.application.service.wf.ProcessDefConstants;
-import com.mall.admin.application.service.external.camunda.TaskService;
 import com.mall.admin.application.service.wf.ProcessMgrService;
 import com.mall.admin.application.service.wf.ProcessTaskService;
+import com.mall.admin.common.exception.CamundaException;
 import com.mall.common.base.BaseService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.im.MaterialBuy;
@@ -138,7 +138,7 @@ public class MaterialBuyService extends BaseService {
     /**
      * 处理物品采购业务流程数据
      */
-    public ResponseResult handleMaterialStartProcess(Map<String, Object> params) {
+    public ResponseResult handleMaterialStartProcess(Map<String, Object> params) throws CamundaException {
         ResponseResult res;
         String action = StringUtils.replaceNull(params.get("action"));
         MaterialBuyDto materialBuyDto = MaterialBuyDto.build(params);
@@ -181,7 +181,7 @@ public class MaterialBuyService extends BaseService {
     /**
      * 处理物品采购业务流程任务数据
      */
-    public ResponseResult handleMaterialBuyProcessTask(Map<String, Object> params) {
+    public ResponseResult handleMaterialBuyProcessTask(Map<String, Object> params) throws CamundaException {
         ResponseResult res;
         Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
         ProcessTask processTask = ProcessTaskDto.build(materialBuyMap);
@@ -189,7 +189,7 @@ public class MaterialBuyService extends BaseService {
 
         //审批驳回
         if("101".equals(processTask.getOpinion())){
-            res = processTaskService.handleRejectProcessTask(processTask);
+            res = processTaskService.rejectProcessTask(processTask);
         }else{
             String bizNo=materialBuyDto.getMaterialBuy().getBizNo();
             double amount = materialBuyDto.getMaterialBuy().getTotalAmt();
@@ -199,7 +199,7 @@ public class MaterialBuyService extends BaseService {
                 res = ResponseResult.error(ResponseResult.CODE_FAILURE, "对不起，实例任务下一个候选人不能为空！");
                 return res;
             }
-            res = processTaskService.handleCompleteTask(processTask,variables,new ProcessCallback(){
+            res = processTaskService.completeTask(processTask,variables,new ProcessCallback(){
                 public void call(Map<String, String> data) {
                     Map<String, Object> parameterObject = new HashMap<>();
                     parameterObject.put("BIZNO", bizNo);

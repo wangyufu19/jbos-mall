@@ -1,9 +1,7 @@
 package com.mall.admin.application.api.wf;
 
-import com.mall.admin.application.service.external.camunda.ProcessInstanceService;
 import com.mall.admin.application.service.sm.BusinessDict;
 import com.mall.admin.application.service.wf.ProcessMgrService;
-import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
@@ -27,8 +25,6 @@ import java.util.Map;
 @Slf4j
 @Api("流程实例接口")
 public class ProcessInstanceApi {
-    @Autowired
-    private ProcessInstanceService processInstanceService;
     @Autowired
     private ProcessMgrService processMgrService;
     @Autowired
@@ -95,12 +91,12 @@ public class ProcessInstanceApi {
     @ApiOperation("查询流程实例当前活动")
     public ResponseResult getProcessInstanceCurrentActivityId(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
+        String processDefinitionId=StringUtils.replaceNull(params.get("processDefinitionId"));
+        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
         try {
-            res = processInstanceService.getProcessInstanceCurrentActivityId(params);
-            if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-                Map<String, Object> data = (Map<String, Object>) res.getData();
-                res.setData(data);
-            }
+            Map<String,Object> data=processMgrService.getProcessInstanceCurrentActivityId(
+                    processDefinitionId,processInstanceId);
+            res.setData(data);
 
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -114,12 +110,9 @@ public class ProcessInstanceApi {
     @ApiOperation("查询流程实例列表")
     public ResponseResult suspendProcessInstance(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
+        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
         try {
-            res = processInstanceService.suspendProcessInstanceById(params);
-            if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-                String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
-                processMgrService.updateProcState(processInstanceId, ProcessInst.PROCESS_STATE_SUSPENDED);
-            }
+            processMgrService.suspendProcessInstanceById(processInstanceId);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -132,12 +125,9 @@ public class ProcessInstanceApi {
     @ApiOperation("查询流程实例列表")
     public ResponseResult activateProcessInstance(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
+        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
         try {
-            res = processInstanceService.activateProcessInstanceById(params);
-            if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-                String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
-                processMgrService.updateProcState(processInstanceId, ProcessInst.PROCESS_STATE_ACTIVE);
-            }
+            processMgrService.activateProcessInstanceById(processInstanceId);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -150,12 +140,9 @@ public class ProcessInstanceApi {
     @ApiOperation("删除流程实例")
     public ResponseResult deleteProcessInstance(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
+        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
         try {
-            res = processInstanceService.deleteProcessInstance(params);
-            if (ResponseResult.CODE_SUCCESS.equals(res.getRetCode())) {
-                String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
-                processMgrService.updateProcState(processInstanceId, ProcessInst.PROCESS_STATE_CANCELED);
-            }
+            processMgrService.deleteProcessInstance(processInstanceId);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
