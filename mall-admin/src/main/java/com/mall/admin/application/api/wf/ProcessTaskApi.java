@@ -161,7 +161,7 @@ public class ProcessTaskApi {
             res = processTaskService.completeTask(processCurrentTask,params,null);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, e.getMessage());
         }
         return res;
     }
