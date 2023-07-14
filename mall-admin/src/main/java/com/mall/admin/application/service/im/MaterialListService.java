@@ -21,6 +21,13 @@ public class MaterialListService {
     public List<MaterialList> getMaterialListList(Map<String, Object> parameterObject){
         return materialListRepo.getMaterialListList(parameterObject);
     }
+    public void addMaterialList(List<MaterialList> materials) {
+        if (materials != null) {
+            for (MaterialList materialList : materials) {
+                this.addMaterialList(materialList);
+            }
+        }
+    }
     public void addMaterialList(MaterialList materialList){
         materialListRepo.addMaterialList(materialList);
     }

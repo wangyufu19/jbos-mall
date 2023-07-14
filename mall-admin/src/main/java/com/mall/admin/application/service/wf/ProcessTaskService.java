@@ -303,23 +303,6 @@ public class ProcessTaskService extends BaseService {
         }
         return res;
     }
-
-    /**
-     * 撤回流程任务
-     * @param userId
-     * @param processDefinitionId
-     * @param processInstanceId
-     * @param taskId
-     * @return
-     * @throws CamundaException
-     */
-    public boolean drawbackProcessTask(String userId,
-                                       String processDefinitionId,
-                                       String processInstanceId,
-                                       String taskId) throws CamundaException {
-        boolean isDrawback=instanceTaskService.drawback(userId,processDefinitionId,processInstanceId,taskId);
-        return isDrawback;
-    }
     /**
      * 驳回流程任务
      * @param processCurrentTask
@@ -330,7 +313,7 @@ public class ProcessTaskService extends BaseService {
         ResponseResult res=ResponseResult.ok();
         //驳回任务(默认驳回至发起人)
         Map<String,Object> data = instanceTaskService.reject(
-                processCurrentTask.getAssignee(),processCurrentTask.getProcDefId(),processCurrentTask.getProcInstId());
+                processCurrentTask.getAssignee(),processCurrentTask.getProcInstId(),processCurrentTask.getTaskId());
         if (data!= null) {
             res.setData(data);
             //新增流程任务数据

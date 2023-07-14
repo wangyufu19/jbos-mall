@@ -1,12 +1,15 @@
 package com.mall.admin.application.service.im;
 
 import com.mall.admin.application.request.im.MaterialBuyDto;
+import com.mall.admin.application.request.im.MaterialInStoreDto;
 import com.mall.admin.application.request.wf.ProcessTaskDto;
+import com.mall.admin.application.service.comm.BizGeneratorService;
 import com.mall.admin.application.service.wf.ProcessCallback;
 import com.mall.admin.application.service.wf.ProcessDefConstants;
 import com.mall.admin.application.service.wf.ProcessMgrService;
 import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.admin.common.exception.CamundaException;
+import com.mall.admin.domain.entity.im.MaterialInStore;
 import com.mall.common.base.BaseService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.im.MaterialBuy;
@@ -21,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +40,8 @@ import com.mall.admin.application.service.sm.BusinessDict;
 @Service
 public class MaterialBuyService extends BaseService {
     @Autowired
+    private BizGeneratorService bizGeneratorService;
+    @Autowired
     private ProcessMgrService processMgrService;
     @Autowired
     private ProcessTaskService processTaskService;
@@ -45,6 +51,8 @@ public class MaterialBuyService extends BaseService {
     private MaterialListService materialListService;
     @Autowired
     private BusinessDict businessDict;
+    @Autowired
+    private MaterialInStoreService materialInStoreService;
 
 
     /**
@@ -85,7 +93,7 @@ public class MaterialBuyService extends BaseService {
         //新增物品采购基本信息
         materialBuyRepo.addMaterialBuy(materialBuyDto.getMaterialBuy());
         //新增物品采购清单
-        this.addMaterialList(materialBuyDto.getMaterialList());
+        materialListService.addMaterialList(materialBuyDto.getMaterialList());
     }
 
     /**
@@ -103,20 +111,7 @@ public class MaterialBuyService extends BaseService {
         //删除物品采购清单
         materialListService.deleteMaterial(parameterObject);
         //新增物品采购清单
-        this.addMaterialList(materialBuyDto.getMaterialList());
-    }
-
-    /**
-     * 新增物品采购清单
-     *
-     * @param materials
-     */
-    private void addMaterialList(List<MaterialList> materials) {
-        if (materials != null) {
-            for (MaterialList materialList : materials) {
-                materialListService.addMaterialList(materialList);
-            }
-        }
+        materialListService.addMaterialList(materialBuyDto.getMaterialList());
     }
 
     /**
@@ -138,6 +133,7 @@ public class MaterialBuyService extends BaseService {
     /**
      * 处理物品采购业务流程数据
      */
+    @Transactional
     public ResponseResult handleMaterialStartProcess(Map<String, Object> params) throws CamundaException {
         ResponseResult res;
         String action = StringUtils.replaceNull(params.get("action"));
@@ -181,6 +177,7 @@ public class MaterialBuyService extends BaseService {
     /**
      * 处理物品采购业务流程任务数据
      */
+    @Transactional
     public ResponseResult handleMaterialBuyProcessTask(Map<String, Object> params) throws CamundaException {
         ResponseResult res;
         Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
@@ -200,12 +197,34 @@ public class MaterialBuyService extends BaseService {
                 return res;
             }
             res = processTaskService.completeTask(processTask,variables,new ProcessCallback(){
-                public void call(Map<String, String> data) {
+                public void call(Map<String, String> data) throws CamundaException {
+                    //如果物品采购流程结束 ，则自动发起物品入库流程
+                    if ("isEnded".equals(data.get("processInstanceState"))) {
+                        MaterialInStoreDto materialInStoreDto=new MaterialInStoreDto();
+                        MaterialInStore materialInStore=new MaterialInStore();
+                        materialInStore.setId(StringUtils.getUUID());
+                        materialInStore.setBizNo(bizGeneratorService.getBizNo(BizGeneratorService.BIZ_IN_STORE));
+                        materialInStore.setBuyBizId(materialBuyDto.getMaterialBuy().getId());
+                        materialInStore.setApplyUserId(materialBuyDto.getMaterialBuy().getApplyUserId());
+                        materialInStore.setApplyDepId(materialBuyDto.getMaterialBuy().getApplyDepId());
+                        materialInStore.setApplyTime(materialBuyDto.getMaterialBuy().getApplyTime());
+                        materialInStore.setFeeType(materialBuyDto.getMaterialBuy().getFeeType());
+                        materialInStore.setTotalAmt(materialBuyDto.getMaterialBuy().getTotalAmt());
+                        materialInStoreDto.setMaterialInStore(materialInStore);
+                        List<MaterialList> materialListList=new ArrayList<>();
+                        for(MaterialList materialList:materialBuyDto.getMaterialList()){
+                            materialList.setBizId(materialInStore.getId());
+                            materialList.setBizType(ProcessDefConstants.PROC_DEF_MATERIAL_IN_STORE);
+                            materialListList.add(materialList);
+                        }
+                        materialInStoreDto.setMaterialList(materialListList);
+                        materialInStoreService.startMaterialInStore(materialInStoreDto);
+                    }
+                    //更新物品采购业务完成状态
                     Map<String, Object> parameterObject = new HashMap<>();
                     parameterObject.put("BIZNO", bizNo);
                     parameterObject.put("INSTID", processTask.getProcInstId());
                     parameterObject.put("BIZSTATE", ProcessInst.PROCESS_STATE_COMPLETED);
-                    //更新物品采购业务状态
                     updateMaterialBizState(parameterObject);
                 }
             });
@@ -219,7 +238,7 @@ public class MaterialBuyService extends BaseService {
      * @param parameterObject
      */
     public void updateMaterialInstIdAndBizState(Map<String, Object> parameterObject) {
-        materialBuyRepo.updateMaterialInstIdAndBizState(parameterObject);
+        materialBuyRepo.updateInstIdAndBizState(parameterObject);
     }
 
     /**
@@ -228,7 +247,7 @@ public class MaterialBuyService extends BaseService {
      * @param parameterObject
      */
     public void updateMaterialBizState(Map<String, Object> parameterObject) {
-        materialBuyRepo.updateMaterialBizState(parameterObject);
+        materialBuyRepo.updateBizState(parameterObject);
     }
 
     /**

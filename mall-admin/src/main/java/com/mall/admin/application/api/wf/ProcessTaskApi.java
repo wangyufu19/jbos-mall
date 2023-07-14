@@ -176,17 +176,13 @@ public class ProcessTaskApi {
     @ApiOperation("撤回用户任务")
     public ResponseResult drawbackUserTask(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String userId=StringUtils.replaceNull(params.get("userId"));
-        String processDefinitionId= StringUtils.replaceNull(params.get("processDefinitionId"));
-        String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
-        String taskId=StringUtils.replaceNull(params.get("taskId"));
         try {
-            boolean isDrawback = processTaskService.drawbackProcessTask(userId,processDefinitionId,processInstanceId,taskId);
-            Map<String,Object> data=new HashMap<String,Object>();
-            data.put("processInstanceId",processInstanceId);
-            data.put("taskId",taskId);
-            data.put("isDrawback",isDrawback);
-            res.setData(data);
+            ProcessTask processTask=new ProcessTask();
+            processTask.setUserId(StringUtils.replaceNull(params.get("userId")));
+            processTask.setProcDefId(StringUtils.replaceNull(params.get("processDefinitionId")));
+            processTask.setProcInstId(StringUtils.replaceNull(params.get("processInstanceId")));
+            processTask.setTaskId(StringUtils.replaceNull(params.get("taskId")));
+            res = processTaskService.drawbackProcessTask(processTask);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

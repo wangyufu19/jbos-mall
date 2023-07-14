@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.im.mapper.MaterialInStoreMapper">
+    <!--查询物品入库业务列表-->
+    <select id="getMaterialInStoreList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.im.MaterialInStore">
+        SELECT
+           T.ID,
+           T.BIZNO,
+           T.INSTID,
+           T.APPLYUSERID,
+           (SELECT EMP.EMPNAME FROM JBOS_EMP EMP WHERE EMP.BADGE=T.APPLYUSERID) AS APPLYUSERNAME,
+           T.APPLYDEPID,
+           (SELECT DEP.DEPNAME FROM JBOS_DEP DEP WHERE DEP.ID=T.APPLYDEPID) AS APPLYDEPNAME,
+           T.FEETYPE,
+           T.APPLYTIME,
+           T.TOTALAMT,
+           T.BIZSTATE
+        FROM IM_MATERIAL_INSTORE T
+        WHERE T.ISVALID=1 AND T.APPLYUSERID=#{userId}
+        <if test="bizNoS != null and bizNoS != ''">
+            AND T.BIZNO LIKE '%${bizNoS}%'
+        </if>
+        <if test="feeTypeS != null and feeTypeS != ''">
+            AND T.FEETYPE = #{feeTypeS}
+        </if>
+        <if test="applyTimeS != null and applyTimeS != ''">
+            AND date_format(T.APPLYTIME,'%Y-%m-%d')= #{applyTimeS}
+        </if>
+    </select>
+    <!--查询物品入库业务-->
+    <select id="getMaterialInStoreById" parameterType="java.lang.String" resultType="com.mall.admin.domain.entity.im.MaterialInStore">
+         SELECT
+           T.ID,
+           T.BIZNO,
+           T.INSTID,
+           T.APPLYUSERID,
+           (SELECT EMP.EMPNAME FROM JBOS_EMP EMP WHERE EMP.BADGE=T.APPLYUSERID) AS APPLYUSERNAME,
+           T.APPLYDEPID,
+           (SELECT DEP.DEPNAME FROM JBOS_DEP DEP WHERE DEP.ID=T.APPLYDEPID) AS APPLYDEPNAME,
+           T.FEETYPE,
+           T.APPLYTIME,
+           T.TOTALAMT,
+           T.BIZSTATE
+        FROM IM_MATERIAL_INSTORE T
+        WHERE T.ID=#{id}
+    </select>
+    <!--更新物品入库实例ID-->
+    <update id="updateInstIdAndBizState" parameterType="java.util.Map">
+        UPDATE IM_MATERIAL_INSTORE
+        SET
+            INSTID=#{INSTID},
+            BIZSTATE=#{BIZSTATE}
+        WHERE BIZNO=#{BIZNO}
+    </update>
+    <!--更新物品入库业务状态-->
+    <update id="updateBizState" parameterType="java.util.Map">
+        UPDATE IM_MATERIAL_INSTORE
+        SET
+            BIZSTATE=#{BIZSTATE}
+        WHERE BIZNO=#{BIZNO}
+    </update>
+</mapper>

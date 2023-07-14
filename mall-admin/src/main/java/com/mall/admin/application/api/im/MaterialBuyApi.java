@@ -2,6 +2,7 @@ package com.mall.admin.application.api.im;
 
 import com.mall.admin.application.request.im.MaterialBuyDto;
 import com.mall.admin.application.request.wf.ProcessTaskDto;
+import com.mall.admin.application.service.comm.BizGeneratorService;
 import com.mall.admin.application.service.im.MaterialBuyService;
 import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.admin.domain.entity.wf.ProcessTask;
@@ -31,6 +32,8 @@ import java.util.Map;
 @Api("物品采购业务接口")
 public class MaterialBuyApi {
     @Autowired
+    private BizGeneratorService bizGeneratorService;
+    @Autowired
     private MaterialBuyService materialBuyService;
     @Autowired
     private ProcessTaskService processTaskService;
@@ -48,7 +51,7 @@ public class MaterialBuyApi {
     public ResponseResult getBizNo(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            res.setData("BIZ_BUY_" + DateUtils.format(DateUtils.getCurrentDate(), "yyyyMMddHHmmss"));
+            res.setData(bizGeneratorService.getBizNo(BizGeneratorService.BIZ_BUY));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

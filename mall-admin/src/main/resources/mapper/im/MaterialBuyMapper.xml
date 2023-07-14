@@ -27,6 +27,7 @@
         <if test="applyTimeS != null and applyTimeS != ''">
             AND date_format(T.APPLYTIME,'%Y-%m-%d')= #{applyTimeS}
         </if>
+        ORDER BY T.BIZNO DESC
     </select>
     <!--查询物品采购业务-->
     <select id="getMaterialBuyById" parameterType="java.lang.String" resultType="com.mall.admin.domain.entity.im.MaterialBuy">
@@ -88,7 +89,7 @@
         DELETE FROM IM_MATERIAL_BUY WHERE ID=#{ID}
     </delete>
     <!--更新物品采购实例ID-->
-    <update id="updateMaterialInstIdAndBizState" parameterType="java.util.Map">
+    <update id="updateInstIdAndBizState" parameterType="java.util.Map">
         UPDATE IM_MATERIAL_BUY
         SET
             INSTID=#{INSTID},
@@ -96,7 +97,7 @@
         WHERE BIZNO=#{BIZNO}
     </update>
     <!--更新物品采购业务状态-->
-    <update id="updateMaterialBizState" parameterType="java.util.Map">
+    <update id="updateBizState" parameterType="java.util.Map">
         UPDATE IM_MATERIAL_BUY
         SET
             BIZSTATE=#{BIZSTATE}
