@@ -40,6 +40,19 @@ public class MaterialInStoreApi {
     @Autowired
     private ProcessTaskService processTaskService;
 
+    @ResponseBody
+    @GetMapping("/getBizNo")
+    @ApiOperation("查询物品入库业务编号")
+    public ResponseResult getBizNo(@RequestParam Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            res.setData(bizGeneratorService.getBizNo(BizGeneratorService.BIZ_IN_STORE));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
     /**
      * 查询物入库业务列表
      *
@@ -85,6 +98,65 @@ public class MaterialInStoreApi {
             }
             formObj.put("isDrawback", isDrawback);
             res.setData(formObj);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
+    @ResponseBody
+    @PostMapping("/add")
+    @ApiOperation("新增物品入库业务")
+    public ResponseResult add(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            MaterialInStoreDto materialInStoreDto = MaterialInStoreDto.build(params);
+            materialInStoreService.addMaterialInStore(materialInStoreDto);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
+    @ResponseBody
+    @PostMapping("/update")
+    @ApiOperation("修改物品入库业务")
+    public ResponseResult update(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            MaterialInStoreDto materialInStoreDto = MaterialInStoreDto.build(params);
+            materialInStoreService.updateMaterialInStore(materialInStoreDto);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
+    @ResponseBody
+    @PostMapping("/deleteOne")
+    @ApiOperation("删除物品入库业务")
+    public ResponseResult deleteOne(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            materialInStoreService.deleteMaterialInStore(params);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
+    @ResponseBody
+    @PostMapping("/startTrans")
+    @ApiOperation("流转物品入库业务")
+    public ResponseResult startTrans(@RequestBody Map<String, Object> params) {
+        ResponseResult res=ResponseResult.ok();
+        try {
+            MaterialInStoreDto materialInStoreDto = MaterialInStoreDto.build(params);
+            materialInStoreService.startMaterialInStore(materialInStoreDto);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

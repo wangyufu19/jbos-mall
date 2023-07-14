@@ -1,10 +1,8 @@
 package com.mall.admin.application.service.im;
 
 
-import com.mall.admin.application.request.im.MaterialBuyDto;
 import com.mall.admin.application.request.im.MaterialInStoreDto;
 import com.mall.admin.application.request.wf.ProcessTaskDto;
-import com.mall.admin.application.service.comm.BizGeneratorService;
 import com.mall.admin.application.service.sm.BusinessDict;
 import com.mall.admin.application.service.wf.ProcessCallback;
 import com.mall.admin.application.service.wf.ProcessDefConstants;

@@ -46,7 +46,7 @@ public class MaterialBuyApi {
      * @return
      */
     @ResponseBody
-    @GetMapping("/bizno")
+    @GetMapping("/getBizNo")
     @ApiOperation("查询物采购业务列表")
     public ResponseResult getBizNo(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
