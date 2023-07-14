@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.im.mapper.MaterialStoreMapper">
+
+    <!--新增物品库存-->
+    <insert id="addMaterialStore" parameterType="java.util.List">
+        INSERT INTO IM_MATERIAL_STORE(ID,BATCHNO,INBIZID,MATERIALNAME,AMOUNT,SURPLUSAMT,PRICE,INTIME)
+        VALUES
+        <foreach collection="list" item="materialStore" separator =",">
+            (
+            #{materialStore.id}, #{materialStore.batchNo}, #{materialStore.inBizId},#{materialStore.materialName},
+            #{materialStore.amount},#{materialStore.amount},#{materialStore.price},#{materialStore.inTime}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

@@ -44,6 +44,8 @@ public class MaterialInStoreService {
     private MaterialInStoreRepo materialInStoreRepo;
     @Autowired
     private MaterialListService materialListService;
+    @Autowired
+    private MaterialStoreService materialStoreService;
     /**
      * 得到物品入库列表
      *
@@ -177,6 +179,8 @@ public class MaterialInStoreService {
                     parameterObject.put("INSTID", processTask.getProcInstId());
                     parameterObject.put("BIZSTATE", ProcessInst.PROCESS_STATE_COMPLETED);
                     materialInStoreRepo.updateBizState(parameterObject);
+                    //物品入库完成后，新增仓库物品数据
+                    materialStoreService.addMaterialStore(materialInStoreDto.getMaterialList());
                 }
             });
         }
