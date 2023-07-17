@@ -2,6 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mall.admin.infrastructure.repository.im.mapper.MaterialStoreMapper">
 
+    <!--查询物品库存列表-->
+    <select id="getMaterialStoreList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.im.MaterialStore">
+        SELECT
+            T.ID,
+            T.BATCHNO,
+            T.INBIZID,
+            T.MATERIALID,
+            T.MATERIALNAME,
+            T.AMOUNT,
+            T.SURPLUSAMT,
+            T.PRICE,
+            T.INTIME,
+            T.BIZSTATE
+        FROM IM_MATERIAL_STORE T
+        WHERE T.ISVALID=1
+        <if test="materialNameS != null and materialNameS != ''">
+            AND T.MATERIALNAME LIKE '%${materialNameS}%'
+        </if>
+        <if test="sdateS != null and sdateS != ''">
+            <![CDATA[
+            AND (date_format(T.INTIME,'%Y-%m-%d')>= #{sdateS} AND date_format(T.INTIME,'%Y-%m-%d')<= #{edateS})
+            ]]>
+        </if>
+        order by T.INTIME DESC
+    </select>
     <!--新增物品库存-->
     <insert id="addMaterialStore" parameterType="java.util.List">
         INSERT INTO IM_MATERIAL_STORE(ID,BATCHNO,INBIZID,MATERIALNAME,AMOUNT,SURPLUSAMT,PRICE,INTIME)
