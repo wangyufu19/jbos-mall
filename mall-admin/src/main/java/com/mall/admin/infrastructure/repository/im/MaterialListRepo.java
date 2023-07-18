@@ -19,7 +19,7 @@ public class MaterialListRepo {
     private MaterialListMapper materialListMapper;
 
     public List<MaterialList> getMaterialListList(Map<String, Object> parameterObject){
-        return materialListMapper.selectByMap(parameterObject);
+        return materialListMapper.getMaterialListList(parameterObject);
     }
 
     public void addMaterialList(MaterialList materialList){

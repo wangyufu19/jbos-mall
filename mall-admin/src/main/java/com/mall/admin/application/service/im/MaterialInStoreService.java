@@ -66,7 +66,7 @@ public class MaterialInStoreService {
         MaterialInStoreDto materialInStoreDto=new MaterialInStoreDto();
         MaterialInStore materialInStore = materialInStoreRepo.getMaterialInStoreById(id);
         Map<String, Object> parameterObject = new HashMap<>();
-        parameterObject.put("bizid", id);
+        parameterObject.put("bizId", id);
         List<MaterialList> materialListList = materialListService.getMaterialListList(parameterObject);
         materialInStoreDto.setMaterialInStore(materialInStore);
         materialInStoreDto.setMaterialList(materialListList);
@@ -142,8 +142,13 @@ public class MaterialInStoreService {
             public void call(Map<String, String> data) {
                 String processDefinitionId = data.get("processDefinitionId");
                 String processInstanceId = data.get("processInstanceId");
-                //新增物品入库业务数据
-                addMaterialInStore(materialInStoreDto);
+                if("create".equals(materialInStoreDto.getAction())) {
+                    //新增物品入库业务数据
+                    addMaterialInStore(materialInStoreDto);
+                }else{
+                    //更新物品入库业务数据
+                    updateMaterialInStore(materialInStoreDto);
+                }
                 //更新物品入库业务实例ID和业务状态
                 Map<String, Object> parameterObject = new HashMap<>();
                 parameterObject.put("BIZNO", materialInStoreDto.getMaterialInStore().getBizNo());

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.im.mapper.MaterialInfoMapper">
+
+
+    <!--查询物品信息下级品节点-->
+    <select id="getMaterialChildrenNode"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.comm.TreeNode">
+        SELECT T.ID,T.MATERIAL_NAME AS TEXT,
+        CASE
+            WHEN (SELECT COUNT(1) FROM IM_MATERIAL_INFO B WHERE B.PARENTID=T.ID)>=1 THEN 0
+            ELSE 1
+        END AS LEAF
+        FROM IM_MATERIAL_INFO T
+        WHERE T.ISVALID=1 AND T.PARENTID = #{parentId}
+        ORDER BY T.MATERIAL_NO
+    </select>
+</mapper>

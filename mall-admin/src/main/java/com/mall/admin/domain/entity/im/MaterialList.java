@@ -17,15 +17,17 @@ import lombok.Setter;
 public class MaterialList extends BaseEntity {
     @TableField("bizid")
     private String bizId;
-    @TableField("bizno")
-    private String bizNo;
     @TableField("biztype")
     private String bizType;
+    @TableField("materialid")
+    private String materialId;
     @TableField("materialname")
     private String materialName;
     @TableField("amount")
     private double amount;
     @TableField("price")
     private double price;
+    @TableField(exist=false)
+    private double sumAmt;
 
 }

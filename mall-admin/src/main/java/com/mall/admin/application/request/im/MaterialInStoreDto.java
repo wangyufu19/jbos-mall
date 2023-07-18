@@ -20,16 +20,16 @@ import java.util.Map;
  **/
 @Data
 public class MaterialInStoreDto {
+    private String action;
     private MaterialInStore materialInStore;
     private List<MaterialList> materialList;
 
     public static MaterialInStoreDto build(Map<String, Object> params){
         MaterialInStoreDto dto=new MaterialInStoreDto();
         Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
-        String action=StringUtils.replaceNull(params.get("action"));
-
+        dto.setAction(StringUtils.replaceNull(params.get("action")));
         MaterialInStore materialInStore=new MaterialInStore();
-        if("create".equals(action)){
+        if("create".equals(dto.getAction())){
             materialInStore.setId(StringUtils.getUUID());
             materialInStore.setBizState("10");
         }else{
@@ -51,6 +51,7 @@ public class MaterialInStoreDto {
                 material.setId(StringUtils.getUUID());
                 material.setBizId(materialInStore.getId());
                 material.setBizType(ProcessDefConstants.PROC_DEF_MATERIAL_IN_STORE);
+                material.setMaterialId(StringUtils.replaceNull(materialMap.get("materialId")));
                 material.setMaterialName(StringUtils.replaceNull(materialMap.get("materialName")));
                 material.setAmount(Double.parseDouble(StringUtils.replaceNull(materialMap.get("amount"))));
                 material.setPrice(Double.parseDouble(StringUtils.replaceNull(materialMap.get("price"))));

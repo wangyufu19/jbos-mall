@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.im.mapper.MaterialListMapper">
+
+
+    <!--查询业务的物品清单数据-->
+    <select id="getMaterialListList"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.im.MaterialList">
+        SELECT
+            T.ID,
+            T.MATERIALID,
+            T.MATERIALNAME,
+            T.AMOUNT,
+            T.PRICE,
+            (T.AMOUNT*T.PRICE) SUMAMT
+        FROM IM_MATERIAL_LIST T
+        WHERE T.ISVALID=1 AND T.BIZID = #{bizId}
+    </select>
+</mapper>
