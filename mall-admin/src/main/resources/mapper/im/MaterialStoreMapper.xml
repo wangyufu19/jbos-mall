@@ -29,11 +29,11 @@
     </select>
     <!--新增物品库存-->
     <insert id="addMaterialStore" parameterType="java.util.List">
-        INSERT INTO IM_MATERIAL_STORE(ID,BATCHNO,INBIZID,MATERIALNAME,AMOUNT,SURPLUSAMT,PRICE,INTIME)
+        INSERT INTO IM_MATERIAL_STORE(ID,BATCHNO,INBIZID,MATERIALID,MATERIALNAME,AMOUNT,SURPLUSAMT,PRICE,INTIME)
         VALUES
         <foreach collection="list" item="materialStore" separator =",">
             (
-            #{materialStore.id}, #{materialStore.batchNo}, #{materialStore.inBizId},#{materialStore.materialName},
+            #{materialStore.id}, #{materialStore.batchNo}, #{materialStore.inBizId},#{materialStore.materialId},#{materialStore.materialName},
             #{materialStore.amount},#{materialStore.amount},#{materialStore.price},#{materialStore.inTime}
             )
         </foreach>

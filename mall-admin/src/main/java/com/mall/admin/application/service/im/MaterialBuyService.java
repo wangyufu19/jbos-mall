@@ -201,6 +201,7 @@ public class MaterialBuyService extends BaseService {
                     //如果物品采购流程结束 ，则自动发起物品入库流程
                     if ("isEnded".equals(data.get("processInstanceState"))) {
                         MaterialInStoreDto materialInStoreDto=new MaterialInStoreDto();
+                        materialInStoreDto.setAction("create");
                         MaterialInStore materialInStore=new MaterialInStore();
                         materialInStore.setId(StringUtils.getUUID());
                         materialInStore.setBizNo(bizGeneratorService.getBizNo(BizGeneratorService.BIZ_IN_STORE));

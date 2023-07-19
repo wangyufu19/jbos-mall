@@ -50,6 +50,7 @@ public class MaterialStoreService {
             materialStore.setId(StringUtils.getUUID());
             materialStore.setBatchNo(DateUtils.format(DateUtils.getCurrentDate(), "yyyyMMddHHmmss"));
             materialStore.setInBizId(materialList.getBizId());
+            materialStore.setMaterialId(materialList.getMaterialId());
             materialStore.setMaterialName(materialList.getMaterialName());
             materialStore.setAmount(materialList.getAmount());
             materialStore.setPrice(materialList.getPrice());
