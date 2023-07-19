@@ -76,7 +76,7 @@ public class MaterialBuyService extends BaseService {
         MaterialBuyDto materialBuyDto=new MaterialBuyDto();
         MaterialBuy materialBuy = materialBuyRepo.getMaterialBuyById(id);
         Map<String, Object> parameterObject = new HashMap<>();
-        parameterObject.put("bizid", id);
+        parameterObject.put("bizId", id);
         List<MaterialList> materialListList = materialListService.getMaterialListList(parameterObject);
         materialBuyDto.setMaterialBuy(materialBuy);
         materialBuyDto.setMaterialList(materialListList);
