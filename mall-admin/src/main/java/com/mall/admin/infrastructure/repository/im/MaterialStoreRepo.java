@@ -22,8 +22,13 @@ public class MaterialStoreRepo {
     @Autowired
     private MaterialStoreMapper materialStoreMapper;
 
+
     @Paging
-    public List<MaterialStore> getMaterialStoreList(PageParam pageParam, Map<String, Object> parameterObject){
+    public List<MaterialStore> getMaterialStoreSumList(PageParam pageParam, Map<String, Object> parameterObject){
+        return materialStoreMapper.getMaterialStoreSumList(parameterObject);
+    }
+
+    public List<MaterialStore> getMaterialStoreList(Map<String, Object> parameterObject){
         return materialStoreMapper.getMaterialStoreList(parameterObject);
     }
     public void addMaterialStore(List<MaterialStore> materialStoreList){

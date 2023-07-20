@@ -27,15 +27,33 @@ public class MaterialStoreApi {
     @Autowired
     private MaterialStoreService materialStoreService;
 
+
+
+
     @ResponseBody
-    @GetMapping("/list")
-    @ApiOperation("查询物品库存业务列表")
-    public ResponseResult getMaterialStoreList(@RequestParam Map<String, Object> params) {
+    @GetMapping("/sumList")
+    @ApiOperation("查询物品库存汇总列表")
+    public ResponseResult getMaterialStoreSumList(@RequestParam Map<String, Object> params) {
         ResponseResult res=ResponseResult.ok();
         try {
             PageParam pageParam = PageParam.getPageParam(params);
-            List<MaterialStore> materialStoreList = materialStoreService.getMaterialStoreList(pageParam, params);
+            List<MaterialStore> materialStoreList = materialStoreService.getMaterialStoreSumList(pageParam, params);
             res.isPage(true).data(materialStoreList);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    @ApiOperation("查询物品库存明细列表")
+    public ResponseResult getMaterialStoreList(@RequestParam Map<String, Object> params) {
+        ResponseResult res=ResponseResult.ok();
+        try {
+            List<MaterialStore> materialStoreList = materialStoreService.getMaterialStoreList(params);
+            res.data(materialStoreList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

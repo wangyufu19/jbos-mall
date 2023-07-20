@@ -1,61 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_16giugc" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.10.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
-  <bpmn:process id="materialAssign" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1">
-      <bpmn:outgoing>Flow_0gpnvv6</bpmn:outgoing>
-    </bpmn:startEvent>
-    <bpmn:endEvent id="Event_1fzxpyu">
-      <bpmn:incoming>Flow_09a0ht9</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0gpnvv6" sourceRef="StartEvent_1" targetRef="Activity_1gosndx" />
-    <bpmn:sequenceFlow id="Flow_1n2t0rm" sourceRef="Activity_1gosndx" targetRef="Activity_0ru1bjm" />
-    <bpmn:sequenceFlow id="Flow_09a0ht9" sourceRef="Activity_0ru1bjm" targetRef="Event_1fzxpyu" />
-    <bpmn:userTask id="Activity_1gosndx" name="经办">
-      <bpmn:extensionElements>
-        <camunda:formData>
-          <camunda:formField id="approve" label="是否同意" type="boolean" />
-        </camunda:formData>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0gpnvv6</bpmn:incoming>
-      <bpmn:outgoing>Flow_1n2t0rm</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:userTask id="Activity_0ru1bjm" name="复核" camunda:assignee="${checkUser}">
-      <bpmn:extensionElements>
-        <camunda:formData>
-          <camunda:formField id="approve" label="是否同意" type="boolean" />
-        </camunda:formData>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1n2t0rm</bpmn:incoming>
-      <bpmn:outgoing>Flow_09a0ht9</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics camunda:collection="checkUserList" camunda:elementVariable="checkUser" />
-    </bpmn:userTask>
-  </bpmn:process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="materialAssign">
-      <bpmndi:BPMNEdge id="Flow_09a0ht9_di" bpmnElement="Flow_09a0ht9">
-        <di:waypoint x="590" y="117" />
-        <di:waypoint x="682" y="117" />
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bpmn.io/bpmn" exporter="Camunda Modeler" exporterVersion="4.10.0">
+  <process id="MaterialOutStore" name="物品领取" isExecutable="true">
+    <startEvent id="StartEvent_1y45yut" name="开始">
+      <outgoing>SequenceFlow_0h21x7r</outgoing>
+    </startEvent>
+    <sequenceFlow id="SequenceFlow_0h21x7r" sourceRef="StartEvent_1y45yut" targetRef="ROLE_PROCESS_STARTER" />
+    <sequenceFlow id="Flow_113x398" sourceRef="ROLE_PROCESS_STARTER" targetRef="ROLE_REPO_ADMIN" />
+    <userTask id="ROLE_REPO_ADMIN" name="仓库管理员" camunda:assignee="${ROLE_REPO_ADMIN}">
+      <incoming>Flow_113x398</incoming>
+      <outgoing>Flow_0eaisch</outgoing>
+    </userTask>
+    <userTask id="ROLE_PROCESS_STARTER" name="申请人">
+      <incoming>SequenceFlow_0h21x7r</incoming>
+      <outgoing>Flow_113x398</outgoing>
+    </userTask>
+    <sequenceFlow id="Flow_0eaisch" sourceRef="ROLE_REPO_ADMIN" targetRef="ROLE_IM_ADMIN" />
+    <userTask id="ROLE_IM_ADMIN" name="综合部负责人" camunda:assignee="${ROLE_IM_ADMIN}">
+      <incoming>Flow_0eaisch</incoming>
+      <outgoing>Flow_0oocwcx</outgoing>
+    </userTask>
+    <endEvent id="Event_0lx57bh" name="结束">
+      <incoming>Flow_0oocwcx</incoming>
+    </endEvent>
+    <sequenceFlow id="Flow_0oocwcx" sourceRef="ROLE_IM_ADMIN" targetRef="Event_0lx57bh" />
+  </process>
+  <bpmndi:BPMNDiagram id="BpmnDiagram_1">
+    <bpmndi:BPMNPlane id="BpmnPlane_1" bpmnElement="MaterialOutStore">
+      <bpmndi:BPMNEdge id="Flow_0oocwcx_di" bpmnElement="Flow_0oocwcx">
+        <omgdi:waypoint x="680" y="110" />
+        <omgdi:waypoint x="748" y="110" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1n2t0rm_di" bpmnElement="Flow_1n2t0rm">
-        <di:waypoint x="400" y="117" />
-        <di:waypoint x="490" y="117" />
+      <bpmndi:BPMNEdge id="Flow_0eaisch_di" bpmnElement="Flow_0eaisch">
+        <omgdi:waypoint x="520" y="110" />
+        <omgdi:waypoint x="580" y="110" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0gpnvv6_di" bpmnElement="Flow_0gpnvv6">
-        <di:waypoint x="215" y="117" />
-        <di:waypoint x="300" y="117" />
+      <bpmndi:BPMNEdge id="Flow_113x398_di" bpmnElement="Flow_113x398">
+        <omgdi:waypoint x="360" y="110" />
+        <omgdi:waypoint x="420" y="110" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="179" y="99" width="36" height="36" />
+      <bpmndi:BPMNEdge id="SequenceFlow_0h21x7r_di" bpmnElement="SequenceFlow_0h21x7r">
+        <omgdi:waypoint x="188" y="110" />
+        <omgdi:waypoint x="260" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_1y45yut_di" bpmnElement="StartEvent_1y45yut">
+        <omgdc:Bounds x="152" y="92" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="160" y="135" width="23" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1fzxpyu_di" bpmnElement="Event_1fzxpyu">
-        <dc:Bounds x="682" y="99" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_1kmdugv_di" bpmnElement="ROLE_REPO_ADMIN">
+        <omgdc:Bounds x="420" y="70" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0kq5ewf_di" bpmnElement="Activity_1gosndx">
-        <dc:Bounds x="300" y="77" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_08xfm6a_di" bpmnElement="ROLE_PROCESS_STARTER">
+        <omgdc:Bounds x="260" y="70" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1uerhdk_di" bpmnElement="Activity_0ru1bjm">
-        <dc:Bounds x="490" y="77" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_151yw4c_di" bpmnElement="ROLE_IM_ADMIN">
+        <omgdc:Bounds x="580" y="70" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0lx57bh_di" bpmnElement="Event_0lx57bh">
+        <omgdc:Bounds x="748" y="92" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="755" y="135" width="23" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
-</bpmn:definitions>
+</definitions>

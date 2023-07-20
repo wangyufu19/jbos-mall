@@ -14,6 +14,8 @@ import java.util.Map;
  **/
 public interface MaterialStoreMapper extends BaseMapper<MaterialStore> {
 
+    public List<MaterialStore> getMaterialStoreSumList(Map<String, Object> parameterObject);
+
     public List<MaterialStore> getMaterialStoreList(Map<String, Object> parameterObject);
 
     public void addMaterialStore(List<MaterialStore> materialStoreList);

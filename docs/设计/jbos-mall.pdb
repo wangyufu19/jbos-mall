@@ -5203,13 +5203,13 @@ Shadow=0</a:DisplayPreferences>
 </o:Table>
 <o:Table Id="o196">
 <a:ObjectID>B559BB33-16E7-4E27-8CC8-4BBD0C0ECBDC</a:ObjectID>
-<a:Name>物品采购申请表</a:Name>
+<a:Name>物品采购表</a:Name>
 <a:Code>IM_MATERIAL_BUY</a:Code>
 <a:CreationDate>1632290928</a:CreationDate>
 <a:Creator>Administrator</a:Creator>
-<a:ModificationDate>1689141602</a:ModificationDate>
+<a:ModificationDate>1689831807</a:ModificationDate>
 <a:Modifier>wangy</a:Modifier>
-<a:Comment>物品采购申请表</a:Comment>
+<a:Comment>物品采购表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
 <o:Column Id="o197">
@@ -5429,8 +5429,8 @@ Shadow=0</a:DisplayPreferences>
 <a:Code>IM_MATERIAL_LIST</a:Code>
 <a:CreationDate>1632292536</a:CreationDate>
 <a:Creator>Administrator</a:Creator>
-<a:ModificationDate>1632292845</a:ModificationDate>
-<a:Modifier>Administrator</a:Modifier>
+<a:ModificationDate>1689661295</a:ModificationDate>
+<a:Modifier>wangy</a:Modifier>
 <a:Comment>物品清单表</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
@@ -5460,18 +5460,6 @@ Shadow=0</a:DisplayPreferences>
 <a:Length>64</a:Length>
 </o:Column>
 <o:Column Id="o217">
-<a:ObjectID>4E4C5406-234B-4969-AD27-7744AE91EC6F</a:ObjectID>
-<a:Name>业务编号</a:Name>
-<a:Code>BIZNO</a:Code>
-<a:CreationDate>1632292615</a:CreationDate>
-<a:Creator>Administrator</a:Creator>
-<a:ModificationDate>1632292810</a:ModificationDate>
-<a:Modifier>Administrator</a:Modifier>
-<a:Comment>业务编号</a:Comment>
-<a:DataType>VARCHAR(64)</a:DataType>
-<a:Length>64</a:Length>
-</o:Column>
-<o:Column Id="o218">
 <a:ObjectID>F4F7C9C4-77CA-4BDA-AA43-359F8B74FFF0</a:ObjectID>
 <a:Name>业务类型</a:Name>
 <a:Code>BIZTYPE</a:Code>
@@ -5480,6 +5468,18 @@ Shadow=0</a:DisplayPreferences>
 <a:ModificationDate>1632292810</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <a:Comment>业务类型</a:Comment>
+<a:DataType>VARCHAR(64)</a:DataType>
+<a:Length>64</a:Length>
+</o:Column>
+<o:Column Id="o218">
+<a:ObjectID>4E4C5406-234B-4969-AD27-7744AE91EC6F</a:ObjectID>
+<a:Name>物品ID</a:Name>
+<a:Code>MATERIALID</a:Code>
+<a:CreationDate>1632292615</a:CreationDate>
+<a:Creator>Administrator</a:Creator>
+<a:ModificationDate>1689661295</a:ModificationDate>
+<a:Modifier>wangy</a:Modifier>
+<a:Comment>物品ID</a:Comment>
 <a:DataType>VARCHAR(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
@@ -5602,11 +5602,11 @@ Shadow=0</a:DisplayPreferences>
 </o:Table>
 <o:Table Id="o228">
 <a:ObjectID>C6563425-DED6-41B7-B145-6F970358D23B</a:ObjectID>
-<a:Name>物品入库申请表</a:Name>
+<a:Name>物品入库表</a:Name>
 <a:Code>IM_MATERIAL_INSTORE</a:Code>
 <a:CreationDate>1689141058</a:CreationDate>
 <a:Creator>wangy</a:Creator>
-<a:ModificationDate>1689141741</a:ModificationDate>
+<a:ModificationDate>1689831798</a:ModificationDate>
 <a:Modifier>wangy</a:Modifier>
 <a:Comment>物品入库申请表</a:Comment>
 <a:TotalSavingCurrency/>

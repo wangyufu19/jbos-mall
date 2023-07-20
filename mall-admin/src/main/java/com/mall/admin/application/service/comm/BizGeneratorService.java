@@ -13,8 +13,13 @@ import org.springframework.stereotype.Service;
 public class BizGeneratorService {
     public static final String BIZ_BUY = "BIZ_BUY";
     public static final String BIZ_IN_STORE = "BIZ_IN_STORE";
+    public static final String BIZ_out_STORE = "BIZ_OUT_STORE";
 
+    public String getBizNo() {
+        return DateUtils.format(DateUtils.getCurrentDate(), "yyyyMMddHHmmss");
+    }
     public String getBizNo(String bizType) {
         return bizType + "_" + DateUtils.format(DateUtils.getCurrentDate(), "yyyyMMddHHmmss");
     }
+
 }

@@ -40,4 +40,6 @@ public class MaterialStore extends BaseEntity {
     @TableField("intime")
     private String inTime;
 
+    private boolean hasChildren=true;
+
 }

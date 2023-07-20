@@ -25,14 +25,24 @@ public class MaterialStoreService {
     @Autowired
     private MaterialStoreRepo materialStoreRepo;
 
+
+
     /**
-     * 查询物品库存数据
+     * 查询物品库存汇总数据
      * @param pageParam
      * @param parameterObject
      * @return
      */
-    public List<MaterialStore> getMaterialStoreList(PageParam pageParam, Map<String, Object> parameterObject){
-        return materialStoreRepo.getMaterialStoreList(pageParam,parameterObject);
+    public List<MaterialStore> getMaterialStoreSumList(PageParam pageParam, Map<String, Object> parameterObject){
+        return materialStoreRepo.getMaterialStoreSumList(pageParam,parameterObject);
+    }
+    /**
+     * 查询物品库存明细数据
+     * @param parameterObject
+     * @return
+     */
+    public List<MaterialStore> getMaterialStoreList(Map<String, Object> parameterObject){
+        return materialStoreRepo.getMaterialStoreList(parameterObject);
     }
 
     /**

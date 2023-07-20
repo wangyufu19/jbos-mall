@@ -59,7 +59,7 @@ public class ProcessDeploymentService {
         //判断合法的文件类型
         if(deploymentService.includeExtensions(resource)){
             Map<String,Object> deploymentMap=deploymentService.deploy(file);
-            if(deploymentMap!=null){
+            if(deploymentMap!=null&&!StringUtils.isNUll(deploymentMap.get("deploymentId"))){
                 ProcessDeployment processDeployment=new ProcessDeployment();
                 processDeployment.setId(StringUtils.replaceNull(deploymentMap.get("id")));
                 processDeployment.setDeploymentId(StringUtils.replaceNull(deploymentMap.get("deploymentId")));

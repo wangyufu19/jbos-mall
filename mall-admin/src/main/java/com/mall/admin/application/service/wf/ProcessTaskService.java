@@ -3,7 +3,6 @@ package com.mall.admin.application.service.wf;
 
 import com.mall.admin.application.request.wf.ProcessTaskDto;
 import com.mall.admin.common.exception.CamundaException;
-import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.admin.infrastructure.camunda.InstanceTaskService;
 import com.mall.admin.infrastructure.camunda.ProcessInstanceService;
@@ -232,6 +231,7 @@ public class ProcessTaskService extends BaseService {
                                        ProcessCallback processCallback) throws CamundaException {
         ResponseResult res=ResponseResult.ok();
         String processInstanceId = StringUtils.replaceNull(variables.get("processInstanceId"));
+        String multiInstance = StringUtils.replaceNull(variables.get("multiInstance"));
         //完成任务
         String taskId = instanceTaskService.complete(variables);
         //得到流程当前执行任务和实例状态(active;isEnd)
@@ -249,7 +249,7 @@ public class ProcessTaskService extends BaseService {
             this.updateProcessTaskOpinion(processCurrentTask);
 
             //多实例节点更新流程任务处理后未审批的所有任务状态为NONE(除当前用户任务)
-            if (Role.ROLE_DEP_LEADER.equals(processCurrentTask.getActivityId())) {
+            if ("true".equals(multiInstance)) {
                 this.updateNoneStatePostHandleTask(processCurrentTask);
             }
 

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * MaterialInstoreMapper
+ * MaterialInStoreMapper
  * @author youfu.wang
  * @date 2020-06-24
  */

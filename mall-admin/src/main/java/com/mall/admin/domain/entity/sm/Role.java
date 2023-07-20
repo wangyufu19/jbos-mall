@@ -18,6 +18,8 @@ public class Role extends BaseEntity {
     public static final String ROLE_CHARGE_LEADER_DESC="分管领导";
     public static final String ROLE_REPO_ADMIN="ROLE_REPO_ADMIN";
     public static final String ROLE_REPO_ADMIN_DESC="仓库管理员";
+    public static final String ROLE_IM_ADMIN="ROLE_IM_ADMIN";
+    public static final String ROLE_IM_ADMIN_DESC="综合部负责人";
 
     public static String ROOTROLE_ID="0";
     private String roleCode;
