@@ -10,6 +10,9 @@
             (SELECT SUM(SURPLUSAMT) FROM IM_MATERIAL_STORE T1 WHERE T1.MATERIALID=T.MATERIALID) SURPLUSAMT
         FROM IM_MATERIAL_STORE T
         WHERE T.ISVALID=1
+        <if test="materialIdS != null and materialIdS != ''">
+            AND T.MATERIALID=#{materialIdS}
+        </if>
         <if test="materialNameS != null and materialNameS != ''">
             AND T.MATERIALNAME LIKE '%${materialNameS}%'
         </if>
@@ -49,6 +52,24 @@
         </if>
         order by T.INTIME DESC
     </select>
+
+    <!--根据物品Id查询物品库存明细(物品入库先进先出规则)-->
+    <select id="getFIFOInfoByMaterialId" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.im.MaterialStore">
+        SELECT
+            T.ID,
+            T.BATCHNO,
+            T.INBIZID,
+            T.MATERIALID,
+            T.MATERIALNAME,
+            T.AMOUNT,
+            T.SURPLUSAMT,
+            T.PRICE,
+            T.INTIME,
+            T.BIZSTATE
+        FROM IM_MATERIAL_STORE T
+        WHERE T.MATERIALID=#{materialId} AND T.SURPLUSAMT>0
+        ORDER BY T.INTIME
+    </select>
     <!--新增物品库存-->
     <insert id="addMaterialStore" parameterType="java.util.List">
         INSERT INTO IM_MATERIAL_STORE(ID,BATCHNO,INBIZID,MATERIALID,MATERIALNAME,AMOUNT,SURPLUSAMT,PRICE,INTIME)
@@ -60,5 +81,10 @@
             )
         </foreach>
     </insert>
-
+    <!--更新物品库存数据-->
+    <update id="updateMaterialStore" parameterType="java.util.Map">
+        UPDATE IM_MATERIAL_STORE
+        SET SURPLUSAMT=SURPLUSAMT+#{diffAmount}
+        WHERE MATERIALID=#{materialId} AND BATCHNO=#{batchNo}
+    </update>
 </mapper>

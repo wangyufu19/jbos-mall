@@ -2,6 +2,7 @@ package com.mall.admin.infrastructure.repository.im;
 
 
 import com.mall.admin.domain.entity.im.MaterialOutStore;
+import com.mall.admin.domain.entity.im.MaterialOutStoreList;
 import com.mall.admin.infrastructure.repository.im.mapper.MaterialOutStoreMapper;
 import com.mall.common.page.PageParam;
 import com.mall.common.page.Paging;
@@ -38,6 +39,17 @@ public class MaterialOutStoreRepo {
 
     public void deleteMaterialOutStore(Map<String, Object> parameterObject){
         materialOutStoreMapper.deleteByMap(parameterObject);
+    }
+
+    public void addMaterialOutStoreItem(List<MaterialOutStoreList> materialOutStoreListList){
+        materialOutStoreMapper.addMaterialOutStoreItem(materialOutStoreListList);
+    }
+
+    public List<MaterialOutStoreList> getMaterialOutStoreItem(Map<String, Object> parameterObject){
+        return materialOutStoreMapper.getMaterialOutStoreItem(parameterObject);
+    }
+    public void deleteMaterialOutStoreItem(Map<String, Object> parameterObject){
+        materialOutStoreMapper.deleteMaterialOutStoreItem(parameterObject);
     }
     public void updateInstIdAndBizState(Map<String, Object> parameterObject){
         materialOutStoreMapper.updateInstIdAndBizState(parameterObject);

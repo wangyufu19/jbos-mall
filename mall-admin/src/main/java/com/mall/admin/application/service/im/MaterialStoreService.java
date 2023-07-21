@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,12 +38,38 @@ public class MaterialStoreService {
         return materialStoreRepo.getMaterialStoreSumList(pageParam,parameterObject);
     }
     /**
+     * 查询物品库存剩余数量
+     * @param materialId
+     * @return
+     */
+    public double getMaterialStoreSurplusAmt(String materialId){
+        Map<String, Object> parameterObject=new HashMap<>();
+        parameterObject.put("materialIdS",parameterObject);
+        List<MaterialStore> materialStoreList= materialStoreRepo.getMaterialStoreSumList(parameterObject);
+        if(materialStoreList!=null&&materialStoreList.size()>0){
+            return materialStoreList.get(0).getSurplusAmt();
+        }
+        return 0.00;
+    }
+
+    /**
      * 查询物品库存明细数据
      * @param parameterObject
      * @return
      */
     public List<MaterialStore> getMaterialStoreList(Map<String, Object> parameterObject){
         return materialStoreRepo.getMaterialStoreList(parameterObject);
+    }
+
+    /**
+     * 根据物品Id查询物品库存明细(物品入库先进先出规则)
+     * @param materialId
+     * @return
+     */
+    public List<MaterialStore> getFIFOInfoByMaterialId(String materialId){
+        Map<String, Object> parameterObject=new HashMap<>();
+        parameterObject.put("materialId",materialId);
+        return materialStoreRepo.getFIFOInfoByMaterialId(parameterObject);
     }
 
     /**
@@ -72,4 +99,17 @@ public class MaterialStoreService {
         }
     }
 
+    /**
+     * 增加或减少物品库存数据
+     * @param batchNo
+     * @param materialId
+     * @param diffAmount
+     */
+    public void updateMaterialStore(String batchNo,String materialId,double diffAmount){
+        Map<String, Object> parameterObject = new HashMap();
+        parameterObject.put("batchNo",batchNo);
+        parameterObject.put("materialId",materialId);
+        parameterObject.put("diffAmount",diffAmount);
+        materialStoreRepo.updateMaterialStore(parameterObject);
+    }
 }

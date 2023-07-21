@@ -10,7 +10,8 @@ import com.mall.admin.application.service.wf.ProcessMgrService;
 import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.admin.common.exception.CamundaException;
 import com.mall.admin.domain.entity.im.MaterialOutStore;
-import com.mall.admin.domain.entity.im.MaterialList;
+import com.mall.admin.domain.entity.im.MaterialOutStoreList;
+import com.mall.admin.domain.entity.im.MaterialStore;
 import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.admin.domain.entity.wf.ProcessTask;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +45,6 @@ public class MaterialOutStoreService {
     @Autowired
     private MaterialOutStoreRepo materialOutStoreRepo;
     @Autowired
-    private MaterialListService materialListService;
-    @Autowired
     private MaterialStoreService materialStoreService;
     /**
      * 得到物品领取列表
@@ -58,6 +58,17 @@ public class MaterialOutStoreService {
     }
 
     /**
+     * 得到物品领取清单
+     * @param bizId
+     * @return
+     */
+    private List<MaterialOutStoreList> getMaterialOutStoreItem(String bizId){
+        Map<String, Object> parameterObject = new HashMap<>();
+        parameterObject.put("bizId", bizId);
+        List<MaterialOutStoreList> materialListList = materialOutStoreRepo.getMaterialOutStoreItem(parameterObject);
+        return materialListList;
+    }
+    /**
      * 得到物品领取数据
      * @param id
      * @return
@@ -65,11 +76,8 @@ public class MaterialOutStoreService {
     public MaterialOutStoreDto getMaterialOutStoreById(String id) {
         MaterialOutStoreDto materialOutStoreDto=new MaterialOutStoreDto();
         MaterialOutStore materialOutStore = materialOutStoreRepo.getMaterialOutStoreById(id);
-        Map<String, Object> parameterObject = new HashMap<>();
-        parameterObject.put("bizId", id);
-        List<MaterialList> materialListList = materialListService.getMaterialListList(parameterObject);
         materialOutStoreDto.setMaterialOutStore(materialOutStore);
-        materialOutStoreDto.setMaterialList(materialListList);
+        materialOutStoreDto.setMaterialList(this.getMaterialOutStoreItem(id));
         return materialOutStoreDto;
     }
 
@@ -79,10 +87,79 @@ public class MaterialOutStoreService {
      */
     @Transactional
     public void addMaterialOutStore(MaterialOutStoreDto materialOutStoreDto) {
+        List<MaterialOutStoreList> materialListList=materialOutStoreDto.getMaterialList();
         //新增物品领取基本信息
         materialOutStoreRepo.addMaterialOutStore(materialOutStoreDto.getMaterialOutStore());
+        //根据进先出规则得到物品领取的库存数据
+        List<MaterialOutStoreList> materialOutStoreListList=
+                this.getMaterialOutStoreByFIFO(materialOutStoreDto.getMaterialOutStore().getId(),materialListList);
         //新增物品领取清单
-        materialListService.addMaterialList(materialOutStoreDto.getMaterialList());
+        materialOutStoreRepo.addMaterialOutStoreItem(materialOutStoreListList);
+    }
+
+    /**
+     * 根据进先出规则得到物品领取的库存数据
+     * @param bizId
+     * @param materialListList
+     */
+    private List<MaterialOutStoreList> getMaterialOutStoreByFIFO(String bizId,List<MaterialOutStoreList> materialListList){
+        List<MaterialOutStoreList> materialOutStoreListList=new ArrayList<>();
+        //处理物品库存数据
+        if (materialListList != null) {
+            for (MaterialOutStoreList materialList : materialListList) {
+                //根据物品库存先进先出规则处理领取物品
+                this.processMaterialOutStoreByFIFO(
+                        materialOutStoreListList,
+                        bizId,
+                        materialList.getMaterialId(),
+                        materialList.getAmount()
+                );
+            }
+        }
+        return materialOutStoreListList;
+    }
+    /**
+     * 根据物品库存先进先出规则处理领取物品
+     * @param materialId
+     * @param amount
+     */
+    private void processMaterialOutStoreByFIFO(
+            List<MaterialOutStoreList> materialOutStoreListList,
+            String bizId,
+            String materialId,
+            double amount){
+        double surplusOutStoreAmt=amount;//剩余领取数量
+        double processOutStoreAmt=0.00;//待处理领取数量
+        //根据物品库存先进先出规则查询物品库存数据
+        List<MaterialStore> materialStoreList=materialStoreService.getFIFOInfoByMaterialId(materialId);
+        if (materialStoreList != null) {
+            for(MaterialStore materialStore:materialStoreList){
+
+                if(surplusOutStoreAmt<=materialStore.getSurplusAmt()){
+                    //剩余领取数量小于等于库存数量
+                    processOutStoreAmt=surplusOutStoreAmt;
+                }else{
+                    //剩余领取数量大于库存数量
+                    processOutStoreAmt=materialStore.getSurplusAmt();
+                }
+                MaterialOutStoreList materialOutStoreList=new MaterialOutStoreList();
+                materialOutStoreList.setId(StringUtils.getUUID());
+                materialOutStoreList.setBizId(bizId);
+                materialOutStoreList.setBizType(ProcessDefConstants.PROC_DEF_MATERIAL_OUT_STORE);
+                materialOutStoreList.setBatchNo(materialStore.getBatchNo());
+                materialOutStoreList.setMaterialId(materialStore.getMaterialId());
+                materialOutStoreList.setMaterialName(materialStore.getMaterialName());
+                materialOutStoreList.setAmount(processOutStoreAmt);
+                materialOutStoreList.setPrice(materialStore.getPrice());
+                materialOutStoreListList.add(materialOutStoreList);
+                //减少物品库存数据
+                materialStoreService.updateMaterialStore(materialStore.getBatchNo(),materialId,-processOutStoreAmt);
+                surplusOutStoreAmt=surplusOutStoreAmt-processOutStoreAmt;
+                if(surplusOutStoreAmt<=0){
+                    break;
+                }
+            }
+        }
     }
     /**
      * 更新物品领取数据
@@ -91,15 +168,34 @@ public class MaterialOutStoreService {
      */
     @Transactional
     public void updateMaterialOutStore(MaterialOutStoreDto materialOutStoreDto) {
+        List<MaterialOutStoreList> materialListList=materialOutStoreDto.getMaterialList();
         //更新物品领取基本信息
         materialOutStoreRepo.updateMaterialOutStore(materialOutStoreDto.getMaterialOutStore());
-        Map<String, Object> parameterObject = new HashMap<String, Object>();
-        parameterObject.put("bizid", materialOutStoreDto.getMaterialOutStore().getId());
-        parameterObject.put("biztype", ProcessDefConstants.PROC_DEF_MATERIAL_OUT_STORE);
+        Map<String, Object> parameterObject = new HashMap();
+        parameterObject.put("bizId", materialOutStoreDto.getMaterialOutStore().getId());
+        parameterObject.put("bizType", ProcessDefConstants.PROC_DEF_MATERIAL_OUT_STORE);
+        //得到业务物品清单
+        List<MaterialOutStoreList> srcMaterialOutStoreListList=
+                this.getMaterialOutStoreItem(materialOutStoreDto.getMaterialOutStore().getId());
+        //释放物品领取的库存数据
+        if(srcMaterialOutStoreListList!=null){
+            for(MaterialOutStoreList materialOutStoreList:srcMaterialOutStoreListList){
+                //增加物品库存数据
+                materialStoreService.updateMaterialStore(
+                        materialOutStoreList.getBatchNo(),
+                        materialOutStoreList.getMaterialId(),
+                        materialOutStoreList.getAmount()
+                );
+            }
+        }
         //删除物品领取清单
-        materialListService.deleteMaterial(parameterObject);
+        materialOutStoreRepo.deleteMaterialOutStoreItem(parameterObject);
+        //根据进先出规则得到物品领取的库存数据
+        List<MaterialOutStoreList> materialOutStoreListList=
+                this.getMaterialOutStoreByFIFO(materialOutStoreDto.getMaterialOutStore().getId(),materialListList);
         //新增物品领取清单
-        materialListService.addMaterialList(materialOutStoreDto.getMaterialList());
+        materialOutStoreRepo.addMaterialOutStoreItem(materialOutStoreListList);
+
     }
 
     /**
@@ -111,11 +207,10 @@ public class MaterialOutStoreService {
     public void deleteMaterialOutStore(Map<String, Object> parameterObject) {
         //删除物品领取基本信息
         materialOutStoreRepo.deleteMaterialOutStore(parameterObject);
-        Map<String, Object> listParams = new HashMap<String, Object>();
-        listParams.put("bizid", StringUtils.replaceNull(parameterObject.get("id")));
-        listParams.put("biztype", ProcessDefConstants.PROC_DEF_MATERIAL_OUT_STORE);
         //删除物品领取清单
-        materialListService.deleteMaterial(listParams);
+        parameterObject.put("bizId", StringUtils.replaceNull(parameterObject.get("id")));
+        parameterObject.put("bizType", ProcessDefConstants.PROC_DEF_MATERIAL_OUT_STORE);
+        materialOutStoreRepo.deleteMaterialOutStoreItem(parameterObject);
     }
 
     /**

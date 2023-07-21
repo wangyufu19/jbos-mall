@@ -18,5 +18,9 @@ public interface MaterialStoreMapper extends BaseMapper<MaterialStore> {
 
     public List<MaterialStore> getMaterialStoreList(Map<String, Object> parameterObject);
 
+    public List<MaterialStore> getFIFOInfoByMaterialId(Map<String, Object> parameterObject);
+
     public void addMaterialStore(List<MaterialStore> materialStoreList);
+
+    public void updateMaterialStore(Map<String, Object> parameterObject);
 }

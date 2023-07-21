@@ -27,11 +27,21 @@ public class MaterialStoreRepo {
     public List<MaterialStore> getMaterialStoreSumList(PageParam pageParam, Map<String, Object> parameterObject){
         return materialStoreMapper.getMaterialStoreSumList(parameterObject);
     }
-
+    public List<MaterialStore> getMaterialStoreSumList(Map<String, Object> parameterObject){
+        return materialStoreMapper.getMaterialStoreSumList(parameterObject);
+    }
     public List<MaterialStore> getMaterialStoreList(Map<String, Object> parameterObject){
         return materialStoreMapper.getMaterialStoreList(parameterObject);
     }
+
+    public List<MaterialStore> getFIFOInfoByMaterialId(Map<String, Object> parameterObject){
+        return materialStoreMapper.getFIFOInfoByMaterialId(parameterObject);
+    }
     public void addMaterialStore(List<MaterialStore> materialStoreList){
         materialStoreMapper.addMaterialStore(materialStoreList);
+    }
+
+    public void updateMaterialStore(Map<String, Object> parameterObject){
+        materialStoreMapper.updateMaterialStore(parameterObject);
     }
 }

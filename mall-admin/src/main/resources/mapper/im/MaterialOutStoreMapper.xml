@@ -44,6 +44,35 @@
         FROM IM_MATERIAL_OUTSTORE T
         WHERE T.ID=#{id}
     </select>
+    <!--新增物品领取清单-->
+    <insert id="addMaterialOutStoreItem" parameterType="java.util.List">
+        INSERT INTO IM_MATERIAL_OUTSTORE_LIST(ID,BIZID,BATCHNO,MATERIALID,MATERIALNAME,AMOUNT,PRICE)
+        VALUES
+        <foreach collection="list" item="materialList" separator =",">
+            (
+            #{materialList.id},#{materialList.bizId}, #{materialList.batchNo},#{materialList.materialId},#{materialList.materialName},
+            #{materialList.amount},#{materialList.price}
+            )
+        </foreach>
+    </insert>
+    <!--查询物品领取清单-->
+    <select id="getMaterialOutStoreItem" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.im.MaterialOutStoreList">
+        SELECT
+            T.ID,
+            T.BIZID,
+            T.BATCHNO,
+            T.MATERIALID,
+            T.MATERIALNAME,
+            T.AMOUNT,
+            T.PRICE
+        FROM IM_MATERIAL_OUTSTORE_LIST T
+        WHERE T.ISVALID=1 AND T.BIZID = #{bizId}
+    </select>
+    <!--删除物品领取清单-->
+    <delete id="deleteMaterialOutStoreItem" parameterType="java.util.Map">
+        DELETE FROM IM_MATERIAL_OUTSTORE_LIST
+        WHERE BIZID=#{bizId}
+    </delete>
     <!--更新物品领取业务实例ID-->
     <update id="updateInstIdAndBizState" parameterType="java.util.Map">
         UPDATE IM_MATERIAL_OUTSTORE

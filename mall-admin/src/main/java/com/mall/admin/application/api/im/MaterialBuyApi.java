@@ -51,7 +51,7 @@ public class MaterialBuyApi {
     public ResponseResult getBizNo(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            res.setData(bizGeneratorService.getBizNo(BizGeneratorService.BIZ_BUY));
+            res.setData(bizGeneratorService.getBizNo());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

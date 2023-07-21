@@ -46,7 +46,7 @@ public class MaterialInStoreApi {
     public ResponseResult getBizNo(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            res.setData(bizGeneratorService.getBizNo(BizGeneratorService.BIZ_IN_STORE));
+            res.setData(bizGeneratorService.getBizNo());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
