@@ -44,6 +44,23 @@
         FROM IM_MATERIAL_OUTSTORE T
         WHERE T.ID=#{id}
     </select>
+    <!--新增物品领取信息-->
+    <insert id="addMaterialOutStore" parameterType="com.mall.admin.domain.entity.im.MaterialOutStore">
+        INSERT INTO IM_MATERIAL_OUTSTORE(
+            ID,BIZNO,INSTID,APPLYUSERID,APPLYDEPID,APPLYTIME,TOTALAMT,BIZSTATE
+        )VALUES (
+            #{id},#{bizNo},#{instId},#{applyUserId},#{applyDepId},#{applyTime},
+            (SELECT SUM(list.AMOUNT*list.PRICE) TOTALAMT FROM IM_MATERIAL_OUTSTORE_LIST list WHERE list.BIZID=#{id}),
+            #{bizState}
+        )
+    </insert>
+    <!--更新物品领取信息-->
+    <update id="updateMaterialOutStore" parameterType="com.mall.admin.domain.entity.im.MaterialOutStore">
+        UPDATE IM_MATERIAL_OUTSTORE
+        SET INSTID=#{instId},BIZSTATE=#{bizState},
+        TOTALAMT=(SELECT SUM(list.AMOUNT*list.PRICE) TOTALAMT FROM IM_MATERIAL_OUTSTORE_LIST list WHERE list.BIZID=#{id})
+        WHERE ID=#{id}
+    </update>
     <!--新增物品领取清单-->
     <insert id="addMaterialOutStoreItem" parameterType="java.util.List">
         INSERT INTO IM_MATERIAL_OUTSTORE_LIST(ID,BIZID,BATCHNO,MATERIALID,MATERIALNAME,AMOUNT,PRICE)

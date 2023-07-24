@@ -30,11 +30,11 @@ public class MaterialOutStoreRepo {
     }
 
     public void addMaterialOutStore(MaterialOutStore MaterialOutStore){
-        materialOutStoreMapper.insert(MaterialOutStore);
+        materialOutStoreMapper.addMaterialOutStore(MaterialOutStore);
     }
 
     public void updateMaterialOutStore(MaterialOutStore MaterialOutStore){
-        materialOutStoreMapper.updateById(MaterialOutStore);
+        materialOutStoreMapper.updateMaterialOutStore(MaterialOutStore);
     }
 
     public void deleteMaterialOutStore(Map<String, Object> parameterObject){

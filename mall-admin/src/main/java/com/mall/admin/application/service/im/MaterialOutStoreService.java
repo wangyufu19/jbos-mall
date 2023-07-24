@@ -88,13 +88,13 @@ public class MaterialOutStoreService {
     @Transactional
     public void addMaterialOutStore(MaterialOutStoreDto materialOutStoreDto) {
         List<MaterialOutStoreList> materialListList=materialOutStoreDto.getMaterialList();
-        //新增物品领取基本信息
-        materialOutStoreRepo.addMaterialOutStore(materialOutStoreDto.getMaterialOutStore());
         //根据进先出规则得到物品领取的库存数据
         List<MaterialOutStoreList> materialOutStoreListList=
                 this.getMaterialOutStoreByFIFO(materialOutStoreDto.getMaterialOutStore().getId(),materialListList);
         //新增物品领取清单
         materialOutStoreRepo.addMaterialOutStoreItem(materialOutStoreListList);
+        //新增物品领取信息
+        materialOutStoreRepo.addMaterialOutStore(materialOutStoreDto.getMaterialOutStore());
     }
 
     /**
@@ -169,14 +169,29 @@ public class MaterialOutStoreService {
     @Transactional
     public void updateMaterialOutStore(MaterialOutStoreDto materialOutStoreDto) {
         List<MaterialOutStoreList> materialListList=materialOutStoreDto.getMaterialList();
-        //更新物品领取基本信息
-        materialOutStoreRepo.updateMaterialOutStore(materialOutStoreDto.getMaterialOutStore());
         Map<String, Object> parameterObject = new HashMap();
         parameterObject.put("bizId", materialOutStoreDto.getMaterialOutStore().getId());
         parameterObject.put("bizType", ProcessDefConstants.PROC_DEF_MATERIAL_OUT_STORE);
+        //释放物品领取库存
+        this.releaseMaterialStore(materialOutStoreDto.getMaterialOutStore().getId());
+        //删除物品领取清单
+        materialOutStoreRepo.deleteMaterialOutStoreItem(parameterObject);
+        //根据进先出规则得到物品领取的库存数据
+        List<MaterialOutStoreList> materialOutStoreListList=
+                this.getMaterialOutStoreByFIFO(materialOutStoreDto.getMaterialOutStore().getId(),materialListList);
+        //新增物品领取清单
+        materialOutStoreRepo.addMaterialOutStoreItem(materialOutStoreListList);
+        //更新物品领取信息
+        materialOutStoreRepo.updateMaterialOutStore(materialOutStoreDto.getMaterialOutStore());
+    }
+
+    /**
+     * 释放物品领取库存
+     * @param bizId
+     */
+    private void releaseMaterialStore(String bizId){
         //得到业务物品清单
-        List<MaterialOutStoreList> srcMaterialOutStoreListList=
-                this.getMaterialOutStoreItem(materialOutStoreDto.getMaterialOutStore().getId());
+        List<MaterialOutStoreList> srcMaterialOutStoreListList=this.getMaterialOutStoreItem(bizId);
         //释放物品领取的库存数据
         if(srcMaterialOutStoreListList!=null){
             for(MaterialOutStoreList materialOutStoreList:srcMaterialOutStoreListList){
@@ -188,16 +203,7 @@ public class MaterialOutStoreService {
                 );
             }
         }
-        //删除物品领取清单
-        materialOutStoreRepo.deleteMaterialOutStoreItem(parameterObject);
-        //根据进先出规则得到物品领取的库存数据
-        List<MaterialOutStoreList> materialOutStoreListList=
-                this.getMaterialOutStoreByFIFO(materialOutStoreDto.getMaterialOutStore().getId(),materialListList);
-        //新增物品领取清单
-        materialOutStoreRepo.addMaterialOutStoreItem(materialOutStoreListList);
-
     }
-
     /**
      * 删除物品领取
      *
@@ -207,10 +213,13 @@ public class MaterialOutStoreService {
     public void deleteMaterialOutStore(Map<String, Object> parameterObject) {
         //删除物品领取基本信息
         materialOutStoreRepo.deleteMaterialOutStore(parameterObject);
+        //释放物品领取库存
+        this.releaseMaterialStore(StringUtils.replaceNull(parameterObject.get("id")));
         //删除物品领取清单
         parameterObject.put("bizId", StringUtils.replaceNull(parameterObject.get("id")));
         parameterObject.put("bizType", ProcessDefConstants.PROC_DEF_MATERIAL_OUT_STORE);
         materialOutStoreRepo.deleteMaterialOutStoreItem(parameterObject);
+
     }
 
     /**
@@ -237,6 +246,8 @@ public class MaterialOutStoreService {
             public void call(Map<String, String> data) {
                 String processDefinitionId = data.get("processDefinitionId");
                 String processInstanceId = data.get("processInstanceId");
+                materialOutStoreDto.getMaterialOutStore().setInstId(processInstanceId);
+                materialOutStoreDto.getMaterialOutStore().setBizState(ProcessInst.PROCESS_STATE_ACTIVE);
                 if("create".equals(materialOutStoreDto.getAction())) {
                     //新增物品领取业务数据
                     addMaterialOutStore(materialOutStoreDto);
@@ -244,12 +255,6 @@ public class MaterialOutStoreService {
                     //更新物品领取业务数据
                     updateMaterialOutStore(materialOutStoreDto);
                 }
-                //更新物品领取业务实例ID和业务状态
-                Map<String, Object> parameterObject = new HashMap<>();
-                parameterObject.put("BIZNO", materialOutStoreDto.getMaterialOutStore().getBizNo());
-                parameterObject.put("INSTID", processInstanceId);
-                parameterObject.put("BIZSTATE", ProcessInst.PROCESS_STATE_ACTIVE);
-                materialOutStoreRepo.updateInstIdAndBizState(parameterObject);
             }
         });
     }

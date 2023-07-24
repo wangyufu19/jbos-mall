@@ -17,9 +17,9 @@ public interface MaterialOutStoreMapper extends BaseMapper<MaterialOutStore> {
 
     public MaterialOutStore getMaterialOutStoreById(String id);
 
-    public void addMaterialOutStore(Map<String, Object> parameterObject);
+    public void addMaterialOutStore(MaterialOutStore materialOutStore);
 
-    public void updateMaterialOutStore(Map<String, Object> parameterObject);
+    public void updateMaterialOutStore(MaterialOutStore materialOutStore);
 
     public void deleteMaterialOutStore(Map<String, Object> parameterObject);
 
