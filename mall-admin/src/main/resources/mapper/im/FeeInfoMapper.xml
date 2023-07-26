@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.im.mapper.FeeInfoMapper">
+
+
+    <!--查询费用信息下级品节点-->
+    <select id="getFeeChildrenNode"  parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.comm.TreeNode">
+        SELECT T.ID,T.FEENAME AS TEXT,
+        CASE
+            WHEN (SELECT COUNT(1) FROM IM_FEE_INFO B WHERE B.PARENTID=T.ID)>=1 THEN 0
+            ELSE 1
+        END AS LEAF
+        FROM IM_FEE_INFO T
+        WHERE T.ISVALID=1 AND T.PARENTID = #{parentId}
+        ORDER BY T.FEENO
+    </select>
+</mapper>

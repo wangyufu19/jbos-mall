@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.im.mapper.FeeReimburseMapper">
+    <!--查询费用报销列表-->
+    <select id="getFeeReimburseList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.im.FeeReimburse">
+        SELECT
+           T.ID,
+           T.BIZNO,
+           T.INSTID,
+           T.APPLYUSERID,
+           (SELECT EMP.EMPNAME FROM JBOS_EMP EMP WHERE EMP.BADGE=T.APPLYUSERID) AS APPLYUSERNAME,
+           T.APPLYDEPID,
+           (SELECT DEP.DEPNAME FROM JBOS_DEP DEP WHERE DEP.ID=T.APPLYDEPID) AS APPLYDEPNAME,
+           T.FEETYPE,
+           T.FEETMPLT,
+           T.APPLYTIME,
+           T.TOTALAMT,
+           T.BIZDESC,
+           T.BIZSTATE
+        FROM IM_FEE_REIMBURSE T
+        WHERE T.ISVALID=1 AND T.APPLYUSERID=#{userId}
+        <if test="bizNoS != null and bizNoS != ''">
+            AND T.BIZNO LIKE '%${bizNoS}%'
+        </if>
+        <if test="feeTypeS != null and feeTypeS != ''">
+            AND T.FEETYPE = #{feeTypeS}
+        </if>
+        <if test="applyTimeS != null and applyTimeS != ''">
+            AND date_format(T.APPLYTIME,'%Y-%m-%d')= #{applyTimeS}
+        </if>
+    </select>
+    <!--查询费用报销-->
+    <select id="getFeeReimburseById" parameterType="java.lang.String" resultType="com.mall.admin.domain.entity.im.FeeReimburse">
+         SELECT
+           T.ID,
+           T.BIZNO,
+           T.INSTID,
+           T.APPLYUSERID,
+           (SELECT EMP.EMPNAME FROM JBOS_EMP EMP WHERE EMP.BADGE=T.APPLYUSERID) AS APPLYUSERNAME,
+           T.APPLYDEPID,
+           (SELECT DEP.DEPNAME FROM JBOS_DEP DEP WHERE DEP.ID=T.APPLYDEPID) AS APPLYDEPNAME,
+           T.FEETYPE,
+           T.FEETMPLT,
+           T.APPLYTIME,
+           T.TOTALAMT,
+           T.BIZDESC,
+           T.BIZSTATE
+        FROM IM_FEE_REIMBURSE T
+        WHERE T.ID=#{id}
+    </select>
+    <!--新增费用报销-->
+    <insert id="addFeeReimburse" parameterType="com.mall.admin.domain.entity.im.FeeReimburse">
+        INSERT INTO IM_FEE_REIMBURSE(
+            ID,BIZNO,INSTID,APPLYUSERID,APPLYDEPID,APPLYTIME,FEETYPE,FEETMPLT,TOTALAMT,BIZDESC,BIZSTATE
+        )VALUES (
+            #{id},#{bizNo},#{instId},#{applyUserId},#{applyDepId},#{applyTime},#{feeType},#{feeTmplt},
+            (SELECT SUM(item.AMOUNT) TOTALAMT FROM IM_FEE_REIMBURSE_ITEM item WHERE item.BIZID=#{id}),
+            #{bizDesc},
+            #{bizState}
+        )
+    </insert>
+    <!--更新费用报销-->
+    <update id="updateFeeReimburse" parameterType="com.mall.admin.domain.entity.im.FeeReimburse">
+        UPDATE IM_FEE_REIMBURSE
+        SET INSTID=#{instId},BIZDESC=#{bizDesc},BIZSTATE=#{bizState},
+        TOTALAMT=(SELECT SUM(item.AMOUNT) TOTALAMT FROM IM_FEE_REIMBURSE_ITEM item WHERE item.BIZID=#{id})
+        WHERE ID=#{id}
+    </update>
+    <!--新增费用报销科目明细-->
+    <insert id="addFeeReimburseItem" parameterType="java.util.List">
+        INSERT INTO IM_FEE_REIMBURSE_ITEM(ID,BIZID,FEEID,FEENAME,AMOUNT)
+        VALUES
+        <foreach collection="list" item="feeReimburseItem" separator =",">
+            (
+            #{item.id},#{item.bizId}, #{item.feeId},#{item.feeName},#{item.amount}
+            )
+        </foreach>
+    </insert>
+    <!--查询费用报销科目明细-->
+    <select id="getFeeReimburseItem" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.im.FeeReimburseItem">
+        SELECT
+            T.ID,
+            T.BIZID,
+            T.FEEID,
+            T.FEENAME,
+            T.AMOUNT
+        FROM IM_FEE_REIMBURSE_ITEM T
+        WHERE T.BIZID = #{bizId}
+    </select>
+    <!--删除费用报销科目明细-->
+    <delete id="deleteFeeReimburseItem" parameterType="java.util.Map">
+        DELETE FROM IM_FEE_REIMBURSE_ITEM
+        WHERE BIZID=#{bizId}
+    </delete>
+    <!--更新费用报销实例ID-->
+    <update id="updateInstIdAndBizState" parameterType="java.util.Map">
+        UPDATE IM_FEE_REIMBURSE
+        SET
+            INSTID=#{INSTID},
+            BIZSTATE=#{BIZSTATE}
+        WHERE BIZNO=#{BIZNO}
+    </update>
+    <!--更新费用报销状态-->
+    <update id="updateBizState" parameterType="java.util.Map">
+        UPDATE IM_FEE_REIMBURSE
+        SET
+            BIZSTATE=#{BIZSTATE}
+        WHERE BIZNO=#{BIZNO}
+    </update>
+</mapper>

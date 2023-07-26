@@ -11,5 +11,6 @@ public class ProcessDefConstants {
     public static final String PROC_DEF_MATERIAL_BUY="MaterialBuy";
     public static final String PROC_DEF_MATERIAL_IN_STORE="MaterialInStore";
     public static final String PROC_DEF_MATERIAL_OUT_STORE="MaterialOutStore";
+    public static final String PROC_DEF_FEE_REIMBURSE="FeeReimburse";
     public static final String PROC_DEF_NO_PAPER="NoPaper";
 }

@@ -156,6 +156,8 @@ public class MaterialBuyService extends BaseService {
             public void call(Map<String, String> data) {
                 String processDefinitionId = data.get("processDefinitionId");
                 String processInstanceId = data.get("processInstanceId");
+                materialBuyDto.getMaterialBuy().setInstId(processInstanceId);
+                materialBuyDto.getMaterialBuy().setBizState(ProcessInst.PROCESS_STATE_ACTIVE);
                 if ("create".equals(action)) {
                     //新增物品采购业务数据
                     addMaterialBuy(materialBuyDto);
@@ -163,12 +165,6 @@ public class MaterialBuyService extends BaseService {
                     //更新物品采购业务数据
                     updateMaterialBuy(materialBuyDto);
                 }
-                //更新物品采购业务实例ID和业务状态
-                Map<String, Object> parameterObject = new HashMap<>();
-                parameterObject.put("BIZNO", materialBuyDto.getMaterialBuy().getBizNo());
-                parameterObject.put("INSTID", processInstanceId);
-                parameterObject.put("BIZSTATE", ProcessInst.PROCESS_STATE_ACTIVE);
-                updateMaterialInstIdAndBizState(parameterObject);
             }
         });
         return res;

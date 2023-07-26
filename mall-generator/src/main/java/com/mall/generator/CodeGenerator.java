@@ -7,14 +7,12 @@ import com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.mall.generator.config.BaseConfig;
 import com.mall.generator.config.DataSourceConfig;
+import com.mall.generator.config.EntityOperator;
 import com.mall.generator.config.TemplateConfig;
 import com.mall.generator.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 @Slf4j
@@ -24,6 +22,7 @@ public class CodeGenerator {
     private BaseConfig.BaseConfigBuilder baseConfigBuilder;
     private DataSourceConfig.DataSourceConfigBuilder dataSourceConfigBuilder;
     private TemplateConfig.TemplateConfigBuilder templateConfigBuilder;
+
 
     public CodeGenerator(){
         this.baseConfigBuilder=BaseConfig.builder();
@@ -93,7 +92,7 @@ public class CodeGenerator {
         BaseConfig baseConfig=this.baseConfigBuilder.build();
         TemplateConfig templateConfig=this.templateConfigBuilder.build();
         //生成controller,service,entity,mapper
-        this.generator(dataSourceConfig,baseConfig);
+        //this.generator(dataSourceConfig,baseConfig);
 
         Map<String, Object> objectMap=new HashMap<>();
         objectMap.put(TemplateConfig.TLT_SPRING_APPLICATION_NAME,springApplicationName);
@@ -115,7 +114,7 @@ public class CodeGenerator {
             new File(infrastructure).mkdirs();
         }
         //生成Repo文件
-        this.outputFileRepo(objectMap,templateConfig.getRepo(),javaOutDir,packageInfo,packagePath,entityName);
+        this.outputFileRepo(objectMap,templateConfig,javaOutDir,packageInfo,packagePath,entityName);
         //生成Mapper文件
         this.outputFileMapper(objectMap,templateConfig.getMapper(),javaOutDir,packageInfo,packagePath,entityName);
     }
@@ -123,7 +122,7 @@ public class CodeGenerator {
         File ymlFile=new File(resourceOutDir+File.separator+TemplateConfig.TLT_YML);
         this.outputFile(objectMap,templatePath,ymlFile);
     }
-    private void outputFileRepo(Map<String, Object> objectMap,String templatePath,String javaOutDir,String packageInfo,String packagePath,String entityName) throws Exception {
+    private void outputFileRepo(Map<String, Object> objectMap,TemplateConfig templateConfig,String javaOutDir,String packageInfo,String packagePath,String entityName) throws Exception {
         String repository=javaOutDir+File.separator+packagePath+File.separator+TemplateConfig.TLT_INFRASTRUCTURE+File.separator+TemplateConfig.TLT_REPOSITORY;
         if(!new File(repository).exists()){
             new File(repository).mkdir();
@@ -131,9 +130,11 @@ public class CodeGenerator {
         String objectName=entityName+StringUtil.getUpperCamelCase(TemplateConfig.TLT_REPOSITORY);
         File repoFile=new File(repository+File.separator+objectName+TemplateConfig.TLT_JAVA);
         objectMap.put(TemplateConfig.TLT_PACKAGE_NAME,packageInfo+"."+TemplateConfig.TLT_INFRASTRUCTURE+"."+TemplateConfig.TLT_REPOSITORY);
+        objectMap.put(TemplateConfig.TLT_ENTITY,entityName);
         objectMap.put(TemplateConfig.TLT_COMMENT,objectName);
         objectMap.put(TemplateConfig.TLT_REPOSITORY,objectName);
-        this.outputFile(objectMap,templatePath,repoFile);
+        objectMap.put(TemplateConfig.TLT_ENTITY_OPERATORS,templateConfig.getEntityOperators());
+        this.outputFile(objectMap,templateConfig.getRepo(),repoFile);
     }
     private void outputFileMapper(Map<String, Object> objectMap,String templatePath,String javaOutDir,String packageInfo,String packagePath,String entityName) throws Exception {
         String mapper=javaOutDir+File.separator+packagePath+File.separator+TemplateConfig.TLT_INFRASTRUCTURE+File.separator+TemplateConfig.TLT_REPOSITORY+File.separator+TemplateConfig.TLT_MAPPER;

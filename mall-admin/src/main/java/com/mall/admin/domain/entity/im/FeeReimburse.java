@@ -10,14 +10,15 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
- * MaterialBuy
+ * FeeRiemburse
+ *
  * @author youfu.wang
- * @date 2020-06-24
- */
+ * @date 2023/7/25
+ **/
 @Setter
 @Getter
-@TableName("IM_MATERIAL_BUY")
-public class MaterialBuy extends BaseEntity {
+@TableName("IM_FEE_REIMBURSE")
+public class FeeReimburse extends BaseEntity {
     @TableField("bizno")
     private String bizNo;
     @TableField(exist=false)
@@ -39,11 +40,10 @@ public class MaterialBuy extends BaseEntity {
     private Date applyTime;
     @TableField("totalamt")
     private double totalAmt;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @TableField("gmotime")
-    private Date gmoTime;
-    @TableField("purpose")
-    private String purpose;
+    @TableField("bizdesc")
+    private String bizDesc;
     @TableField("bizstate")
     private String bizState;
+
+
 }

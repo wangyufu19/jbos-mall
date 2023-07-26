@@ -3,6 +3,8 @@ package com.mall.generator.config;
 import lombok.Getter;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class TemplateConfig {
@@ -18,6 +20,10 @@ public class TemplateConfig {
     public static final String TLT_INFRASTRUCTURE="infrastructure";
     public static final String TLT_REPOSITORY="repository";
     public static final String TLT_MAPPER="mapper";
+    public static final String TLT_ENTITY="entity";
+    public static final String TLT_ENTITY_OPERATORS="operators";
+    private List<EntityOperator> entityOperators=new ArrayList<>();
+
     private String yml;
     private String repo;
     private String mapper;
@@ -26,11 +32,25 @@ public class TemplateConfig {
         this.yml=yml;
         this.repo=repo;
         this.mapper=mapper;
+        this.entityOperators.add(EntityOperator.get);
+        this.entityOperators.add(EntityOperator.list);
+        this.entityOperators.add(EntityOperator.add);
+        this.entityOperators.add(EntityOperator.update);
+        this.entityOperators.add(EntityOperator.delete);
     }
     public static TemplateConfig.TemplateConfigBuilder builder() {
         return new TemplateConfig.TemplateConfigBuilder();
     }
 
+    public void entityOperator(EntityOperator entityOperator){
+        this.entityOperators.add(entityOperator);
+    }
+    public void setEntityOperator(List<EntityOperator> entityOperators){
+        this.entityOperators=entityOperators;
+    }
+    public List<EntityOperator> getEntityOperators(){
+        return this.entityOperators;
+    }
     public static class TemplateConfigBuilder {
         private String yml;
         private String repo;
@@ -60,7 +80,6 @@ public class TemplateConfig {
         public TemplateConfig build() {
             return new TemplateConfig(this.yml, this.repo, this.mapper);
         }
-
         public String toString() {
             return "TemplateConfig.TemplateConfigBuilder(yml=" + this.yml + ", repo=" + this.repo + ", mapper=" + this.mapper + ")";
         }
