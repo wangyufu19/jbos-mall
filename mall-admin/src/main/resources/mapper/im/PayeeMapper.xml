@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.im.mapper.PayeeMapper">
+
+
+    <!--查询业务收款人信息-->
+    <select id="getPayeeInfo"  parameterType="java.lang.String" resultType="com.mall.admin.domain.entity.im.Payee">
+        SELECT
+            T.ID,
+            T.ACCTNAME,
+            T.ACCTNO,
+            T.BANKNAME,
+            T.TRADETYPE
+        FROM IM_REIMBURSE_PAYEE T
+        WHERE T.BIZID = #{bizId}
+    </select>
+
+</mapper>

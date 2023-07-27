@@ -62,17 +62,17 @@
     <!--更新费用报销-->
     <update id="updateFeeReimburse" parameterType="com.mall.admin.domain.entity.im.FeeReimburse">
         UPDATE IM_FEE_REIMBURSE
-        SET INSTID=#{instId},BIZDESC=#{bizDesc},BIZSTATE=#{bizState},
+        SET INSTID=#{instId},FEETYPE=#{feeType},FEETMPLT=#{feeTmplt},BIZDESC=#{bizDesc},BIZSTATE=#{bizState},
         TOTALAMT=(SELECT SUM(item.AMOUNT) TOTALAMT FROM IM_FEE_REIMBURSE_ITEM item WHERE item.BIZID=#{id})
         WHERE ID=#{id}
     </update>
     <!--新增费用报销科目明细-->
     <insert id="addFeeReimburseItem" parameterType="java.util.List">
-        INSERT INTO IM_FEE_REIMBURSE_ITEM(ID,BIZID,FEEID,FEENAME,AMOUNT)
+        INSERT INTO IM_FEE_REIMBURSE_ITEM(ID,BIZID,FEEID,FEENAME,AMOUNT,FEEDESC)
         VALUES
-        <foreach collection="list" item="feeReimburseItem" separator =",">
+        <foreach collection="list" item="item" separator =",">
             (
-            #{item.id},#{item.bizId}, #{item.feeId},#{item.feeName},#{item.amount}
+            #{item.id},#{item.bizId}, #{item.feeId},#{item.feeName},#{item.amount},#{item.feeDesc}
             )
         </foreach>
     </insert>
@@ -83,7 +83,8 @@
             T.BIZID,
             T.FEEID,
             T.FEENAME,
-            T.AMOUNT
+            T.AMOUNT,
+            T.FEEDESC
         FROM IM_FEE_REIMBURSE_ITEM T
         WHERE T.BIZID = #{bizId}
     </select>

@@ -13,6 +13,8 @@ import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.infrastructure.repository.im.FeeReimburseRepo;
+import com.mall.admin.infrastructure.repository.im.InvoiceRepo;
+import com.mall.admin.infrastructure.repository.im.PayeeRepo;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
@@ -40,6 +42,10 @@ public class FeeReimburseService {
     private ProcessTaskService processTaskService;
     @Autowired
     private FeeReimburseRepo feeReimburseRepo;
+    @Autowired
+    private PayeeRepo payeeRepo;
+    @Autowired
+    private InvoiceRepo invoiceRepo;
 
     /**
      * 查询费用报销列表
@@ -59,8 +65,14 @@ public class FeeReimburseService {
      */
     public FeeReimburseDto getFeeReimburseById(String id){
         FeeReimburseDto feeReimburseDto=new FeeReimburseDto();
+        //查询费用报销基本信息
         feeReimburseDto.setFeeReimburse(feeReimburseRepo.getFeeReimburseById(id));
-        feeReimburseDto.setFeeReimburseItem(feeReimburseRepo.getFeeReimburseItem(id));
+        //查询费用报销收款人信息
+        feeReimburseDto.setPayee(payeeRepo.getPayeeInfo(id));
+        //查询费用报销科目明细
+        feeReimburseDto.setFeeReimburseItems(feeReimburseRepo.getFeeReimburseItem(id));
+        //查询费用报销发票明细
+        feeReimburseDto.setInvoiceItems(invoiceRepo.getReimburseInvoiceItem(id));
         return feeReimburseDto;
     }
 
@@ -71,9 +83,13 @@ public class FeeReimburseService {
     @Transactional
     public void addFeeReimburseItem(FeeReimburseDto feeReimburseDto){
         //新增费用报销科目明细
-        feeReimburseRepo.addFeeReimburseItem(feeReimburseDto.getFeeReimburseItem());
+        feeReimburseRepo.addFeeReimburseItem(feeReimburseDto.getFeeReimburseItems());
         //新增费用报销
         feeReimburseRepo.addFeeReimburse(feeReimburseDto.getFeeReimburse());
+        //新增收款人信息
+        payeeRepo.addPayeeInfo(feeReimburseDto.getPayee());
+        //新增费用报销发票明细
+        invoiceRepo.addReimburseInvoiceItem(feeReimburseDto.getInvoiceItems());
     }
 
     /**
@@ -84,10 +100,16 @@ public class FeeReimburseService {
     public void updateFeeReimburse(FeeReimburseDto feeReimburseDto){
         //删除费用报销科目明细
         feeReimburseRepo.deleteFeeReimburseItem(feeReimburseDto.getFeeReimburse().getId());
+        //删除费用报销发票明细
+        invoiceRepo.deleteReimburseInvoiceItem(feeReimburseDto.getFeeReimburse().getId());
         //新增费用报销科目明细
-        feeReimburseRepo.addFeeReimburseItem(feeReimburseDto.getFeeReimburseItem());
+        feeReimburseRepo.addFeeReimburseItem(feeReimburseDto.getFeeReimburseItems());
         //更新费用报销
         feeReimburseRepo.updateFeeReimburse(feeReimburseDto.getFeeReimburse());
+        //更新收款人信息
+        payeeRepo.updatePayeeInfo(feeReimburseDto.getPayee());
+        //新增费用报销发票明细
+        invoiceRepo.addReimburseInvoiceItem(feeReimburseDto.getInvoiceItems());
     }
 
     /**
