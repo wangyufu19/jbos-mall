@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1ez14tx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.10.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="NoPaper" name="去纸化审批" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0u53jm3</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="ROLE_PROCESS_STARTER" name="申请人" camunda:assignee="${ROLE_PROCESS_STARTER}">
+      <bpmn:incoming>Flow_0u53jm3</bpmn:incoming>
+      <bpmn:outgoing>Flow_03rdr99</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0u53jm3" sourceRef="StartEvent_1" targetRef="ROLE_PROCESS_STARTER" />
+    <bpmn:userTask id="ROLE_PROCESS_LEADER" name="审批人" camunda:assignee="${processLeader}">
+      <bpmn:incoming>Flow_03rdr99</bpmn:incoming>
+      <bpmn:incoming>Flow_1agwtr7</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zwkhvg</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="ROLE_PROCESS_LEADER" camunda:elementVariable="processLeader">
+        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${nrOfInstances == nrOfCompletedInstances}</bpmn:completionCondition>
+      </bpmn:multiInstanceLoopCharacteristics>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_03rdr99" sourceRef="ROLE_PROCESS_STARTER" targetRef="ROLE_PROCESS_LEADER" />
+    <bpmn:endEvent id="Event_0p6xwvh">
+      <bpmn:incoming>isEndExpression</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_0lpv0bm">
+      <bpmn:incoming>Flow_0zwkhvg</bpmn:incoming>
+      <bpmn:outgoing>isEndExpression</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1agwtr7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0zwkhvg" sourceRef="ROLE_PROCESS_LEADER" targetRef="Gateway_0lpv0bm" />
+    <bpmn:sequenceFlow id="isEndExpression" sourceRef="Gateway_0lpv0bm" targetRef="Event_0p6xwvh">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isEnd==true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1agwtr7" sourceRef="Gateway_0lpv0bm" targetRef="ROLE_PROCESS_LEADER" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="NoPaper">
+      <bpmndi:BPMNEdge id="Flow_1agwtr7_di" bpmnElement="Flow_1agwtr7">
+        <di:waypoint x="620" y="142" />
+        <di:waypoint x="620" y="200" />
+        <di:waypoint x="480" y="200" />
+        <di:waypoint x="480" y="157" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1a06nhr_di" bpmnElement="isEndExpression">
+        <di:waypoint x="645" y="117" />
+        <di:waypoint x="732" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zwkhvg_di" bpmnElement="Flow_0zwkhvg">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="595" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03rdr99_di" bpmnElement="Flow_03rdr99">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0u53jm3_di" bpmnElement="Flow_0u53jm3">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1rprrfs_di" bpmnElement="ROLE_PROCESS_STARTER">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_049nmx4_di" bpmnElement="ROLE_PROCESS_LEADER">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0p6xwvh_di" bpmnElement="Event_0p6xwvh">
+        <dc:Bounds x="732" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0lpv0bm_di" bpmnElement="Gateway_0lpv0bm" isMarkerVisible="true">
+        <dc:Bounds x="595" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

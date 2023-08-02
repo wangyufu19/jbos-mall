@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1lhqvcv" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.10.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="MaterialInStore" name="物品入库" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0dllt9d</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0dllt9d" sourceRef="StartEvent_1" targetRef="ROLE_PROCESS_STARTER" />
+    <bpmn:userTask id="ROLE_PROCESS_STARTER" name="申请人" camunda:assignee="${ROLE_PROCESS_STARTER}">
+      <bpmn:incoming>Flow_0dllt9d</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ci6e11</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1ci6e11" sourceRef="ROLE_PROCESS_STARTER" targetRef="ROLE_REPO_ADMIN" />
+    <bpmn:userTask id="ROLE_REPO_ADMIN" name="仓库管理员" camunda:assignee="${ROLE_REPO_ADMIN}">
+      <bpmn:incoming>Flow_1ci6e11</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wg3j5m</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_1urgtry">
+      <bpmn:incoming>Flow_0wg3j5m</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0wg3j5m" sourceRef="ROLE_REPO_ADMIN" targetRef="Event_1urgtry" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="MaterialInStore">
+      <bpmndi:BPMNEdge id="Flow_1ci6e11_di" bpmnElement="Flow_1ci6e11">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dllt9d_di" bpmnElement="Flow_0dllt9d">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wg3j5m_di" bpmnElement="Flow_0wg3j5m">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="592" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1hi12vc_di" bpmnElement="ROLE_PROCESS_STARTER">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03qkkze_di" bpmnElement="ROLE_REPO_ADMIN">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1urgtry_di" bpmnElement="Event_1urgtry">
+        <dc:Bounds x="592" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
