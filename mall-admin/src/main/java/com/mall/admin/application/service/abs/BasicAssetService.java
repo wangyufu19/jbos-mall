@@ -61,7 +61,7 @@ public class BasicAssetService {
      * @param file
      */
     @Transactional
-    public void inPool(MultipartFile file) throws IOException {
+    public void inPool(MultipartFile file)  {
         InputStream in = null;
         try {
             in = new ByteArrayInputStream(file.getBytes());
@@ -73,20 +73,45 @@ public class BasicAssetService {
                 XSSFCell acctNoCell=row.getCell(0);
                 XSSFCell customNoCell=row.getCell(1);
                 XSSFCell sexCell=row.getCell(2);
-                log.info("acctNo={};customNo={},sex={}", RowCell.getCellValue(acctNoCell),RowCell.getCellValue(customNoCell),RowCell.getCellValue(sexCell));
+                XSSFCell certIdCell=row.getCell(3);
+                XSSFCell monthIncomeCell=row.getCell(4);
+                XSSFCell grantLimitCell=row.getCell(5);
+                XSSFCell surplusLimitCell=row.getCell(6);
+                XSSFCell loanSurplusAmtCell=row.getCell(7);
+                XSSFCell loanSdateCell=row.getCell(8);
+                XSSFCell loanEdateCell=row.getCell(9);
+                XSSFCell creditRateCell=row.getCell(10);
+                XSSFCell fiveClassifyCell=row.getCell(11);
+                XSSFCell loanTypeCell=row.getCell(12);
+
                 BasicAsset basicAsset=new BasicAsset();
                 basicAsset.setId(StringUtils.getUUID());
-                basicAsset.setAcctNo(StringUtils.replaceNull(RowCell.getCellValue(acctNoCell)));
-                basicAsset.setCustomName(StringUtils.replaceNull(RowCell.getCellValue(customNoCell)));
-                basicAsset.setSex(StringUtils.replaceNull(RowCell.getCellValue(sexCell)));
+                basicAsset.setAssetSte(BasicAsset.ASSET_STE_NORMAL);
+                basicAsset.setAcctNo(RowCell.getString(acctNoCell));
+                basicAsset.setCustomName(RowCell.getString(customNoCell));
+                basicAsset.setSex(RowCell.getString(sexCell));
+                basicAsset.setCertId(RowCell.getString(certIdCell));
+                basicAsset.setMonthIncome(RowCell.getDouble(monthIncomeCell));
+                basicAsset.setGrantLimit(RowCell.getDouble(grantLimitCell));
+                basicAsset.setSurplusLimit(RowCell.getDouble(surplusLimitCell));
+                basicAsset.setLoanSurplusAmt(RowCell.getDouble(loanSurplusAmtCell));
+                basicAsset.setLoanSdate(RowCell.getString(loanSdateCell));
+                basicAsset.setLoanEdate(RowCell.getString(loanEdateCell));
+                basicAsset.setCreditRate(RowCell.getString(creditRateCell));
+                basicAsset.setFiveClassify(RowCell.getString(fiveClassifyCell));
+                basicAsset.setLoanType(RowCell.getString(loanTypeCell));
                 basicAssetRepo.addBasicAsset(basicAsset);
             }
 
         }catch (IOException e){
-            e.printStackTrace();
+            log.error(e.getMessage());
         }finally {
             if(in!=null){
-                in.close();
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                }
             }
         }
     }

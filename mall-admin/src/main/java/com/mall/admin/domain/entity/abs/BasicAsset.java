@@ -17,6 +17,10 @@ import lombok.Setter;
 @TableName("ABS_BASIC_ASSET")
 public class BasicAsset extends BaseEntity {
     /**
+     * 资产状态(0:正常)
+     */
+    public static String ASSET_STE_NORMAL="0";
+    /**
      * 贷款账号
      */
     @TableField("acct_no")
