@@ -1,5 +1,6 @@
 package com.mall.admin.infrastructure.repository.abs;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.mall.admin.domain.entity.abs.BasicAsset;
 import com.mall.admin.infrastructure.repository.abs.mapper.BasicAssetMapper;
 import com.mall.common.page.PageParam;
@@ -26,5 +27,10 @@ public class BasicAssetRepo {
     }
     public void addBasicAsset(BasicAsset basicAsset){
         basicAssetMapper.insert(basicAsset);
+    }
+    public void deleteBasicAsset(String acctNo){
+        UpdateWrapper<BasicAsset> updateWrapper=new UpdateWrapper<BasicAsset>();
+        updateWrapper.eq("acct_no",acctNo);
+        basicAssetMapper.delete(updateWrapper);
     }
 }

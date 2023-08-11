@@ -3,6 +3,7 @@ package com.mall.admin.application.api.abs;
 import com.mall.admin.application.service.abs.BasicAssetService;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
+import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,21 @@ public class BasicAssetApi {
             }else{
                 res= ResponseResult.error(ResponseResult.CODE_FAILURE, "对不起，只能上传xls/xlsx文件");
             }
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+    @ResponseBody
+    @PostMapping(value = "/outPool")
+    @ApiOperation("基础资产出池")
+    public ResponseResult outPool(@RequestBody Map<String, Object> params){
+        ResponseResult res= ResponseResult.ok();
+        String id=StringUtils.replaceNull(params.get("id"));
+        String acctNo=StringUtils.replaceNull(params.get("acctNo"));
+        try{
+            basicAssetService.outPool(id,acctNo);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

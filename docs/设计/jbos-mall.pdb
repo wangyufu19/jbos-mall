@@ -12311,7 +12311,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Code>ABS_BASIC_ASSET</a:Code>
 <a:CreationDate>1691128870</a:CreationDate>
 <a:Creator>wangy</a:Creator>
-<a:ModificationDate>1691134696</a:ModificationDate>
+<a:ModificationDate>1691741314</a:ModificationDate>
 <a:Modifier>wangy</a:Modifier>
 <a:Comment>基础资产</a:Comment>
 <a:TotalSavingCurrency/>
@@ -12453,6 +12453,43 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Length>20</a:Length>
 </o:Column>
 <o:Column Id="o603">
+<a:ObjectID>29CA8862-5E25-4DEB-939F-0F3F6D62F7E9</a:ObjectID>
+<a:Name>贷款利率</a:Name>
+<a:Code>LOAN_RATE</a:Code>
+<a:CreationDate>1691741229</a:CreationDate>
+<a:Creator>wangy</a:Creator>
+<a:ModificationDate>1691741314</a:ModificationDate>
+<a:Modifier>wangy</a:Modifier>
+<a:Comment>贷款利率</a:Comment>
+<a:DataType>decimal(8,2</a:DataType>
+<a:Length>8</a:Length>
+<a:Precision>2</a:Precision>
+</o:Column>
+<o:Column Id="o604">
+<a:ObjectID>8555D899-B31D-4B28-A861-8023C04C0FCD</a:ObjectID>
+<a:Name>还款方式</a:Name>
+<a:Code>REFUND_TYPE</a:Code>
+<a:CreationDate>1691741229</a:CreationDate>
+<a:Creator>wangy</a:Creator>
+<a:ModificationDate>1691741314</a:ModificationDate>
+<a:Modifier>wangy</a:Modifier>
+<a:Comment>还款方式</a:Comment>
+<a:DataType>varchar(16)</a:DataType>
+<a:Length>16</a:Length>
+</o:Column>
+<o:Column Id="o605">
+<a:ObjectID>414CB0DB-1267-4F9F-8871-BB0AE988B145</a:ObjectID>
+<a:Name>付息方式</a:Name>
+<a:Code>PAY_IRT_TYPE</a:Code>
+<a:CreationDate>1691741229</a:CreationDate>
+<a:Creator>wangy</a:Creator>
+<a:ModificationDate>1691741314</a:ModificationDate>
+<a:Modifier>wangy</a:Modifier>
+<a:Comment>付息方式</a:Comment>
+<a:DataType>varchar(16)</a:DataType>
+<a:Length>16</a:Length>
+</o:Column>
+<o:Column Id="o606">
 <a:ObjectID>1A86C122-C939-49C9-8903-1423BCDBBBF0</a:ObjectID>
 <a:Name>信用评级</a:Name>
 <a:Code>CREDIT_RATE</a:Code>
@@ -12464,7 +12501,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o604">
+<o:Column Id="o607">
 <a:ObjectID>F88FF5D5-64B0-4677-9AC3-8643E0A3178E</a:ObjectID>
 <a:Name>五级分类</a:Name>
 <a:Code>FIVE_CLASSIFY</a:Code>
@@ -12476,7 +12513,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o605">
+<o:Column Id="o608">
 <a:ObjectID>B597CE96-5564-40F8-9747-272DE1D33C2E</a:ObjectID>
 <a:Name>贷款类型</a:Name>
 <a:Code>LOAN_TYPE</a:Code>
@@ -12488,7 +12525,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o606">
+<o:Column Id="o609">
 <a:ObjectID>A59E8B4A-B289-46B6-A4AD-D8B7EA8272E2</a:ObjectID>
 <a:Name>资产状态</a:Name>
 <a:Code>ASSET_STE</a:Code>
@@ -12500,7 +12537,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o607">
+<o:Column Id="o610">
 <a:ObjectID>6FDC134E-55C9-48B5-AF96-AE41CFBAB868</a:ObjectID>
 <a:Name>是否有效</a:Name>
 <a:Code>ISVALID</a:Code>
@@ -12512,7 +12549,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DefaultValue>1</a:DefaultValue>
 <a:DataType>INT</a:DataType>
 </o:Column>
-<o:Column Id="o608">
+<o:Column Id="o611">
 <a:ObjectID>39074C85-8F46-4AE0-A816-E45249B66C66</a:ObjectID>
 <a:Name>创建用户</a:Name>
 <a:Code>CREATE_USER_ID</a:Code>
@@ -12524,7 +12561,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>VARCHAR(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o609">
+<o:Column Id="o612">
 <a:ObjectID>AB151F54-4EDC-432A-9A52-990E7B7C2DD5</a:ObjectID>
 <a:Name>创建时间</a:Name>
 <a:Code>CREATE_TIME</a:Code>
@@ -12536,7 +12573,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>VARCHAR(20)</a:DataType>
 <a:Length>20</a:Length>
 </o:Column>
-<o:Column Id="o610">
+<o:Column Id="o613">
 <a:ObjectID>42B47120-0435-428E-974B-C6598E992FC4</a:ObjectID>
 <a:Name>更新用户</a:Name>
 <a:Code>UPDATE_USER_ID</a:Code>
@@ -12548,7 +12585,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>VARCHAR(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o611">
+<o:Column Id="o614">
 <a:ObjectID>2EAEC873-A4FB-485C-A34C-20E4C938EFC5</a:ObjectID>
 <a:Name>更新时间</a:Name>
 <a:Code>UPDATE_TIME</a:Code>
@@ -12562,7 +12599,7 @@ LABL 0 新宋体,8,N</a:FontList>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o612">
+<o:Key Id="o615">
 <a:ObjectID>16A71BE0-D37A-4193-BCD4-836652407B09</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -12576,10 +12613,10 @@ LABL 0 新宋体,8,N</a:FontList>
 </o:Key>
 </c:Keys>
 <c:Owner>
-<o:User Ref="o613"/>
+<o:User Ref="o616"/>
 </c:Owner>
 <c:PrimaryKey>
-<o:Key Ref="o612"/>
+<o:Key Ref="o615"/>
 </c:PrimaryKey>
 </o:Table>
 <o:Table Id="o583">
@@ -12593,7 +12630,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Comment>项目立项</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o614">
+<o:Column Id="o617">
 <a:ObjectID>689461DB-82F8-486C-9AD5-47FADB60746C</a:ObjectID>
 <a:Name>ID</a:Name>
 <a:Code>ID</a:Code>
@@ -12606,7 +12643,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Length>64</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o615">
+<o:Column Id="o618">
 <a:ObjectID>3127D91B-5FFA-489F-84B9-E47AC6F5620C</a:ObjectID>
 <a:Name>项目编号</a:Name>
 <a:Code>PROJECT_NO</a:Code>
@@ -12618,7 +12655,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o616">
+<o:Column Id="o619">
 <a:ObjectID>57A8E1AB-05D6-4E26-842D-EC379A71E0BF</a:ObjectID>
 <a:Name>项目名称</a:Name>
 <a:Code>PROJECT_NAME</a:Code>
@@ -12630,7 +12667,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o617">
+<o:Column Id="o620">
 <a:ObjectID>B2BDC9FD-038D-4A33-AB93-4AB64BD67538</a:ObjectID>
 <a:Name>项目简称</a:Name>
 <a:Code>SIMPLE_NAME</a:Code>
@@ -12642,7 +12679,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o618">
+<o:Column Id="o621">
 <a:ObjectID>D18616F3-4788-438F-B01A-27D9B59C4898</a:ObjectID>
 <a:Name>项目类型</a:Name>
 <a:Code>PROJECT_TYPE</a:Code>
@@ -12654,7 +12691,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o619">
+<o:Column Id="o622">
 <a:ObjectID>F1A3B4E7-B596-47E0-B3B4-F393A8E0D6D5</a:ObjectID>
 <a:Name>基础资产</a:Name>
 <a:Code>BASIC_ASSET</a:Code>
@@ -12666,7 +12703,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o620">
+<o:Column Id="o623">
 <a:ObjectID>7F018A0F-10BE-411A-9C72-1C01FA56CED2</a:ObjectID>
 <a:Name>项目金额</a:Name>
 <a:Code>PROJECT_AMT</a:Code>
@@ -12679,7 +12716,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Length>19</a:Length>
 <a:Precision>4</a:Precision>
 </o:Column>
-<o:Column Id="o621">
+<o:Column Id="o624">
 <a:ObjectID>9C866915-6CCF-4910-A7CC-5A2D53DD960D</a:ObjectID>
 <a:Name>最高限额</a:Name>
 <a:Code>PROJECT_MAX_AMT</a:Code>
@@ -12692,7 +12729,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Length>19</a:Length>
 <a:Precision>4</a:Precision>
 </o:Column>
-<o:Column Id="o622">
+<o:Column Id="o625">
 <a:ObjectID>152138AA-5A34-40F5-A0BD-D355D08C38BB</a:ObjectID>
 <a:Name>封包日期</a:Name>
 <a:Code>PACKET_DATE</a:Code>
@@ -12704,7 +12741,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(20)</a:DataType>
 <a:Length>20</a:Length>
 </o:Column>
-<o:Column Id="o623">
+<o:Column Id="o626">
 <a:ObjectID>2DDDEB91-D785-4A4F-8C4B-2794C2C8E9B0</a:ObjectID>
 <a:Name>利息起算日</a:Name>
 <a:Code>IRT_START_DATE</a:Code>
@@ -12716,7 +12753,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(20)</a:DataType>
 <a:Length>20</a:Length>
 </o:Column>
-<o:Column Id="o624">
+<o:Column Id="o627">
 <a:ObjectID>26B546BE-80B2-47BD-B115-0B1351774EEA</a:ObjectID>
 <a:Name>发行日期</a:Name>
 <a:Code>ISSUE_DATE</a:Code>
@@ -12728,7 +12765,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(20)</a:DataType>
 <a:Length>20</a:Length>
 </o:Column>
-<o:Column Id="o625">
+<o:Column Id="o628">
 <a:ObjectID>97A789A3-3D7F-4C6C-B5A3-D1E5FDC53DE1</a:ObjectID>
 <a:Name>结束日期</a:Name>
 <a:Code>END_DATE</a:Code>
@@ -12740,7 +12777,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(20)</a:DataType>
 <a:Length>20</a:Length>
 </o:Column>
-<o:Column Id="o626">
+<o:Column Id="o629">
 <a:ObjectID>E37BF62E-150B-4BC3-BB1D-F6DB54EE55AF</a:ObjectID>
 <a:Name>法定结束日</a:Name>
 <a:Code>LAW_END_DATE</a:Code>
@@ -12752,7 +12789,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(20)</a:DataType>
 <a:Length>20</a:Length>
 </o:Column>
-<o:Column Id="o627">
+<o:Column Id="o630">
 <a:ObjectID>A1295428-5B15-46CA-8D97-97F495E9B95C</a:ObjectID>
 <a:Name>是否循环购买</a:Name>
 <a:Code>IS_RECYCLE_BUY</a:Code>
@@ -12764,7 +12801,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o628">
+<o:Column Id="o631">
 <a:ObjectID>C34CBA1F-BB47-454E-86F0-34776384EE25</a:ObjectID>
 <a:Name>购买开始日期</a:Name>
 <a:Code>BUY_SDATE</a:Code>
@@ -12776,7 +12813,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(20)</a:DataType>
 <a:Length>20</a:Length>
 </o:Column>
-<o:Column Id="o629">
+<o:Column Id="o632">
 <a:ObjectID>CEF3EC7D-CE85-4E3B-9170-2BF885FDF5C9</a:ObjectID>
 <a:Name>购买截止日期</a:Name>
 <a:Code>BUY_EDATE</a:Code>
@@ -12788,7 +12825,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(20)</a:DataType>
 <a:Length>20</a:Length>
 </o:Column>
-<o:Column Id="o630">
+<o:Column Id="o633">
 <a:ObjectID>DCF69146-B00D-4FBE-9E14-4A732DF0DC46</a:ObjectID>
 <a:Name>项目状态</a:Name>
 <a:Code>PROJECT_STE</a:Code>
@@ -12800,7 +12837,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o631">
+<o:Column Id="o634">
 <a:ObjectID>AECCD4A9-A355-408F-9A92-2579EAAB23DE</a:ObjectID>
 <a:Name>是否有效</a:Name>
 <a:Code>ISVALID</a:Code>
@@ -12812,7 +12849,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DefaultValue>1</a:DefaultValue>
 <a:DataType>INT</a:DataType>
 </o:Column>
-<o:Column Id="o632">
+<o:Column Id="o635">
 <a:ObjectID>D3743ED8-7F21-4AB9-B2DC-06CFF738FFFE</a:ObjectID>
 <a:Name>创建用户</a:Name>
 <a:Code>CREATE_USER_ID</a:Code>
@@ -12824,7 +12861,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>VARCHAR(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o633">
+<o:Column Id="o636">
 <a:ObjectID>724FAD7F-69B4-46D0-8DAA-B267B209106F</a:ObjectID>
 <a:Name>创建时间</a:Name>
 <a:Code>CREATE_TIME</a:Code>
@@ -12836,7 +12873,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>VARCHAR(20)</a:DataType>
 <a:Length>20</a:Length>
 </o:Column>
-<o:Column Id="o634">
+<o:Column Id="o637">
 <a:ObjectID>8BE655E5-B52E-4A56-8324-9398527C4768</a:ObjectID>
 <a:Name>更新用户</a:Name>
 <a:Code>UPDATE_USER_ID</a:Code>
@@ -12848,7 +12885,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>VARCHAR(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o635">
+<o:Column Id="o638">
 <a:ObjectID>A37F7D12-BECB-42FF-B89A-15F459B3DBCF</a:ObjectID>
 <a:Name>更新时间</a:Name>
 <a:Code>UPDATE_TIME</a:Code>
@@ -12862,7 +12899,7 @@ LABL 0 新宋体,8,N</a:FontList>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o636">
+<o:Key Id="o639">
 <a:ObjectID>4C1F03D9-FD01-46EB-A19B-A67E29D1E28B</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -12871,15 +12908,15 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1691130535</a:ModificationDate>
 <a:Modifier>wangy</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o614"/>
+<o:Column Ref="o617"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:Owner>
-<o:User Ref="o613"/>
+<o:User Ref="o616"/>
 </c:Owner>
 <c:PrimaryKey>
-<o:Key Ref="o636"/>
+<o:Key Ref="o639"/>
 </c:PrimaryKey>
 </o:Table>
 <o:Table Id="o585">
@@ -12893,7 +12930,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Comment>项目准入模型</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o637">
+<o:Column Id="o640">
 <a:ObjectID>7904027F-088B-47BC-93E6-70B8F8B551A3</a:ObjectID>
 <a:Name>ID</a:Name>
 <a:Code>ID</a:Code>
@@ -12906,7 +12943,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Length>64</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o638">
+<o:Column Id="o641">
 <a:ObjectID>F8E95961-E460-478F-9DBB-C12278E934EC</a:ObjectID>
 <a:Name>项目编号</a:Name>
 <a:Code>PROJECT_NO</a:Code>
@@ -12918,7 +12955,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o639">
+<o:Column Id="o642">
 <a:ObjectID>5A20EE45-E27A-4B7E-8902-252814505F37</a:ObjectID>
 <a:Name>字段编码</a:Name>
 <a:Code>FIELD_CODE</a:Code>
@@ -12930,7 +12967,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o640">
+<o:Column Id="o643">
 <a:ObjectID>9E167F1D-70D6-41EF-BF0F-790093C19F88</a:ObjectID>
 <a:Name>字段名称</a:Name>
 <a:Code>FIELD_NAME</a:Code>
@@ -12942,7 +12979,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o641">
+<o:Column Id="o644">
 <a:ObjectID>C918C136-4EAF-4E8E-8093-61FAE8C9EFD8</a:ObjectID>
 <a:Name>字段类型</a:Name>
 <a:Code>FIELD_TYPE</a:Code>
@@ -12954,7 +12991,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(8)</a:DataType>
 <a:Length>8</a:Length>
 </o:Column>
-<o:Column Id="o642">
+<o:Column Id="o645">
 <a:ObjectID>D13B47CA-E443-47D3-9C4E-19E6E9972D5F</a:ObjectID>
 <a:Name>运算符1</a:Name>
 <a:Code>OPERATOR_ONE</a:Code>
@@ -12966,7 +13003,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o643">
+<o:Column Id="o646">
 <a:ObjectID>8EEA6516-545E-4604-B21D-426936890162</a:ObjectID>
 <a:Name>值1</a:Name>
 <a:Code>VALUE_ONE</a:Code>
@@ -12978,7 +13015,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(200)</a:DataType>
 <a:Length>200</a:Length>
 </o:Column>
-<o:Column Id="o644">
+<o:Column Id="o647">
 <a:ObjectID>BCADC41C-C057-46FB-9892-260E2A73AF2B</a:ObjectID>
 <a:Name>运算符2</a:Name>
 <a:Code>OPERATOR_TWO</a:Code>
@@ -12990,7 +13027,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o645">
+<o:Column Id="o648">
 <a:ObjectID>0F48BD44-3B6E-4411-AE6C-8C611748F7F2</a:ObjectID>
 <a:Name>值2</a:Name>
 <a:Code>VALUE_TWO</a:Code>
@@ -13002,7 +13039,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(200)</a:DataType>
 <a:Length>200</a:Length>
 </o:Column>
-<o:Column Id="o646">
+<o:Column Id="o649">
 <a:ObjectID>96267471-0EFD-4903-8C89-944FC425BACF</a:ObjectID>
 <a:Name>状态</a:Name>
 <a:Code>ENTRY_STE</a:Code>
@@ -13016,7 +13053,7 @@ LABL 0 新宋体,8,N</a:FontList>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o647">
+<o:Key Id="o650">
 <a:ObjectID>DEE4B520-607E-46C0-92D9-A2B6CFA92F65</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -13025,12 +13062,12 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1691131510</a:ModificationDate>
 <a:Modifier>wangy</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o637"/>
+<o:Column Ref="o640"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o647"/>
+<o:Key Ref="o650"/>
 </c:PrimaryKey>
 </o:Table>
 <o:Table Id="o587">
@@ -13043,7 +13080,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Modifier>wangy</a:Modifier>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o648">
+<o:Column Id="o651">
 <a:ObjectID>1D996F09-063E-4232-A801-538271B15B1A</a:ObjectID>
 <a:Name>ID</a:Name>
 <a:Code>ID</a:Code>
@@ -13056,7 +13093,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Length>64</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o649">
+<o:Column Id="o652">
 <a:ObjectID>714DA173-9376-4CFD-BF74-4B1171FD5065</a:ObjectID>
 <a:Name>项目编号</a:Name>
 <a:Code>PROJECT_NO</a:Code>
@@ -13068,7 +13105,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o650">
+<o:Column Id="o653">
 <a:ObjectID>57164568-F6CB-4299-A78D-4085CB7FBC79</a:ObjectID>
 <a:Name>资产品种</a:Name>
 <a:Code>ASSET_TYPE</a:Code>
@@ -13080,7 +13117,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o651">
+<o:Column Id="o654">
 <a:ObjectID>DC9F7B17-CE8C-48BC-86C2-E361B06FCEE8</a:ObjectID>
 <a:Name>资产比例</a:Name>
 <a:Code>ASSET_SCALE</a:Code>
@@ -13093,7 +13130,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Length>8</a:Length>
 <a:Precision>2</a:Precision>
 </o:Column>
-<o:Column Id="o652">
+<o:Column Id="o655">
 <a:ObjectID>4416B49F-8771-4132-93F9-534FA48A69C6</a:ObjectID>
 <a:Name>排序</a:Name>
 <a:Code>ORDER_NO</a:Code>
@@ -13106,7 +13143,7 @@ LABL 0 新宋体,8,N</a:FontList>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o653">
+<o:Key Id="o656">
 <a:ObjectID>9D27D015-E742-449B-A6EA-9F222E6702B1</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -13115,12 +13152,12 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1691132256</a:ModificationDate>
 <a:Modifier>wangy</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o648"/>
+<o:Column Ref="o651"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o653"/>
+<o:Key Ref="o656"/>
 </c:PrimaryKey>
 </o:Table>
 <o:Table Id="o589">
@@ -13134,7 +13171,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Comment>项目组人员</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o654">
+<o:Column Id="o657">
 <a:ObjectID>772A03E4-B597-46AC-8ECF-EFB935137CB2</a:ObjectID>
 <a:Name>ID</a:Name>
 <a:Code>ID</a:Code>
@@ -13147,7 +13184,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Length>64</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o655">
+<o:Column Id="o658">
 <a:ObjectID>996F9679-4BC9-4CD8-9FD1-D98C84F1EA3D</a:ObjectID>
 <a:Name>项目编号</a:Name>
 <a:Code>PROJECT_NO</a:Code>
@@ -13159,7 +13196,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o656">
+<o:Column Id="o659">
 <a:ObjectID>DA9C0F8A-AA9C-40A1-B515-61C0120C4295</a:ObjectID>
 <a:Name>人员类型</a:Name>
 <a:Code>TEAM_TYPE</a:Code>
@@ -13171,7 +13208,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o657">
+<o:Column Id="o660">
 <a:ObjectID>1DBEE090-43A6-442F-8F3C-E6EFB0A3267B</a:ObjectID>
 <a:Name>所属机构</a:Name>
 <a:Code>ORG_ID</a:Code>
@@ -13183,7 +13220,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o658">
+<o:Column Id="o661">
 <a:ObjectID>4838EAC8-79C9-45E7-9398-52BFDA356DDE</a:ObjectID>
 <a:Name>人员工号</a:Name>
 <a:Code>EMP_BADGE</a:Code>
@@ -13195,7 +13232,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o659">
+<o:Column Id="o662">
 <a:ObjectID>467378B5-3239-454C-80D9-C46F66BA28B8</a:ObjectID>
 <a:Name>人员名称</a:Name>
 <a:Code>EMP_NAME</a:Code>
@@ -13209,7 +13246,7 @@ LABL 0 新宋体,8,N</a:FontList>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o660">
+<o:Key Id="o663">
 <a:ObjectID>955E9BB0-08C2-4779-8AD8-4BB37464BBCF</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -13218,12 +13255,12 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1691132559</a:ModificationDate>
 <a:Modifier>wangy</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o654"/>
+<o:Column Ref="o657"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o660"/>
+<o:Key Ref="o663"/>
 </c:PrimaryKey>
 </o:Table>
 <o:Table Id="o591">
@@ -13237,7 +13274,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Comment>项目发行</a:Comment>
 <a:TotalSavingCurrency/>
 <c:Columns>
-<o:Column Id="o661">
+<o:Column Id="o664">
 <a:ObjectID>0DD14687-4A68-48D0-90DD-70A1FA0575B0</a:ObjectID>
 <a:Name>ID</a:Name>
 <a:Code>ID</a:Code>
@@ -13250,7 +13287,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Length>64</a:Length>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
-<o:Column Id="o662">
+<o:Column Id="o665">
 <a:ObjectID>E2A16C0E-8E1D-48FF-9FCA-871CF25D1F34</a:ObjectID>
 <a:Name>项目编号</a:Name>
 <a:Code>PROJECT_NO</a:Code>
@@ -13262,7 +13299,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(32)</a:DataType>
 <a:Length>32</a:Length>
 </o:Column>
-<o:Column Id="o663">
+<o:Column Id="o666">
 <a:ObjectID>54643C9F-3D40-4F32-8B6F-7847FD78906F</a:ObjectID>
 <a:Name>项目名称</a:Name>
 <a:Code>PROJECT_NAME</a:Code>
@@ -13274,7 +13311,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(128)</a:DataType>
 <a:Length>128</a:Length>
 </o:Column>
-<o:Column Id="o664">
+<o:Column Id="o667">
 <a:ObjectID>EB9F687F-4F23-4D34-A4D9-9EB09071AACF</a:ObjectID>
 <a:Name>发行金额</a:Name>
 <a:Code>ISSUE_AMT</a:Code>
@@ -13287,7 +13324,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Length>19</a:Length>
 <a:Precision>4</a:Precision>
 </o:Column>
-<o:Column Id="o665">
+<o:Column Id="o668">
 <a:ObjectID>444D62D0-C0AD-4A4C-A868-0385F16FFAAE</a:ObjectID>
 <a:Name>交易场所</a:Name>
 <a:Code>TRADE_MARKET</a:Code>
@@ -13299,7 +13336,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o666">
+<o:Column Id="o669">
 <a:ObjectID>B2650ECE-99B8-48BB-B2C1-B9E6FCA00748</a:ObjectID>
 <a:Name>状态</a:Name>
 <a:Code>ISSUE_STE</a:Code>
@@ -13311,7 +13348,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(16)</a:DataType>
 <a:Length>16</a:Length>
 </o:Column>
-<o:Column Id="o667">
+<o:Column Id="o670">
 <a:ObjectID>717B2A89-C194-482E-B080-C1D4AC513064</a:ObjectID>
 <a:Name>是否有效</a:Name>
 <a:Code>ISVALID</a:Code>
@@ -13323,7 +13360,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DefaultValue>1</a:DefaultValue>
 <a:DataType>INT</a:DataType>
 </o:Column>
-<o:Column Id="o668">
+<o:Column Id="o671">
 <a:ObjectID>297D587A-9033-4A28-BE36-637EA54E6E9C</a:ObjectID>
 <a:Name>创建用户</a:Name>
 <a:Code>CREATE_USER_ID</a:Code>
@@ -13335,7 +13372,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>VARCHAR(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o669">
+<o:Column Id="o672">
 <a:ObjectID>26765E7B-217C-4452-B9A0-E96E849E7D6D</a:ObjectID>
 <a:Name>创建时间</a:Name>
 <a:Code>CREATE_TIME</a:Code>
@@ -13347,7 +13384,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>VARCHAR(20)</a:DataType>
 <a:Length>20</a:Length>
 </o:Column>
-<o:Column Id="o670">
+<o:Column Id="o673">
 <a:ObjectID>9CBD7057-7EF1-4C7F-9153-34183D7E829F</a:ObjectID>
 <a:Name>更新用户</a:Name>
 <a:Code>UPDATE_USER_ID</a:Code>
@@ -13359,7 +13396,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:DataType>VARCHAR(64)</a:DataType>
 <a:Length>64</a:Length>
 </o:Column>
-<o:Column Id="o671">
+<o:Column Id="o674">
 <a:ObjectID>8680C4B0-A246-4F3D-BD10-B8770EFDF6A2</a:ObjectID>
 <a:Name>更新时间</a:Name>
 <a:Code>UPDATE_TIME</a:Code>
@@ -13373,7 +13410,7 @@ LABL 0 新宋体,8,N</a:FontList>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o672">
+<o:Key Id="o675">
 <a:ObjectID>E345C0E3-D514-4792-B35C-75002EF46FEC</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -13382,12 +13419,12 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1691133682</a:ModificationDate>
 <a:Modifier>wangy</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o661"/>
+<o:Column Ref="o664"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o672"/>
+<o:Key Ref="o675"/>
 </c:PrimaryKey>
 </o:Table>
 </c:Tables>
@@ -13397,7 +13434,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <o:PhysicalDiagram Ref="o5"/>
 </c:DefaultDiagram>
 <c:Users>
-<o:User Id="o613">
+<o:User Id="o616">
 <a:ObjectID>A9E2E394-65A0-4D5E-8C6E-96DED0A158BA</a:ObjectID>
 <a:Name>JBOS</a:Name>
 <a:Code>JBOS</a:Code>
@@ -13409,7 +13446,7 @@ LABL 0 新宋体,8,N</a:FontList>
 </o:User>
 </c:Users>
 <c:DefaultGroups>
-<o:Group Id="o673">
+<o:Group Id="o676">
 <a:ObjectID>237FE053-A0AF-4D82-B933-F4E68C676108</a:ObjectID>
 <a:Name>PUBLIC</a:Name>
 <a:Code>PUBLIC</a:Code>
@@ -13418,12 +13455,12 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1691130297</a:ModificationDate>
 <a:Modifier>wangy</a:Modifier>
 <c:Group.Users>
-<o:User Ref="o613"/>
+<o:User Ref="o616"/>
 </c:Group.Users>
 </o:Group>
 </c:DefaultGroups>
 <c:TargetModels>
-<o:TargetModel Id="o674">
+<o:TargetModel Id="o677">
 <a:ObjectID>21E4866F-7BAF-4A65-9833-CA1A3FE158F1</a:ObjectID>
 <a:Name>MySQL 5.0</a:Name>
 <a:Code>MYSQL50</a:Code>

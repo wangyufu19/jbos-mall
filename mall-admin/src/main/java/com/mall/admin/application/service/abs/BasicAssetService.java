@@ -2,12 +2,10 @@ package com.mall.admin.application.service.abs;
 
 import com.mall.admin.domain.entity.abs.BasicAsset;
 import com.mall.admin.infrastructure.repository.abs.BasicAssetRepo;
-import com.mall.common.office.excel.xssf.RowCell;
+import com.mall.common.office.excel.xssf.RowObject;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -57,7 +55,7 @@ public class BasicAssetService {
     }
 
     /**
-     * 基础资产入池
+     * 入池
      * @param file
      */
     @Transactional
@@ -70,36 +68,8 @@ public class BasicAssetService {
             int rows=sheet.getPhysicalNumberOfRows();
             for(int i=0;i<rows;i++){
                 XSSFRow row=sheet.getRow(i);
-                XSSFCell acctNoCell=row.getCell(0);
-                XSSFCell customNoCell=row.getCell(1);
-                XSSFCell sexCell=row.getCell(2);
-                XSSFCell certIdCell=row.getCell(3);
-                XSSFCell monthIncomeCell=row.getCell(4);
-                XSSFCell grantLimitCell=row.getCell(5);
-                XSSFCell surplusLimitCell=row.getCell(6);
-                XSSFCell loanSurplusAmtCell=row.getCell(7);
-                XSSFCell loanSdateCell=row.getCell(8);
-                XSSFCell loanEdateCell=row.getCell(9);
-                XSSFCell creditRateCell=row.getCell(10);
-                XSSFCell fiveClassifyCell=row.getCell(11);
-                XSSFCell loanTypeCell=row.getCell(12);
-
-                BasicAsset basicAsset=new BasicAsset();
-                basicAsset.setId(StringUtils.getUUID());
+                BasicAsset basicAsset=(BasicAsset)RowObject.getRowObject(row,BasicAsset.class);
                 basicAsset.setAssetSte(BasicAsset.ASSET_STE_NORMAL);
-                basicAsset.setAcctNo(RowCell.getString(acctNoCell));
-                basicAsset.setCustomName(RowCell.getString(customNoCell));
-                basicAsset.setSex(RowCell.getString(sexCell));
-                basicAsset.setCertId(RowCell.getString(certIdCell));
-                basicAsset.setMonthIncome(RowCell.getDouble(monthIncomeCell));
-                basicAsset.setGrantLimit(RowCell.getDouble(grantLimitCell));
-                basicAsset.setSurplusLimit(RowCell.getDouble(surplusLimitCell));
-                basicAsset.setLoanSurplusAmt(RowCell.getDouble(loanSurplusAmtCell));
-                basicAsset.setLoanSdate(RowCell.getString(loanSdateCell));
-                basicAsset.setLoanEdate(RowCell.getString(loanEdateCell));
-                basicAsset.setCreditRate(RowCell.getString(creditRateCell));
-                basicAsset.setFiveClassify(RowCell.getString(fiveClassifyCell));
-                basicAsset.setLoanType(RowCell.getString(loanTypeCell));
                 basicAssetRepo.addBasicAsset(basicAsset);
             }
 
@@ -114,5 +84,14 @@ public class BasicAssetService {
                 }
             }
         }
+    }
+
+    /**
+     * 出池
+     * @param id
+     * @param acctNo
+     */
+    public void outPool(String id,String acctNo){
+        basicAssetRepo.deleteBasicAsset(acctNo);
     }
 }
