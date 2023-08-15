@@ -6,6 +6,7 @@ import com.mall.admin.application.service.sm.DictCodeService;
 import com.mall.admin.application.service.sm.DictTypeService;
 import com.mall.admin.domain.entity.sm.DictCode;
 import com.mall.admin.domain.entity.sm.DictType;
+import com.mall.common.page.PageParam;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,11 +64,12 @@ public class DictMgrApi {
     @ResponseBody
     @RequestMapping("/getDictTypeList")
     @ApiOperation("得到字典类型列表")
-    public ResponseResult getDictTypeList(@RequestParam Map<String, String> params){
+    public ResponseResult getDictTypeList(@RequestParam Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
         try{
-            List<DictType> dictTypes=dictTypeService.getDictTypeList(params);
-            res.setData(dictTypes);
+            PageParam pageParam = PageParam.getPageParam(params);
+            List<DictType> dictTypes=dictTypeService.getDictTypeList(pageParam,params);
+            res.isPage(true).data(dictTypes);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

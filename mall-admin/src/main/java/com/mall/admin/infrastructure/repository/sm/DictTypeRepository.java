@@ -2,6 +2,8 @@ package com.mall.admin.infrastructure.repository.sm;
 
 import com.mall.admin.domain.entity.sm.DictType;
 import com.mall.admin.infrastructure.repository.sm.mapper.DictTypeMapper;
+import com.mall.common.page.PageParam;
+import com.mall.common.page.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +24,8 @@ public class DictTypeRepository{
      * 得到字典类型数据
      * @return
      */
-    public List<DictType> getDictTypeList(Map<String, String> params){
+    @Paging
+    public List<DictType> getDictTypeList(PageParam pageParam, Map<String, Object> params){
         return dictTypeMapper.getDictTypeList(params);
     }
 }

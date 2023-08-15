@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mall.admin.domain.entity.sm.DictType;
 import com.mall.admin.infrastructure.repository.sm.DictTypeRepository;
 import com.mall.admin.infrastructure.repository.sm.mapper.DictTypeMapper;
+import com.mall.common.page.PageParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> imple
      * 得到字典类型数据
      * @return
      */
-    public List<DictType> getDictTypeList(Map<String, String> params){
-        return dictTypeRepository.getDictTypeList(params);
+    public List<DictType> getDictTypeList(PageParam pageParam, Map<String, Object> params){
+        return dictTypeRepository.getDictTypeList(pageParam,params);
     }
 }
