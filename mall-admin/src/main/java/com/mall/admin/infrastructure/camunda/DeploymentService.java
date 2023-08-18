@@ -25,47 +25,46 @@ import java.util.Map;
 public class DeploymentService {
     @Autowired
     private RepositoryService repositoryService;
+
     /**
      * 判断合法的文件类型
+     *
      * @param resource
-     * @return
+     * @return true/false
      */
-    public boolean includeExtensions(String resource){
-        if(resource.endsWith(".bpmn")){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean includeExtensions(String resource) {
+        return resource.endsWith(".bpmn");
     }
 
     /**
      * 部署流程
+     *
      * @param file
-     * @return
+     * @return map
      * @throws IOException
      */
-    public Map<String,Object> deploy(MultipartFile file) throws IOException {
-        Map<String,Object> data=new HashMap<String,Object>();
+    public Map<String, Object> deploy(MultipartFile file) throws IOException {
+        Map<String, Object> data = new HashMap<String, Object>();
         List<ProcessDefinitionEntity> processDefinitionEntityList = null;
 
-        DeploymentEntity deploymentEntity= (DeploymentEntity)repositoryService.createDeployment()
-                .addInputStream(file.getOriginalFilename(),file.getInputStream())
+        DeploymentEntity deploymentEntity = (DeploymentEntity) repositoryService.createDeployment()
+                .addInputStream(file.getOriginalFilename(), file.getInputStream())
                 .deploy();
-        Map<Class<?>, List> artifacts=deploymentEntity.getDeployedArtifacts();
-        if(!ObjectUtils.isEmpty(artifacts)){
-            for(Map.Entry<Class<?>, List> artifact:artifacts.entrySet()){
-                processDefinitionEntityList=artifact.getValue();
+        Map<Class<?>, List> artifacts = deploymentEntity.getDeployedArtifacts();
+        if (!ObjectUtils.isEmpty(artifacts)) {
+            for (Map.Entry<Class<?>, List> artifact : artifacts.entrySet()) {
+                processDefinitionEntityList = artifact.getValue();
                 break;
             }
         }
-        if(!ObjectUtils.isEmpty(processDefinitionEntityList)&&processDefinitionEntityList.size()>0){
-            for(ProcessDefinitionEntity processDefinitionEntity:processDefinitionEntityList){
-                data.put("id",processDefinitionEntity.getId());
-                data.put("deploymentId",processDefinitionEntity.getDeploymentId());
-                data.put("key",processDefinitionEntity.getKey());
-                data.put("name",processDefinitionEntity.getName());
-                data.put("source",processDefinitionEntity.getResourceName());
-                data.put("version",processDefinitionEntity.getVersion());
+        if (!ObjectUtils.isEmpty(processDefinitionEntityList) && processDefinitionEntityList.size() > 0) {
+            for (ProcessDefinitionEntity processDefinitionEntity : processDefinitionEntityList) {
+                data.put("id", processDefinitionEntity.getId());
+                data.put("deploymentId", processDefinitionEntity.getDeploymentId());
+                data.put("key", processDefinitionEntity.getKey());
+                data.put("name", processDefinitionEntity.getName());
+                data.put("source", processDefinitionEntity.getResourceName());
+                data.put("version", processDefinitionEntity.getVersion());
                 break;
             }
         }
@@ -74,26 +73,28 @@ public class DeploymentService {
 
     /**
      * 删除流程
+     *
      * @param id
      * @param cascade
      */
-    public void deleteDeployment(String id,boolean cascade){
-        repositoryService.deleteDeployment(id,cascade);
+    public void deleteDeployment(String id, boolean cascade) {
+        repositoryService.deleteDeployment(id, cascade);
     }
 
     /**
      * 得到流程定义任务
+     *
      * @param processDefinitionId
-     * @return
+     * @return list
      */
-    public List<Map<String, String>> getProcessDefinitionList(String processDefinitionId){
-        List<Map<String, String>> taskDefList=new ArrayList<>();
-        ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)repositoryService.getProcessDefinition(processDefinitionId);
-        Map<String, TaskDefinition> taskDefs=processDefinition.getTaskDefinitions();
-        for(Map.Entry<String,TaskDefinition> taskDefinition:taskDefs.entrySet()){
-            Map<String, String> taskDef=new HashMap<>();
-            taskDef.put("activityId",taskDefinition.getKey());
-            taskDef.put("activityName",taskDefinition.getValue().getNameExpression().getExpressionText());
+    public List<Map<String, String>> getProcessDefinitionList(String processDefinitionId) {
+        List<Map<String, String>> taskDefList = new ArrayList<>();
+        ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
+        Map<String, TaskDefinition> taskDefs = processDefinition.getTaskDefinitions();
+        for (Map.Entry<String, TaskDefinition> taskDefinition : taskDefs.entrySet()) {
+            Map<String, String> taskDef = new HashMap<>();
+            taskDef.put("activityId", taskDefinition.getKey());
+            taskDef.put("activityName", taskDefinition.getValue().getNameExpression().getExpressionText());
             taskDefList.add(taskDef);
         }
         return taskDefList;
@@ -101,16 +102,16 @@ public class DeploymentService {
 
     /**
      * 得到流程定义任务
+     *
      * @param processDefinitionId
      * @param activityId
-     * @return
+     * @return TaskDefinition
      */
-    public TaskDefinition getProcessDefinition(String processDefinitionId,String activityId){
-        List<Map<String, String>> taskDefList=new ArrayList<>();
-        ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)repositoryService.getProcessDefinition(processDefinitionId);
-        Map<String, TaskDefinition> taskDefs=processDefinition.getTaskDefinitions();
-        for(Map.Entry<String,TaskDefinition> taskDefinition:taskDefs.entrySet()){
-            if(activityId.equals(taskDefinition.getKey())){
+    public TaskDefinition getProcessDefinition(String processDefinitionId, String activityId) {
+        ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
+        Map<String, TaskDefinition> taskDefs = processDefinition.getTaskDefinitions();
+        for (Map.Entry<String, TaskDefinition> taskDefinition : taskDefs.entrySet()) {
+            if (activityId.equals(taskDefinition.getKey())) {
                 return taskDefinition.getValue();
             }
         }

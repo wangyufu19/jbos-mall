@@ -27,10 +27,12 @@ import java.util.Map;
 public class FeeInfoApi {
     @Autowired
     private FeeInfoService feeInfoService;
+
     /**
      * 查询费用信息下级节点
+     *
      * @param params
-     * @res
+     * @return ResponseResult
      */
     @ResponseBody
     @RequestMapping("/getFeeChildrenNode")
@@ -40,12 +42,12 @@ public class FeeInfoApi {
         if (StringUtils.isNUll(parentId)) {
             parentId = Func.ROOTFUNC_ID;
         }
-        try{
-            List<TreeNode> childrenNode=feeInfoService.getFeeChildrenNode(parentId);
+        try {
+            List<TreeNode> childrenNode = feeInfoService.getFeeChildrenNode(parentId);
             res.setData(childrenNode);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

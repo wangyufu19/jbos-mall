@@ -11,13 +11,28 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class BizGeneratorService {
+    /**
+     * 物品购买
+     */
     public static final String BIZ_BUY = "BIZ_BUY";
+    /**
+     * 物品入库
+     */
     public static final String BIZ_IN_STORE = "BIZ_IN_STORE";
-    public static final String BIZ_out_STORE = "BIZ_OUT_STORE";
+    /**
+     * 物品领取
+     */
+    public static final String BIZ_OUT_STORE = "BIZ_OUT_STORE";
 
     public String getBizNo() {
         return DateUtils.format(DateUtils.getCurrentDate(), "yyyyMMddHHmmss");
     }
+
+    /**
+     * 得到业务编号
+     * @param bizType
+     * @return bizNo
+     */
     public String getBizNo(String bizType) {
         return bizType + "_" + DateUtils.format(DateUtils.getCurrentDate(), "yyyyMMddHHmmss");
     }

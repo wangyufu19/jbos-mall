@@ -12,6 +12,10 @@ import java.util.Map;
  * @date 2023/7/25
  **/
 public interface FeeInfoMapper {
-
-    public List<TreeNode> getFeeChildrenNode(Map<String, Object> parameterObject);
+    /**
+     * 得到费用叶子节点
+     * @param parameterObject
+     * @return list
+     */
+    List<TreeNode> getFeeChildrenNode(Map<String, Object> parameterObject);
 }

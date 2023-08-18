@@ -19,7 +19,12 @@ public class FeeInfoRepo {
     @Autowired
     private FeeInfoMapper feeInfoMapper;
 
-    public List<TreeNode> getFeeChildrenNode(Map<String, Object> parameterObject){
+    /**
+     * 得到费用叶子节点
+     * @param parameterObject
+     * @return list
+     */
+    public List<TreeNode> getFeeChildrenNode(Map<String, Object> parameterObject) {
         return feeInfoMapper.getFeeChildrenNode(parameterObject);
     }
 }

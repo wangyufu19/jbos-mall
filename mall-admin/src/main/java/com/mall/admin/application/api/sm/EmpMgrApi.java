@@ -11,10 +11,17 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * EmpMgrApi
@@ -33,11 +40,11 @@ public class EmpMgrApi {
 
     /**
      * 查询组织机构员工数据
-     *
-     * @return
+     * @param params
+     * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping("/getEmpList")
+    @GetMapping("/getEmpList")
     public ResponseResult getEmpList(@RequestParam Map<String, Object> params) {
         ResponseResult res;
         try {
@@ -54,10 +61,10 @@ public class EmpMgrApi {
      * 新增人员
      *
      * @param params
-     * @return
+     * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping(value = "/addEmp", method = RequestMethod.POST)
+    @PostMapping("/addEmp")
     @ApiOperation("新增人员")
     public ResponseResult addEmp(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -74,10 +81,10 @@ public class EmpMgrApi {
      * 修改人员
      *
      * @param params
-     * @return
+     * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping(value = "/updateEmp", method = RequestMethod.POST)
+    @PostMapping("/updateEmp")
     @ApiOperation("修改人员")
     public ResponseResult updateEmp(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -94,10 +101,10 @@ public class EmpMgrApi {
      * 删除人员
      *
      * @param params
-     * @return
+     * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping(value = "/deleteEmp", method = RequestMethod.POST)
+    @PostMapping("/deleteEmp")
     @ApiOperation("删除人员")
     public ResponseResult deleteEmp(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -115,17 +122,17 @@ public class EmpMgrApi {
      * 删除人员
      *
      * @param params
-     * @return
+     * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping(value = "/synchToCamunda", method = RequestMethod.POST)
+    @PostMapping("/synchToCamunda")
     @ApiOperation("同步到CAMUNDA")
     public ResponseResult synchToCamunda(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String userId=StringUtils.replaceNull(params.get("userId"));
-        String userName= StringUtils.replaceNull(params.get("userName"));
+        String userId = StringUtils.replaceNull(params.get("userId"));
+        String userName = StringUtils.replaceNull(params.get("userName"));
         try {
-            identityMgrService.createUser(userId,userName);
+            identityMgrService.createUser(userId, userName);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -147,7 +154,7 @@ public class EmpMgrApi {
             pageExcelHandler.generateExcelSheet(response.getOutputStream(), new IPageExcel() {
                 public ResponseResult getSheetRowDataList(Map<String, Object> params) {
                     PageParam pageParam = PageParam.getPageParam(params);
-                    ResponseResult res = empMgrService.getEmpList(pageParam,params);
+                    ResponseResult res = empMgrService.getEmpList(pageParam, params);
                     return res;
                 }
             });

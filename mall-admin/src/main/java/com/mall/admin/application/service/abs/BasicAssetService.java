@@ -29,54 +29,62 @@ import java.util.Map;
 @Service
 @Slf4j
 public class BasicAssetService {
+    /**
+     * BasicAssetRepo
+     */
     @Autowired
     private BasicAssetRepo basicAssetRepo;
+
     /**
      * 判断合法文件
+     *
      * @param file
-     * @return
+     * @return true/false
      */
-    public boolean includeExtensions(MultipartFile file){
-        String originalFilename=file.getOriginalFilename();
-        if(originalFilename.indexOf(".xls")!=-1||originalFilename.indexOf(".xlsx")!=-1){
-            return true;
-        }else{
+    public boolean includeExtensions(MultipartFile file) {
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null) {
             return false;
         }
+        return originalFilename.contains(".xls") || originalFilename.contains(".xlsx");
     }
+
     /**
      * 查询基础资产数据
+     *
+     * @param pageParam
      * @param parameterObject
-     * @return
+     * @return List
      */
-    public ResponseResult getBasicAssetList(PageParam pageParam, Map<String,Object> parameterObject){
-        List<BasicAsset> basicAssetList = basicAssetRepo.getBasicAssetList(pageParam,parameterObject);
+    public ResponseResult getBasicAssetList(PageParam pageParam, Map<String, Object> parameterObject) {
+        List<BasicAsset> basicAssetList = basicAssetRepo.getBasicAssetList(pageParam, parameterObject);
         return ResponseResult.ok().isPage(true).setData(basicAssetList);
     }
 
     /**
      * 入池
+     *
      * @param file
      */
     @Transactional
-    public void inPool(MultipartFile file)  {
+    public void inPool(MultipartFile file) {
         InputStream in = null;
         try {
             in = new ByteArrayInputStream(file.getBytes());
             XSSFWorkbook workbook = new XSSFWorkbook(in);
-            XSSFSheet sheet =workbook.getSheetAt(0);
-            int rows=sheet.getPhysicalNumberOfRows();
-            for(int i=0;i<rows;i++){
-                XSSFRow row=sheet.getRow(i);
-                BasicAsset basicAsset=(BasicAsset)RowObject.getRowObject(row,BasicAsset.class);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            int rows = sheet.getPhysicalNumberOfRows();
+            for (int i = 0; i < rows; i++) {
+                XSSFRow row = sheet.getRow(i);
+                BasicAsset basicAsset = (BasicAsset) RowObject.getRowObject(row, BasicAsset.class);
                 basicAsset.setAssetSte(BasicAsset.ASSET_STE_NORMAL);
                 basicAssetRepo.addBasicAsset(basicAsset);
             }
 
-        }catch (IOException e){
+        } catch (IOException e) {
             log.error(e.getMessage());
-        }finally {
-            if(in!=null){
+        } finally {
+            if (in != null) {
                 try {
                     in.close();
                 } catch (IOException e) {
@@ -88,10 +96,11 @@ public class BasicAssetService {
 
     /**
      * 出池
+     *
      * @param id
      * @param acctNo
      */
-    public void outPool(String id,String acctNo){
+    public void outPool(String id, String acctNo) {
         basicAssetRepo.deleteBasicAsset(acctNo);
     }
 }

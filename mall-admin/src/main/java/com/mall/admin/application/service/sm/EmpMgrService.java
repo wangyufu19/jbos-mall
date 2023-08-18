@@ -18,14 +18,17 @@ import java.util.Map;
  */
 @Service
 public class EmpMgrService {
+    /**
+     * EmpMgrRepository
+     */
     @Autowired
     private EmpMgrRepository empMgrRepository;
 
     /**
      * 查询机构员工数据
-     *
+     * @param pageParam
      * @param parameterObject
-     * @return
+     * @return list
      */
     public ResponseResult getEmpList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<Emp> empList = empMgrRepository.getEmpList(pageParam, parameterObject);
@@ -34,6 +37,7 @@ public class EmpMgrService {
 
     /**
      * 新增人员信息
+     * @param parameterObject
      */
     public void addEmp(Map<String, Object> parameterObject) {
         empMgrRepository.addEmp(parameterObject);

@@ -13,6 +13,10 @@ import java.util.Map;
  * @date 2023/8/4
  **/
 public interface BasicAssetMapper extends BaseMapper<BasicAsset> {
-
-    public List<BasicAsset> getBasicAssetList(Map<String,Object> parameterObject);
+    /**
+     * 得到基础资产池
+     * @param parameterObject
+     * @return List
+     */
+    List<BasicAsset> getBasicAssetList(Map<String, Object> parameterObject);
 }

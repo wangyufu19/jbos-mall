@@ -14,7 +14,8 @@ import java.util.Map;
 public interface DictTypeMapper extends BaseMapper<DictType> {
     /**
      * 得到字典类型数据
-     * @return
+     * @param params
+     * @return list
      */
-    public List<DictType> getDictTypeList(Map<String, Object> params);
+    List<DictType> getDictTypeList(Map<String, Object> params);
 }

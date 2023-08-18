@@ -12,20 +12,23 @@ import java.util.Map;
 
 /**
  * DictTypeRepository
+ *
  * @author youfu.wang
  * @date 2020-06-24
  */
 @Component
-public class DictTypeRepository{
+public class DictTypeRepository {
     @Autowired
     private DictTypeMapper dictTypeMapper;
 
     /**
      * 得到字典类型数据
-     * @return
+     * @param pageParam
+     * @param params
+     * @return list
      */
     @Paging
-    public List<DictType> getDictTypeList(PageParam pageParam, Map<String, Object> params){
+    public List<DictType> getDictTypeList(PageParam pageParam, Map<String, Object> params) {
         return dictTypeMapper.getDictTypeList(params);
     }
 }

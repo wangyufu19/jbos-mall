@@ -13,7 +13,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +34,7 @@ import java.util.Map;
 @RequestMapping("/reimburse/fee")
 @Slf4j
 @Api("费用报销业务接口")
-public class FeeReimburseApi extends BizNoApi{
+public class FeeReimburseApi extends BizNoApi {
 
     @Autowired
     private FeeReimburseService feeReimburseService;
@@ -40,8 +46,8 @@ public class FeeReimburseApi extends BizNoApi{
 
     /**
      * 查询费用报销业务列表
-     *
-     * @return
+     * @param params
+     * @return ResponseResult
      */
     @ResponseBody
     @GetMapping("/list")
@@ -57,10 +63,11 @@ public class FeeReimburseApi extends BizNoApi{
         }
         return res;
     }
+
     /**
      * 查询费用报销业务
-     *
-     * @return
+     * @param params
+     * @return ResponseResult
      */
     @ResponseBody
     @GetMapping("/infoById")
@@ -73,13 +80,13 @@ public class FeeReimburseApi extends BizNoApi{
             Map<String, Object> formObj = new HashMap<>();
             formObj.put("feeReimburseDto", feeReimburseDto);
             //如果是待办处理路由则查询当前任务是否可撤回
-            boolean isDrawback=false;
+            boolean isDrawback = false;
             //查询实例任务是否可撤回
             if ("trans".equals(params.get("action"))) {
-                String userId=StringUtils.replaceNull(params.get("userId"));
-                String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
-                String taskId=StringUtils.replaceNull(params.get("taskId"));
-                isDrawback = instanceTaskService.isDrawback(userId,processInstanceId,taskId);
+                String userId = StringUtils.replaceNull(params.get("userId"));
+                String processInstanceId = StringUtils.replaceNull(params.get("processInstanceId"));
+                String taskId = StringUtils.replaceNull(params.get("taskId"));
+                isDrawback = instanceTaskService.isDrawback(userId, processInstanceId, taskId);
             }
             formObj.put("isDrawback", isDrawback);
             res.setData(formObj);
@@ -138,7 +145,7 @@ public class FeeReimburseApi extends BizNoApi{
     @PostMapping("/startTrans")
     @ApiOperation("流转费用报销业务")
     public ResponseResult startTrans(@RequestBody Map<String, Object> params) {
-        ResponseResult res=ResponseResult.ok();
+        ResponseResult res = ResponseResult.ok();
         try {
             FeeReimburseDto feeReimburseDto = FeeReimburseDto.build(params);
             feeReimburseService.startFeeReimburse(feeReimburseDto);
@@ -148,26 +155,28 @@ public class FeeReimburseApi extends BizNoApi{
         }
         return res;
     }
+
     @ResponseBody
     @PostMapping("/doTrans")
     @ApiOperation("处理费用报销流程")
     public ResponseResult doTrans(@RequestBody Map<String, Object> params) {
         ResponseResult res;
         try {
-            res=feeReimburseService.transFeeReimburse(params);
+            res = feeReimburseService.transFeeReimburse(params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, e.getMessage());
         }
         return res;
     }
+
     @ResponseBody
     @PostMapping("/doDrawback")
     @ApiOperation("撤回费用报销流程")
     public ResponseResult doDrawback(@RequestBody Map<String, Object> params) {
         ResponseResult res;
         try {
-            Map<String,Object> formObjMap=(Map<String,Object>)params.get("formObj");
+            Map<String, Object> formObjMap = (Map<String, Object>) params.get("formObj");
             ProcessTask processTask = ProcessTaskDto.build(formObjMap);
             res = processTaskService.drawbackProcessTask(processTask);
         } catch (Exception e) {
@@ -176,13 +185,14 @@ public class FeeReimburseApi extends BizNoApi{
         }
         return res;
     }
+
     @ResponseBody
     @PostMapping("/doReject")
     @ApiOperation("驳回费用报销流程")
     public ResponseResult doReject(@RequestBody Map<String, Object> params) {
         ResponseResult res;
         try {
-            Map<String,Object> formObjMap=(Map<String,Object>)params.get("formObj");
+            Map<String, Object> formObjMap = (Map<String, Object>) params.get("formObj");
             ProcessTask processTask = ProcessTaskDto.build(formObjMap);
             res = processTaskService.rejectProcessTask(processTask);
         } catch (Exception e) {

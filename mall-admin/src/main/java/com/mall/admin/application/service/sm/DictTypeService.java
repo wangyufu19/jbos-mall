@@ -14,19 +14,25 @@ import java.util.Map;
 
 /**
  * DictTypeService
+ *
  * @author youfu.wang
  * @date 2020-07-22
  */
 @Service
 public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> implements IService<DictType> {
+    /**
+     * DictTypeRepository
+     */
     @Autowired
     private DictTypeRepository dictTypeRepository;
 
     /**
      * 得到字典类型数据
-     * @return
+     * @param pageParam
+     * @param params
+     * @return list
      */
-    public List<DictType> getDictTypeList(PageParam pageParam, Map<String, Object> params){
-        return dictTypeRepository.getDictTypeList(pageParam,params);
+    public List<DictType> getDictTypeList(PageParam pageParam, Map<String, Object> params) {
+        return dictTypeRepository.getDictTypeList(pageParam, params);
     }
 }

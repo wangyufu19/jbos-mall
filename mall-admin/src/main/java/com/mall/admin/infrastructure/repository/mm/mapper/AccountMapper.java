@@ -7,12 +7,21 @@ import java.util.Map;
 
 /**
  * AccountMapper
+ *
  * @author youfu.wang
  * @date 2021-08-19
  */
 public interface AccountMapper extends BaseMapper<Account> {
+    /**
+     * 得到账户
+     * @param parameterObject
+     * @return 账户
+     */
+    Map<String, Object> getAccount(Map<String, Object> parameterObject);
 
-    public Map<String,Object> getAccount(Map<String, Object> parameterObject);
-
-    public void registry(Map<String, Object> parameterObject);
+    /**
+     * 注册
+     * @param parameterObject
+     */
+    void registry(Map<String, Object> parameterObject);
 }

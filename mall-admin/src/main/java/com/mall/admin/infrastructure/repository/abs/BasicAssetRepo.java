@@ -21,16 +21,33 @@ import java.util.Map;
 public class BasicAssetRepo {
     @Autowired
     private BasicAssetMapper basicAssetMapper;
+
+    /**
+     * 得到基础资产池
+     * @param pageParam
+     * @param parameterObject
+     * @return List
+     */
     @Paging
-    public List<BasicAsset> getBasicAssetList(PageParam pageParam, Map<String,Object> parameterObject){
+    public List<BasicAsset> getBasicAssetList(PageParam pageParam, Map<String, Object> parameterObject) {
         return basicAssetMapper.getBasicAssetList(parameterObject);
     }
-    public void addBasicAsset(BasicAsset basicAsset){
+
+    /**
+     * 新增基础资产池
+     * @param basicAsset
+     */
+    public void addBasicAsset(BasicAsset basicAsset) {
         basicAssetMapper.insert(basicAsset);
     }
-    public void deleteBasicAsset(String acctNo){
-        UpdateWrapper<BasicAsset> updateWrapper=new UpdateWrapper<BasicAsset>();
-        updateWrapper.eq("acct_no",acctNo);
+
+    /**
+     * 删除基础资产池
+     * @param acctNo
+     */
+    public void deleteBasicAsset(String acctNo) {
+        UpdateWrapper<BasicAsset> updateWrapper = new UpdateWrapper<BasicAsset>();
+        updateWrapper.eq("acct_no", acctNo);
         basicAssetMapper.delete(updateWrapper);
     }
 }

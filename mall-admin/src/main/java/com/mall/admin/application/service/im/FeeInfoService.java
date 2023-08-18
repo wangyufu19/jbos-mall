@@ -2,8 +2,6 @@ package com.mall.admin.application.service.im;
 
 import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.admin.infrastructure.repository.im.FeeInfoRepo;
-import com.mall.admin.infrastructure.repository.im.FeeReimburseRepo;
-import com.mall.admin.infrastructure.repository.im.MaterialInfoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,18 +17,23 @@ import java.util.Map;
  **/
 @Service
 public class FeeInfoService {
+    /**
+     * FeeInfoRepo
+     */
     @Autowired
     private FeeInfoRepo feeInfoRepo;
+
     /**
      * 查询费用信息下级节点
+     *
      * @param parentId
-     * @return
+     * @return list
      */
-    public List<TreeNode> getFeeChildrenNode(String parentId){
-        List<TreeNode> funcTree=null;
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("parentId",parentId);
-        funcTree=feeInfoRepo.getFeeChildrenNode(parameterObject);
+    public List<TreeNode> getFeeChildrenNode(String parentId) {
+        List<TreeNode> funcTree = null;
+        Map<String, Object> parameterObject = new HashMap<String, Object>();
+        parameterObject.put("parentId", parentId);
+        funcTree = feeInfoRepo.getFeeChildrenNode(parameterObject);
         return funcTree;
     }
 }

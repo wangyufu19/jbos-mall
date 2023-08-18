@@ -11,8 +11,20 @@ import lombok.Setter;
 @Setter
 @Getter
 public class DictCode {
+    /**
+     * 字典类型Id
+     */
     private String typeId;
+    /**
+     * 字典Id
+     */
     private String dictId;
+    /**
+     * 字典名称
+     */
     private String dictName;
+    /**
+     * 排序
+     */
     private int orderNo;
 }

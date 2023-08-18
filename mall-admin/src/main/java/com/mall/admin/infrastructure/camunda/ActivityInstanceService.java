@@ -24,13 +24,23 @@ public class ActivityInstanceService {
     private RuntimeService runtimeService;
     @Autowired
     private HistoryService historyService;
+    /**
+     * 得到当前活动实例
+     *
+     * @param processInstanceId
+     * @return ActivityInstance
+     */
+    public ActivityInstance getActivityInstance(String processInstanceId) {
+        ActivityInstance activityInstance = runtimeService.getActivityInstance(processInstanceId);
+        return activityInstance;
+    }
 
     /**
      * 得到活动实例
      *
      * @param processInstanceId
      * @param activityInstanceId
-     * @return
+     * @return historicActivityInstance
      */
     public HistoricActivityInstance getActivityInstance(String processInstanceId, String activityInstanceId) {
         HistoricActivityInstance historicActivityInstance = historyService
@@ -47,7 +57,7 @@ public class ActivityInstanceService {
      * @param userId
      * @param processInstanceId
      * @param taskId
-     * @return
+     * @return HistoricActivityInstance
      */
     public HistoricActivityInstance getLastFinishedActivityInstance(
             String userId,
@@ -72,13 +82,14 @@ public class ActivityInstanceService {
         }
         return null;
     }
+
     /**
      * 得到活动实例
      *
      * @param userId
      * @param processInstanceId
      * @param taskId
-     * @return
+     * @return HistoricActivityInstance
      */
     public HistoricActivityInstance getActiveActivityInstance(String userId, String processInstanceId, String taskId) {
         List<HistoricActivityInstance> historicActivityInstances = historyService
@@ -88,8 +99,8 @@ public class ActivityInstanceService {
                 .orderByHistoricActivityInstanceEndTime()
                 .desc()
                 .list();
-        if (historicActivityInstances != null&&historicActivityInstances.size()>0) {
-            for(HistoricActivityInstance activityInstance:historicActivityInstances){
+        if (historicActivityInstances != null && historicActivityInstances.size() > 0) {
+            for (HistoricActivityInstance activityInstance : historicActivityInstances) {
                 if (userId.equals(activityInstance.getAssignee())
                         && taskId.equals(activityInstance.getTaskId())) {
                     return activityInstance;
@@ -99,14 +110,5 @@ public class ActivityInstanceService {
         return null;
     }
 
-    /**
-     * 得到当前活动实例
-     * @param processInstanceId
-     * @return
-     */
-    public ActivityInstance getActivityInstance(String processInstanceId) {
-        ActivityInstance activityInstance = runtimeService.getActivityInstance(processInstanceId);
-        return activityInstance;
-    }
 
 }

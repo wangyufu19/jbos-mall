@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * DictCodeRepository
+ *
  * @author youfu.wang
  * @date 2020-06-24
  */
@@ -22,29 +23,33 @@ import java.util.Map;
 public class DictCodeRepository {
     @Autowired
     private DictCodeMapper dictCodeMapper;
+
     /**
      * 得到字典码值数据
-     * @return
+     * @param parameterObject
+     * @return list
      */
-    public List<DictCode> getDictCodeList(Map<String, Object> parameterObject){
+    public List<DictCode> getDictCodeList(Map<String, Object> parameterObject) {
         return dictCodeMapper.getDictCodeList(parameterObject);
     }
+
     /**
      * 保存业务字典
+     *
      * @param parameterObject
      */
-    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
-    public void saveDictCode(Map<String, Object> parameterObject){
-        String typeId= StringUtils.replaceNull(parameterObject.get("typeId"));
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
+    public void saveDictCode(Map<String, Object> parameterObject) {
+        String typeId = StringUtils.replaceNull(parameterObject.get("typeId"));
         //删除业务字典
         dictCodeMapper.deleteDictCode(typeId);
         //保存业务字典
-        ArrayList dictCodes=(ArrayList)parameterObject.get("dictCodes");
-        if (dictCodes!=null&&dictCodes.size()>0){
-            List<DictCode> list=new ArrayList<DictCode>();
-            for(Object obj:dictCodes){
-                Map<String,Object> dictCodeMap=(Map<String,Object>)obj;
-                DictCode dictCode=new DictCode();
+        ArrayList dictCodes = (ArrayList) parameterObject.get("dictCodes");
+        if (dictCodes != null && dictCodes.size() > 0) {
+            List<DictCode> list = new ArrayList<DictCode>();
+            for (Object obj : dictCodes) {
+                Map<String, Object> dictCodeMap = (Map<String, Object>) obj;
+                DictCode dictCode = new DictCode();
                 dictCode.setTypeId(typeId);
                 dictCode.setDictId(StringUtils.replaceNull(dictCodeMap.get("dictId")));
                 dictCode.setDictName(StringUtils.replaceNull(dictCodeMap.get("dictName")));

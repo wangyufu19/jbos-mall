@@ -14,8 +14,14 @@ import lombok.Setter;
 @Getter
 @TableName("JBOS_DICT_TYPE")
 public class DictType {
+    /**
+     * 字典类型Id
+     */
     @TableField("TYPEID")
     private String typeId;
+    /**
+     * 类型名称
+     */
     @TableField("TYPENAME")
     private String typeName;
 }

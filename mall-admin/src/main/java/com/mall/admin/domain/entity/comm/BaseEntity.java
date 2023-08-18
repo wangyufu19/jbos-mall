@@ -8,22 +8,41 @@ import java.io.Serializable;
 
 /**
  * BaseEntity
+ *
  * @author youfu.wang
  * @date 2019-01-31
  */
 @Setter
 @Getter
-public class BaseEntity implements Serializable{
+public class BaseEntity implements Serializable {
+    /**
+     * id
+     */
     private String id;
-    @TableField(exist=false)
+    /**
+     * isValid
+     */
+    @TableField(exist = false)
     private int isValid;
-    @TableField(exist=false)
+    /**
+     * createUserId
+     */
+    @TableField(exist = false)
     private String createUserId;
-    @TableField(exist=false)
+    /**
+     * createTime
+     */
+    @TableField(exist = false)
     private String createTime;
-    @TableField(exist=false)
+    /**
+     * updateUserId
+     */
+    @TableField(exist = false)
     private String updateUserId;
-    @TableField(exist=false)
+    /**
+     * updateTime
+     */
+    @TableField(exist = false)
     private String updateTime;
 
 }

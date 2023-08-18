@@ -10,6 +10,7 @@ import java.util.Date;
 
 /**
  * Member
+ *
  * @author youfu.wang
  * @date 2021-08-19
  */
@@ -17,14 +18,32 @@ import java.util.Date;
 @Getter
 @TableName("MM_ACCOUNT")
 public class Account {
-    public final static String ACCT_NORMAL="10";//正常
-    public final static String ACCT_LOCKED="99";//锁定
+    /**
+     * 正常
+     */
+    public static final String ACCT_NORMAL = "10";
+    /**
+     * 锁定
+     */
+    public static final String ACCT_LOCKED = "99";
+    /**
+     * seqId
+     */
     @TableId("seq_id")
     private String seqId;
+    /**
+     * 账户号
+     */
     @TableField("account")
     private String account;
+    /**
+     * 状态
+     */
     @TableField("status")
     private String status;
-    @TableField(exist=false)
+    /**
+     * 更新时间
+     */
+    @TableField(exist = false)
     private Date updateTime;
 }
