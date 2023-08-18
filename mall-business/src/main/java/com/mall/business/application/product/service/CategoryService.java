@@ -40,6 +40,6 @@ public class CategoryService extends BaseService {
         Map<String,Object> parameterObject=new HashMap<String,Object>();
         parameterObject.put("parentCode",parentCode);
         List<Category> categoryList=categoryRepo.getProductCategory(parameterObject);
-        return ResponseResult.ok().isPage(true).data(categoryList);
+        return ResponseResult.ok().isPage(true).setData(categoryList);
     }
 }

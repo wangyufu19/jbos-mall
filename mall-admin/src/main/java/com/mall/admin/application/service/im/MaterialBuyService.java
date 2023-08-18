@@ -63,7 +63,7 @@ public class MaterialBuyService extends BaseService {
      */
     public ResponseResult getMaterialBuyList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<MaterialBuy> materialBuyList = materialBuyRepo.getMaterialBuyList(pageParam, parameterObject);
-        return ResponseResult.ok().isPage(true).data(materialBuyList);
+        return ResponseResult.ok().isPage(true).setData(materialBuyList);
     }
 
     /**

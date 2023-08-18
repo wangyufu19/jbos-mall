@@ -29,7 +29,7 @@ public class EmpMgrService {
      */
     public ResponseResult getEmpList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<Emp> empList = empMgrRepository.getEmpList(pageParam, parameterObject);
-        return ResponseResult.ok().isPage(true).data(empList);
+        return ResponseResult.ok().isPage(true).setData(empList);
     }
 
     /**

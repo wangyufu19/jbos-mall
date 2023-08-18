@@ -32,7 +32,7 @@ public class OrgMgrService{
      */
     public ResponseResult getOrgList(PageParam pageParam, String parentId){
         List<Org> orgList=orgMgrRepository.getOrgList(pageParam,parentId);
-        return ResponseResult.ok().isPage(true).data(orgList);
+        return ResponseResult.ok().isPage(true).setData(orgList);
     }
     /**
      * 查询组织机构数据

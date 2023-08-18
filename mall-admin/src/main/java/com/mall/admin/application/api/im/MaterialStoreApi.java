@@ -39,7 +39,7 @@ public class MaterialStoreApi {
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             List<MaterialStore> materialStoreList = materialStoreService.getMaterialStoreSumList(pageParam, params);
-            res.isPage(true).data(materialStoreList);
+            res.isPage(true).setData(materialStoreList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -54,7 +54,7 @@ public class MaterialStoreApi {
         ResponseResult res=ResponseResult.ok();
         try {
             List<MaterialStore> materialStoreList = materialStoreService.getMaterialStoreList(params);
-            res.data(materialStoreList);
+            res.setData(materialStoreList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -69,7 +69,7 @@ public class MaterialStoreApi {
         String materialId= StringUtils.replaceNull(params.get("materialId"));
         try {
             double surplusAmt = materialStoreService.getMaterialStoreSurplusAmt(materialId);
-            res.data(surplusAmt);
+            res.setData(surplusAmt);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

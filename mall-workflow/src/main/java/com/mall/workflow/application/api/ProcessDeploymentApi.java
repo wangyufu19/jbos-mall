@@ -39,7 +39,7 @@ public class ProcessDeploymentApi {
             //判断合法的文件类型
             if(processDeploymentService.includeExtensions(resource)){
                 Map<String,Object> data=processDeploymentService.deploy(file);
-                res.data(data);
+                res.setData(data);
             }else{
                 res= ResponseResult.error(ResponseResult.CODE_FAILURE,"对不起，请上传合法的Camunda文件类型[bmmn]");
             }

@@ -47,7 +47,7 @@ public class ProcessTaskService extends BaseService {
      */
     public ResponseResult getUserTaskList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<ProcessTask> processTasks = processTaskRepo.getUserTaskList(pageParam, parameterObject);
-        return ResponseResult.ok().isPage(true).data(processTasks);
+        return ResponseResult.ok().isPage(true).setData(processTasks);
     }
 
     /**
@@ -58,7 +58,7 @@ public class ProcessTaskService extends BaseService {
      */
     public ResponseResult getUserTaskProcessedList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<ProcessTask> processTasks = processTaskRepo.getUserTaskProcessedList(pageParam, parameterObject);
-        return ResponseResult.ok().isPage(true).data(processTasks);
+        return ResponseResult.ok().isPage(true).setData(processTasks);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ProcessTaskService extends BaseService {
      */
     public ResponseResult getProcessTaskDetailList(PageParam pageParam,Map<String,Object> parameterObject){
         List<ProcessTask> processTasks = processTaskRepo.getProcessTaskDetailList(pageParam,parameterObject);
-        return ResponseResult.ok().isPage(true).data(processTasks);
+        return ResponseResult.ok().isPage(true).setData(processTasks);
     }
 
     /**

@@ -44,7 +44,7 @@ public class ProductService {
             parameterObject.put("status",Product.PRODUCT_STATUS_SHELF);
         }
         List<ProductList> productListList=productRepo.getProductList(parameterObject);
-        return ResponseResult.ok().isPage(true).data(productListList);
+        return ResponseResult.ok().isPage(true).setData(productListList);
     }
 
     /**

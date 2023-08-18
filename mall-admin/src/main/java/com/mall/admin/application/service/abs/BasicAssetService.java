@@ -51,7 +51,7 @@ public class BasicAssetService {
      */
     public ResponseResult getBasicAssetList(PageParam pageParam, Map<String,Object> parameterObject){
         List<BasicAsset> basicAssetList = basicAssetRepo.getBasicAssetList(pageParam,parameterObject);
-        return ResponseResult.ok().isPage(true).data(basicAssetList);
+        return ResponseResult.ok().isPage(true).setData(basicAssetList);
     }
 
     /**

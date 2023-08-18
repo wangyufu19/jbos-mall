@@ -54,7 +54,7 @@ public class MaterialInStoreService {
      */
     public ResponseResult getMaterialInStoreList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<MaterialInStore> materialBuyList = materialInStoreRepo.getMaterialInStoreList(pageParam,parameterObject);
-        return ResponseResult.ok().isPage(true).data(materialBuyList);
+        return ResponseResult.ok().isPage(true).setData(materialBuyList);
     }
 
     /**

@@ -69,7 +69,7 @@ public class ResponseResult<T> {
         this.isPage = isPage;
         return this;
     }
-    public ResponseResult data(T data) {
+    public ResponseResult setData(T data) {
         if(this.isPage){
             PageInfo pageInfo=new PageInfo((List)data);
             this.data=(T)pageInfo;

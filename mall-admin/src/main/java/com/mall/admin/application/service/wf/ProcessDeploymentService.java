@@ -42,7 +42,7 @@ public class ProcessDeploymentService {
      */
     public ResponseResult getProcessDeploymentList(PageParam pageParam, Map<String, Object> parameterObject){
         List<ProcessDeployment> processDefList=processDeploymentRepo.getProcessDeploymentList(pageParam,parameterObject);
-        return ResponseResult.ok().isPage(true).data(processDefList);
+        return ResponseResult.ok().isPage(true).setData(processDefList);
     }
 
     /**
