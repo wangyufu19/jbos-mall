@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.admin.infrastructure.repository.abs.mapper.ProjectInfoMapper">
+    <!--查询项目立项数据-->
+    <select id="getProjectList" parameterType="java.util.Map" resultType="com.mall.admin.domain.entity.abs.ProjectInfo">
+    SELECT
+        T.ID,
+        T.PROJECT_NO,
+        T.PROJECT_NAME,
+        T.SIMPLE_NAME,
+        T.PROJECT_TYPE,
+        T.ASSET_TYPE,
+        T.PROJECT_AMT,
+        T.PROJECT_MAX_AMT,
+        T.PACKET_DATE,
+        T.IRT_START_DATE,
+        T.ISSUE_DATE,
+        T.END_DATE,
+        T.LAW_END_DATE,
+        T.IS_RECYCLE_BUY,
+        T.BUY_SDATE,
+        T.BUY_EDATE,
+        T.PROJECT_STE
+    FROM ABS_PROJECT T
+    WHERE T.ISVALID=1
+    <if test="projectNoS != null and projectNoS != ''">
+        AND T.PROJECT_NO = #{projectNoS}
+    </if>
+    <if test="projectNameS != null and projectNameS != ''">
+        AND T.PROJECT_NAME LIKE '%${projectNameS}%'
+    </if>
+    <if test="yearS != null and yearS != ''">
+        AND date_format(T.ISSUE_DATE,'%Y')= #{yearS}
+    </if>
+    ORDER BY T.PROJECT_NO
+    </select>
+</mapper>
