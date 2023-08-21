@@ -34,37 +34,57 @@ import java.util.Map;
  **/
 @Service
 public class FeeReimburseService {
+    /**
+     * 业务字典实例
+     */
     @Autowired
     private BusinessDict businessDict;
+    /**
+     * 流程管理服务
+     */
     @Autowired
     private ProcessMgrService processMgrService;
+    /**
+     * 任务服务
+     */
     @Autowired
     private ProcessTaskService processTaskService;
+    /**
+     * FeeReimburseRepo
+     */
     @Autowired
     private FeeReimburseRepo feeReimburseRepo;
+    /**
+     * PayeeRepo
+     */
     @Autowired
     private PayeeRepo payeeRepo;
+    /**
+     * InvoiceRepo
+     */
     @Autowired
     private InvoiceRepo invoiceRepo;
 
     /**
      * 查询费用报销列表
+     *
      * @param pageParam
      * @param parameterObject
-     * @return
+     * @return ResponseResult
      */
     public ResponseResult getFeeReimburseList(PageParam pageParam, Map<String, Object> parameterObject) {
-        List<FeeReimburse> feeReimburseList= feeReimburseRepo.getFeeReimburseList(pageParam,parameterObject);
+        List<FeeReimburse> feeReimburseList = feeReimburseRepo.getFeeReimburseList(pageParam, parameterObject);
         return ResponseResult.ok().isPage(true).setData(feeReimburseList);
     }
 
     /**
      * 根据业务ID查询费用报销
+     *
      * @param id
-     * @return
+     * @return FeeReimburseDto
      */
-    public FeeReimburseDto getFeeReimburseById(String id){
-        FeeReimburseDto feeReimburseDto=new FeeReimburseDto();
+    public FeeReimburseDto getFeeReimburseById(String id) {
+        FeeReimburseDto feeReimburseDto = new FeeReimburseDto();
         //查询费用报销基本信息
         feeReimburseDto.setFeeReimburse(feeReimburseRepo.getFeeReimburseById(id));
         //查询费用报销收款人信息
@@ -78,10 +98,11 @@ public class FeeReimburseService {
 
     /**
      * 新增费用报销
+     *
      * @param feeReimburseDto
      */
     @Transactional
-    public void addFeeReimburseItem(FeeReimburseDto feeReimburseDto){
+    public void addFeeReimburseItem(FeeReimburseDto feeReimburseDto) {
         //新增费用报销科目明细
         feeReimburseRepo.addFeeReimburseItem(feeReimburseDto.getFeeReimburseItems());
         //新增费用报销
@@ -94,10 +115,11 @@ public class FeeReimburseService {
 
     /**
      * 更新费用报销
+     *
      * @param feeReimburseDto
      */
     @Transactional
-    public void updateFeeReimburse(FeeReimburseDto feeReimburseDto){
+    public void updateFeeReimburse(FeeReimburseDto feeReimburseDto) {
         //删除费用报销科目明细
         feeReimburseRepo.deleteFeeReimburseItem(feeReimburseDto.getFeeReimburse().getId());
         //删除费用报销发票明细
@@ -114,6 +136,7 @@ public class FeeReimburseService {
 
     /**
      * 删除费用报销
+     *
      * @param parameterObject
      */
     @Transactional
@@ -126,6 +149,7 @@ public class FeeReimburseService {
 
     /**
      * 启动费用报销流程
+     *
      * @param feeReimburseDto
      */
     @Transactional
@@ -143,16 +167,16 @@ public class FeeReimburseService {
         processMap.put("bizType", ProcessDefConstants.PROC_DEF_FEE_REIMBURSE);
         processMap.put("amount", feeReimburseDto.getFeeReimburse().getTotalAmt());
 
-        processMgrService.startProcessInstance(processMap,new ProcessCallback(){
+        processMgrService.startProcessInstance(processMap, new ProcessCallback() {
             public void call(Map<String, String> data) {
                 String processDefinitionId = data.get("processDefinitionId");
                 String processInstanceId = data.get("processInstanceId");
                 feeReimburseDto.getFeeReimburse().setInstId(processInstanceId);
                 feeReimburseDto.getFeeReimburse().setBizState(ProcessInst.PROCESS_STATE_ACTIVE);
-                if("create".equals(feeReimburseDto.getAction())) {
+                if ("create".equals(feeReimburseDto.getAction())) {
                     //新增物品领取业务数据
                     addFeeReimburseItem(feeReimburseDto);
-                }else{
+                } else {
                     //更新物品领取业务数据
                     updateFeeReimburse(feeReimburseDto);
                 }
@@ -162,20 +186,22 @@ public class FeeReimburseService {
 
     /**
      * 流转费用报销流程
+     *
      * @param params
      * @throws CamundaException
+     * @return ResponseResult
      */
     @Transactional
     public ResponseResult transFeeReimburse(Map<String, Object> params) throws CamundaException {
         ResponseResult res;
-        Map<String,Object> feeReimburseMap=(Map<String,Object>)params.get("formObj");
+        Map<String, Object> feeReimburseMap = (Map<String, Object>) params.get("formObj");
         ProcessTask processTask = ProcessTaskDto.build(feeReimburseMap);
         FeeReimburseDto feeReimburseDto = FeeReimburseDto.build(params);
         //审批驳回
-        if("101".equals(processTask.getOpinion())){
+        if ("101".equals(processTask.getOpinion())) {
             res = processTaskService.rejectProcessTask(processTask);
-        }else{
-            String bizNo=feeReimburseDto.getFeeReimburse().getBizNo();
+        } else {
+            String bizNo = feeReimburseDto.getFeeReimburse().getBizNo();
             double amount = feeReimburseDto.getFeeReimburse().getTotalAmt();
             //查询费用报销业务流程变量
             Map<String, Object> variables = this.getFeeReimburseProcessVariables(processTask);
@@ -184,10 +210,10 @@ public class FeeReimburseService {
                     && StringUtils.isNUll(StringUtils.replaceNull(variables.get("nextAssignees")))) {
                 res = ResponseResult.error(
                         ResponseResult.CODE_FAILURE,
-                        "对不起，实例任务【"+variables.get("nextActivityName")+"】候选人不能为空！");
+                        "对不起，实例任务【" + variables.get("nextActivityName") + "】候选人不能为空！");
                 return res;
             }
-            res = processTaskService.completeTask(processTask,variables,new ProcessCallback(){
+            res = processTaskService.completeTask(processTask, variables, new ProcessCallback() {
                 public void call(Map<String, String> data) throws CamundaException {
                     //更新费用报销业务完成状态
                     Map<String, Object> parameterObject = new HashMap<>();
@@ -200,7 +226,8 @@ public class FeeReimburseService {
         }
         return res;
     }
-    private Map<String, Object> getFeeReimburseProcessVariables(ProcessTask processTask){
+
+    private Map<String, Object> getFeeReimburseProcessVariables(ProcessTask processTask) {
         Map<String, Object> variables = new HashMap<>();
 
         variables.put("userId", processTask.getAssignee());
@@ -212,13 +239,13 @@ public class FeeReimburseService {
         if (Role.ROLE_PROCESS_STARTER.equals(processTask.getActivityId())) {
             variables.put("currentActivityId", Role.ROLE_PROCESS_STARTER);
             variables.put("nextActivityId", Role.ROLE_REPO_ADMIN);
-            nextAssignees = processTaskService.getTaskAssigneeList(variables,false);
+            nextAssignees = processTaskService.getTaskAssigneeList(variables, false);
             variables.put("nextActivityName", Role.ROLE_REPO_ADMIN_DESC);
             variables.put("nextAssignees", nextAssignees);
-        } else if(Role.ROLE_REPO_ADMIN.equals(processTask.getActivityId())){
+        } else if (Role.ROLE_REPO_ADMIN.equals(processTask.getActivityId())) {
             variables.put("currentActivityId", Role.ROLE_REPO_ADMIN);
             variables.put("nextActivityId", Role.ROLE_IM_ADMIN);
-            nextAssignees = processTaskService.getTaskAssigneeList(variables,false);
+            nextAssignees = processTaskService.getTaskAssigneeList(variables, false);
             variables.put("nextActivityName", Role.ROLE_IM_ADMIN_DESC);
             variables.put("nextAssignees", nextAssignees);
         }
