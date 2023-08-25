@@ -27,22 +27,22 @@ public class BaseEntity implements Serializable {
     /**
      * createUserId
      */
-    @TableField(exist = false)
+    @TableField("create_user_id")
     private String createUserId;
     /**
      * createTime
      */
-    @TableField(exist = false)
+    @TableField("create_time")
     private String createTime;
     /**
      * updateUserId
      */
-    @TableField(exist = false)
+    @TableField("update_user_id")
     private String updateUserId;
     /**
      * updateTime
      */
-    @TableField(exist = false)
+    @TableField("update_time")
     private String updateTime;
 
 }

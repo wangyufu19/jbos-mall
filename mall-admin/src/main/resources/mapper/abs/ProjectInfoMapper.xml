@@ -20,7 +20,8 @@
         T.IS_RECYCLE_BUY,
         T.BUY_SDATE,
         T.BUY_EDATE,
-        T.PROJECT_STE
+        T.PROJECT_STE,
+        T.CREATE_TIME
     FROM ABS_PROJECT T
     WHERE T.ISVALID=1
     <if test="projectNoS != null and projectNoS != ''">

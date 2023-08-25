@@ -1,9 +1,17 @@
 package com.mall.admin.application.service.abs;
+
+import com.mall.admin.application.request.BaseRequestDto;
+import com.mall.admin.application.request.abs.ProjectApprovalRequestDto;
+import com.mall.admin.application.response.abs.ProjectApprovalResponseDto;
+import com.mall.admin.domain.entity.abs.AcctInfo;
 import com.mall.admin.domain.entity.abs.ProjectInfo;
 import com.mall.admin.infrastructure.repository.abs.ProjectApprovalRepo;
 import com.mall.common.page.PageParam;
+import com.mall.common.utils.DateUtils;
+import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -31,11 +39,57 @@ public class ProjectApprovalService {
     }
 
     /**
+     * 根据id查询项目登记信息
+     *
+     * @param id
+     * @return dto
+     */
+    public ProjectApprovalResponseDto getProjectApproval(String id) {
+        ProjectApprovalResponseDto dto = new ProjectApprovalResponseDto();
+        dto.setProjectInfo(projectApprovalRepo.getProjectInfo(id));
+        dto.setAcctInfo(projectApprovalRepo.getAcctInfo(id));
+        return dto;
+    }
+
+    /**
+     * 项目立项登记或变更
+     *
+     * @param projectApprovalDto
+     */
+    @Transactional
+    public void addOrUpdateProjectApproval(ProjectApprovalRequestDto projectApprovalDto) {
+        if (BaseRequestDto.ACTION_CREATE.equals(projectApprovalDto.getAction())) {
+            ProjectInfo projectInfo = projectApprovalDto.getProjectInfo();
+            projectInfo.setId(StringUtils.getUUID());
+            this.addProjectInfo(projectInfo);
+            AcctInfo acctInfo = projectApprovalDto.getAcctInfo();
+            acctInfo.setId(StringUtils.getUUID());
+            acctInfo.setProjectId(projectInfo.getId());
+            projectApprovalRepo.addAcctInfo(acctInfo);
+        } else if (BaseRequestDto.ACTION_UPDATE.equals(projectApprovalDto.getAction())) {
+            this.updateProjectInfo(projectApprovalDto.getProjectInfo());
+            projectApprovalRepo.updateAcctInfo(projectApprovalDto.getAcctInfo());
+        }
+    }
+
+    /**
+     * 根据id查询项目信息
+     *
+     * @param id
+     * @return ProjectInfo
+     */
+    public ProjectInfo getProjectInfo(String id) {
+        return projectApprovalRepo.getProjectInfo(id);
+    }
+
+    /**
      * 新增项目信息
      *
      * @param projectInfo
      */
     public void addProjectInfo(ProjectInfo projectInfo) {
+        projectInfo.setProjectSte(ProjectInfo.PROJECT_STE_NORMAL);
+        projectInfo.setCreateTime(DateUtils.format(DateUtils.getCurrentDate()));
         projectApprovalRepo.addProjectInfo(projectInfo);
     }
 
@@ -45,6 +99,7 @@ public class ProjectApprovalService {
      * @param projectInfo
      */
     public void updateProjectInfo(ProjectInfo projectInfo) {
+        projectInfo.setUpdateTime(DateUtils.format(DateUtils.getCurrentDate()));
         projectApprovalRepo.updateProjectInfo(projectInfo);
     }
 

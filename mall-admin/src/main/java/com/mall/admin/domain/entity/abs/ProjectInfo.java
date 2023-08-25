@@ -15,6 +15,10 @@ import lombok.Data;
 @TableName("ABS_PROJECT")
 public class ProjectInfo extends BaseEntity {
     /**
+     * 项目状态(10:正常)
+     */
+    public static final String PROJECT_STE_NORMAL = "10";
+    /**
      * 项目编号
      */
     @TableField("project_no")

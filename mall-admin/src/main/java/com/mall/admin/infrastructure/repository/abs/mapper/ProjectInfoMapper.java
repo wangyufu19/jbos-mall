@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ProjectApprovalMapper
+ * ProjectInfoMapper
  *
  * @author youfu.wang
  * @date 2023/8/21

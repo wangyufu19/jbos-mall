@@ -1,11 +1,12 @@
 package com.mall.admin.application.api.abs;
 
-import com.google.gson.Gson;
-import com.mall.admin.application.request.ProjectApprovalDto;
+import com.mall.admin.application.request.abs.ProjectApprovalRequestDto;
+import com.mall.admin.application.response.abs.ProjectApprovalResponseDto;
 import com.mall.admin.application.service.abs.ProjectApprovalService;
 import com.mall.admin.domain.entity.abs.ProjectInfo;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
+import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class ProjectApprovalApi {
 
     @ResponseBody
     @GetMapping(value = "/getProjectList")
-    @ApiOperation("查询项目立项数据")
+    @ApiOperation("查询项目立项信息")
     public ResponseResult getProjectList(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
@@ -44,13 +45,16 @@ public class ProjectApprovalApi {
         }
         return res;
     }
+
     @ResponseBody
-    @PostMapping(value = "/registration")
-    @ApiOperation("项目立项登记")
-    public ResponseResult registration(@RequestBody ProjectApprovalDto projectApprovalDto) {
+    @GetMapping(value = "/getRegistrationInfo")
+    @ApiOperation("查询项目登记信息")
+    public ResponseResult getRegistrationInfo(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
+        String id = StringUtils.replaceNull(params.get("id"));
         try {
-            projectApprovalService.addProjectInfo(projectApprovalDto.getProjectInfo());
+            ProjectApprovalResponseDto dto = projectApprovalService.getProjectApproval(id);
+            res.setData(dto);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -58,4 +62,33 @@ public class ProjectApprovalApi {
         return res;
     }
 
+    @ResponseBody
+    @PostMapping(value = "/registration")
+    @ApiOperation("项目立项登记或变更")
+    public ResponseResult registration(@RequestBody ProjectApprovalRequestDto projectApprovalDto) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            projectApprovalService.addOrUpdateProjectApproval(projectApprovalDto);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/deleteRegistrationInfo")
+    @ApiOperation("删除项目登记信息")
+    public ResponseResult deleteRegistrationInfo(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        String id = StringUtils.replaceNull(params.get("id"));
+        String projectNo = StringUtils.replaceNull(params.get("projectNo"));
+        try {
+            projectApprovalService.deleteProjectInfo(id, projectNo);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        }
+        return res;
+    }
 }
