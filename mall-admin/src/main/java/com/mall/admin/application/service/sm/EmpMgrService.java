@@ -32,7 +32,6 @@ public class EmpMgrService {
      */
     public List<Emp> getEmpList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<Emp> empList = empMgrRepository.getEmpList(pageParam, parameterObject);
-        empMgrRepository.
         return empList;
     }
 
