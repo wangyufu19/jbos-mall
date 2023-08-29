@@ -33,4 +33,8 @@ public class PageParam {
         }
         return new PageParam(page, limit);
     }
+
+    public static PageParam getPageParam(int page, int limit) {
+        return new PageParam(page, limit);
+    }
 }

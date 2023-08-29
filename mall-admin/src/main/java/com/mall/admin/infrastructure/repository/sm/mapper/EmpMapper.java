@@ -1,5 +1,6 @@
 package com.mall.admin.infrastructure.repository.sm.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mall.admin.domain.entity.sm.Emp;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Map;
  * @author youfu.wang
  * @date 2020-06-24
  */
-public interface EmpMapper {
+public interface EmpMapper extends BaseMapper<Emp> {
     /**
      * 查询机构员工数据列表
      *

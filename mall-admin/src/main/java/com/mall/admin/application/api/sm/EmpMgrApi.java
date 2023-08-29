@@ -1,6 +1,8 @@
 package com.mall.admin.application.api.sm;
 
+import com.github.pagehelper.PageInfo;
 import com.mall.admin.application.service.sm.EmpMgrService;
+import com.mall.admin.domain.entity.sm.Emp;
 import com.mall.admin.infrastructure.camunda.IdentityMgrService;
 import com.mall.common.page.PageParam;
 import com.mall.common.office.excel.IPageExcel;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -40,6 +43,7 @@ public class EmpMgrApi {
 
     /**
      * 查询组织机构员工数据
+     *
      * @param params
      * @return ResponseResult
      */
@@ -49,7 +53,8 @@ public class EmpMgrApi {
         ResponseResult res;
         try {
             PageParam pageParam = PageParam.getPageParam(params);
-            res = empMgrService.getEmpList(pageParam, params);
+            List<Emp> empList = empMgrService.getEmpList(pageParam, params);
+            res=ResponseResult.ok().isPage(true).setData(empList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -151,11 +156,13 @@ public class EmpMgrApi {
         titles.put("headShipName", "职务");
         PageExcelHandler pageExcelHandler = new PageExcelHandler(titles);
         try {
-            pageExcelHandler.generateExcelSheet(response.getOutputStream(), new IPageExcel() {
-                public ResponseResult getSheetRowDataList(Map<String, Object> params) {
-                    PageParam pageParam = PageParam.getPageParam(params);
-                    ResponseResult res = empMgrService.getEmpList(pageParam, params);
-                    return res;
+            pageExcelHandler.generateExcelSheetParallel(response.getOutputStream(), new IPageExcel() {
+                public PageInfo getPageDataList(int page, int limit) {
+                    PageParam pageParam = PageParam.getPageParam(page, limit);
+                    Map<String, Object> params = new HashMap<>();
+                    List<Emp> empList = empMgrService.getEmpList(pageParam, params);
+                    PageInfo pageInfo = new PageInfo(empList);
+                    return pageInfo;
                 }
             });
         } catch (Exception e) {

@@ -2,7 +2,7 @@ package com.mall.common.office.excel;
 
 import com.github.pagehelper.PageInfo;
 import com.mall.common.page.PageParam;
-import com.mall.common.response.ResponseResult;
+import com.mall.common.paralle.ParallelUtil;
 import com.mall.common.utils.StringUtils;
 import com.mall.common.utils.bean.BeanFactory;
 import com.mall.common.utils.bean.Getter;
@@ -20,6 +20,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntFunction;
 
 /**
  * PageExcelHandler
@@ -78,19 +80,16 @@ public class PageExcelHandler {
             XSSFRow titleRow = sheet.createRow(startRow);
             this.setCellValue(titleRow, this.titles);
             //工作表行数据
-            Map<String, Object> params = new HashMap<>();
-            params.put("page", PageParam.DEFAULT_PAGE_NUM);
-            params.put("limit", PageParam.DEFAULT_PAGE_SIZE);
+            int page = PageParam.DEFAULT_PAGE_NUM;
+            int limit = PageParam.DEFAULT_PAGE_SIZE;
             while (true) {
-                if (startRow >= IPageExcel.length) {
+                if (startRow >= IPageExcel.LENGTH) {
                     sheet = workbook.createSheet();
                     startRow = 0;
                 }
                 List<Map<String, String>> dataList;
-                ResponseResult res = iPageExcel.getSheetRowDataList(params);
-                PageInfo pageInfo;
-                if (null != res) {
-                    pageInfo = (PageInfo) res.getData();
+                PageInfo pageInfo = iPageExcel.getPageDataList(page, limit);
+                if (null != pageInfo) {
                     dataList = pageInfo.getList();
                 } else {
                     break;
@@ -105,7 +104,7 @@ public class PageExcelHandler {
                 if (pageInfo.isIsLastPage()) {
                     break;
                 } else {
-                    params.put("page", (pageInfo.getTotal() / pageInfo.getPageSize()) + 1);
+                    page = pageInfo.getNextPage();
                 }
             }
             out = new FileOutputStream(this.outputFile);
@@ -138,22 +137,19 @@ public class PageExcelHandler {
             //工作表标题
             this.setTitleCell(sheet, startRow);
             //工作表行数据
-            Map<String, Object> params = new HashMap<>();
-            params.put("page", PageParam.DEFAULT_PAGE_NUM);
-            params.put("limit", PageParam.DEFAULT_PAGE_SIZE);
+            int page = PageParam.DEFAULT_PAGE_NUM;
+            int limit = PageParam.DEFAULT_PAGE_SIZE;
             while (true) {
-                if (startRow >= IPageExcel.length) {
+                if (startRow >= IPageExcel.LENGTH) {
                     sheet = workbook.createSheet();
                     startRow = 0;
                     //工作表标题
                     this.setTitleCell(sheet, startRow);
                 }
                 List<Map<String, String>> dataList;
-                ResponseResult res = iPageExcel.getSheetRowDataList(params);
-                PageInfo pageInfo;
+                PageInfo pageInfo = iPageExcel.getPageDataList(page, limit);
 
-                if (null != res) {
-                    pageInfo = (PageInfo) res.getData();
+                if (null != pageInfo) {
                     dataList = pageInfo.getList();
                 } else {
                     break;
@@ -168,11 +164,73 @@ public class PageExcelHandler {
                 if (pageInfo.isIsLastPage()) {
                     break;
                 } else {
-                    params.put("page", (pageInfo.getTotal() / pageInfo.getPageSize()) + 1);
+                    page = pageInfo.getNextPage();
                 }
             }
             workbook.write(outputStream);
         } catch (IOException e) {
+            log.error(e.getMessage());
+        } finally {
+            if (null != outputStream) {
+                try {
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                }
+            }
+            if (null != workbook) {
+                try {
+                    workbook.close();
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                }
+            }
+        }
+    }
+
+    /**
+     * 并发分页生成EXCEL数据
+     *
+     * @param outputStream
+     * @param iPageExcel
+     */
+    public void generateExcelSheetParallel(OutputStream outputStream, IPageExcel iPageExcel) {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        AtomicInteger startRow = new AtomicInteger();
+        try {
+            XSSFSheet sheet = workbook.createSheet();
+            //工作表标题
+            this.setTitleCell(sheet, startRow.get());
+            //工作表行数据
+            int page = PageParam.DEFAULT_PAGE_NUM;
+            int limit = PageParam.DEFAULT_PAGE_SIZE;
+            PageInfo pageInfo = iPageExcel.getPageDataList(page, limit);
+            int totalPage = 0;
+            int totalNum = 0;
+            if (null != pageInfo) {
+                totalNum = (int) pageInfo.getTotal();
+                totalPage = totalNum % limit == 0 ? totalNum / limit : totalNum / limit + 1;
+            }
+            IntFunction producerFunction = pageNo -> iPageExcel.getPageDataList(pageNo, limit);
+            ParallelUtil.parallel(Object.class, totalPage)
+                    .asyncProducer(producerFunction::apply)
+                    .syncConsumer(data -> {
+                        List<Map<String, String>> dataList = ((PageInfo) data).getList();
+                        if (null != dataList && dataList.size() > 0) {
+                            for (Object obj : dataList) {
+                                startRow.getAndIncrement();
+                                XSSFRow row = sheet.createRow(startRow.get());
+                                this.setCellValue(row, obj);
+                            }
+                        }
+                    }).start();
+            try {
+                workbook.write(outputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (InterruptedException e) {
             log.error(e.getMessage());
         } finally {
             if (null != outputStream) {
