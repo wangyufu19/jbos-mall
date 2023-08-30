@@ -7,10 +7,11 @@ import com.mall.common.utils.StringUtils;
 import com.mall.common.utils.bean.BeanFactory;
 import com.mall.common.utils.bean.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,6 +32,19 @@ import java.util.function.IntFunction;
  **/
 @Slf4j
 public class PageExcelHandler {
+    /**
+     * 最大行数
+     */
+    private int maxRow = IPageExcel.SHEET_MAX_ROW;
+    /**
+     * 起始行数
+     */
+    private AtomicInteger startRow = new AtomicInteger();
+
+    /**
+     * 工作表最大内存行数
+     */
+    private int rowAccessWindowSize = 1000;
     /**
      * 临时目录配置
      */
@@ -71,36 +85,27 @@ public class PageExcelHandler {
         if (!tempDir.exists()) {
             tempDir.mkdirs();
         }
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        int startRow = 0;
+        SXSSFWorkbook workbook = new SXSSFWorkbook(this.rowAccessWindowSize);
+
         FileOutputStream out = null;
         try {
-            XSSFSheet sheet = workbook.createSheet();
+            SXSSFSheet sheet = workbook.createSheet();
             //工作表标题
-            XSSFRow titleRow = sheet.createRow(startRow);
+            SXSSFRow titleRow = sheet.createRow(startRow.get());
             this.setCellValue(titleRow, this.titles);
             //工作表行数据
             int page = PageParam.DEFAULT_PAGE_NUM;
             int limit = PageParam.DEFAULT_PAGE_SIZE;
             while (true) {
-                if (startRow >= IPageExcel.LENGTH) {
-                    sheet = workbook.createSheet();
-                    startRow = 0;
-                }
-                List<Map<String, String>> dataList;
-                PageInfo pageInfo = iPageExcel.getPageDataList(page, limit);
-                if (null != pageInfo) {
-                    dataList = pageInfo.getList();
-                } else {
+                //超出工作表最大行数，则退出循环写数据
+                if (startRow.get() >= IPageExcel.SHEET_MAX_ROW) {
                     break;
                 }
-                if (null != dataList && dataList.size() > 0) {
-                    for (Object obj : dataList) {
-                        startRow++;
-                        XSSFRow row = sheet.createRow(startRow);
-                        this.setCellValue(row, obj);
-                    }
+                PageInfo pageInfo = this.generateData(iPageExcel, page, limit, sheet);
+                if (pageInfo == null) {
+                    break;
                 }
+                //最后一页，则退出循环写数据
                 if (pageInfo.isIsLastPage()) {
                     break;
                 } else {
@@ -112,13 +117,7 @@ public class PageExcelHandler {
         } catch (IOException e) {
             log.error(e.getMessage());
         } finally {
-            if (null != out) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                }
-            }
+            this.close(workbook, out);
         }
         return this.outputFile;
     }
@@ -128,64 +127,87 @@ public class PageExcelHandler {
      *
      * @param outputStream
      * @param iPageExcel
+     * @param page
+     * @param limit
      */
-    public void generateExcelSheet(OutputStream outputStream, IPageExcel iPageExcel) {
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        int startRow = 0;
+    public void generateExcelSheet(OutputStream outputStream, IPageExcel iPageExcel, int page, int limit) {
+        long startDate = System.currentTimeMillis();
+        SXSSFWorkbook workbook = new SXSSFWorkbook(this.rowAccessWindowSize);
         try {
-            XSSFSheet sheet = workbook.createSheet();
+            SXSSFSheet sheet = workbook.createSheet();
             //工作表标题
-            this.setTitleCell(sheet, startRow);
+            this.setTitleCell(sheet, startRow.get());
             //工作表行数据
-            int page = PageParam.DEFAULT_PAGE_NUM;
-            int limit = PageParam.DEFAULT_PAGE_SIZE;
             while (true) {
-                if (startRow >= IPageExcel.LENGTH) {
-                    sheet = workbook.createSheet();
-                    startRow = 0;
-                    //工作表标题
-                    this.setTitleCell(sheet, startRow);
-                }
-                List<Map<String, String>> dataList;
-                PageInfo pageInfo = iPageExcel.getPageDataList(page, limit);
-
-                if (null != pageInfo) {
-                    dataList = pageInfo.getList();
-                } else {
+                //超出工作表最大行数，则退出循环写数据
+                if (startRow.get() >= IPageExcel.SHEET_MAX_ROW) {
                     break;
                 }
-                if (null != dataList && dataList.size() > 0) {
-                    for (Object obj : dataList) {
-                        startRow++;
-                        XSSFRow row = sheet.createRow(startRow);
-                        this.setCellValue(row, obj);
-                    }
-                }
+
+                PageInfo pageInfo = this.generateData(iPageExcel, page, limit, sheet);
+                //最后一页，则退出循环写数据
                 if (pageInfo.isIsLastPage()) {
                     break;
                 } else {
                     page = pageInfo.getNextPage();
                 }
             }
-            workbook.write(outputStream);
+
+            FileOutputStream out = new FileOutputStream(this.outputFile);
+            workbook.write(out);
+            log.info("******startRow={}", startRow.get());
+            long endDate = System.currentTimeMillis();
+            log.info("******总耗时：{} 秒", (endDate - startDate) / 1000);
         } catch (IOException e) {
             log.error(e.getMessage());
         } finally {
-            if (null != outputStream) {
-                try {
-                    outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                }
+            this.close(workbook, outputStream);
+        }
+
+    }
+
+    /**
+     * 生成工作表行数据
+     *
+     * @param iPageExcel
+     * @param page
+     * @param limit
+     * @param sheet
+     * @return pageInfo
+     */
+    private PageInfo generateData(IPageExcel iPageExcel, int page, int limit, SXSSFSheet sheet) {
+        List<Map<String, String>> dataList = null;
+        PageInfo pageInfo = iPageExcel.getPageDataList(page, limit);
+        if (null != pageInfo) {
+            dataList = pageInfo.getList();
+        }
+        if (null != dataList && dataList.size() > 0) {
+            for (Object obj : dataList) {
+                startRow.incrementAndGet();
+                SXSSFRow row = sheet.createRow(startRow.get());
+                this.setCellValue(row, obj);
             }
+        }
+        return pageInfo;
+    }
+
+    /**
+     * 关闭IO流
+     *
+     * @param workbook
+     * @param outputStream
+     */
+    private void close(SXSSFWorkbook workbook, OutputStream outputStream) {
+        try {
             if (null != workbook) {
-                try {
-                    workbook.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                }
+                workbook.close();
             }
+            if (null != outputStream) {
+                outputStream.flush();
+                outputStream.close();
+            }
+        } catch (IOException e) {
+            log.error(e.getMessage());
         }
     }
 
@@ -194,69 +216,59 @@ public class PageExcelHandler {
      *
      * @param outputStream
      * @param iPageExcel
+     * @param totalPage
+     * @param limit
      */
-    public void generateExcelSheetParallel(OutputStream outputStream, IPageExcel iPageExcel) {
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        AtomicInteger startRow = new AtomicInteger();
+    public void generateExcelSheetParallel(OutputStream outputStream, IPageExcel iPageExcel, int totalPage, int limit) {
+        long startDate = System.currentTimeMillis();
+        SXSSFWorkbook workbook = new SXSSFWorkbook(this.rowAccessWindowSize);
         try {
-            XSSFSheet sheet = workbook.createSheet();
+
+            SXSSFSheet sheet = workbook.createSheet();
             //工作表标题
             this.setTitleCell(sheet, startRow.get());
-            //工作表行数据
-            int page = PageParam.DEFAULT_PAGE_NUM;
-            int limit = PageParam.DEFAULT_PAGE_SIZE;
-            PageInfo pageInfo = iPageExcel.getPageDataList(page, limit);
-            int totalPage = 0;
-            int totalNum = 0;
-            if (null != pageInfo) {
-                totalNum = (int) pageInfo.getTotal();
-                totalPage = totalNum % limit == 0 ? totalNum / limit : totalNum / limit + 1;
-            }
-            IntFunction producerFunction = pageNo -> iPageExcel.getPageDataList(pageNo, limit);
+            IntFunction producerFunction = page -> iPageExcel.getPageDataList(page, limit);
             ParallelUtil.parallel(Object.class, totalPage)
                     .asyncProducer(producerFunction::apply)
                     .syncConsumer(data -> {
                         List<Map<String, String>> dataList = ((PageInfo) data).getList();
                         if (null != dataList && dataList.size() > 0) {
                             for (Object obj : dataList) {
-                                startRow.getAndIncrement();
-                                XSSFRow row = sheet.createRow(startRow.get());
+                                startRow.incrementAndGet();
+                                SXSSFRow row = sheet.createRow(startRow.get());
                                 this.setCellValue(row, obj);
                             }
                         }
                     }).start();
-            try {
-                workbook.write(outputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (InterruptedException e) {
+            log.info("startRow={}", startRow.get());
+            workbook.write(outputStream);
+        } catch (InterruptedException | IOException e) {
             log.error(e.getMessage());
         } finally {
-            if (null != outputStream) {
-                try {
-                    outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                }
-            }
-            if (null != workbook) {
-                try {
-                    workbook.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                }
-            }
+            this.close(workbook, outputStream);
         }
+        long endDate = System.currentTimeMillis();
+        log.info("******总耗时：{} 秒", (endDate - startDate) / 1000);
     }
 
-    private void setTitleCell(XSSFSheet sheet, int startRow) {
-        XSSFRow titleRow = sheet.createRow(startRow);
+    /**
+     * 设置标题数据
+     *
+     * @param sheet
+     * @param startRow
+     */
+    private void setTitleCell(SXSSFSheet sheet, int startRow) {
+        SXSSFRow titleRow = sheet.createRow(startRow);
         this.setCellValue(titleRow, this.titles);
     }
 
-    private void setCellValue(XSSFRow row, Object obj) {
+    /**
+     * 设置行数据
+     *
+     * @param row
+     * @param obj
+     */
+    private void setCellValue(SXSSFRow row, Object obj) {
         if (obj == null) {
             return;
         }
@@ -281,8 +293,10 @@ public class PageExcelHandler {
         }
     }
 
-    private void setCellValue(XSSFRow row, int startCell, Object value) {
-        XSSFCell cell = row.createCell(startCell);
+    private void setCellValue(SXSSFRow row, int startCell, Object value) {
+        SXSSFCell cell = row.createCell(startCell);
         cell.setCellValue(StringUtils.replaceNull(value));
     }
+
+
 }

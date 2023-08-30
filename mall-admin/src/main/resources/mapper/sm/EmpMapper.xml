@@ -23,7 +23,6 @@
         <if test="empNameS != null and empNameS != ''">
             AND T.EMPNAME LIKE  '%${empNameS}%'
         </if>
-        ORDER BY T.ORDERNO
     </select>
     <!--新增人员信息-->
     <insert id="addEmp" parameterType="java.util.Map">

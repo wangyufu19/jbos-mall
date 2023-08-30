@@ -3,7 +3,6 @@ package com.mall.admin.application.service.sm;
 import com.mall.admin.domain.entity.sm.Emp;
 import com.mall.common.page.PageParam;
 import com.mall.admin.infrastructure.repository.sm.EmpMgrRepository;
-import com.mall.common.response.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +31,10 @@ public class EmpMgrService {
      */
     public List<Emp> getEmpList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<Emp> empList = empMgrRepository.getEmpList(pageParam, parameterObject);
+        return empList;
+    }
+    public List<Emp> getEmpList(int page, int limit) {
+        List<Emp> empList = empMgrRepository.getEmpList(page, limit);
         return empList;
     }
 

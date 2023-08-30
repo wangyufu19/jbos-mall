@@ -18,9 +18,14 @@ import java.util.Map;
 public class PageParam {
     public static final int DEFAULT_PAGE_NUM = 1;
     public static final int DEFAULT_PAGE_SIZE = 10;
-    private int pageNum;
-    private int pageSize;
+    private int pageNum = PageParam.DEFAULT_PAGE_NUM;
+    private int pageSize = PageParam.DEFAULT_PAGE_SIZE;
 
+    public static PageParam getPageParam() {
+        int page = PageParam.DEFAULT_PAGE_NUM;
+        int limit = PageParam.DEFAULT_PAGE_SIZE;
+        return new PageParam(page, limit);
+    }
 
     public static PageParam getPageParam(Map<String, Object> params) {
         int page = PageParam.DEFAULT_PAGE_NUM;

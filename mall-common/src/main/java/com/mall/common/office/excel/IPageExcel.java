@@ -13,9 +13,13 @@ import java.util.Map;
  **/
 public interface IPageExcel {
     /**
+     * 工作表最大行数
+     */
+    int SHEET_MAX_ROW = 1000000;
+    /**
      * 每页写入行数
      */
-    int LENGTH = 5000;
+    int LENGTH = 10000;
 
     /**
      * 得到工作表行数据列表

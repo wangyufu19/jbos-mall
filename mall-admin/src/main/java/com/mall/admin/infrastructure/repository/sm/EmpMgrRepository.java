@@ -9,6 +9,8 @@ import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -32,9 +35,12 @@ public class EmpMgrRepository {
     private EmpMapper empMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * 查询机构员工数据
+     *
      * @param pageParam
      * @param parameterObject
      * @return list
@@ -46,7 +52,28 @@ public class EmpMgrRepository {
     }
 
     /**
+     * 查询机构员工数据
+     *
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public List<Emp> getEmpList(int page, int pageSize) {
+        List<Emp> empList = new ArrayList<>();
+        Object[] args = new Object[2];
+        args[0] = (page - 1) * pageSize;
+        args[1] = pageSize;
+        empList = jdbcTemplate.query(
+                "select badge,empName from user limit ?,?",
+                new BeanPropertyRowMapper<>(Emp.class),
+                (page - 1) * pageSize,
+                pageSize);
+        return empList;
+    }
+
+    /**
      * 新增人员信息
+     *
      * @param parameterObject
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)

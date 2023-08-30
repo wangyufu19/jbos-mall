@@ -12,6 +12,7 @@ import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,8 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/emp")
 public class EmpMgrApi {
+    //@Value("${spring.servlet.upload.repo}")
+    private String uploadRepo="/nas/upload";
     @Autowired
     private EmpMgrService empMgrService;
     @Autowired
@@ -54,7 +57,7 @@ public class EmpMgrApi {
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             List<Emp> empList = empMgrService.getEmpList(pageParam, params);
-            res=ResponseResult.ok().isPage(true).setData(empList);
+            res = ResponseResult.ok().isPage(true).setData(empList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -156,15 +159,23 @@ public class EmpMgrApi {
         titles.put("headShipName", "职务");
         PageExcelHandler pageExcelHandler = new PageExcelHandler(titles);
         try {
+//            List<Emp> empList = empMgrService.getEmpList(PageParam.getPageParam(), null);
+//            PageInfo pageInfo = new PageInfo(empList);
+//            int total = (int) pageInfo.getTotal();
+//            if (total >= IPageExcel.SHEET_MAX_ROW) {
+//                total = IPageExcel.SHEET_MAX_ROW;
+//            }
+//            int totalPage = total % IPageExcel.LENGTH == 0 ? total / IPageExcel.LENGTH : total / IPageExcel.LENGTH + 1;
             pageExcelHandler.generateExcelSheetParallel(response.getOutputStream(), new IPageExcel() {
                 public PageInfo getPageDataList(int page, int limit) {
+                    log.info("******读取数据[page={},limit={}]", page, limit);
                     PageParam pageParam = PageParam.getPageParam(page, limit);
                     Map<String, Object> params = new HashMap<>();
                     List<Emp> empList = empMgrService.getEmpList(pageParam, params);
                     PageInfo pageInfo = new PageInfo(empList);
                     return pageInfo;
                 }
-            });
+            }, 1, IPageExcel.LENGTH);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

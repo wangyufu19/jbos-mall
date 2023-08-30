@@ -1,8 +1,11 @@
 package com.mall.common.paralle;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -16,7 +19,7 @@ import java.util.function.LongFunction;
  * @author youfu.wang
  * @date 2023/8/28
  **/
-
+@Slf4j
 public class ParallelUtil<R> {
     public static final int DEF_PARALLEL_NUM = Runtime.getRuntime().availableProcessors(); // 默认线程数
     private int parallelNum; // 生产者并发线程数
@@ -26,7 +29,7 @@ public class ParallelUtil<R> {
     private ArrayBlockingQueue<ParallelResult<R>> queue; // 生产者将任务放到此队列，消费者从此队列读数据
     private ThreadPoolExecutor threadPoolExecutor; // 生产者线程池
     private long timeout = 60; // 默认超时时间
-    private TimeUnit timeoutTimeUnit = TimeUnit.SECONDS; // 默认超时时间单位
+    private TimeUnit timeoutTimeUnit = TimeUnit.MINUTES; // 默认超时时间单位
 
     public static <R> ParallelUtil<R> parallel(Class<R> consumerClass, long totalNum) {
         return parallel(consumerClass, DEF_PARALLEL_NUM, totalNum);
@@ -100,13 +103,16 @@ public class ParallelUtil<R> {
             // 初始化队列和线程池
             queue = new ArrayBlockingQueue<>(parallelNum);
             threadPoolExecutor = new ThreadPoolExecutor(1, parallelNum, 10, TimeUnit.SECONDS, new SynchronousQueue<>(), new ThreadPoolExecutor.CallerRunsPolicy());
+
             // 生产者开始执行
             Thread producerThread = new Thread(() -> {
                 try {
                     AtomicLong indexAtomicLong = new AtomicLong(1);
+
                     List<CompletableFuture<R>> futureList = new ArrayList<>(parallelNum);
+
                     for (int index = 1; index <= totalNum; index++) {
-                        int finalIndex = index;
+                        final int finalIndex = index;
                         futureList.add(CompletableFuture.supplyAsync(() -> producerFunction.apply(finalIndex), threadPoolExecutor));
                         if (futureList.size() == parallelNum) {
                             for (CompletableFuture<R> future : futureList) {
@@ -119,10 +125,6 @@ public class ParallelUtil<R> {
                         queue.put(new ParallelResult<>(indexAtomicLong.getAndIncrement(), future.join()));
                     }
                     futureList.clear();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    queue.offer(ParallelResult.empty()); // 添加一个空元素，防止queue.poll等待到超时
-                    throw new RuntimeException(e);
                 } catch (Exception e) {
                     queue.offer(ParallelResult.empty()); // 添加一个空元素，防止queue.poll等待到超时
                     throw new RuntimeException(e);
@@ -130,6 +132,7 @@ public class ParallelUtil<R> {
             });
             producerThread.setDaemon(true);
             producerThread.start();
+            //threadPoolExecutor.execute(producerThread);
             AtomicReference<Throwable> exception = new AtomicReference<>();
             producerThread.setUncaughtExceptionHandler((t, e) -> exception.set(e));
             // 消费者等待消费
