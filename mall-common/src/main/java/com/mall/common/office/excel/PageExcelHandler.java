@@ -75,12 +75,12 @@ public class PageExcelHandler {
     }
 
     /**
-     * 生成工作表
+     * 生成Excel
      *
      * @param iPageExcel
      * @return outputFile
      */
-    public String generateExcelSheet(IPageExcel iPageExcel) {
+    public String generateExcel(IPageExcel iPageExcel) {
         File tempDir = new File(this.tempDirConfig);
         if (!tempDir.exists()) {
             tempDir.mkdirs();
@@ -123,16 +123,16 @@ public class PageExcelHandler {
     }
 
     /**
-     * 生成工作表
+     * 生成Excel
      *
      * @param outputStream
      * @param iPageExcel
-     * @param page
      * @param limit
      */
-    public void generateExcelSheet(OutputStream outputStream, IPageExcel iPageExcel, int page, int limit) {
+    public void generateExcel(OutputStream outputStream, IPageExcel iPageExcel, int limit) {
         long startDate = System.currentTimeMillis();
         SXSSFWorkbook workbook = new SXSSFWorkbook(this.rowAccessWindowSize);
+        int page = PageParam.DEFAULT_PAGE_NUM;
         try {
             SXSSFSheet sheet = workbook.createSheet();
             //工作表标题
@@ -152,9 +152,7 @@ public class PageExcelHandler {
                     page = pageInfo.getNextPage();
                 }
             }
-
-            FileOutputStream out = new FileOutputStream(this.outputFile);
-            workbook.write(out);
+            workbook.write(outputStream);
             log.info("******startRow={}", startRow.get());
             long endDate = System.currentTimeMillis();
             log.info("******总耗时：{} 秒", (endDate - startDate) / 1000);
@@ -167,7 +165,7 @@ public class PageExcelHandler {
     }
 
     /**
-     * 生成工作表行数据
+     * 生成行数据
      *
      * @param iPageExcel
      * @param page
@@ -216,11 +214,12 @@ public class PageExcelHandler {
      *
      * @param outputStream
      * @param iPageExcel
-     * @param totalPage
      * @param limit
      */
-    public void generateExcelSheetParallel(OutputStream outputStream, IPageExcel iPageExcel, int totalPage, int limit) {
+    public void generateExcelParallel(OutputStream outputStream, IPageExcel iPageExcel, int limit) {
         long startDate = System.currentTimeMillis();
+        int count = iPageExcel.getPageCount();
+        int totalPage = count % PageParam.DEFAULT_PAGE_SIZE == 0 ? count / PageParam.DEFAULT_PAGE_SIZE : count / PageParam.DEFAULT_PAGE_SIZE + 1;
         SXSSFWorkbook workbook = new SXSSFWorkbook(this.rowAccessWindowSize);
         try {
 

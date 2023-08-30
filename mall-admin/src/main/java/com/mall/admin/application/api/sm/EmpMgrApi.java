@@ -38,7 +38,7 @@ import java.util.HashMap;
 @RequestMapping("/emp")
 public class EmpMgrApi {
     //@Value("${spring.servlet.upload.repo}")
-    private String uploadRepo="/nas/upload";
+    private String uploadRepo = "/nas/upload";
     @Autowired
     private EmpMgrService empMgrService;
     @Autowired
@@ -159,14 +159,17 @@ public class EmpMgrApi {
         titles.put("headShipName", "职务");
         PageExcelHandler pageExcelHandler = new PageExcelHandler(titles);
         try {
-//            List<Emp> empList = empMgrService.getEmpList(PageParam.getPageParam(), null);
-//            PageInfo pageInfo = new PageInfo(empList);
-//            int total = (int) pageInfo.getTotal();
-//            if (total >= IPageExcel.SHEET_MAX_ROW) {
-//                total = IPageExcel.SHEET_MAX_ROW;
-//            }
-//            int totalPage = total % IPageExcel.LENGTH == 0 ? total / IPageExcel.LENGTH : total / IPageExcel.LENGTH + 1;
-            pageExcelHandler.generateExcelSheetParallel(response.getOutputStream(), new IPageExcel() {
+            pageExcelHandler.generateExcel(response.getOutputStream(), new IPageExcel() {
+//                public int getPageCount() {
+//                    List<Emp> empList = empMgrService.getEmpList(PageParam.getPageParam(), null);
+//                    PageInfo pageInfo = new PageInfo(empList);
+//                    int total = (int) pageInfo.getTotal();
+//                    if (total >= IPageExcel.SHEET_MAX_ROW) {
+//                        total = IPageExcel.SHEET_MAX_ROW;
+//                    }
+//                    return total;
+//                }
+
                 public PageInfo getPageDataList(int page, int limit) {
                     log.info("******读取数据[page={},limit={}]", page, limit);
                     PageParam pageParam = PageParam.getPageParam(page, limit);
@@ -175,7 +178,7 @@ public class EmpMgrApi {
                     PageInfo pageInfo = new PageInfo(empList);
                     return pageInfo;
                 }
-            }, 1, IPageExcel.LENGTH);
+            }, PageParam.DEFAULT_PAGE_SIZE);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

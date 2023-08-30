@@ -16,10 +16,25 @@ public interface IPageExcel {
      * 工作表最大行数
      */
     int SHEET_MAX_ROW = 1000000;
+
     /**
-     * 每页写入行数
+     * 得到分页数据总量
+     *
+     * @return
      */
-    int LENGTH = 10000;
+    default int getPageCount() {
+        return 0;
+    }
+
+    /**
+     * 得到分页数据总量
+     *
+     * @param params
+     * @return
+     */
+    default int getPageCount(Map<String, Object> params) {
+        return 0;
+    }
 
     /**
      * 得到工作表行数据列表
@@ -39,4 +54,5 @@ public interface IPageExcel {
      * @return
      */
     PageInfo getPageDataList(int page, int limit);
+
 }
