@@ -1,23 +1,24 @@
 package com.mall.common.paralle;
 
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.DoubleFunction;
 import java.util.function.IntFunction;
-import java.util.function.LongFunction;
 
 /**
  * 并发工具类（并发生产数据，串行有序消费数据）
  *
  * @author youfu.wang
  * @date 2023/8/28
+ * @param <R>
  **/
 @Slf4j
 public class ParallelUtil<R> {
@@ -102,7 +103,14 @@ public class ParallelUtil<R> {
             }
             // 初始化队列和线程池
             queue = new ArrayBlockingQueue<>(parallelNum);
-            threadPoolExecutor = new ThreadPoolExecutor(1, parallelNum, 10, TimeUnit.SECONDS, new SynchronousQueue<>(), new ThreadPoolExecutor.CallerRunsPolicy());
+            threadPoolExecutor = new ThreadPoolExecutor(
+                    1,
+                    parallelNum,
+                    10,
+                    TimeUnit.SECONDS,
+                    new SynchronousQueue<>(),
+                    new ThreadPoolExecutor.CallerRunsPolicy()
+            );
 
             // 生产者开始执行
             Thread producerThread = new Thread(() -> {
@@ -157,5 +165,4 @@ public class ParallelUtil<R> {
             }
         }
     }
-
 }
