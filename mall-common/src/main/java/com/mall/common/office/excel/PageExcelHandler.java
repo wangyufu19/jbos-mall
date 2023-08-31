@@ -37,6 +37,10 @@ public class PageExcelHandler {
      */
     private int maxRow = IPageExcel.SHEET_MAX_ROW;
     /**
+     * 每页大小
+     */
+    private int pageSize = PageParam.DEFAULT_PAGE_SIZE;
+    /**
      * 起始行数
      */
     private AtomicInteger startRow = new AtomicInteger();
@@ -75,6 +79,22 @@ public class PageExcelHandler {
     }
 
     /**
+     * 设置最大行数
+     * @param maxRow
+     */
+    public void setMaxRow(int maxRow) {
+        this.maxRow = maxRow;
+    }
+
+    /**
+     * 设置页码大小
+     * @param pageSize
+     */
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    /**
      * 生成Excel
      *
      * @param iPageExcel
@@ -98,7 +118,7 @@ public class PageExcelHandler {
             int limit = PageParam.DEFAULT_PAGE_SIZE;
             while (true) {
                 //超出工作表最大行数，则退出循环写数据
-                if (startRow.get() >= IPageExcel.SHEET_MAX_ROW) {
+                if (startRow.get() >= this.maxRow) {
                     break;
                 }
                 PageInfo pageInfo = this.generateData(iPageExcel, page, limit, sheet);
@@ -140,7 +160,7 @@ public class PageExcelHandler {
             //工作表行数据
             while (true) {
                 //超出工作表最大行数，则退出循环写数据
-                if (startRow.get() >= IPageExcel.SHEET_MAX_ROW) {
+                if (startRow.get() >= this.maxRow) {
                     break;
                 }
 
@@ -219,7 +239,7 @@ public class PageExcelHandler {
     public void generateExcelParallel(OutputStream outputStream, IPageExcel iPageExcel, int limit) {
         long startDate = System.currentTimeMillis();
         int count = iPageExcel.getPageCount();
-        int totalPage = count % PageParam.DEFAULT_PAGE_SIZE == 0 ? count / PageParam.DEFAULT_PAGE_SIZE : count / PageParam.DEFAULT_PAGE_SIZE + 1;
+        int totalPage = count % this.pageSize == 0 ? count / this.pageSize : count / this.pageSize + 1;
         SXSSFWorkbook workbook = new SXSSFWorkbook(this.rowAccessWindowSize);
         try {
 
@@ -230,6 +250,10 @@ public class PageExcelHandler {
             ParallelUtil.parallel(Object.class, totalPage)
                     .asyncProducer(producerFunction::apply)
                     .syncConsumer(data -> {
+                        //超出工作表最大行数，则不消费数据
+                        if (startRow.get() >= this.maxRow) {
+                            return;
+                        }
                         List<Map<String, String>> dataList = ((PageInfo) data).getList();
                         if (null != dataList && dataList.size() > 0) {
                             for (Object obj : dataList) {

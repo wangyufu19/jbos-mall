@@ -154,27 +154,25 @@ public class EmpMgrApi {
         Map<String, String> titles = new HashMap<>();
         titles.put("badge", "员工号");
         titles.put("empName", "姓名");
-        titles.put("orgName", "所属机构");
-        titles.put("depName", "所属部门");
-        titles.put("headShipName", "职务");
+//        titles.put("orgName", "所属机构");
+//        titles.put("depName", "所属部门");
+//        titles.put("headShipName", "职务");
         PageExcelHandler pageExcelHandler = new PageExcelHandler(titles);
         try {
-            pageExcelHandler.generateExcel(response.getOutputStream(), new IPageExcel() {
-//                public int getPageCount() {
-//                    List<Emp> empList = empMgrService.getEmpList(PageParam.getPageParam(), null);
-//                    PageInfo pageInfo = new PageInfo(empList);
-//                    int total = (int) pageInfo.getTotal();
-//                    if (total >= IPageExcel.SHEET_MAX_ROW) {
-//                        total = IPageExcel.SHEET_MAX_ROW;
-//                    }
-//                    return total;
-//                }
+            pageExcelHandler.generateExcelParallel(response.getOutputStream(), new IPageExcel() {
+                public int getPageCount() {
+                    int total = empMgrService.getEmpCount();
+                    if (total >= IPageExcel.SHEET_MAX_ROW) {
+                        total = IPageExcel.SHEET_MAX_ROW;
+                    }
+                    return total;
+                }
 
                 public PageInfo getPageDataList(int page, int limit) {
                     log.info("******读取数据[page={},limit={}]", page, limit);
                     PageParam pageParam = PageParam.getPageParam(page, limit);
                     Map<String, Object> params = new HashMap<>();
-                    List<Emp> empList = empMgrService.getEmpList(pageParam, params);
+                    List<Emp> empList = empMgrService.getEmpList(page, limit);
                     PageInfo pageInfo = new PageInfo(empList);
                     return pageInfo;
                 }

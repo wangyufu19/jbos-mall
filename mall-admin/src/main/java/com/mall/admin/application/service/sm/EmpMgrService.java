@@ -33,6 +33,9 @@ public class EmpMgrService {
         List<Emp> empList = empMgrRepository.getEmpList(pageParam, parameterObject);
         return empList;
     }
+    public int getEmpCount() {
+        return empMgrRepository.getEmpCount();
+    }
     public List<Emp> getEmpList(int page, int limit) {
         List<Emp> empList = empMgrRepository.getEmpList(page, limit);
         return empList;

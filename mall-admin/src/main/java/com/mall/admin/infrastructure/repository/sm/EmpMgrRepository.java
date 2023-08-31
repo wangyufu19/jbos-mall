@@ -52,6 +52,15 @@ public class EmpMgrRepository {
     }
 
     /**
+     * 查询机构员工数据总数
+     *
+     * @return
+     */
+    public int getEmpCount() {
+        return jdbcTemplate.queryForObject("select count(1) N_COUNT from user", Integer.class);
+    }
+
+    /**
      * 查询机构员工数据
      *
      * @param page

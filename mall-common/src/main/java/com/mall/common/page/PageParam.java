@@ -17,7 +17,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class PageParam {
     public static final int DEFAULT_PAGE_NUM = 1;
-    public static final int DEFAULT_PAGE_SIZE = 10;
+    public static final int DEFAULT_PAGE_SIZE = 10000;
     private int pageNum = PageParam.DEFAULT_PAGE_NUM;
     private int pageSize = PageParam.DEFAULT_PAGE_SIZE;
 
