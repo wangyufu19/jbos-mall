@@ -19,6 +19,7 @@ import java.util.Map;
 
 /**
  * ProcessInstanceService
+ *
  * @author youfu.wang
  * @date 2019-01-31
  */
@@ -36,49 +37,56 @@ public class ProcessInstanceService {
     private DeploymentService processDeploymentService;
     @Autowired
     private ActivityInstanceService activityInstanceService;
+
     /**
      * 启动流程实例
+     *
+     * @param userId
      * @param processDefinitionKey
      * @param businessKey
+     * @param variables
      * @return
      */
     public ProcessInstance startProcessInstance(
             String userId,
             String processDefinitionKey,
             String businessKey,
-            Map<String,Object> variables) throws CamundaException {
+            Map<String, Object> variables) throws CamundaException {
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
             return null;
         }
-        ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(processDefinitionKey,businessKey,variables);
-        if(processInstance==null|| StringUtils.isEmpty(processInstance.getProcessInstanceId())){
-            throw new CamundaException("Camunda["+userId+"]用户启动实例失败！");
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
+        if (StringUtils.isEmpty(processInstance.getProcessInstanceId())) {
+            throw new CamundaException("Camunda[" + userId + "]用户启动实例失败！");
         }
         Task task = taskService.createTaskQuery().processInstanceId(processInstance.getProcessInstanceId()).active().singleResult();
         taskService.setAssignee(task.getId(), userId);
         return processInstance;
     }
+
     /**
      * 启动流程实例并完成第一个节点
+     * @param userId
      * @param processDefinitionKey
      * @param businessKey
+     * @param variables
      * @return
      */
     public ProcessInstance startAndFinishProcessInstance(
             String userId,
             String processDefinitionKey,
             String businessKey,
-            Map<String,Object> variables) throws CamundaException {
+            Map<String, Object> variables) throws CamundaException {
         //用户认证
         if (!this.identityMgrService.auth(userId)) {
             return null;
         }
-        ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(processDefinitionKey,businessKey,variables);
-        if(processInstance==null|| StringUtils.isEmpty(processInstance.getProcessInstanceId())){
-            throw new CamundaException("Camunda["+userId+"]用户启动实例失败！");
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
+        if (processInstance == null || StringUtils.isEmpty(processInstance.getProcessInstanceId())) {
+            throw new CamundaException("Camunda[" + userId + "]用户启动实例失败！");
         }
-        String processInstanceId=processInstance.getProcessInstanceId();
+        String processInstanceId = processInstance.getProcessInstanceId();
         Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).active().singleResult();
         taskService.complete(task.getId());
         return processInstance;
@@ -86,17 +94,18 @@ public class ProcessInstanceService {
 
     /**
      * 查询流程实例状态
+     *
      * @param processInstanceId
      * @return
      */
-    public String getProcessInstanceState(String processInstanceId){
-        ProcessInstance processInstance= runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-        if(processInstance==null){
+    public String getProcessInstanceState(String processInstanceId) {
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        if (processInstance == null) {
             return "isEnded";
         }
-        if(processInstance.isEnded()){
-           return "isEnded";
-        }else if(processInstance.isSuspended()){
+        if (processInstance.isEnded()) {
+            return "isEnded";
+        } else if (processInstance.isSuspended()) {
             return "isSuspended";
         }
         return "active";
@@ -104,16 +113,20 @@ public class ProcessInstanceService {
 
     /**
      * 查询流程实例当前活动
+     *
+     * @param processDefinitionId
      * @param processInstanceId
      * @return
      */
-    public Map<String,Object> getProcessInstanceCurrentActivityId(String processDefinitionId,String processInstanceId){
-        String currentActivityId="";
-        String currentActivityName="";
-        String multiInstance="false";
-        String elementVariable="";
+    public Map<String, Object> getProcessInstanceCurrentActivityId(
+            String processDefinitionId,
+            String processInstanceId) {
+        String currentActivityId = "";
+        String currentActivityName = "";
+        String multiInstance = "false";
+        String elementVariable = "";
 
-        Map<String,Object> data=new HashMap<String,Object>();
+        Map<String, Object> data = new HashMap<String, Object>();
 
         List<HistoricActivityInstance> historicActivityInstances = historyService
                 .createHistoricActivityInstanceQuery()
@@ -122,60 +135,64 @@ public class ProcessInstanceService {
                 .desc()
                 .list();
 
-        for(HistoricActivityInstance historicActivityInstance:historicActivityInstances){
-            if("userTask".equals(historicActivityInstance.getActivityType())
-                    ||"noneEndEvent".equals(historicActivityInstance.getActivityType())){
-                currentActivityId=historicActivityInstance.getActivityId();
-                currentActivityName=historicActivityInstance.getActivityName();
+        for (HistoricActivityInstance historicActivityInstance : historicActivityInstances) {
+            if ("userTask".equals(historicActivityInstance.getActivityType())
+                    || "noneEndEvent".equals(historicActivityInstance.getActivityType())) {
+                currentActivityId = historicActivityInstance.getActivityId();
+                currentActivityName = historicActivityInstance.getActivityName();
                 //得到用户任务活动实例的父活动实例,如果父活动实例是多实例任务multiInstance值为true，否则为false
-                HistoricActivityInstance parentHistoricActivityInstance=
+                HistoricActivityInstance parentHistoricActivityInstance =
                         this.activityInstanceService.getActivityInstance(
-                                processInstanceId,historicActivityInstance.getParentActivityInstanceId());
-                if(parentHistoricActivityInstance!=null
-                        &&"multiInstanceBody".equals(parentHistoricActivityInstance.getActivityType())){
-                    multiInstance="true";
+                                processInstanceId, historicActivityInstance.getParentActivityInstanceId());
+                if (parentHistoricActivityInstance != null
+                        && "multiInstanceBody".equals(parentHistoricActivityInstance.getActivityType())) {
+                    multiInstance = "true";
                 }
                 break;
             }
         }
-        data.put("currentActivityId",currentActivityId);
-        data.put("currentActivityName",currentActivityName);
-        data.put("multiInstance",multiInstance);
-        if("true".equals(multiInstance)){
-            TaskDefinition taskDefinition=processDeploymentService.getProcessDefinition(
-                    processDefinitionId,currentActivityId);
-            if(taskDefinition!=null){
-                elementVariable=taskDefinition.getAssigneeExpression().getExpressionText();
-                elementVariable=PlaceholderUtils.getPlaceholder(elementVariable,"${","}");
-                data.put("elementVariable",elementVariable);
+        data.put("currentActivityId", currentActivityId);
+        data.put("currentActivityName", currentActivityName);
+        data.put("multiInstance", multiInstance);
+        if ("true".equals(multiInstance)) {
+            TaskDefinition taskDefinition = processDeploymentService.getProcessDefinition(
+                    processDefinitionId, currentActivityId);
+            if (taskDefinition != null) {
+                elementVariable = taskDefinition.getAssigneeExpression().getExpressionText();
+                elementVariable = PlaceholderUtils.getPlaceholder(elementVariable, "${", "}");
+                data.put("elementVariable", elementVariable);
             }
 
         }
         return data;
     }
+
     /**
      * 暂停流程实例
+     *
      * @param processInstanceId
      */
-    public void suspendProcessInstanceById(String processInstanceId){
+    public void suspendProcessInstanceById(String processInstanceId) {
         runtimeService.suspendProcessInstanceById(processInstanceId);
     }
 
     /**
      * 激活流程实例
+     *
      * @param processInstanceId
      */
-    public void activateProcessInstanceById(String processInstanceId){
+    public void activateProcessInstanceById(String processInstanceId) {
         runtimeService.activateProcessInstanceById(processInstanceId);
     }
 
     /**
      * 删除流程实例
+     *
      * @param processInstanceId
      * @param deleteReason
      */
-    public void deleteProcessInstance(String processInstanceId, String deleteReason){
-        runtimeService.deleteProcessInstance(processInstanceId,deleteReason);
+    public void deleteProcessInstance(String processInstanceId, String deleteReason) {
+        runtimeService.deleteProcessInstance(processInstanceId, deleteReason);
     }
 
 }

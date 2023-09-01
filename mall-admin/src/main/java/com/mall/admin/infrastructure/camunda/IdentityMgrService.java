@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * IdentityMgrService
+ *
  * @author youfu.wang
  * @date 2019-01-31
  */
@@ -19,26 +20,28 @@ public class IdentityMgrService {
 
     /**
      * 用户认证
+     *
      * @param userId
-     * @return
+     * @return true/false
      * @throws CamundaException
      */
     public boolean auth(String userId) throws CamundaException {
-        User user=identityService.createUserQuery().userId(userId).singleResult();
-        if(user==null){
-            throw new CamundaException("Camunda["+userId+"]用户认证失败！");
-        }else{
+        User user = identityService.createUserQuery().userId(userId).singleResult();
+        if (user == null) {
+            throw new CamundaException("Camunda[" + userId + "]用户认证失败！");
+        } else {
             return true;
         }
     }
 
     /**
      * 创建用户
+     *
      * @param userId
      * @param userName
      */
-    public void createUser(String userId,String userName){
-        UserEntity userEntity=new UserEntity();
+    public void createUser(String userId, String userName) {
+        UserEntity userEntity = new UserEntity();
         userEntity.setId(userId);
         userEntity.setFirstName(userName);
         userEntity.setLastName(userName);

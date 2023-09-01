@@ -9,11 +9,13 @@ package com.mall.common.utils;
 public class PlaceholderUtils {
     /**
      * 得到占位符内容
+     *
+     * @param value
      * @param prefix
      * @param suffix
-     * @return
+     * @return str
      */
-    public static String getPlaceholder(String value, String prefix,String suffix){
+    public static String getPlaceholder(String value, String prefix, String suffix) {
         int startIndex = value.indexOf(prefix);
         int endIndex = value.indexOf(suffix);
         if (startIndex == -1) {
