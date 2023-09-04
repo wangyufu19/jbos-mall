@@ -100,7 +100,7 @@ zuul:
     mall-redis:
       path: /api/redis/**
       serviceId: mall-redis
-    maill-admin:
+    mall-admin:
       path: /api/admin/**
       serviceId: mall-admin
     mall-workflow:

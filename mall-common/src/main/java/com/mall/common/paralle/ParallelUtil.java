@@ -27,7 +27,7 @@ public class ParallelUtil<R> {
     private long totalNum; // 总任务数
     private Consumer<R> resultConsumer; // 消费者函数
     private IntFunction<R> producerFunction; // 生产者函数
-    private ArrayBlockingQueue<ParallelResult<R>> queue; // 生产者将任务放到此队列，消费者从此队列读数据
+private ArrayBlockingQueue<ParallelResult<R>> queue; // 生产者将任务放到此队列，消费者从此队列读数据
     private ThreadPoolExecutor threadPoolExecutor; // 生产者线程池
     private long timeout = 60; // 默认超时时间
     private TimeUnit timeoutTimeUnit = TimeUnit.MINUTES; // 默认超时时间单位
