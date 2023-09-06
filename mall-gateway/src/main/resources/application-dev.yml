@@ -3,7 +3,7 @@ spring:
     filter:
       loginUri: /**/login
       logoutUri: /**/logout
-      excludeUri: /**/captcha,/**/demo/**,/**/swagger-ui.html,/**/webjars/**,/**/swagger-resources/**,/**/engine-rest/**
+      excludeUri: /**/captcha,/**/demo/**,/doc.html,/swagger-ui.html,/webjars/**,/swagger-resources/**,/v2/*,/**/engine-rest/**
 
   jwt:
     secret: 123456  #密钥

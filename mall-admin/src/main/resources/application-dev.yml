@@ -10,7 +10,7 @@ spring:
     filter:
       loginUri: /auth/login
       logoutUri: /auth/logout
-      excludeUri: /auth/captcha,/demo/**
+      excludeUri: /**/captcha,/**/demo/**,/swagger-ui.html,/webjars/**,/swagger-resources/**,/**/engine-rest/**
   jwt:
     secret: 123456  #密钥
     expireTime: 720   #过期时间，默认60分钟
