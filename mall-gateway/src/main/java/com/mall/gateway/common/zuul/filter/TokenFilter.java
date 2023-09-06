@@ -21,21 +21,24 @@ import java.io.File;
 
 /**
  * ZuulFilter
+ *
  * @author youfu.wang
  * @date 2021-08-19
  */
 @Component
 public class TokenFilter extends ZuulFilter {
-    private static final Logger logger= LoggerFactory.getLogger(TokenFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(TokenFilter.class);
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+
     @Override
     public String filterType() {
-        return  FilterConstants.PRE_TYPE;
+        return FilterConstants.PRE_TYPE;
     }
+
     @Value("${zuul.filter.excludeUri}")
     private String excludeUri;
-    private AntPathMatcher antPathMatcher=new AntPathMatcher(File.separator);
+    private AntPathMatcher antPathMatcher = new AntPathMatcher(File.separator);
 
     @Override
     public int filterOrder() {
@@ -44,22 +47,23 @@ public class TokenFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        RequestContext ctx=RequestContext.getCurrentContext();
+        RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         //只过滤OPTIONS 请求
-        if(request.getMethod().equals(RequestMethod.OPTIONS.name())){
+        if (request.getMethod().equals(RequestMethod.OPTIONS.name())) {
             return true;
         }
-        String requestURI=request.getRequestURI();
+        String requestURI = request.getRequestURI();
         //过滤URI白名单
-        String[] excludeUris=excludeUri.split(",");
-        for(String uri:excludeUris){
-            if(antPathMatcher.match(uri,requestURI)){
+        String[] excludeUris = excludeUri.split(",");
+        for (String uri : excludeUris) {
+            if (antPathMatcher.match(uri, requestURI)) {
                 return false;
             }
         }
         return true;
     }
+
     private String getRequestToken(HttpServletRequest request) {
         String accessToken = request.getHeader("accessToken");
         if (accessToken == null) {
@@ -68,17 +72,18 @@ public class TokenFilter extends ZuulFilter {
             return accessToken;
         }
     }
+
     @Override
     public Object run() {
-        RequestContext ctx=RequestContext.getCurrentContext();
+        RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        String requestURI=request.getRequestURI();
+        String requestURI = request.getRequestURI();
         HttpServletResponse response = ctx.getResponse();
         response.setContentType("application/json;charset=utf-8");
-        logger.info("send {} request to {}", request.getMethod(),requestURI);
-        try{
+        logger.info("send {} request to {}", request.getMethod(), requestURI);
+        try {
             String accessToken = this.getRequestToken(request);
-            if(accessToken == null) {
+            if (accessToken == null) {
                 logger.error("access token is empty");
                 ctx.setSendZuulResponse(false);
                 ctx.setResponseStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
@@ -92,7 +97,7 @@ public class TokenFilter extends ZuulFilter {
                 return null;
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("TokenFilter Filter Exception");
             ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(401);
