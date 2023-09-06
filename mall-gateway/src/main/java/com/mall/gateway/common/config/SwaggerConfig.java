@@ -76,9 +76,14 @@ public class SwaggerConfig implements SwaggerResourcesProvider {
     public List<SwaggerResource> get() {
         //利用routeLocator动态引入微服务
         List<SwaggerResource> resources = new ArrayList<>();
+        List<String> routeIds = new ArrayList<>();
         resources.add(swaggerResource("zuul-gateway", "/v2/api-docs", "1.0"));
         routeLocator.getRoutes().forEach(route -> {
-            //动态获取
+            //过滤掉不需要的微服务
+            if (routeIds.contains(route.getId())) {
+                return;
+            }
+            routeIds.add(route.getId());
             resources.add(swaggerResource(route.getId(), route.getFullPath().replace("**", "v2/api-docs"), "1.0"));
         });
         return resources;

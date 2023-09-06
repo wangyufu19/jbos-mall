@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@Api("用户认证接口")
+@Api(tags = "用户认证接口")
 public class UserAuthApi {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;

@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,13 +23,14 @@ import java.util.UUID;
 
 /**
  * CaptchaApi
+ *
  * @author youfu.wang
  * @date 2019-01-31
  */
 @RestController
 @RequestMapping("/auth")
 @Slf4j
-@Api("登录验证码接口")
+@Api(tags = "登录验证码接口")
 public class CaptchaApi {
     @Autowired
     private Producer producer;
@@ -38,28 +40,29 @@ public class CaptchaApi {
 
     /**
      * 登录验证码
+     *
      * @return
      */
     @ResponseBody
-    @RequestMapping("/captcha")
+    @PostMapping("/captcha")
     @ApiOperation("登录验证码")
     public ResponseResult captcha() throws IOException {
-        ResponseResult res= ResponseResult.ok();
-        ByteArrayOutputStream out=new ByteArrayOutputStream();
-        String text=producer.createText();
-        BufferedImage image=producer.createImage(text);
-        ImageIO.write(image,"jpg",out);
-        String captchaToken= UUID.randomUUID().toString();
-        String captchaSrc= Base64.encodeBase64String(out.toByteArray());
-        Map<String,Object> captcha=new HashMap();
-        captcha.put("captchaToken",captchaToken);
-        captcha.put("captchaSrc",captchaSrc);
+        ResponseResult res = ResponseResult.ok();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        String text = producer.createText();
+        BufferedImage image = producer.createImage(text);
+        ImageIO.write(image, "jpg", out);
+        String captchaToken = UUID.randomUUID().toString();
+        String captchaSrc = Base64.encodeBase64String(out.toByteArray());
+        Map<String, Object> captcha = new HashMap();
+        captcha.put("captchaToken", captchaToken);
+        captcha.put("captchaSrc", captchaSrc);
         res.setData(captcha);
-        try{
-            captchaService.addCaptcha(text,captchaToken);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        try {
+            captchaService.addCaptcha(text, captchaToken);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
