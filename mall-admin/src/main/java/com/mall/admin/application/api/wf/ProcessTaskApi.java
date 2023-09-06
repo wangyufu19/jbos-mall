@@ -28,7 +28,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/workflow/task")
 @Slf4j
-@Api("实例任务接口")
+@Api(tags = "实例任务接口")
 public class ProcessTaskApi {
     @Autowired
     private ProcessTaskService processTaskService;

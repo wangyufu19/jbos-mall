@@ -29,7 +29,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/material/inStore")
 @Slf4j
-@Api("物品入库业务接口")
+@Api(tags = "物品入库接口")
 public class MaterialInStoreApi {
     @Autowired
     private BizGeneratorService bizGeneratorService;

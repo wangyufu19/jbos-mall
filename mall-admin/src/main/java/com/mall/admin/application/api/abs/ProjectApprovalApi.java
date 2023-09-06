@@ -24,7 +24,7 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping("/projectApproval")
-@Api("项目立项登记")
+@Api(tags = "项目立项接口")
 @Slf4j
 public class ProjectApprovalApi {
     @Autowired

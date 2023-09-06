@@ -23,7 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/workflow/instance")
 @Slf4j
-@Api("流程实例接口")
+@Api(tags = "流程实例接口")
 public class ProcessInstanceApi {
     @Autowired
     private ProcessMgrService processMgrService;

@@ -24,7 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/workflow/deployment")
 @Slf4j
-@Api("流程部署接口")
+@Api(tags = "流程部署接口")
 public class ProcessDeploymentApi {
     @Autowired
     private ProcessDeploymentService processDeploymentService;

@@ -20,7 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/material/list")
 @Slf4j
-@Api("物品清单业务接口")
+@Api(tags = "物品清单接口")
 public class MaterialListApi {
     @Autowired
     private MaterialListService materialListService;

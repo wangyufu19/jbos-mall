@@ -9,6 +9,7 @@ import com.mall.common.office.excel.IPageExcel;
 import com.mall.common.office.excel.PageExcelHandler;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 @Slf4j
 @RestController
 @RequestMapping("/emp")
+@Api(tags = "员工管理接口")
 public class EmpMgrApi {
     //@Value("${spring.servlet.upload.repo}")
     private String uploadRepo = "/nas/upload";

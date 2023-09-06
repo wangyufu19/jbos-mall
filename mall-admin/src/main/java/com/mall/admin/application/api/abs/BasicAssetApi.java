@@ -27,7 +27,7 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping("/basicAsset")
-@Api("基础资产")
+@Api(tags = "基础资产接口")
 @Slf4j
 public class BasicAssetApi {
     @Autowired

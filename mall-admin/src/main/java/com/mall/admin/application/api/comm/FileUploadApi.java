@@ -17,7 +17,7 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping("/io")
-@Api("文件上传接口")
+@Api(tags = "文件上传接口")
 @Slf4j
 public class FileUploadApi {
     /**

@@ -33,7 +33,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/reimburse/fee")
 @Slf4j
-@Api("费用报销业务接口")
+@Api(tags = "费用报销接口")
 public class FeeReimburseApi extends BizNoApi {
 
     @Autowired

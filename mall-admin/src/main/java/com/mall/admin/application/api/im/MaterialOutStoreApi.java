@@ -28,7 +28,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/material/outStore")
 @Slf4j
-@Api("物品领取业务接口")
+@Api(tags = "物品领取接口")
 public class MaterialOutStoreApi {
     @Autowired
     private BizGeneratorService bizGeneratorService;

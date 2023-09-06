@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/member/account")
-@Api("账户管理接口")
+@Api(tags = "账户管理接口")
 @Slf4j
 public class AccountMgrApi {
     @Autowired

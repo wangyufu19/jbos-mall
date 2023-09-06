@@ -22,7 +22,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/id")
 @Slf4j
-@Api("ID生成器接口")
+@Api(tags = "ID生成器接口")
 public class IdGeneratorApi {
     @Autowired
     private IdGeneratorService idGeneratorService;

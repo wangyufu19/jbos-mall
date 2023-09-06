@@ -13,12 +13,7 @@ import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/dict")
 @Slf4j
-@Api("字典管理接口")
+@Api(tags = "字典管理接口")
 public class DictMgrApi {
     /**
      * BusinessDict
@@ -51,7 +46,7 @@ public class DictMgrApi {
      * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping("/getCacheDictCodeList")
+    @GetMapping("/getCacheDictCodeList")
     @ApiOperation("得到缓存业务字典数据")
     public ResponseResult getCacheDictCodeList(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -73,7 +68,7 @@ public class DictMgrApi {
      * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping("/getDictTypeList")
+    @GetMapping("/getDictTypeList")
     @ApiOperation("得到字典类型列表")
     public ResponseResult getDictTypeList(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -95,7 +90,7 @@ public class DictMgrApi {
      * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping("/getDictCodeList")
+    @GetMapping("/getDictCodeList")
     @ApiOperation("得到字典码值数据列表")
     public ResponseResult getDictCodeList(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -116,7 +111,7 @@ public class DictMgrApi {
      * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping(value = "/addDictType", method = RequestMethod.POST)
+    @PostMapping("/addDictType")
     @ApiOperation("新增字典类型")
     public ResponseResult addDictType(@RequestBody Map<String, String> params) {
         ResponseResult res = ResponseResult.ok();
@@ -139,7 +134,7 @@ public class DictMgrApi {
      * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping(value = "/updateDictType", method = RequestMethod.POST)
+    @PostMapping("/updateDictType")
     @ApiOperation("更新字典类型")
     public ResponseResult updateDictType(@RequestBody Map<String, String> params) {
         ResponseResult res = ResponseResult.ok();
@@ -164,7 +159,7 @@ public class DictMgrApi {
      * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
+    @PostMapping( "/refresh")
     @ApiOperation("刷新业务字典缓存")
     public ResponseResult refresh(@RequestBody Map<String, String> params) {
         ResponseResult res = ResponseResult.ok();
@@ -184,7 +179,7 @@ public class DictMgrApi {
      * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping(value = "/deleteDictType", method = RequestMethod.POST)
+    @PostMapping("/deleteDictType")
     @ApiOperation("删除字典类型")
     public ResponseResult deleteDictType(@RequestBody Map<String, String> params) {
         ResponseResult res = ResponseResult.ok();
@@ -209,7 +204,7 @@ public class DictMgrApi {
      * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping(value = "/saveDictCode", method = RequestMethod.POST)
+    @PostMapping("/saveDictCode")
     @ApiOperation("保存业务字典")
     public ResponseResult saveDictCode(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();

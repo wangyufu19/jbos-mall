@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/user")
-@Api("用户管理接口")
+@Api(tags = "用户管理接口")
 @Slf4j
 public class UserMgrApi {
     @Autowired

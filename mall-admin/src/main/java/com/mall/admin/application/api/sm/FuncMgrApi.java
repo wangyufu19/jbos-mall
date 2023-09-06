@@ -5,6 +5,7 @@ import com.mall.admin.domain.entity.sm.Func;
 import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/func")
+@Api(tags = "功能管理接口")
 public class FuncMgrApi {
     @Autowired
     private FuncMgrService funcMgrService;

@@ -23,7 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/material/store")
 @Slf4j
-@Api("物品库存业务接口")
+@Api(tags = "物品库存接口")
 public class MaterialStoreApi {
     @Autowired
     private MaterialStoreService materialStoreService;

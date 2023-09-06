@@ -26,7 +26,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/role")
 @Slf4j
-@Api("角色管理接口")
+@Api(tags = "角色管理接口")
 public class RoleMgrApi {
     @Autowired
     private RoleMgrService roleMgrService;
@@ -38,7 +38,7 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getRoleChildrenNode")
+    @GetMapping("/getRoleChildrenNode")
     @ApiOperation("查询下级角色")
     public ResponseResult getRoleChildrenNode(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -63,7 +63,7 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getRoleList")
+    @GetMapping("/getRoleList")
     @ApiOperation("查询角色数据列表")
     public ResponseResult getRoleList(@RequestParam Map<String, Object> params) {
         ResponseResult res;
@@ -84,7 +84,7 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getRoleFuncs")
+    @GetMapping("/getRoleFuncs")
     @ApiOperation("得到角色功能数据")
     public ResponseResult getRoleFuncs(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -105,7 +105,7 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/saveRoleFuncs", method = RequestMethod.POST)
+    @PostMapping("/saveRoleFuncs")
     @ApiOperation("新增角色")
     public ResponseResult saveRoleFuncs(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -125,7 +125,7 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/addRole", method = RequestMethod.POST)
+    @PostMapping("/addRole")
     @ApiOperation("新增角色")
     public ResponseResult addRole(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -151,7 +151,7 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/updateRole", method = RequestMethod.POST)
+    @PostMapping("/updateRole")
     @ApiOperation("修改角色")
     public ResponseResult updateRole(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -171,7 +171,7 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/deleteRole", method = RequestMethod.POST)
+    @PostMapping("/deleteRole")
     @ApiOperation("删除角色")
     public ResponseResult deleteRole(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -192,7 +192,7 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getRoleEmpList")
+    @GetMapping("/getRoleEmpList")
     @ApiOperation("查询角色用户列表")
     public ResponseResult getRoleEmpList(@RequestParam Map<String, Object> params) {
         ResponseResult res;
@@ -213,13 +213,13 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getSelectRoleEmpList")
+    @GetMapping("/getSelectRoleEmpList")
     @ApiOperation("查询选择角色用户列表")
     public ResponseResult getSelectRoleEmpList(@RequestParam Map<String, Object> params) {
         ResponseResult res;
         try {
             PageParam pageParam = PageParam.getPageParam(params);
-            res= roleMgrService.getSelectRoleEmpList(pageParam,params);
+            res = roleMgrService.getSelectRoleEmpList(pageParam, params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -234,7 +234,7 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/addRoleUser", method = RequestMethod.POST)
+    @PostMapping("/addRoleUser")
     @ApiOperation("新增角色用户")
     public ResponseResult addRoleUser(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
@@ -246,6 +246,7 @@ public class RoleMgrApi {
         }
         return res;
     }
+
     /**
      * 删除角色用户
      *
@@ -253,7 +254,7 @@ public class RoleMgrApi {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/deleteRoleUser", method = RequestMethod.POST)
+    @PostMapping("/deleteRoleUser")
     @ApiOperation("删除角色用户")
     public ResponseResult deleteRoleUser(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();

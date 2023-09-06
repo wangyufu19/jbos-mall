@@ -30,7 +30,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/dep")
 @Slf4j
-@Api("部门管理接口")
+@Api(tags = "部门管理接口")
 public class DepMgrApi {
     @Autowired
     private DepMgrService depMgrService;

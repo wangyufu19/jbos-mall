@@ -22,7 +22,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/member/info")
-@Api("会员管理接口")
+@Api(tags = "会员管理接口")
 @Slf4j
 public class MemberMgrApi {
     @Autowired
