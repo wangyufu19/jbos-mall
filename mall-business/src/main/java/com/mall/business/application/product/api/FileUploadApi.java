@@ -14,6 +14,7 @@ import java.util.Map;
 
 /**
  * FileUploadApi
+ *
  * @author youfu.wang
  * @date 2021-08-19
  */
@@ -27,6 +28,7 @@ public class FileUploadApi {
 
     /**
      * 上传一个文件
+     *
      * @param file
      * @return
      */
@@ -34,23 +36,25 @@ public class FileUploadApi {
     @PostMapping(value = "/upload")
     //@CrossOrigin
     @ApiOperation("上传一个文件")
-    public ResponseResult upload(MultipartFile file, @RequestParam Map<String, Object> params){
-        ResponseResult res= ResponseResult.ok();
-        try{
+    public ResponseResult upload(MultipartFile file, @RequestParam Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
             //判断合法的文件类型
-            if(fileUploadService.includeExtensions(file)){
-                fileUploadService.upload(file,params);
-            }else{
-                res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            if (fileUploadService.includeExtensions(file)) {
+                fileUploadService.upload(file, params);
+            } else {
+                res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
             }
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
+
     /**
      * 上传多个文件
+     *
      * @param files
      * @return
      */
@@ -58,31 +62,33 @@ public class FileUploadApi {
     @PostMapping(value = "/multiUpload")
     //@CrossOrigin
     @ApiOperation("上传多个文件")
-    public ResponseResult multiUpload(MultipartFile[] files, @RequestParam Map<String, Object> params){
-        ResponseResult res= ResponseResult.ok();
-        try{
-            fileUploadService.upload(files,params);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+    public ResponseResult multiUpload(MultipartFile[] files, @RequestParam Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
+            fileUploadService.upload(files, params);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
+
     /**
      * 删除一个文件
+     *
      * @param params
      * @return
      */
     @ResponseBody
     @PostMapping(value = "/delete")
-    @ApiOperation("上传一个文件")
-    public ResponseResult delete(@RequestBody Map<String, Object> params){
-        ResponseResult res= ResponseResult.ok();
-        try{
+    @ApiOperation("删除一个文件")
+    public ResponseResult delete(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
             fileUploadService.delete(params);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
