@@ -1,5 +1,6 @@
 package com.mall.common.utils;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
@@ -12,7 +13,7 @@ import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 public class JasyptUtils {
 
 
-    public static String encrypt(String algorithm,String password,String plaintext) {
+    public static String encrypt(String algorithm, String password, String plaintext) {
         //加密工具
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         //加密配置
@@ -34,7 +35,7 @@ public class JasyptUtils {
      * @param ciphertext
      * @return
      */
-    public static String decrypt(String algorithm,String password,String ciphertext) {
+    public static String decrypt(String algorithm, String password, String ciphertext) {
         //加密工具
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         //加密配置
@@ -48,4 +49,13 @@ public class JasyptUtils {
         String pText = encryptor.decrypt(ciphertext);
         return pText;
     }
+
+//    public static void main(String[] args) {
+//        String key = DigestUtils.sha256Hex("123456".getBytes());
+//        System.out.println("key: " + key);
+//        String encrypt = JasyptUtils.encrypt("PBEWithMD5AndDES", key, "jbos");
+//
+//        System.out.println("encrypt: " + encrypt);
+//        System.out.println("decrypt: " + JasyptUtils.decrypt("PBEWithMD5AndDES",key,encrypt));
+//    }
 }

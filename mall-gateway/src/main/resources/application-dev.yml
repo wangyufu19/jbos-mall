@@ -27,8 +27,8 @@ spring:
     druid:
       default:
         url: jdbc:mysql://localhost:3306/jbos?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL&socketTimeout=60000
-        username: jbos
-        password: ENC(z/dPUd+V2Exjh/dKtt/KFQ==)
+        username: ENC(HvosLagigqFHFI/qEoytGA==)
+        password: ENC(HvosLagigqFHFI/qEoytGA==)
       initial-size: 10
       max-active: 100
       min-idle: 10

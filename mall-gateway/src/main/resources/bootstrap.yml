@@ -25,7 +25,7 @@ jasypt:
     bootstrap: false
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
-    password: 123456
+    password: 8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92
 ---
 spring:
   profiles: dev
@@ -84,7 +84,7 @@ spring:
         group: sit  # 配置组，默认就是 DEFAULT_GROUP
 swagger:
   # 开启swagger
-  enabled: true
+  enabled: false
 knife4j:
   # knife4j的增强配置
   enable: true
