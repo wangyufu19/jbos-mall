@@ -1,0 +1,4 @@
+FROM java:8
+VOLUME /tmp/tomcat
+ADD mall-gateway-1.0.0.jar mall-gateway-docker.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/mall-gateway-docker.jar"]

@@ -1,0 +1,342 @@
+一：Git
+1.1：Git常用命令
+
+1.1.1: Git 创建仓库
+
+git init：初始化一个git仓库
+git init命令来初始化一个Git仓库，执行完git init命令后，会生成一个.git目录，该目录包含了资源数据，且只会在仓库的根目录生成。
+git clone：clone一个git仓库
+使用git clone命令可以从Git仓库拷贝项目，类似于SVN中的 svn checkout，命令格式为：git clone <url> [directory]
+例如：git clone git://github.com/wangyufu19/jbos-mall.git
+
+1.1.2：Git 基本指令
+
+(1)git config：配置信息
+可以通过git config来配置用户名和邮箱地址，便于我们将代码提交到远程仓库，具体格式如下：
+git config --global user.name '你的用户名'
+git config --global user.email '你的邮箱'
+
+(2)git add：添加文件到缓存命令
+git add 命令可将文件添加到缓存，如新项目中，添加所有文件很普遍，可以使用如下命令：
+git add .
+
+(3)git status：查看文件的状态命令
+git status 命令来查看相关文件的状态，直接执行如下命令：
+git status
+
+(4)git diff：查看更新的详细信息命令
+git diff 来查看更新的详细信息，与git status不同的是，git status只显示更新的状态，而 git diff 可以显示已写入缓存与已修改但尚未写入缓存的改动的区别具体的详细信息。
+尚未缓存的改动：git diff
+查看已缓存的改动： git diff --cached
+查看已缓存的与未缓存的所有改动：git diff HEAD
+显示摘要而非整个 diff：git diff --stat
+
+(5)git commit：提交命令
+git commit 将缓存区内容添加到仓库中，可以在后面加-m选项，以在命令行中提供提交注释，格式如下：
+git commit -m "注释"
+git commit -am "注释" (跳过add，可以直接使用 -a选项)
+
+(6)git reset HEAD：取消缓存命令
+git reset HEAD 命令用于取消已缓存的内容，如我们要取消已提交的test.txt文件，可以如下使用：
+git reset HEAD test.txt
+
+(7)git rm：删除命令
+(8)git mv：移动或重命名命令
+
+1.1.3：Git的分支管理
+
+(1)git branch
+git branch可以查看分支，也可以创建分支，如果没有参数时，git branch会列出你在本地的分支；如果有参数时，git branch就会创建改参数的分支。
+git branch 查看分支
+git branch -d (branchname) 删除分支
+
+(2)git checkout
+git checkout branchname 切换分支
+git checkout -b (branchname) -b参数创建分支并切换到该分支
+
+(3)git merge
+git merge命令可以将任意分支合并到到当前分支中去，命令格式:git merge branchname
+
+1.1.4 Git查看提交历史
+git log
+
+1.1.5 Git 远程仓库
+(1)git remote ad
+git remote add [alias] [url] 
+
+(2)git remote：查看当前的远程仓库
+(3)git fetch、git pull：提取远程仓仓库
+(4)git push：推送到远程仓库
+(5)git remote rm：删除远程仓库
+
+1.2：Github 用户Token=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
+1.3: 仓库
+1.3.1：创建仓库
+mkdir abs
+cd abs
+git init
+touch README.md
+git add README.md
+git commit -m "commit message"
+git remote add origin https://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@github.com/wangyufu19/python-example.git
+git push origin master -u
+1.3.2：已有仓库
+git remote add origin https://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@github.com/wangyufu19/python-example.git
+git push origin master -u
+二：Mysql
+2.1：Navicat认证问题
+USE mysql; 
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '123456';
+ALTER USER 'root'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY '123456';
+FLUSH PRIVILEGES;
+
+2.2：Mysql用户创建和授权
+//密码策略和大小写
+SHOW VARIABLES LIKE 'validate_password%';
+SHOW VARIABLES LIKE 'lower_case_table%';
+set global validate_password.policy=0;
+set global validate_password.length=1;
+set global lower_case_table_names=1;
+//Root用户远程登录授权
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
+//创建用户和授权
+CREATE USER 'jbos'@'localhost' IDENTIFIED BY 'jbos';
+grant select,insert,delete,update,create,drop ON jbos.* TO jbos@localhost;
+
+grant select ON camunda.* TO jbos@localhost;
+
+
+CREATE USER 'nacos'@'localhost' IDENTIFIED BY 'nacos';
+grant select,insert,delete,update,create,drop ON nacos.* TO nacos@localhost;
+
+CREATE USER 'camunda'@'localhost' IDENTIFIED BY 'camunda';
+grant select,insert,delete,update,create,drop,INDEX,ALTER,REFERENCES ON camunda.* TO camunda@localhost;
+
+三：Giglab
+3.1：管理员用户和密码
+
+四：ELK
+4.1：启动filebeat
+./filebeat -e -c filebeat.yml
+4.2：启动logstach
+./bin/logstash -f config/logstash-sample.conf
+
+五：JDK DUMP
+5.1 运行jar包时候指定JVM参数
+java -Xms750m -Xmx750m -Xmn512m -Xss1024k -XX:MaxPermSize=128m
+-XX:+UseConcMarkSweepGC 
+-XX:CMSFullGCsBeforeCompaction=5
+-XX:SurvivorRatio=8 （新生代分区比例 8:2）
+-XX:+UseConcMarkSweepGC （指定使用的垃圾收集器，这里使用CMS收集器）
+-XX:+UseCMSCompactAtFullCollection 
+-XX:+PrintGC -XX:+PrintGCDetails
+-XX:+PrintGCTimeStamps -Xloggc:/tmp/jvm.log 
+-XX:+HeapDumpOnOutOfMemoryError 
+-XX:HeapDumpPath=/tmp/heapdump.hprof
+-Dfile.encoding=utf-8 -jar /data/app/test.jar
+-------------------------------------------------
+-Xms750m表示堆内存初始值
+-Xmx750m堆内存最大值
+-Xmn512m 设置年轻代大小为512m。整个JVM内存大小=年轻代大小 + 年老代大小 + 持久代大小。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8
+-Xss1024k 设置每个线程的堆栈大小。JDK5.0以后每个线程堆栈大小为1M，以前每个线程堆栈大小为256K。更具应用的线程所需内存大小进行调整。在相同物理内存下，减小这个值能生成更多的线程。但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在3000~5000左右。
+-XX:MaxPermSize=128m 设置永久代的大小，此属性在jdk8之后不再提供。
+-XX:+UseCMSCompactAtFullCollection 打开对年老代的压缩。可能会影响性能，但是可以消除内存碎片
+-XX:+PrintGC 每次GC时打印相关信息
+-XX:+PrintGCDetails 每次GC时打印详细信息
+-XX:+PrintGCTimeStamps 打印每次GC的时间戳
+-Xloggc:/tmp/jvm.log 设置垃圾回收日志打印的文件，文件名称可以自定义
+-XX:+HeapDumpOnOutOfMemoryError 设置当首次遭遇内存溢出时导出此时堆中相关信息
+-XX:HeapDumpPath=/tmp/heapdump.hprof 指定导出堆信息时的路径或文件名
+六：Docker常用命令
+6.1 帮助命令
+docker version：显示Docker的版本信息；
+docker info：显示Docker系统信息，包括镜像和容器数；
+docker --help：帮助命令
+6.2 镜像命令
+docker images：列出本地镜像
+docker rmi：删除本地镜像
+6.3 远程仓库
+docker search：从Docker Hub查找镜像
+docker search [参数] 镜像名
+   参数说明：
+     -s：列出收藏数不小于指定值的镜像；
+     --automated：只列出automated build类型的镜像。
+举例：
+docker search --limit 10 nginx
+docker pull：从镜像仓库拉取或更新指定镜像 
+docker pull [参数] 镜像名[:TAG]
+  参数说明：
+      -a:拉取所有镜像docker ps [参数]
+  参数说明：
+      -a:显示所有容器，包括未运行的
+      -q:只显示容器编号
+举例：
+docker pull nginx
+docker pull -a nginx （从Docker Hub下载REPOSITORY为nginx的所有镜像）
+
+
+
+6.4 容器操作命令
+docker ps：列出正在运行的容器
+docker ps [参数]
+  参数说明：
+      -a:显示所有容器，包括未运行的
+      -q:只显示容器编号
+
+docker run ：创建一个新的容器并运行一个命
+docker run [参数] 镜像名/ID [命令] [命令参数...]
+  参数说明：
+    -i:以交互模式运行容器，通常与 -t 同时使用；
+    -t:为容器重新分配一个伪输入终端;
+    --name="my":为容器指定一个名称；
+    -p:指定端口映射，格式为：主机(宿主)端口:容器端口；
+    -P:随机端口映射，容器内部端口随机映射到主机的高端口；
+    -d:后台运行容器；
+举例：
+docker run -it nginx:latest /bin/bash
+docker run -p 8080:8080 tomcat
+
+docker run --name mysql -p 3306:3306 \
+-v /opt/mysql/conf:/etc/mysql \
+-v /opt/mysql/data:/var/lib/mysql-files \
+-v /opt/mysql/log:/var/log/mysql \
+-e MYSQL_ROOT_PASSWORD=123456 \
+-d mysql:8.0.21
+
+docker run --name nginx -p 80:80 \
+-v /opt/app/nginx/html:/usr/share/nginx/html \
+-v /opt/app/nginx/logs:/var/log/nginx \
+-v /opt/app/nginx/conf:/etc/nginx \
+-d nginx:1.8.1
+
+
+docker run \
+-p 80:80 \
+--name nginx \
+-v /opt/app/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
+-v /opt/app/nginx/conf/conf.d:/etc/nginx/conf.d \
+-v /opt/app/nginx/logs:/var/log/nginx \
+-v /opt/app/nginx/html:/usr/share/nginx/html \
+-d nginx:1.8.1
+
+
+
+退出容器（以it的方式运行）
+方式一：exit
+退出docker，同时docker容器停止运行；
+方式二：ctrl+p+q
+退出docker，docker容器继续运行。
+
+docker start/stop/restart
+docker start 容器ID [容器ID...]  :  启动容器
+docker stop 容器ID [容器ID...]   :  停止容器
+docker restart 容器ID [容器ID...]  :  重启容器
+以上操作都要建立在容器已经创建的基础上，也就是执行了docker run命令
+
+docker exec：在运行的容器中执行命令
+docker exec [参数] 容器id 命令 [命令参数...]
+  参数说明：
+      -d:在后台运行；
+      -i:交互式；
+      -t:分配终端；
+举例：
+docker exec -it mynginx /bin/bash
+
+docker kill :杀掉一个运行中的容器
+docker kill [参数] 容器 [容器...]
+  参数说明：
+      -s:向容器发送一个信号
+举例：
+docker kill -s KILL mynginx
+
+docker rm:删除容器
+docker rm [参数] 容器 [容器...]
+  参数说明：
+    -f:强制删除
+举例：
+docker rm -f mynginx
+docker rm $(docker ps -aq)
+
+查看所有退出的容器id列表
+docker ps -a|grep Exited|awk '{print $1}'
+
+删除未启动容器
+docker rm $(docker ps -a| grep Created|awk '{print $1}')
+删除所有容器
+docker rm $(docker ps -a -q)
+
+docker logs:获取容器的日志
+docker logs [参数] 容器
+  参数说明：
+    -t：显示时间戳；
+    -f：跟踪日志输出；
+    --tail：仅列出最新N条容器日志
+举例：
+跟踪查看容器mynginx的日志输出
+docker logs -f mynginx
+查看容器mynginx从2016年7月1日后的最新10条日志
+docker logs --since="2016-07-01" --tail=10 mynginx
+
+docker top :查看容器中运行的进程信息
+docker top 镜像
+举例：
+docker top mynginx
+
+docker cp :用于容器与主机之间的数据拷贝
+将文件从容器拷贝到宿主机
+docker cp 容器:源路径 目标路径
+ 
+将文件从宿主机拷贝到容器
+docker cp 源路径 容器:目标路径
+ 
+举例：
+将主机/usr/abc目录拷贝到容器96f7f14e99ab的/hou目录下
+docker cp /usr/abc 96f7f14e99ab:/hou/
+ 
+将主机/usr/abc目录拷贝到容器96f7f14e99ab中，重命名为hou
+docker cp /usr/abc 96f7f14e99ab:/hou
+ 
+将容器96f7f14e99ab的/abc目录拷贝到主机的/tmp目录中
+docker cp  96f7f14e99ab:/abc /tmp/
+ 
+docker commit :从容器创建一个新的镜像
+docker commit [参数] 容器 [镜像[:TAG]]
+  参数说明：
+    -a:镜像作者；
+    -c:使用Dockerfile指令来创建镜像；
+    -m:提交时的说明文字；
+举例：
+docker commit -a "houpk" -m "create mynginx" a404c6c174a2  mynginx:v1 
+运行docker images可以查看创建的镜像。
+
+
+7：Centos防火墙配置
+查看防火墙某个端口是否开放
+firewall-cmd --query-port=3306/tcp
+开放防火墙端口3306
+firewall-cmd --zone=public --add-port=3306/tcp --permanent
+注意：开放端口后要重启防火墙生效
+重启防火墙
+systemctl restart firewalld
+关闭防火墙端口
+firewall-cmd --remove-port=3306/tcp --permanent
+查看防火墙状态
+systemctl status firewalld
+关闭防火墙
+systemctl stop firewalld
+打开防火墙
+systemctl start firewalld
+开放一段端口
+firewall-cmd --zone=public --add-port=40000-45000/tcp --permanent
+查看开放的端口列表
+firewall-cmd --zone=public --list-ports
+查看被监听(Listen)的端口
+netstat -lntp
+检查端口被哪个进程占用
+netstat -lnp|grep 3306
+————————————————
+
+微信公众号开发：
+测试号信息
+appID：wx705a73c6455322dc
+appsecret：94be90fa5ed4e2bc19480c51a2d94635

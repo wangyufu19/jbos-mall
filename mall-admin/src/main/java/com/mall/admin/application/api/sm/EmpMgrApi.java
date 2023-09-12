@@ -54,6 +54,7 @@ public class EmpMgrApi {
      */
     @ResponseBody
     @GetMapping("/getEmpList")
+    @ApiOperation("查询机构人员")
     public ResponseResult getEmpList(@RequestParam Map<String, Object> params) {
         ResponseResult res;
         try {
