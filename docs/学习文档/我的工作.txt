@@ -309,6 +309,12 @@ docker commit [参数] 容器 [镜像[:TAG]]
 docker commit -a "houpk" -m "create mynginx" a404c6c174a2  mynginx:v1 
 运行docker images可以查看创建的镜像。
 
+docker build : 从Dockerfile文件构建一个新的镜像
+docker build [参数] [镜像[:TAG]] .
+  参数说明：
+    .：当前目录；
+举例：
+docker build -t mall-gateway .
 
 7：Centos防火墙配置
 查看防火墙某个端口是否开放

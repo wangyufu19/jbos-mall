@@ -26,7 +26,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     druid:
       default:
-        url: jdbc:mysql://localhost:3306/jbos?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL&socketTimeout=60000
+        url: jdbc:mysql://192.168.1.200:3306/jbos?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL&socketTimeout=60000
         username: ENC(HvosLagigqFHFI/qEoytGA==)
         password: ENC(HvosLagigqFHFI/qEoytGA==)
       initial-size: 10
