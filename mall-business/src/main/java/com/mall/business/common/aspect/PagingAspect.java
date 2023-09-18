@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PagingAspect {
 
-    @Pointcut("@annotation(com.mall.common.page.Paging)")
+    @Pointcut("@annotation(com.mall.starter.page.Paging)")
     public void paging() {
     }
 

@@ -1,6 +1,5 @@
 package com.mall.admin.infrastructure.repository.im;
 
-import com.mall.admin.domain.entity.im.MaterialInStore;
 import com.mall.admin.domain.entity.im.MaterialStore;
 import com.mall.admin.infrastructure.repository.im.mapper.MaterialStoreMapper;
 import com.mall.common.page.PageParam;

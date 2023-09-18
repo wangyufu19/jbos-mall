@@ -1,0 +1,5 @@
+FROM java:8
+WORKDIR /opt/app
+VOLUME /tmp/tomcat
+ADD mall-admin-1.0.0.jar mall-admin.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app/mall-admin.jar"]

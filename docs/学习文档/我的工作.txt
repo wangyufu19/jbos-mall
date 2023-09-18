@@ -101,13 +101,13 @@ set global lower_case_table_names=1;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
 //创建用户和授权
 CREATE USER 'jbos'@'localhost' IDENTIFIED BY 'jbos';
-grant select,insert,delete,update,create,drop ON jbos.* TO jbos@localhost;
+grant select,insert,delete,update,create,drop,INDEX,ALTER,REFERENCES ON jbos.* TO jbos@localhost;
 
 grant select ON camunda.* TO jbos@localhost;
 
 
 CREATE USER 'nacos'@'localhost' IDENTIFIED BY 'nacos';
-grant select,insert,delete,update,create,drop ON nacos.* TO nacos@localhost;
+grant select,insert,delete,update,create,drop,alter,index ON nacos.* TO nacos@localhost;
 
 CREATE USER 'camunda'@'localhost' IDENTIFIED BY 'camunda';
 grant select,insert,delete,update,create,drop,INDEX,ALTER,REFERENCES ON camunda.* TO camunda@localhost;

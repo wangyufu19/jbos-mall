@@ -1,6 +1,5 @@
 package com.mall.admin.application.api.im;
 
-import com.mall.admin.application.request.im.MaterialBuyDto;
 import com.mall.admin.application.request.im.MaterialInStoreDto;
 import com.mall.admin.application.request.wf.ProcessTaskDto;
 import com.mall.admin.application.service.comm.BizGeneratorService;

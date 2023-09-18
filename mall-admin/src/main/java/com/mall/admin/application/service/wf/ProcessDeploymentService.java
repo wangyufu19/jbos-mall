@@ -1,12 +1,9 @@
 package com.mall.admin.application.service.wf;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mall.admin.domain.entity.wf.ProcessDeployment;
 import com.mall.admin.infrastructure.camunda.DeploymentService;
 import com.mall.admin.infrastructure.repository.wf.ProcessDeploymentRepo;
-import com.mall.admin.infrastructure.repository.wf.mapper.ProcessDeploymentMapper;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
@@ -14,7 +11,6 @@ import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

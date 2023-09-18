@@ -1,7 +1,6 @@
 package com.mall.admin.application.api.wf;
 
 import com.mall.admin.application.service.wf.ProcessDeploymentService;
-import com.mall.admin.domain.entity.wf.ProcessDeployment;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;

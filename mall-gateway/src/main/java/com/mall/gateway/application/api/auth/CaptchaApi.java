@@ -58,12 +58,7 @@ public class CaptchaApi {
         captcha.put("captchaToken", captchaToken);
         captcha.put("captchaSrc", captchaSrc);
         res.setData(captcha);
-        try {
-            captchaService.addCaptcha(text, captchaToken);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
-        }
+        captchaService.addCaptcha(text, captchaToken);
         return res;
     }
 }
