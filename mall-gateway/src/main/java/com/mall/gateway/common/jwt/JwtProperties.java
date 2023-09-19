@@ -11,13 +11,26 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("spring.jwt")
 public class JwtProperties {
     /**
+     * 默认过期时间60分钟
+     */
+    public static final long JWT_EXPIRATION = 60 * 60 * 1000L;
+    /**
+     * 默认刷新时间30分钟
+     */
+    public static final long JWT_REFRESH_TIME = 30 * 60 * 1000L;
+
+    /**
      * 密钥
      */
     private String secret = "123456";
     /**
      * 过期时间,默认60分钟
      */
-    private long expireTime = 60;
+    private long expireTime = JWT_EXPIRATION;
+    /**
+     * 刷新时间,默认30分钟
+     */
+    private long freshTime = JWT_REFRESH_TIME;
 
     public void setSecret(String secret) {
         this.secret = secret;

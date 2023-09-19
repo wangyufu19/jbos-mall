@@ -27,9 +27,9 @@ public class UserAuthApi {
         // 获得request对象
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        String accessToken = request.getHeader("accessToken");
+        String accessToken = request.getHeader(JwtTokenProvider.TOKEN);
         if (accessToken == null) {
-            return request.getParameter("accessToken");
+            return request.getParameter(JwtTokenProvider.TOKEN);
         } else {
             return accessToken;
         }
@@ -53,6 +53,19 @@ public class UserAuthApi {
         data.put("depId", depId);
         data.put("depName", depName);
         data.put("orgId", orgId);
+        res.setData(data);
+        return res;
+    }
+
+    @ResponseBody
+    @PostMapping("/freshToken")
+    @ApiOperation("刷新Token")
+    public ResponseResult freshToken(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        String token = this.getRequestToken();
+        String freshToken = jwtTokenProvider.freshToken(token);
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("freshToken", freshToken);
         res.setData(data);
         return res;
     }
