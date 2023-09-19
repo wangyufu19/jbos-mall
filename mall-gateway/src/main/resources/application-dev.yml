@@ -7,7 +7,7 @@ spring:
 
   jwt:
     secret: 123456  #密钥
-    expireTime: 720   #过期时间，默认60分钟
+    expireTime: 60   #过期时间，默认60分钟
   redis:
     enable: false
     database: 0

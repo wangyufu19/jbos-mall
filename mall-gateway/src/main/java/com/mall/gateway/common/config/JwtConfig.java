@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * JwtConfig
+ *
  * @author youfu.wang
  * @date 2021-01-01
  */
@@ -21,10 +22,10 @@ import org.springframework.context.annotation.Configuration;
 public class JwtConfig {
     @Bean
     @ConditionalOnMissingBean
-    public JwtTokenProvider jwtTokenProvider(JwtProperties jwtProperties){
-        JwtTokenProvider jwtTokenProvide=new JwtTokenProvider();
+    public JwtTokenProvider jwtTokenProvider(JwtProperties jwtProperties) {
+        JwtTokenProvider jwtTokenProvide = new JwtTokenProvider();
         jwtTokenProvide.setSecret(jwtProperties.getSecret());
-        jwtTokenProvide.setExpireTime(jwtProperties.getExpireTime()*60*1000L);
+        jwtTokenProvide.setExpireTime(jwtProperties.getExpireTime() * 60 * 1000L);
         return jwtTokenProvide;
     }
 }

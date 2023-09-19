@@ -36,7 +36,7 @@ public class LogAspect {
             log.error(e.getMessage(), e);
             data = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         } finally {
-            log.info("接口名称={}；接口方法={}", className, methodName);
+            log.info("类名称={}；类方法={}", className, methodName);
         }
         return data;
     }

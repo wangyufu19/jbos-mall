@@ -4,14 +4,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * JwtProperties
+ *
  * @author youfu.wang
  * @date 2021-01-01
  */
 @ConfigurationProperties("spring.jwt")
 public class JwtProperties {
-    private String secret = "123456";//密钥
-
-    private long expireTime=12;//过期时间
+    /**
+     * 密钥
+     */
+    private String secret = "123456";
+    /**
+     * 过期时间,默认60分钟
+     */
+    private long expireTime = 60;
 
     public void setSecret(String secret) {
         this.secret = secret;
@@ -21,10 +27,11 @@ public class JwtProperties {
         this.expireTime = expireTime;
     }
 
-    public String getSecret(){
+    public String getSecret() {
         return this.secret;
     }
-    public long getExpireTime(){
+
+    public long getExpireTime() {
         return this.expireTime;
     }
 }
