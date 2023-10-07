@@ -36,11 +36,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.1.130:8848  # 配置 nacos 的服务地址
+        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
         group: dev  # 配置组，默认就是 DEFAULT_GROUP
       config:
-        server-addr: 192.168.1.130:8848  # 配置 nacos 的服务地址
-        file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
+        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
+        file-extension: yaml  # 加载 dataid 配置文件的后缀，默认是 properties
         group: dev  # 配置组，默认就是 DEFAULT_GROUP
 swagger:
   # 开启swagger

@@ -54,7 +54,9 @@ public class JwtTokenProvider {
     public void setExpireTime(long expireTime) {
         this.expireTime = expireTime;
     }
-
+    public void setFreshTime(long freshTime){
+        this.freshTime =  freshTime;
+    }
     private Map<String, Object> getHeader() {
         Map<String, Object> header = new HashMap<String, Object>();
         header.put("alg", "HS256");
@@ -128,23 +130,20 @@ public class JwtTokenProvider {
      */
     public String freshToken(String token) {
         DecodedJWT jwt = JWT.decode(token);
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         Map<String, String> signData = new HashMap<>();
         Map<String, Claim> claimMap = jwt.getClaims();
         for (Map.Entry<String, Claim> entry : claimMap.entrySet()) {
-            if (entry.getValue() instanceof List) {
-                grantedAuthorities = this.getGrantedAuthorityFromJWT(token, JwtUser.AUTHORITIES);
-            } else {
+            if (!JwtUser.AUTHORITIES.equals(entry.getKey())) {
                 signData.put(entry.getKey(), entry.getValue().asString());
             }
-
         }
+        List<GrantedAuthority> grantedAuthorities = this.getGrantedAuthorityFromJWT(token, JwtUser.AUTHORITIES);
         if (this.verifyToken(token)) {
             Date issuedAt = jwt.getIssuedAt();
             Date expiresAt = jwt.getExpiresAt();
             log.info("issuedAt={};expiresAt={};t={}", issuedAt, expiresAt, (expiresAt.getTime() - System.currentTimeMillis()) / 60 / 1000);
             String freshToken = "";
-            if ((expiresAt.getTime() - System.currentTimeMillis()) <= JwtProperties.JWT_REFRESH_TIME) {
+            if ((expiresAt.getTime() - System.currentTimeMillis()) <= this.freshTime) {
                 freshToken = this.generateToken(signData, grantedAuthorities);
             }
             return freshToken;

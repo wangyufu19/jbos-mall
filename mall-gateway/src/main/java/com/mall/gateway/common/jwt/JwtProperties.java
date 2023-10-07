@@ -1,6 +1,9 @@
 package com.mall.gateway.common.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * JwtProperties
@@ -46,5 +49,13 @@ public class JwtProperties {
 
     public long getExpireTime() {
         return this.expireTime;
+    }
+
+    public long getFreshTime() {
+        return freshTime;
+    }
+
+    public void setFreshTime(long freshTime) {
+        this.freshTime = freshTime;
     }
 }

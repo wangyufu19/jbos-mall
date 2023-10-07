@@ -26,6 +26,7 @@ public class JwtConfig {
         JwtTokenProvider jwtTokenProvide = new JwtTokenProvider();
         jwtTokenProvide.setSecret(jwtProperties.getSecret());
         jwtTokenProvide.setExpireTime(jwtProperties.getExpireTime() * 60 * 1000L);
+        jwtTokenProvide.setFreshTime(jwtProperties.getFreshTime() * 60 * 1000L);
         return jwtTokenProvide;
     }
 }

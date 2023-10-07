@@ -6,6 +6,8 @@ import com.mall.common.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +21,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/auth")
 @Api(tags = "用户认证接口")
+@RefreshScope
 public class UserAuthApi {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+    @Value("${spring.jwt.freshTime:5}")
+    private long freshTime;
 
     private String getRequestToken() {
         // 获得request对象
@@ -60,9 +65,10 @@ public class UserAuthApi {
     @ResponseBody
     @PostMapping("/freshToken")
     @ApiOperation("刷新Token")
-    public ResponseResult freshToken(@RequestBody Map<String, Object> params) {
+    public ResponseResult freshToken() {
         ResponseResult res = ResponseResult.ok();
         String token = this.getRequestToken();
+        jwtTokenProvider.setFreshTime(this.freshTime * 60 * 1000L);
         String freshToken = jwtTokenProvider.freshToken(token);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("freshToken", freshToken);
