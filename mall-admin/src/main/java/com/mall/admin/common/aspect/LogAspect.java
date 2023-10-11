@@ -18,11 +18,19 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class LogAspect {
-
+    /**
+     * log
+     */
     @Pointcut("execution(public * *..*Api.*(..))")
     public void log() {
     }
 
+    /**
+     * doAround
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
     @Around("log()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
         //获取切入点方法的名字,getSignature());信息 :修饰符+ 包名+组件名(类名) +方法名

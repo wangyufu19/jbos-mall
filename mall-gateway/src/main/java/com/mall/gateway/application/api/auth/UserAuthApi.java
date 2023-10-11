@@ -1,14 +1,13 @@
 package com.mall.gateway.application.api.auth;
 
-import com.mall.gateway.common.jwt.JwtTokenProvider;
-import com.mall.gateway.common.user.JwtUser;
+import com.mall.gateway.common.config.properties.WebSecurityProperties;
+import com.mall.gateway.common.websecurity.jwt.JwtTokenProvider;
+import com.mall.gateway.common.websecurity.user.JwtUser;
 import com.mall.common.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -21,8 +20,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/auth")
 @Api(tags = "用户认证接口")
-@RefreshScope
+
 public class UserAuthApi {
+
+    @Autowired
+    private WebSecurityProperties webSecurityProperties;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Value("${spring.jwt.freshTime:5}")

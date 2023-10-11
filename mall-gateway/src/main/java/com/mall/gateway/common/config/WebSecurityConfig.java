@@ -1,15 +1,17 @@
 package com.mall.gateway.common.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.mall.gateway.application.service.auth.CaptchaService;
-import com.mall.gateway.common.jwt.JwtTokenProvider;
-import com.mall.gateway.common.user.JwtUser;
+import com.mall.gateway.common.config.properties.WebSecurityProperties;
+import com.mall.gateway.common.websecurity.dto.AuthRequestDto;
+import com.mall.gateway.common.websecurity.jwt.JwtTokenProvider;
+import com.mall.gateway.common.websecurity.user.JwtUser;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.JacksonUtils;
 import com.mall.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -60,20 +62,18 @@ import java.util.Map;
 @Slf4j
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, jsr250Enabled = true)
+@EnableConfigurationProperties({WebSecurityProperties.class})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
-    @Value("${spring.security.filter.loginUri}")
-    private String loginUri;
-    @Value("${spring.security.filter.logoutUri}")
-    private String logoutUri;
-    @Value("${spring.security.filter.excludeUri}")
-    private String excludeUri;
+    @Autowired
+    private WebSecurityProperties webSecurityProperties;
 
     /**
      * AuthenticationManagerBuilder
+     *
      * @param auth
      * @throws Exception
      */
@@ -86,36 +86,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * WebSecurity
+     *
      * @param web
      * @throws Exception
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        String[] excludeUris = excludeUri.split(",");
         //swagger2所需要用到的静态资源，允许访问
-        web.ignoring().antMatchers(excludeUris);
+        web.ignoring().antMatchers(this.getExcludeUris());
 
 
     }
 
     /**
+     * getExcludeUris
+     *
+     * @return excludeUris
+     */
+    private String[] getExcludeUris() {
+        String excludeUri = webSecurityProperties.getExcludeUri();
+        String[] excludeUris = excludeUri.split(",");
+        return excludeUris;
+    }
+
+    /**
      * HttpSecurity
+     *
      * @param http
      * @throws Exception
      */
     protected void configure(HttpSecurity http) throws Exception {
-        String[] excludeUris = excludeUri.split(",");
         http
                 .csrf().disable()  //禁用csrf
                 .formLogin().disable() //禁用form登录
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()  //禁用session
                 .authorizeRequests()
-                .antMatchers(excludeUris).permitAll()
+                .antMatchers(this.getExcludeUris()).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JwtAuthenticationFilter(), LoginFilter.class)
-                .logout().logoutUrl(this.logoutUri)
+                .logout().logoutUrl(webSecurityProperties.getLogoutUri())
                 .invalidateHttpSession(true)
                 .addLogoutHandler(new WebLogoutHandler()).logoutSuccessHandler(new WebLogoutSuccessHandler())
                 .and()
@@ -123,7 +134,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint((req, res, ex) -> {
                     //请求认证异常
                     ResponseResult r = ResponseResult.error("403", "对不起，非法请求");
-                    res.setContentType("application/json;charset=utf-8");
+                    res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     PrintWriter out = res.getWriter();
                     out.write(JacksonUtils.toJson(r));
                     out.flush();
@@ -132,7 +143,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler((req, res, ex) -> {
                     //请求权限异常
                     ResponseResult r = ResponseResult.error("403", "对不起，没有权限");
-                    res.setContentType("application/json;charset=utf-8");
+                    res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     PrintWriter out = res.getWriter();
                     out.write(JacksonUtils.toJson(r));
                     out.flush();
@@ -156,7 +167,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public LoginFilter loginFilter() throws Exception {
         LoginFilter loginFilter = new LoginFilter();
         // 登录请求地址
-        loginFilter.setFilterProcessesUrl(this.loginUri);
+        loginFilter.setFilterProcessesUrl(webSecurityProperties.getLoginUri());
         // 返回登录成功后数据
         loginFilter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -175,7 +186,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 data.put("nickName", principal.getNickName());
                 data.put("accessToken", token);
                 r.setData(data);
-                response.setContentType("application/json;charset=utf-8");
+                response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                 PrintWriter out = response.getWriter();
                 out.write(JacksonUtils.toJson(r));
                 out.flush();
@@ -193,7 +204,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 } else if (e.getMessage().indexOf("Bad grant") != -1) {
                     r = ResponseResult.error(" 用户没有操作权限，请联系管理员！");
                 }
-                response.setContentType("application/json;charset=utf-8");
+                response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                 PrintWriter out = response.getWriter();
                 out.write(JacksonUtils.toJson(r));
                 out.flush();
@@ -211,35 +222,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         @Autowired
         private CaptchaService captchaService;
 
+        /**
+         * attemptAuthentication
+         * @param request
+         * @param response
+         * @return Authentication
+         * @throws AuthenticationException
+         */
         public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
             if (!request.getMethod().equals("POST")) {
                 throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
             }
-            // 判断请求是否是json格式，如果不是直接调用默认表单认证方式
-            if (request.getContentType().indexOf(MediaType.APPLICATION_JSON_VALUE) != -1) {
-                // 把request的json数据转换为Map
-                Map<String, String> loginData = new HashMap<>();
-                try {
-                    loginData = new ObjectMapper().readValue(request.getInputStream(), Map.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            AuthRequestDto authRequestDto = AuthRequestDto.getInstance(request);
+            if (webSecurityProperties.isEnableCaptcha()) {
                 // 判断验证码
-                String captchaToken = StringUtils.replaceNull(loginData.get("captchaToken"));
-                String captchaText = StringUtils.replaceNull(loginData.get("captchaText"));
-                if (!captchaService.validate(captchaToken, captchaText)) {
+                if (!captchaService.validate(authRequestDto.getCaptchaToken(), authRequestDto.getCaptchaText())) {
                     throw new CaptchaAuthenticationException("Bad captcha");
                 }
-                // 调用父类的getParameter() 方法获取key值
-                String username = StringUtils.replaceNull(loginData.get(this.getUsernameParameter()));
-                String password = StringUtils.replaceNull(loginData.get(this.getPasswordParameter()));
-                UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username.trim(), password);
-                this.setDetails(request, authRequest);
-                return this.getAuthenticationManager().authenticate(authRequest);
-            } else {
-                return super.attemptAuthentication(request, response);
             }
+            String username = StringUtils.replaceNull(authRequestDto.getUsername()).trim();
+            String password = StringUtils.replaceNull(authRequestDto.getPassword());
+            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
+            this.setDetails(request, authRequest);
+            return this.getAuthenticationManager().authenticate(authRequest);
         }
+
     }
 
     public class CaptchaAuthenticationException extends AuthenticationException {
@@ -282,7 +289,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         private AntPathMatcher antPathMatcher = new AntPathMatcher(File.separator);
 
         private boolean isExcludeUri(String requestURI) {
-            String[] excludeUris = excludeUri.split(",");
+            String[] excludeUris = getExcludeUris();
             boolean matches = false;
             for (String uri : excludeUris) {
                 matches = antPathMatcher.match(uri, requestURI);
@@ -313,9 +320,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         private void checkToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
             String token = getRequestToken(request);
             if (token == null || !jwtTokenProvider.verifyToken(token)) {
+                logger.info("token失效或认证过期！");
                 ResponseResult r = ResponseResult.error("token失效或认证过期！");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType("application/json;charset=utf-8");
+                response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                 PrintWriter out = response.getWriter();
                 out.write(JacksonUtils.toJson(r));
                 out.flush();

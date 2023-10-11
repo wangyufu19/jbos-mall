@@ -4,6 +4,8 @@ import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.mall.gateway.common.spring.ApplicationContextListener;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * GatewayApplication
+ *
  * @author youfu.wang
  * @date 2021-08-19
  */
@@ -30,30 +33,36 @@ import org.springframework.web.client.RestTemplate;
 @EnableZuulProxy
 @EnableAspectJAutoProxy
 //@EnableApolloConfig
+
 public class MallGatewayApplication extends SpringBootServletInitializer {
+    final static Logger logger = LoggerFactory.getLogger(MallGatewayApplication.class);
+
     @LoadBalanced
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(MallGatewayApplication.class);
     }
+
     public static void main(String[] args) {
-        SpringApplication springApplication=new SpringApplication(MallGatewayApplication.class);
+        SpringApplication springApplication = new SpringApplication(MallGatewayApplication.class);
         springApplication.addListeners(new ApplicationContextListener());
-        ApplicationContext applicationContext=springApplication.run(args);
+        ApplicationContext applicationContext = springApplication.run(args);
     }
+
     @Slf4j
     @Component
-    public static class RestDemo{
+    public static class RestDemo {
         @Autowired
         RestTemplate restTemplate;
 
-        public void execute(){
-            ResponseEntity<String> responseEntity=restTemplate.getForEntity("http://mall-admin/user/getUserInfo",String.class);
-           log.info("res={}",responseEntity.getBody());
+        public void execute() {
+            ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://mall-admin/user/getUserInfo", String.class);
+            log.info("res={}", responseEntity.getBody());
         }
     }
 }

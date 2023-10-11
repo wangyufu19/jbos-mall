@@ -1,4 +1,4 @@
-package com.mall.gateway.common.jwt;
+package com.mall.gateway.common.websecurity.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;

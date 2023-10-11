@@ -17,11 +17,19 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class PagingAspect {
-
+    /**
+     * paging
+     */
     @Pointcut("@annotation(com.mall.common.page.Paging)")
     public void paging() {
     }
 
+    /**
+     * doAround
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
     @Around("paging()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
         int pageNum = PageParam.DEFAULT_PAGE_NUM;

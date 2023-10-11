@@ -1,4 +1,4 @@
-package com.mall.gateway.common.user;
+package com.mall.gateway.common.websecurity.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
