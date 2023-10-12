@@ -1,5 +1,6 @@
 package com.mall.business.application.product.api;
 
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
@@ -46,14 +47,14 @@ public class ProductMgrApi {
     @ResponseBody
     @GetMapping(value = "/list")
     @ApiOperation("得到商品列表")
-    public ResponseResult list(@RequestParam Map<String, Object> params){
-        ResponseResult res;
+    public ResponsePageResult list(@RequestParam Map<String, Object> params){
+        ResponsePageResult res;
         String isPage= StringUtils.replaceNull(params.get("isPage"));
         try{
             res=productService.getProductList(params);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res= ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
