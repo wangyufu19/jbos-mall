@@ -3,6 +3,7 @@ package com.mall.admin.application.api.wf;
 import com.mall.admin.application.service.sm.BusinessDict;
 import com.mall.admin.application.service.wf.ProcessMgrService;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -54,14 +55,14 @@ public class ProcessInstanceApi {
     @ResponseBody
     @GetMapping("/getProcessInstanceList")
     @ApiOperation("查询流程实例列表")
-    public ResponseResult getProcessInstanceList(@RequestParam Map<String, Object> params) {
-        ResponseResult res = ResponseResult.ok();
+    public ResponsePageResult getProcessInstanceList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res = ResponsePageResult.ok();
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res = processMgrService.getProcessInstList(pageParam, params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

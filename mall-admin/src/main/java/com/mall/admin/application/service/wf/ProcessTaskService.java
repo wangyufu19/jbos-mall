@@ -11,6 +11,7 @@ import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.domain.entity.wf.TaskStep;
 import com.mall.admin.infrastructure.repository.wf.ProcessTaskRepo;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
@@ -45,9 +46,9 @@ public class ProcessTaskService extends BaseService {
      * @param parameterObject
      * @return
      */
-    public ResponseResult getUserTaskList(PageParam pageParam, Map<String, Object> parameterObject) {
+    public ResponsePageResult getUserTaskList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<ProcessTask> processTasks = processTaskRepo.getUserTaskList(pageParam, parameterObject);
-        return ResponseResult.ok().isPage(true).setData(processTasks);
+        return ResponsePageResult.ok().isPage(true).setData(processTasks);
     }
 
     /**
@@ -56,9 +57,9 @@ public class ProcessTaskService extends BaseService {
      * @param parameterObject
      * @return
      */
-    public ResponseResult getUserTaskProcessedList(PageParam pageParam, Map<String, Object> parameterObject) {
+    public ResponsePageResult getUserTaskProcessedList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<ProcessTask> processTasks = processTaskRepo.getUserTaskProcessedList(pageParam, parameterObject);
-        return ResponseResult.ok().isPage(true).setData(processTasks);
+        return ResponsePageResult.ok().isPage(true).setData(processTasks);
     }
 
     /**
@@ -67,9 +68,9 @@ public class ProcessTaskService extends BaseService {
      * @param parameterObject
      * @return
      */
-    public ResponseResult getProcessTaskDetailList(PageParam pageParam,Map<String,Object> parameterObject){
+    public ResponsePageResult getProcessTaskDetailList(PageParam pageParam,Map<String,Object> parameterObject){
         List<ProcessTask> processTasks = processTaskRepo.getProcessTaskDetailList(pageParam,parameterObject);
-        return ResponseResult.ok().isPage(true).setData(processTasks);
+        return ResponsePageResult.ok().isPage(true).setData(processTasks);
     }
 
     /**

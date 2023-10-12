@@ -4,6 +4,7 @@ import com.mall.admin.domain.entity.abs.BasicAsset;
 import com.mall.admin.infrastructure.repository.abs.BasicAssetRepo;
 import com.mall.common.office.excel.xssf.RowObject;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -56,9 +57,9 @@ public class BasicAssetService {
      * @param parameterObject
      * @return List
      */
-    public ResponseResult getBasicAssetList(PageParam pageParam, Map<String, Object> parameterObject) {
+    public ResponsePageResult getBasicAssetList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<BasicAsset> basicAssetList = basicAssetRepo.getBasicAssetList(pageParam, parameterObject);
-        return ResponseResult.ok().isPage(true).setData(basicAssetList);
+        return ResponsePageResult.ok().isPage(true).setData(basicAssetList);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.mall.business.application.product.api;
 
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.business.application.product.service.CategoryService;
@@ -57,8 +58,8 @@ public class CategoryMgrApi{
     @ResponseBody
     @GetMapping(value = "/list")
     @ApiOperation("得到商品列表")
-    public ResponseResult list(@RequestParam Map<String, Object> params){
-        ResponseResult res;
+    public ResponsePageResult list(@RequestParam Map<String, Object> params){
+        ResponsePageResult res;
         String parentCode=StringUtils.replaceNull(params.get("parentCode"));
         if(StringUtils.isNUll(parentCode)){
             parentCode="0";
@@ -67,7 +68,7 @@ public class CategoryMgrApi{
             res=categoryService.getProductCategory(parentCode);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res= ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

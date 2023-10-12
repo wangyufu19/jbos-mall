@@ -8,6 +8,7 @@ import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.infrastructure.camunda.InstanceTaskService;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -66,14 +67,14 @@ public class MaterialBuyApi {
     @ResponseBody
     @GetMapping("/list")
     @ApiOperation("查询物采购业务列表")
-    public ResponseResult getMaterialBuyList(@RequestParam Map<String, Object> params) {
-        ResponseResult res;
+    public ResponsePageResult getMaterialBuyList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res;
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res = materialBuyService.getMaterialBuyList(pageParam, params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
  * @date 2021-01-01
  */
 @ConfigurationProperties("spring.jwt")
+@RefreshScope
 public class JwtProperties {
     /**
      * 默认过期时间60分钟
@@ -40,7 +41,7 @@ public class JwtProperties {
     }
 
     public void setExpireTime(long expireTime) {
-        this.expireTime = expireTime;
+        this.expireTime = expireTime * 60 * 1000L;
     }
 
     public String getSecret() {
@@ -56,6 +57,6 @@ public class JwtProperties {
     }
 
     public void setFreshTime(long freshTime) {
-        this.freshTime = freshTime;
+        this.freshTime = freshTime * 60 * 1000L;
     }
 }

@@ -4,6 +4,7 @@ import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.sm.Org;
 import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.admin.infrastructure.repository.sm.OrgMgrRepository;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,9 @@ public class OrgMgrService{
      * 查询组织机构数据
      * @return
      */
-    public ResponseResult getOrgList(PageParam pageParam, String parentId){
+    public ResponsePageResult getOrgList(PageParam pageParam, String parentId){
         List<Org> orgList=orgMgrRepository.getOrgList(pageParam,parentId);
-        return ResponseResult.ok().isPage(true).setData(orgList);
+        return ResponsePageResult.ok().isPage(true).setData(orgList);
     }
     /**
      * 查询组织机构数据

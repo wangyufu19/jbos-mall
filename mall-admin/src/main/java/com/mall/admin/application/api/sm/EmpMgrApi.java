@@ -7,6 +7,7 @@ import com.mall.admin.infrastructure.camunda.IdentityMgrService;
 import com.mall.common.page.PageParam;
 import com.mall.common.office.excel.IPageExcel;
 import com.mall.common.office.excel.PageExcelHandler;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -54,15 +55,15 @@ public class EmpMgrApi {
     @ResponseBody
     @GetMapping("/getEmpList")
     @ApiOperation("查询机构人员")
-    public ResponseResult getEmpList(@RequestParam Map<String, Object> params) {
-        ResponseResult res;
+    public ResponsePageResult getEmpList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res;
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             List<Emp> empList = empMgrService.getEmpList(pageParam, params);
-            res = ResponseResult.ok().isPage(true).setData(empList);
+            res = ResponsePageResult.ok().isPage(true).setData(empList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

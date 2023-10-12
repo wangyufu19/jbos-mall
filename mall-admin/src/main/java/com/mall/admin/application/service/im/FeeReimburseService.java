@@ -16,6 +16,7 @@ import com.mall.admin.infrastructure.repository.im.FeeReimburseRepo;
 import com.mall.admin.infrastructure.repository.im.InvoiceRepo;
 import com.mall.admin.infrastructure.repository.im.PayeeRepo;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,9 +73,9 @@ public class FeeReimburseService {
      * @param parameterObject
      * @return ResponseResult
      */
-    public ResponseResult getFeeReimburseList(PageParam pageParam, Map<String, Object> parameterObject) {
+    public ResponsePageResult getFeeReimburseList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<FeeReimburse> feeReimburseList = feeReimburseRepo.getFeeReimburseList(pageParam, parameterObject);
-        return ResponseResult.ok().isPage(true).setData(feeReimburseList);
+        return ResponsePageResult.ok().isPage(true).setData(feeReimburseList);
     }
 
     /**

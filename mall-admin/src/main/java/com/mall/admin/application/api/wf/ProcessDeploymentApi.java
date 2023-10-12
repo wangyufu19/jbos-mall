@@ -2,6 +2,7 @@ package com.mall.admin.application.api.wf;
 
 import com.mall.admin.application.service.wf.ProcessDeploymentService;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -36,14 +37,14 @@ public class ProcessDeploymentApi {
     @ResponseBody
     @GetMapping("/getProcessDeploymentList")
     @ApiOperation("查询流程部署列表")
-    public ResponseResult getProcessDeploymentList(@RequestParam Map<String, Object> params) {
-        ResponseResult res = ResponseResult.ok();
+    public ResponsePageResult getProcessDeploymentList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res = ResponsePageResult.ok();
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res=processDeploymentService.getProcessDeploymentList(pageParam,params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

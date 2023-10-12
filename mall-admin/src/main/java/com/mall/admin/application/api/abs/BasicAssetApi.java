@@ -2,6 +2,7 @@ package com.mall.admin.application.api.abs;
 
 import com.mall.admin.application.service.abs.BasicAssetService;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -37,14 +38,14 @@ public class BasicAssetApi {
     @ResponseBody
     @GetMapping(value = "/getBasicAssetList")
     @ApiOperation("基础资产入池")
-    public ResponseResult getBasicAssetList(@RequestParam Map<String, Object> params) {
-        ResponseResult res = ResponseResult.ok();
+    public ResponsePageResult getBasicAssetList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res = ResponsePageResult.ok();
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res = basicAssetService.getBasicAssetList(pageParam, params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

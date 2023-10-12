@@ -5,6 +5,7 @@ import com.mall.admin.application.response.abs.ProjectApprovalResponseDto;
 import com.mall.admin.application.service.abs.ProjectApprovalService;
 import com.mall.admin.domain.entity.abs.ProjectInfo;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -33,15 +34,15 @@ public class ProjectApprovalApi {
     @ResponseBody
     @GetMapping(value = "/getProjectList")
     @ApiOperation("查询项目立项信息")
-    public ResponseResult getProjectList(@RequestParam Map<String, Object> params) {
-        ResponseResult res = ResponseResult.ok();
+    public ResponsePageResult getProjectList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res = ResponsePageResult.ok();
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             List<ProjectInfo> projectList = projectApprovalService.getProjectList(pageParam, params);
             res.isPage(true).setData(projectList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

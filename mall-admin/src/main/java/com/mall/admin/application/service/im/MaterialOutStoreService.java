@@ -17,6 +17,7 @@ import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.infrastructure.repository.im.MaterialOutStoreRepo;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +53,9 @@ public class MaterialOutStoreService {
      * @param parameterObject
      * @return
      */
-    public ResponseResult getMaterialOutStoreList(PageParam pageParam, Map<String, Object> parameterObject) {
+    public ResponsePageResult getMaterialOutStoreList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<MaterialOutStore> materialOutStoreList = materialOutStoreRepo.getMaterialOutStoreList(pageParam,parameterObject);
-        return ResponseResult.ok().isPage(true).setData(materialOutStoreList);
+        return ResponsePageResult.ok().isPage(true).setData(materialOutStoreList);
     }
 
     /**

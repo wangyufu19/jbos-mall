@@ -10,10 +10,13 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.mall.gateway.common.websecurity.user.JwtUser;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -25,6 +28,7 @@ import java.util.*;
  * @date 2021-01-01
  */
 @Slf4j
+@Data
 public class JwtTokenProvider {
     /**
      * token前缀
@@ -35,28 +39,19 @@ public class JwtTokenProvider {
      */
     public static final String TOKEN = "accessToken";
     /**
-     * 密钥
+     * jwtProperties
      */
-    private String secret = "123456";
-    /**
-     * 过期时间,默认60分钟
-     */
-    private long expireTime = JwtProperties.JWT_EXPIRATION;
-    /**
-     * 刷新时间，默认30分钟
-     */
-    private long freshTime = JwtProperties.JWT_REFRESH_TIME;
+    private JwtProperties jwtProperties;
 
-    public void setSecret(String secret) {
-        this.secret = secret;
+    /**
+     * JwtTokenProvider
+     *
+     * @param jwtProperties
+     */
+    public JwtTokenProvider(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
     }
 
-    public void setExpireTime(long expireTime) {
-        this.expireTime = expireTime;
-    }
-    public void setFreshTime(long freshTime){
-        this.freshTime =  freshTime;
-    }
     private Map<String, Object> getHeader() {
         Map<String, Object> header = new HashMap<String, Object>();
         header.put("alg", "HS256");
@@ -83,14 +78,14 @@ public class JwtTokenProvider {
      *
      * @param signData
      * @param authorities
-     * @return
+     * @return token
      */
     public String generateToken(Map<String, String> signData, Collection<? extends GrantedAuthority> authorities) {
         String token = "";
         Date iatDate = new Date();
         Date expireDate;
-        if (this.expireTime > 0) {
-            expireDate = new Date(System.currentTimeMillis() + this.expireTime); // 设置过期时间
+        if (this.jwtProperties.getExpireTime() > 0) {
+            expireDate = new Date(System.currentTimeMillis() + this.jwtProperties.getExpireTime()); // 设置过期时间
         } else {
             expireDate = new Date(System.currentTimeMillis() + JwtProperties.JWT_EXPIRATION); // 设置过期时间
         }
@@ -115,7 +110,7 @@ public class JwtTokenProvider {
             }
             builder.withIssuedAt(iatDate).withExpiresAt(expireDate);
             //签名
-            token = builder.sign(Algorithm.HMAC256(secret));
+            token = builder.sign(Algorithm.HMAC256(this.jwtProperties.getSecret()));
             return token;
         } catch (JWTCreationException jwtCreationException) {
             return null;
@@ -126,7 +121,7 @@ public class JwtTokenProvider {
      * 刷新token
      *
      * @param token
-     * @return
+     * @return freshToken
      */
     public String freshToken(String token) {
         DecodedJWT jwt = JWT.decode(token);
@@ -143,7 +138,7 @@ public class JwtTokenProvider {
             Date expiresAt = jwt.getExpiresAt();
             log.info("issuedAt={};expiresAt={};t={}", issuedAt, expiresAt, (expiresAt.getTime() - System.currentTimeMillis()) / 60 / 1000);
             String freshToken = "";
-            if ((expiresAt.getTime() - System.currentTimeMillis()) <= this.freshTime) {
+            if ((expiresAt.getTime() - System.currentTimeMillis()) <= this.jwtProperties.getFreshTime()) {
                 freshToken = this.generateToken(signData, grantedAuthorities);
             }
             return freshToken;
@@ -156,13 +151,16 @@ public class JwtTokenProvider {
      * 验证 JWT：指定和签发相同的加密方式，验证这个 token 是否是本服务器签发，是否篡改或者已过期。
      *
      * @param token
-     * @return
+     * @return bool/false
      */
     public boolean verifyToken(String token) {
+        if (ObjectUtils.isEmpty(this.jwtProperties) || StringUtils.isEmpty(this.jwtProperties.getSecret())) {
+            return false;
+        }
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            Algorithm algorithm = Algorithm.HMAC256(this.jwtProperties.getSecret());
             JWTVerifier verifier = JWT.require(algorithm).build();
-            DecodedJWT jwt = verifier.verify(token);
+            verifier.verify(token);
             return true;
         } catch (JWTVerificationException jwtVerificationException) {
             return false;
@@ -174,7 +172,7 @@ public class JwtTokenProvider {
      *
      * @param token
      * @param key
-     * @return
+     * @return claim value
      */
     public String getSignDataFromJWT(String token, String key) {
         Assert.notNull(token, "Token must not be null");
@@ -191,7 +189,7 @@ public class JwtTokenProvider {
      *
      * @param token
      * @param key
-     * @return
+     * @return GrantedAuthority
      */
     public List<GrantedAuthority> getGrantedAuthorityFromJWT(String token, String key) {
         try {

@@ -3,6 +3,7 @@ import com.mall.business.domain.entity.product.Category;
 import com.mall.business.domain.entity.TreeNode;
 import com.mall.business.infrastructure.repository.product.CategoryRepo;
 import com.mall.common.base.BaseService;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,10 +37,10 @@ public class CategoryService extends BaseService {
      * @param parentCode
      * @return
      */
-    public ResponseResult getProductCategory(String parentCode){
+    public ResponsePageResult getProductCategory(String parentCode){
         Map<String,Object> parameterObject=new HashMap<String,Object>();
         parameterObject.put("parentCode",parentCode);
         List<Category> categoryList=categoryRepo.getProductCategory(parameterObject);
-        return ResponseResult.ok().isPage(true).setData(categoryList);
+        return ResponsePageResult.ok().isPage(true).setData(categoryList);
     }
 }

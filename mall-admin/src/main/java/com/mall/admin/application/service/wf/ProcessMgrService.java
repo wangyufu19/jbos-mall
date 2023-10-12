@@ -8,6 +8,7 @@ import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.infrastructure.camunda.ProcessInstanceService;
 import com.mall.admin.infrastructure.repository.wf.ProcessInstRepo;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
@@ -39,9 +40,9 @@ public class ProcessMgrService {
      * @param parameterObject
      * @return
      */
-    public ResponseResult getProcessInstList(PageParam pageParam,Map<String, Object> parameterObject){
+    public ResponsePageResult getProcessInstList(PageParam pageParam, Map<String, Object> parameterObject){
         List<ProcessInst> processInstList=processInstRepo.getProcessInstList(pageParam,parameterObject);
-        return ResponseResult.ok().isPage(true).setData(processInstList);
+        return ResponsePageResult.ok().isPage(true).setData(processInstList);
     }
 
     /**

@@ -5,6 +5,7 @@ import com.mall.admin.application.service.sm.RoleMgrService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.domain.entity.comm.TreeNode;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -65,14 +66,14 @@ public class RoleMgrApi {
     @ResponseBody
     @GetMapping("/getRoleList")
     @ApiOperation("查询角色数据列表")
-    public ResponseResult getRoleList(@RequestParam Map<String, Object> params) {
-        ResponseResult res;
+    public ResponsePageResult getRoleList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res;
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res = roleMgrService.getRoleList(pageParam, params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -194,14 +195,14 @@ public class RoleMgrApi {
     @ResponseBody
     @GetMapping("/getRoleEmpList")
     @ApiOperation("查询角色用户列表")
-    public ResponseResult getRoleEmpList(@RequestParam Map<String, Object> params) {
-        ResponseResult res;
+    public ResponsePageResult getRoleEmpList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res;
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res = roleMgrService.getRoleEmpList(pageParam, params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -215,14 +216,14 @@ public class RoleMgrApi {
     @ResponseBody
     @GetMapping("/getSelectRoleEmpList")
     @ApiOperation("查询选择角色用户列表")
-    public ResponseResult getSelectRoleEmpList(@RequestParam Map<String, Object> params) {
-        ResponseResult res;
+    public ResponsePageResult getSelectRoleEmpList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res;
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res = roleMgrService.getSelectRoleEmpList(pageParam, params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

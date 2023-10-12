@@ -5,6 +5,7 @@ import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.domain.entity.wf.TaskStep;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -39,8 +40,8 @@ public class ProcessTaskApi {
     @ResponseBody
     @GetMapping("/getMyWorkList")
     @ApiOperation("查询我的工作列表")
-    public ResponseResult getMyWorkList(@RequestParam Map<String, Object> params) {
-        ResponseResult res;
+    public ResponsePageResult getMyWorkList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res;
         String workType = StringUtils.replaceNull(params.get("workType"));
         try {
             PageParam pageParam = PageParam.getPageParam(params);
@@ -51,7 +52,7 @@ public class ProcessTaskApi {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
@@ -84,14 +85,14 @@ public class ProcessTaskApi {
     @ResponseBody
     @GetMapping("/getProcessTaskDetailList")
     @ApiOperation("查询实例任务明细列表")
-    public ResponseResult getProcessTaskDetailList(@RequestParam Map<String, Object> params) {
-        ResponseResult res = ResponseResult.ok();
+    public ResponsePageResult getProcessTaskDetailList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res = ResponsePageResult.ok();
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res=processTaskService.getProcessTaskDetailList(pageParam,params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

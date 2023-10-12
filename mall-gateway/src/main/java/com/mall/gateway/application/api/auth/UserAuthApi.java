@@ -1,13 +1,11 @@
 package com.mall.gateway.application.api.auth;
 
-import com.mall.gateway.common.config.properties.WebSecurityProperties;
 import com.mall.gateway.common.websecurity.jwt.JwtTokenProvider;
 import com.mall.gateway.common.websecurity.user.JwtUser;
 import com.mall.common.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,13 +20,11 @@ import java.util.Map;
 @Api(tags = "用户认证接口")
 
 public class UserAuthApi {
-
-    @Autowired
-    private WebSecurityProperties webSecurityProperties;
+    /**
+     * jwtTokenProvider
+     */
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
-    @Value("${spring.jwt.freshTime:5}")
-    private long freshTime;
 
     private String getRequestToken() {
         // 获得request对象
@@ -70,7 +66,6 @@ public class UserAuthApi {
     public ResponseResult freshToken() {
         ResponseResult res = ResponseResult.ok();
         String token = this.getRequestToken();
-        jwtTokenProvider.setFreshTime(this.freshTime * 60 * 1000L);
         String freshToken = jwtTokenProvider.freshToken(token);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("freshToken", freshToken);

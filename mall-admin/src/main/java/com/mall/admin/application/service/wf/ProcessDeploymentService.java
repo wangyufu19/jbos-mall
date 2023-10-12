@@ -5,6 +5,7 @@ import com.mall.admin.domain.entity.wf.ProcessDeployment;
 import com.mall.admin.infrastructure.camunda.DeploymentService;
 import com.mall.admin.infrastructure.repository.wf.ProcessDeploymentRepo;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.DateUtils;
 import com.mall.common.utils.StringUtils;
@@ -36,9 +37,9 @@ public class ProcessDeploymentService {
      * @param parameterObject
      * @return
      */
-    public ResponseResult getProcessDeploymentList(PageParam pageParam, Map<String, Object> parameterObject){
+    public ResponsePageResult getProcessDeploymentList(PageParam pageParam, Map<String, Object> parameterObject){
         List<ProcessDeployment> processDefList=processDeploymentRepo.getProcessDeploymentList(pageParam,parameterObject);
-        return ResponseResult.ok().isPage(true).setData(processDefList);
+        return ResponsePageResult.ok().isPage(true).setData(processDefList);
     }
 
     /**

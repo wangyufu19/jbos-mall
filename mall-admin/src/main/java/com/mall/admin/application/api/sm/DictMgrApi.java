@@ -7,6 +7,7 @@ import com.mall.admin.application.service.sm.DictTypeService;
 import com.mall.admin.domain.entity.sm.DictCode;
 import com.mall.admin.domain.entity.sm.DictType;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import com.mall.common.response.ResponseResult;
@@ -70,15 +71,15 @@ public class DictMgrApi {
     @ResponseBody
     @GetMapping("/getDictTypeList")
     @ApiOperation("得到字典类型列表")
-    public ResponseResult getDictTypeList(@RequestParam Map<String, Object> params) {
-        ResponseResult res = ResponseResult.ok();
+    public ResponsePageResult getDictTypeList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res = ResponsePageResult.ok();
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             List<DictType> dictTypes = dictTypeService.getDictTypeList(pageParam, params);
             res.isPage(true).setData(dictTypes);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

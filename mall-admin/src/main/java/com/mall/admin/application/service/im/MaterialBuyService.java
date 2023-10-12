@@ -18,6 +18,7 @@ import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.infrastructure.repository.im.MaterialBuyRepo;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,12 +59,13 @@ public class MaterialBuyService extends BaseService {
     /**
      * 得到物品采购列表
      *
+     * @param pageParam
      * @param parameterObject
      * @return
      */
-    public ResponseResult getMaterialBuyList(PageParam pageParam, Map<String, Object> parameterObject) {
+    public ResponsePageResult getMaterialBuyList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<MaterialBuy> materialBuyList = materialBuyRepo.getMaterialBuyList(pageParam, parameterObject);
-        return ResponseResult.ok().isPage(true).setData(materialBuyList);
+        return ResponsePageResult.ok().isPage(true).setData(materialBuyList);
     }
 
     /**

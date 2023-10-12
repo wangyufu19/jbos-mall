@@ -4,6 +4,7 @@ import com.mall.admin.application.service.sm.OrgMgrService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.sm.Org;
 import com.mall.admin.domain.entity.comm.TreeNode;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -72,14 +73,14 @@ public class OrgMgrApi {
     @ResponseBody
     @GetMapping("/getOrgList")
     @ApiOperation("查询组织机构列表")
-    public ResponseResult getOrgList(@RequestParam Map<String, Object> params) {
-        ResponseResult res;
+    public ResponsePageResult getOrgList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res;
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res = orgMgrService.getOrgList(pageParam, Org.ROOTORG_ID);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

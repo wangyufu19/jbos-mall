@@ -1,6 +1,7 @@
 package com.mall.admin.application.api.mm;
 
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import com.mall.admin.application.service.mm.MemberService;
@@ -37,13 +38,13 @@ public class MemberMgrApi {
     @ResponseBody
     @GetMapping(value = "/list")
     @ApiOperation("得到会员信息列表")
-    public ResponseResult list(@RequestParam Map<String, Object> params) {
-        ResponseResult res;
+    public ResponsePageResult list(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res;
         try {
             res = memberService.getMemberList(PageParam.getPageParam(params),params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

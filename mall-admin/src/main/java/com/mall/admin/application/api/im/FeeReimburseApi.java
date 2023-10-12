@@ -7,6 +7,7 @@ import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.infrastructure.camunda.InstanceTaskService;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -52,14 +53,14 @@ public class FeeReimburseApi extends BizNoApi {
     @ResponseBody
     @GetMapping("/list")
     @ApiOperation("查询费用报销业务列表")
-    public ResponseResult getFeeReimburseList(@RequestParam Map<String, Object> params) {
-        ResponseResult res;
+    public ResponsePageResult getFeeReimburseList(@RequestParam Map<String, Object> params) {
+        ResponsePageResult res;
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             res = feeReimburseService.getFeeReimburseList(pageParam, params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

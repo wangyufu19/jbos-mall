@@ -16,6 +16,7 @@ import com.mall.admin.domain.entity.wf.ProcessInst;
 import com.mall.admin.domain.entity.wf.ProcessTask;
 import com.mall.admin.infrastructure.repository.im.MaterialInStoreRepo;
 import com.mall.common.page.PageParam;
+import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,13 @@ public class MaterialInStoreService {
     /**
      * 得到物品入库列表
      *
+     * @param pageParam
      * @param parameterObject
      * @return
      */
-    public ResponseResult getMaterialInStoreList(PageParam pageParam, Map<String, Object> parameterObject) {
+    public ResponsePageResult getMaterialInStoreList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<MaterialInStore> materialBuyList = materialInStoreRepo.getMaterialInStoreList(pageParam,parameterObject);
-        return ResponseResult.ok().isPage(true).setData(materialBuyList);
+        return ResponsePageResult.ok().isPage(true).setData(materialBuyList);
     }
 
     /**
