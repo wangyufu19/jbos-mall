@@ -1,6 +1,6 @@
 package com.mall.gateway.infrastructure.repository.auth;
 
-import com.mall.gateway.infrastructure.repository.mapper.auth.UserAuthMapper;
+import com.mall.gateway.infrastructure.repository.auth.mapper.UserAuthMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

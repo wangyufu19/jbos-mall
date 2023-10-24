@@ -3,12 +3,16 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 8081
+  port: 8082
 spring:
   application:
     name: mall-admin
   profiles:
     active: dev
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
 #actuator 端点信息配置
 management:
   endpoints:
@@ -28,7 +32,9 @@ jasypt:
     password: 123456
 ---
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile: dev
   boot:
     admin:
       client:
@@ -36,10 +42,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.1.130:8848  # 配置 nacos 的服务地址
+        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
         group: dev  # 配置组，默认就是 DEFAULT_GROUP
       config:
-        server-addr: 192.168.1.130:8848  # 配置 nacos 的服务地址
+        server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
         file-extension: yml  # 加载 dataid 配置文件的后缀，默认是 properties
         group: dev  # 配置组，默认就是 DEFAULT_GROUP
 #eureka:
@@ -50,9 +56,9 @@ spring:
 #  client:
 #    fetch-registry: true
 #    register-with-eureka: true
-#    registry-fetch-interval-seconds: 10 #间隔多久拉取服务注册信息，默认为30秒
+#    registry-fetch-interval-seconds: 5 #获取注册信息的时间间隔（s），默认为30秒
 #    service-url:
-#      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+#      defaultZone: http://127.0.0.1:8761/eureka/
 #Apollo 配置
 #apollo:
 #  meta: http://127.0.0.1:8080
@@ -63,7 +69,9 @@ spring:
 #      enabled: false                         #将 Apollo 加载提到初始化日志系统之前
 ---
 spring:
-  profiles: sit
+  config:
+    activate:
+      on-profile: sit
   cloud:
     nacos:
       discovery:

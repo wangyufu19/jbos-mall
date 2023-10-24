@@ -1,6 +1,6 @@
 package com.mall.gateway.infrastructure.repository.auth;
 
-import com.mall.gateway.infrastructure.repository.mapper.auth.CaptchaMapper;
+import com.mall.gateway.infrastructure.repository.auth.mapper.CaptchaMapper;
 import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
