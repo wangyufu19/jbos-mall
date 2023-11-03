@@ -1,5 +1,6 @@
 package com.mall.admin.common.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,41 +15,47 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.SecurityScheme;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.spring.web.plugins.WebFluxRequestHandlerProvider;
 import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.Nonnull;
 import javax.print.Doc;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 @Configuration
+@EnableKnife4j
 @EnableOpenApi
 public class SwaggerConfig{
-    @Autowired
-    private Environment environment;
+    /**
+     * createRestApi
+     * @return
+     */
     @Bean
     public Docket createRestApi() {
-        Docket docket= new Docket(DocumentationType.OAS_30)
-            .apiInfo(apiInfo()).enable(true)
-            .select()
-            //加了ApiOperation注解的类，才生成接口文档
-            .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-            //包下的类，才生成接口文档
-            //.apis(RequestHandlerSelectors.basePackage("com.mall.admin.application")
-            //代表所有路径
-            .paths(PathSelectors.any())
-            .build().securitySchemes(securitySchemes());
-        return docket;
+        return new Docket(DocumentationType.OAS_30)
+                .apiInfo(apiInfo())
+                .enable(true)
+                .select()
+                //加了ApiOperation注解的类，才生成接口文档
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                //包下的类，才生成接口文档
+                //.apis(RequestHandlerSelectors.basePackage("com.mall.admin.application")
+                //代表所有路径
+                .paths(PathSelectors.any())
+                .build()
+                .securitySchemes(securitySchemes())
+                .securityContexts(Collections.singletonList(securityContext()));
     }
 
     private ApiInfo apiInfo() {
@@ -64,6 +71,18 @@ public class SwaggerConfig{
             new ApiKey("token", "token", "header")
         );
     }
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(Collections.singletonList(new SecurityReference("Authorization", scopes())))
+                .build();
+    }
+
+    private AuthorizationScope[] scopes() {
+        return new AuthorizationScope[]{
+                new AuthorizationScope("web", "All scope is trusted!")
+        };
+    }
+
     /**
      * Spring Boot 2.6 与 swagger 不兼容解决
      */

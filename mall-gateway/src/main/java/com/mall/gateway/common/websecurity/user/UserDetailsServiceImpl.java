@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl implements ReactiveUserDetailsService {
             if (USER_ADMIN.equals(username)) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(ROLE_ADMIN));
             } else {
-                if (userRoles == null || userRoles.size() <= 0) {
+                if (userRoles == null || userRoles.size() == 0) {
                     throw new AccountGrantException("Bad grant");
                 }
                 for (HashMap role : userRoles) {
@@ -52,17 +52,15 @@ public class UserDetailsServiceImpl implements ReactiveUserDetailsService {
             String nickName = StringUtils.replaceNull(userMap.get("NICKNAME"));
             String password = StringUtils.replaceNull(userMap.get("PASSWORD"));
             String depId = StringUtils.replaceNull(userMap.get("DEPID"));
-            String depName = StringUtils.replaceNull(userMap.get("DEPNAME"));
             String orgId = StringUtils.replaceNull(userMap.get("ORGID"));
-            JwtUser jwtUser = new JwtUser();
-            jwtUser.setUsername(username);
-            jwtUser.setNickName(nickName);
-            jwtUser.setPassword(password);
-            jwtUser.setDepId(depId);
-            jwtUser.setDepName(depName);
-            jwtUser.setOrgId(orgId);
-            jwtUser.setAuthorities(grantedAuthorities);
-            return Mono.just(jwtUser);
+            UserDetailsExt userDetails = new UserDetailsExt();
+            userDetails.setUsername(username);
+            userDetails.setNickName(nickName);
+            userDetails.setPassword(password);
+            userDetails.setDepId(depId);
+            userDetails.setOrgId(orgId);
+            userDetails.setAuthorities(grantedAuthorities);
+            return Mono.just(userDetails);
         }
     }
 

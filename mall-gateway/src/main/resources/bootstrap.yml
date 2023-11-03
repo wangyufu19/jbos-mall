@@ -1,20 +1,9 @@
-server:
-  tomcat:
-    uri-encoding: UTF-8
-    max-threads: 1000
-    min-spare-threads: 30
-  port: 8060
 spring:
   application:
     name: mall-gateway
   profiles:
     active: dev
-  main:
-    allow-bean-definition-overriding: true
-    allow-circular-references: true
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+
 #actuator 端点信息配置
 management:
   endpoints:
@@ -34,6 +23,9 @@ jasypt:
     password: 8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92
 ---
 spring:
+  config:
+    activate:
+      on-profile: dev
   boot:
     admin:
       client:
@@ -47,9 +39,6 @@ spring:
         server-addr: 127.0.0.1:8848  # 配置 nacos 的服务地址
         file-extension: yaml  # 加载 dataid 配置文件的后缀，默认是 properties
         group: dev  # 配置组，默认就是 DEFAULT_GROUP
-  config:
-    activate:
-      on-profile: dev
 swagger:
   # 开启swagger
   enabled: true

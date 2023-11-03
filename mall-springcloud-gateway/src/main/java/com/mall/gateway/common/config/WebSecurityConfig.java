@@ -115,8 +115,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 // 登录认证处理
                 .authenticationManager(reactiveAuthenticationManager())
-                .securityContextRepository(new DefaultSecurityContextRepository())
-                .addFilterAfter(new JwtWebFilter(), SecurityWebFiltersOrder.FIRST)
+                //.securityContextRepository(new DefaultSecurityContextRepository())
+               // .addFilterAfter(new JwtWebFilter(), SecurityWebFiltersOrder.FIRST)
                 // 请求拦截处理
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers(this.getExcludeUris()).permitAll()

@@ -1,13 +1,12 @@
 spring:
   security:
     filter:
-      loginUri: /*/*/login
-      logoutUri: /*/*/logout
-      excludeUri: /*/*/login,/*/*/logout,/favicon.ico,/*/*/captcha,/*/*/demo/**,/doc.html,/swagger**/**,/webjars/**,/v3/**,/engine-rest/**
-
+      loginUri: /api/auth/login
+      logoutUri: /api/auth/logout
+      excludeUri: /api/auth/**,,/*/*/demo/**,/doc.html,/favicon.ico,/swagger**/**,/webjars/**,/v3/**,/*/*/v3/**,/engine-rest/**
   jwt:
     secret: 123456  #密钥
-    expireTime: 60   #过期时间，默认60分钟
+    expireTime: 720   #过期时间，默认60分钟
   redis:
     enable: false
     database: 0
@@ -31,7 +30,6 @@ spring:
             allowedMethods: "GET, POST, PUT, DELETE, OPTIONS"
             allowedHeaders: "*"
         add-to-simple-url-handler-mapping: true
-      excludeUri: /**/login,/**/logout,/**/captcha,/**/registry,/**/error/,/**/swagger-ui.html,/**/webjars/**,/**/swagger-resources/**,/**/v2/**,/**/engine-rest/**
       default-filters:
         - name: CircuitBreaker
           args:

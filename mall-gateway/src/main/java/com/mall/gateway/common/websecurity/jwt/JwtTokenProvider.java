@@ -9,11 +9,8 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.mall.gateway.common.websecurity.user.JwtUser;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -39,10 +36,17 @@ public class JwtTokenProvider {
      */
     public static final String TOKEN = "accessToken";
     /**
+     *freshToken名称
+     */
+    public static final String FRESH_TOKEN = "freshToken";
+    /**
      * jwtProperties
      */
     private JwtProperties jwtProperties;
-
+    /**
+     * AUTHORITIES
+     */
+    public static final String AUTHORITIES = "authorities";
     /**
      * JwtTokenProvider
      *
@@ -80,7 +84,7 @@ public class JwtTokenProvider {
      * @param authorities
      * @return token
      */
-    public String generateToken(Map<String, String> signData, Collection<? extends GrantedAuthority> authorities) {
+    public String generateToken(Map<String, String> signData) {
         String token = "";
         Date iatDate = new Date();
         Date expireDate;
@@ -98,15 +102,6 @@ public class JwtTokenProvider {
                 for (Map.Entry<String, String> entry : signData.entrySet()) {
                     builder.withClaim(entry.getKey(), entry.getValue());
                 }
-            }
-            if (authorities != null) {
-                List grantedAuthorities = new ArrayList();
-                for (GrantedAuthority authority : authorities) {
-                    grantedAuthorities.add(authority.getAuthority());
-                }
-                String[] items = new String[authorities.size()];
-                grantedAuthorities.toArray(items);
-                builder.withArrayClaim(JwtUser.AUTHORITIES, items);
             }
             builder.withIssuedAt(iatDate).withExpiresAt(expireDate);
             //签名
@@ -128,18 +123,17 @@ public class JwtTokenProvider {
         Map<String, String> signData = new HashMap<>();
         Map<String, Claim> claimMap = jwt.getClaims();
         for (Map.Entry<String, Claim> entry : claimMap.entrySet()) {
-            if (!JwtUser.AUTHORITIES.equals(entry.getKey())) {
+            if (!JwtTokenProvider.AUTHORITIES.equals(entry.getKey())) {
                 signData.put(entry.getKey(), entry.getValue().asString());
             }
         }
-        List<GrantedAuthority> grantedAuthorities = this.getGrantedAuthorityFromJWT(token, JwtUser.AUTHORITIES);
         if (this.verifyToken(token)) {
             Date issuedAt = jwt.getIssuedAt();
             Date expiresAt = jwt.getExpiresAt();
             log.info("issuedAt={};expiresAt={};t={}", issuedAt, expiresAt, (expiresAt.getTime() - System.currentTimeMillis()) / 60 / 1000);
             String freshToken = "";
             if ((expiresAt.getTime() - System.currentTimeMillis()) <= this.jwtProperties.getFreshTime()) {
-                freshToken = this.generateToken(signData, grantedAuthorities);
+                freshToken = this.generateToken(signData);
             }
             return freshToken;
         } else {
@@ -179,29 +173,6 @@ public class JwtTokenProvider {
         try {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getClaim(key).asString();
-        } catch (JWTDecodeException jwtDecodeException) {
-            return null;
-        }
-    }
-
-    /**
-     * 获取荷载信息：从 token 的荷载部分里解析加密数据。
-     *
-     * @param token
-     * @param key
-     * @return GrantedAuthority
-     */
-    public List<GrantedAuthority> getGrantedAuthorityFromJWT(String token, String key) {
-        try {
-            DecodedJWT jwt = JWT.decode(token);
-            List<String> list = jwt.getClaim(key).asList(String.class);
-            List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-            if (list != null) {
-                for (String item : list) {
-                    authorities.add(new SimpleGrantedAuthority(item));
-                }
-            }
-            return authorities;
         } catch (JWTDecodeException jwtDecodeException) {
             return null;
         }

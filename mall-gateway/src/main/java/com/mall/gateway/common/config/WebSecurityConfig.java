@@ -1,61 +1,58 @@
 package com.mall.gateway.common.config;
 
-
 import com.alibaba.nacos.common.utils.JacksonUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mall.common.response.ResponseResult;
 import com.mall.gateway.common.config.properties.WebSecurityProperties;
-import com.mall.gateway.common.websecurity.TokenAuthenticationManager;
+import com.mall.gateway.common.util.WebRequestUtil;
+import com.mall.gateway.common.websecurity.DefaultReactiveAuthenticationManager;
 import com.mall.gateway.common.websecurity.jwt.JwtTokenProvider;
-import com.mall.gateway.common.websecurity.user.JwtUser;
+import com.mall.gateway.common.websecurity.user.UserDetailsExt;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.PathContainer;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.security.authentication.DelegatingReactiveAuthenticationManager;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.WebFilterExchange;
+import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
+import org.springframework.security.web.server.authentication.ServerAuthenticationConverter;
 import org.springframework.security.web.server.authentication.ServerAuthenticationFailureHandler;
 import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutHandler;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
-import org.springframework.util.AntPathMatcher;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import org.springframework.util.StringUtils;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilter;
-import org.springframework.web.server.WebFilterChain;
+import org.springframework.web.util.pattern.PathPatternParser;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-
 
 /**
  * WebSecurityConfig
@@ -69,70 +66,27 @@ import java.util.Map;
 @EnableConfigurationProperties({WebSecurityProperties.class})
 public class WebSecurityConfig {
     @Autowired
-    private ReactiveUserDetailsService userDetailsService;
-    @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private WebSecurityProperties webSecurityProperties;
     @Autowired
-    private TokenAuthenticationManager tokenAuthenticationManager;
-    /**
-     * antPathMatcher
-     */
-    private AntPathMatcher antPathMatcher = new AntPathMatcher(File.separator);
-
-    /**
-     * getExcludeUris
-     *
-     * @return excludeUris
-     */
-    private String[] getExcludeUris() {
-        String excludeUri = webSecurityProperties.getExcludeUri();
-        String[] excludeUris = excludeUri.split(",");
-        return excludeUris;
-    }
-
-    private boolean isExcludeUri(String requestURI) {
-        antPathMatcher.setPathSeparator(AntPathMatcher.DEFAULT_PATH_SEPARATOR);
-        String[] excludeUris = getExcludeUris();
-        boolean matches = false;
-        for (String uri : excludeUris) {
-            matches = antPathMatcher.match(uri, requestURI);
-            if (matches) {
-                break;
-            }
-        }
-        return matches;
-    }
-
-    private String getRequestToken(ServerHttpRequest request) {
-
-        String accessToken = request.getHeaders().getFirst(JwtTokenProvider.TOKEN);
-        if (accessToken == null) {
-            return request.getQueryParams().getFirst(JwtTokenProvider.TOKEN);
-        } else {
-            return accessToken;
-        }
-    }
+    private DefaultReactiveAuthenticationManager defaultReactiveAuthenticationManager;
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity httpSecurity) {
+        String[] excludeUris = WebRequestUtil.splitExcludeUri(webSecurityProperties.getExcludeUri());
         httpSecurity
-                // 登录认证处理
-                .authenticationManager(reactiveAuthenticationManager())
-                .securityContextRepository(new DefaultSecurityContextRepository())
-                .addFilterAfter(new JwtWebFilter(), SecurityWebFiltersOrder.FIRST)
+                .csrf().disable()  //禁用csrf
+                .httpBasic().disable() //httpBasic
+                .formLogin().disable() //formLogin
+                .securityContextRepository(new DefaultSecurityContextRepository(webSecurityProperties.getLoginUri()))
                 // 请求拦截处理
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers(this.getExcludeUris()).permitAll()
+                        .pathMatchers(excludeUris).permitAll()
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
                         .anyExchange().authenticated()
                 )
-                // 登录URI及成功和失败处理器
-                .formLogin().loginPage(webSecurityProperties.getLoginUri())
-                .authenticationSuccessHandler(new DefaultAuthenticationSuccessHandler())
-                .authenticationFailureHandler(new DefaultAuthenticationFailureHandler())
-                .and()
+                .addFilterAt(this.authenticationWebFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
                 // 登出URI及登出成功处理器
                 .logout().logoutUrl(webSecurityProperties.getLogoutUri())
                 .logoutHandler(new DefaultServerLogoutHandler()).logoutSuccessHandler(new DefaultServerLogoutSuccessHandler())
@@ -158,10 +112,10 @@ public class WebSecurityConfig {
                     return response.writeWith(Mono.just(response.bufferFactory().wrap(JacksonUtils.toJson(ResponseResult.error("对不起，没有权限！")).getBytes())));
                 })
                 .and()
-                .csrf().disable()  //禁用csrf
-                .cors(); //启用跨域请求
+                .cors().configurationSource(new DefaultCorsConfigurationSource()); //启用跨域请求
         return httpSecurity.build();
     }
+
 
     /**
      * BCrypt密码编码
@@ -171,19 +125,27 @@ public class WebSecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public ReactiveAuthenticationManager reactiveAuthenticationManager() {
-        LinkedList<ReactiveAuthenticationManager> managers = new LinkedList<>();
-        managers.add(authentication -> {
-            // 其他登陆方式 (比如手机号验证码登陆) 可在此设置不得抛出异常或者 Mono.error
-            return Mono.empty();
-        });
-        // 必须放最后不然会优先使用用户名密码校验但是用户名密码不对时此 AuthenticationManager 会调用 Mono.error 造成后面的 AuthenticationManager 不生效
-        managers.add(new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService));
-        return new DelegatingReactiveAuthenticationManager(managers);
+
+    public class DefaultCorsConfigurationSource implements CorsConfigurationSource {
+
+        public CorsConfiguration getCorsConfiguration(ServerWebExchange exchange) {
+            CorsConfiguration config = new CorsConfiguration();
+            config.addAllowedOriginPattern("*");
+            config.addAllowedHeader("*");
+            config.addAllowedMethod("*");
+            config.setAllowCredentials(true);
+            config.setMaxAge(3600L);
+            return config;
+        }
     }
 
     public class DefaultSecurityContextRepository implements ServerSecurityContextRepository {
+        private String loginUrl = "/login";
+
+        public DefaultSecurityContextRepository(String loginUrl) {
+            this.loginUrl = loginUrl;
+        }
+
         @Override
         public Mono<Void> save(ServerWebExchange exchange, SecurityContext context) {
             return Mono.empty();
@@ -193,48 +155,64 @@ public class WebSecurityConfig {
         public Mono<SecurityContext> load(ServerWebExchange exchange) {
             ServerHttpRequest request = exchange.getRequest();
             String requestURI = request.getURI().getPath();
-            //无需鉴权URI
-            if (isExcludeUri(requestURI)) {
+            // 登录URI无需存储用户安全认证
+            if (PathPatternParser.defaultInstance.parse(this.loginUrl).matches(PathContainer.parsePath(requestURI))) {
                 return Mono.empty();
             }
-            String accessToken = getRequestToken(request);
-            String username = jwtTokenProvider.getSignDataFromJWT(accessToken, "username");
-            String nickName = jwtTokenProvider.getSignDataFromJWT(accessToken, "nickName");
-            List<GrantedAuthority> grantedAuthorities = jwtTokenProvider.getGrantedAuthorityFromJWT(accessToken, JwtUser.AUTHORITIES);
-            UserDetails userDetails = new JwtUser(username, nickName, grantedAuthorities);
-            // 构建认证过的token
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            String accessToken = WebRequestUtil.getRequestToken(request);
             if (StringUtils.hasLength(accessToken)) {
-                return tokenAuthenticationManager.authenticate(authentication
-                ).map(SecurityContextImpl::new);
+                String username = jwtTokenProvider.getSignDataFromJWT(accessToken, UserDetailsExt.USERNAME_PARAMETER);
+                String nickName = jwtTokenProvider.getSignDataFromJWT(accessToken, UserDetailsExt.NICKNAME_PARAMETER);
+                UserDetails userDetails = new UserDetailsExt(username, nickName, null);
+                // 构建认证过的token
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                return Mono.just(authentication).map(SecurityContextImpl::new);
             }
             return Mono.empty();
         }
     }
 
-    public class JwtWebFilter implements WebFilter {
-        @Override
-        public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-            ServerHttpRequest request = exchange.getRequest();
-            ServerHttpResponse response = exchange.getResponse();
-            response.getHeaders().add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-            String requestURI = request.getURI().getPath();
-            //无需鉴权URI
-            if (isExcludeUri(requestURI)) {
-                return chain.filter(exchange);
+
+    private AuthenticationWebFilter authenticationWebFilter() {
+
+        AuthenticationWebFilter authenticationWebFilter = new AuthenticationWebFilter(this.defaultReactiveAuthenticationManager);
+        authenticationWebFilter.setSecurityContextRepository(new DefaultSecurityContextRepository(webSecurityProperties.getLoginUri()));
+        authenticationWebFilter.setServerAuthenticationConverter(new ServerAuthenticationConverter() {
+            private String usernameParameter = "username";
+            private String passwordParameter = "password";
+
+            @Override
+            public Mono<Authentication> convert(ServerWebExchange exchange) {
+                MediaType mediaType = exchange.getRequest().getHeaders().getContentType();
+                if (mediaType != null && mediaType.toString().startsWith(MediaType.APPLICATION_JSON_VALUE)) {
+                    return DataBufferUtils.join(exchange.getRequest().getBody())
+                            .flatMap(dataBuffer -> {
+                                byte[] bytes = new byte[dataBuffer.readableByteCount()];
+                                dataBuffer.read(bytes);
+                                // 把request的json数据转换为Map
+                                Map<String, String> loginData = new HashMap<>();
+                                try {
+                                    loginData = new ObjectMapper().readValue(bytes, Map.class);
+                                } catch (IOException e) {
+                                    log.error(e.getMessage());
+                                }
+                                DataBufferUtils.release(dataBuffer);
+                                String username = loginData.get(usernameParameter);
+                                String password = loginData.get(passwordParameter);
+                                return Mono.just(new UsernamePasswordAuthenticationToken(username, password));
+                            });
+                }
+                return Mono.empty();
             }
-            String accessToken = getRequestToken(exchange.getRequest());
-            if (!StringUtils.hasLength(accessToken)) {
-                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                return response.writeWith(Mono.just(response.bufferFactory().wrap(JacksonUtils.toJson(ResponseResult.error("access token is empty！")).getBytes())));
-            }
-            if (!jwtTokenProvider.verifyToken(accessToken)) {
-                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                return response.writeWith(Mono.just(response.bufferFactory().wrap(JacksonUtils.toJson(ResponseResult.error("token失效或认证过期！")).getBytes())));
-            }
-            return chain.filter(exchange);
-        }
+        });
+        authenticationWebFilter.setAuthenticationSuccessHandler(new DefaultAuthenticationSuccessHandler());
+        authenticationWebFilter.setAuthenticationFailureHandler(new DefaultAuthenticationFailureHandler());
+        authenticationWebFilter.setRequiresAuthenticationMatcher(
+                ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, this.webSecurityProperties.getLoginUri())
+        );
+        return authenticationWebFilter;
     }
+
 
     public class DefaultAuthenticationSuccessHandler implements ServerAuthenticationSuccessHandler {
         /**
@@ -247,21 +225,20 @@ public class WebSecurityConfig {
         public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
             ServerWebExchange exchange = webFilterExchange.getExchange();
             ServerHttpResponse response = exchange.getResponse();
-            response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+            response.getHeaders().add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
             //获取用户对象
-            JwtUser principal = (JwtUser) authentication.getPrincipal(); // 获取用户对象
+            UserDetailsExt principal = (UserDetailsExt) authentication.getPrincipal(); // 获取用户对象
             Map<String, String> signData = new HashMap<String, String>();
-            signData.put("username", principal.getUsername());
-            signData.put("nickName", principal.getNickName());
-            signData.put("depId", principal.getDepId());
-            signData.put("depName", principal.getDepName());
-            signData.put("orgId", principal.getOrgId());
-            String token = jwtTokenProvider.generateToken(signData, principal.getAuthorities());
+            signData.put(UserDetailsExt.USERNAME_PARAMETER, principal.getUsername());
+            signData.put(UserDetailsExt.NICKNAME_PARAMETER, principal.getNickName());
+            signData.put(UserDetailsExt.DEPID_PARAMETER, principal.getDepId());
+            signData.put(UserDetailsExt.ORGID_PARAMETER, principal.getOrgId());
+            String token = jwtTokenProvider.generateToken(signData);
             ResponseResult r = ResponseResult.ok("登录成功！");
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("username", principal.getUsername());
-            data.put("nickName", principal.getNickName());
-            data.put("accessToken", token);
+            data.put(UserDetailsExt.USERNAME_PARAMETER, principal.getUsername());
+            data.put(UserDetailsExt.NICKNAME_PARAMETER, principal.getNickName());
+            data.put(JwtTokenProvider.TOKEN, token);
             r.setData(data);
             return response.writeWith(Mono.just(response.bufferFactory().wrap(JacksonUtils.toJson(r).getBytes(CharsetUtil.UTF_8))));
         }
@@ -279,7 +256,7 @@ public class WebSecurityConfig {
         public Mono<Void> onAuthenticationFailure(WebFilterExchange webFilterExchange, AuthenticationException exception) {
             ServerWebExchange exchange = webFilterExchange.getExchange();
             ServerHttpResponse response = exchange.getResponse();
-            response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+            response.getHeaders().add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
             ResponseResult r = ResponseResult.error(exception.getMessage());
             if (exception.getMessage().indexOf("Bad captcha") != -1) {
                 r = ResponseResult.error("验证码错误！");
@@ -303,11 +280,12 @@ public class WebSecurityConfig {
          */
         public Mono<Void> logout(WebFilterExchange exchange, Authentication authentication) {
             if (authentication != null) {
-                JwtUser user = (JwtUser) authentication.getPrincipal();
+                ReactiveSecurityContextHolder.clearContext();
+                UserDetailsExt user = (UserDetailsExt) authentication.getPrincipal();
                 String username = user.getUsername();
                 log.info("username: {}  is offline now", username);
             }
-            return null;
+            return Mono.empty();
         }
     }
 
@@ -322,7 +300,7 @@ public class WebSecurityConfig {
          */
         public Mono<Void> onLogoutSuccess(WebFilterExchange exchange, Authentication authentication) {
             ServerHttpResponse response = exchange.getExchange().getResponse();
-            response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+            response.getHeaders().add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.setStatusCode(HttpStatus.OK);
             ResponseResult r = ResponseResult.ok("退出成功！");
             return response.writeWith(Mono.just(response.bufferFactory().wrap(JacksonUtils.toJson(r).getBytes(CharsetUtil.UTF_8))));

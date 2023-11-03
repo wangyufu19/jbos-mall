@@ -57,6 +57,11 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.jbos.mall</groupId>
             <artifactId>mall-common</artifactId>
             <version>1.0.0</version>

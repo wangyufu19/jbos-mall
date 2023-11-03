@@ -1,8 +1,7 @@
 package com.mall.gateway.common.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -10,7 +9,6 @@ import org.springframework.cloud.gateway.support.NameUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.Environment;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -21,17 +19,14 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
-
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.google.common.collect.Lists.newArrayList;
 
 @Configuration
 @EnableOpenApi
+@EnableKnife4j
 @Primary
 public class SwaggerConfig implements SwaggerResourcesProvider {
     /**
@@ -49,7 +44,7 @@ public class SwaggerConfig implements SwaggerResourcesProvider {
      * 是否开启swagger
      */
     @Value(value = "${swagger.enabled}")
-    private Boolean swaggerEnabled;
+    private boolean swaggerEnabled;
     /**
      * routeLocator
      */
@@ -68,8 +63,8 @@ public class SwaggerConfig implements SwaggerResourcesProvider {
      */
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo()).enable(true)
+        return new Docket(DocumentationType.OAS_30)
+                .apiInfo(apiInfo())
                 .enable(swaggerEnabled)
                 .select()
                 //加了ApiOperation注解的类，才生成接口文档
@@ -109,13 +104,12 @@ public class SwaggerConfig implements SwaggerResourcesProvider {
         return new AuthorizationScope[]{
                 new AuthorizationScope("web", "All scope is trusted!")
         };
-
     }
 
     /**
      * 根据当前所有的微服务路由信息，创建对应的SwaggerResource
      */
-    @Override
+
     public List<SwaggerResource> get() {
         List<SwaggerResource> finalResources;
         Set<String> routes = new LinkedHashSet<>(16);
@@ -145,12 +139,6 @@ public class SwaggerConfig implements SwaggerResourcesProvider {
             finalResources = routes.stream().map(routeId -> swaggerResource(routeId, routeId + "/v3/api-docs")).collect(Collectors.toList());
         }
         List<SwaggerResource> resources = new ArrayList<>(finalResources);
-
-        // resources过滤掉网关的SwaggerResource, 我们一般也不会在网关中编写业务controller
-//        if (StringUtils.isNotBlank(applicationName)) {
-//            resources = resources.stream().filter(x -> !applicationName.equalsIgnoreCase(x.getName())).collect(Collectors.toList());
-//        }
-        // 排序
         resources.sort(Comparator.comparing(x -> x.getName().length()));
         return resources;
     }
@@ -165,7 +153,7 @@ public class SwaggerConfig implements SwaggerResourcesProvider {
     private SwaggerResource swaggerResource(String name, String location) {
         SwaggerResource swaggerResource = new SwaggerResource();
         swaggerResource.setName(name);
-        swaggerResource.setLocation(location + "?group=" + name);
+        swaggerResource.setLocation(location);
         swaggerResource.setSwaggerVersion("3.0");
         return swaggerResource;
     }

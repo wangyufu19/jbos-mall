@@ -1,4 +1,5 @@
 package com.mall.admin.application.api.sm;
+
 import com.mall.admin.application.service.sm.FuncMgrService;
 import com.mall.admin.application.service.sm.UserMgrService;
 import com.mall.admin.domain.entity.sm.Func;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 /**
  * UserMgrApi
+ *
  * @author youfu.wang
  * @date 2019-01-31
  */
@@ -31,48 +33,42 @@ public class UserMgrApi {
     @Autowired
     private FuncMgrService funcMgrService;
 
-    private String getRequestToken() {
-        // 获得request对象
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        String accessToken = request.getHeader("accessToken");
-        if (accessToken == null) {
-            return request.getParameter("accessToken");
-        } else {
-            return accessToken;
-        }
-    }
+
+
     /**
      * 新增用户信息数据
+     *
      * @param params
      * @return
      */
     @ResponseBody
     @PostMapping(value = "/add")
     @ApiOperation("新增用户信息数据")
-    public ResponseResult add(@RequestBody Map<String, Object> params){
-        ResponseResult res= ResponseResult.ok();
-        try{
+    public ResponseResult add(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
             userMgrService.addUserInfo(params);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
+
     /**
      * 查询用户菜单导航数据
+     *
      * @param params
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/getUserFunc", method = RequestMethod.GET)
+    @GetMapping("/getUserFunc")
     @ApiOperation("查询用户功能数据")
     public ResponseResult getUserFunc(@RequestParam Map<String, Object> params) {
-        ResponseResult res= ResponseResult.ok();
+        ResponseResult res = ResponseResult.ok();
         String username = StringUtils.replaceNull(params.get("userId"));
         List<Func> funcRouteList = null;
-        funcRouteList=funcMgrService.getUserFuncList(username,username);
+        funcRouteList = funcMgrService.getUserFuncList(username, username);
         res.setData(funcRouteList);
         return res;
     }

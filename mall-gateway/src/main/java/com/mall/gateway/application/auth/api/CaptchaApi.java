@@ -1,4 +1,4 @@
-package com.mall.gateway.application.api.auth;
+package com.mall.gateway.application.auth.api;
 
 import com.google.code.kaptcha.Producer;
 import com.mall.gateway.application.auth.service.CaptchaService;
@@ -28,7 +28,7 @@ import java.util.UUID;
  * @date 2019-01-31
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @Slf4j
 @Api(tags = "登录验证码接口")
 public class CaptchaApi {

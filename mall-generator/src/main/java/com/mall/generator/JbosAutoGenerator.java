@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine;
-import org.jetbrains.annotations.NotNull;
+
+
 
 import java.util.Scanner;
 import java.util.function.BiConsumer;
@@ -32,11 +33,11 @@ public final class JbosAutoGenerator {
         this.templateConfigBuilder = new com.baomidou.mybatisplus.generator.config.TemplateConfig.Builder();
     }
 
-    public static JbosAutoGenerator create(@NotNull String url, String username, String password) {
+    public static JbosAutoGenerator create(String url, String username, String password) {
         return new JbosAutoGenerator(new DataSourceConfig.Builder(url, username, password));
     }
 
-    public static JbosAutoGenerator create(@NotNull DataSourceConfig.Builder dataSourceConfigBuilder) {
+    public static JbosAutoGenerator create(DataSourceConfig.Builder dataSourceConfigBuilder) {
         return new JbosAutoGenerator(dataSourceConfigBuilder);
     }
 

@@ -3,7 +3,7 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 8082
+  port: 8080
 spring:
   application:
     name: mall-admin
@@ -12,7 +12,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 #actuator 端点信息配置
 management:
   endpoints:
