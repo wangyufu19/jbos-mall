@@ -3,7 +3,6 @@ import com.mall.admin.application.service.sm.FuncMgrService;
 import com.mall.admin.application.service.sm.UserMgrService;
 import com.mall.admin.domain.entity.sm.Func;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +69,7 @@ public class UserMgrApi {
     @ApiOperation("查询用户功能数据")
     public ResponseResult getUserFunc(@RequestParam Map<String, Object> params) {
         ResponseResult res= ResponseResult.ok();
-        String username = StringUtils.replaceNull(params.get("userId"));
+        String username = String.valueOf(params.get("userId"));
         List<Func> funcRouteList = null;
         funcRouteList=funcMgrService.getUserFuncList(username,username);
         res.setData(funcRouteList);

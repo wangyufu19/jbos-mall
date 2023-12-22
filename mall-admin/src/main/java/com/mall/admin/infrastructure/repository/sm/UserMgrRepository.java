@@ -2,7 +2,6 @@ package com.mall.admin.infrastructure.repository.sm;
 
 import com.mall.admin.domain.entity.sm.UserInfo;
 import com.mall.admin.infrastructure.repository.sm.mapper.UserMapper;
-import com.mall.common.utils.StringUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,11 +41,11 @@ public class UserMgrRepository {
         if(dataMap!=null){
             UserInfo userInfo=new UserInfo();
 //			userInfo.setUserId(String.valueOf(dataMap.get("ID")));
-//			userInfo.setLoginName(StringUtils.replaceNull(dataMap.get("LOGIN_NAME")));
-//			userInfo.setUsername(StringUtils.replaceNull(dataMap.get("USER_NAME")));
-//			userInfo.setUserStatus(StringUtils.replaceNull(dataMap.get("USER_STATUS")));
-//			userInfo.setOrgId(StringUtils.replaceNull(dataMap.get("ORG_ID")));
-//			userInfo.setDepId(StringUtils.replaceNull(dataMap.get("DEP_ID")));
+//			userInfo.setLoginName(String.valueOf(dataMap.get("LOGIN_NAME")));
+//			userInfo.setUsername(String.valueOf(dataMap.get("USER_NAME")));
+//			userInfo.setUserStatus(String.valueOf(dataMap.get("USER_STATUS")));
+//			userInfo.setOrgId(String.valueOf(dataMap.get("ORG_ID")));
+//			userInfo.setDepId(String.valueOf(dataMap.get("DEP_ID")));
             return userInfo;
         }else{
             return null;
@@ -81,7 +80,7 @@ public class UserMgrRepository {
         String salt = RandomStringUtils.randomAlphanumeric(20);
         parameterObject.put("salt",salt);
         PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-        parameterObject.put("password",passwordEncoder.encode(StringUtils.replaceNull(parameterObject.get("password"))));
+        parameterObject.put("password",passwordEncoder.encode(String.valueOf(parameterObject.get("password"))));
         userMapper.addUserInfo(parameterObject);
     }
     /**

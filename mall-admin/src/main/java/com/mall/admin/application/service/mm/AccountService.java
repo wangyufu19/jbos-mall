@@ -1,9 +1,9 @@
 package com.mall.admin.application.service.mm;
 
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import com.mall.admin.infrastructure.repository.sm.UserMgrRepository;
-import com.mall.common.utils.DateUtils;
-import com.mall.common.utils.StringUtils;
 import com.mall.admin.domain.entity.mm.Account;
 import com.mall.admin.domain.entity.mm.Member;
 import com.mall.admin.infrastructure.repository.mm.AccountRepo;
@@ -73,13 +73,13 @@ public class AccountService {
     public void registry(Map<String, Object> parameterObject) {
         parameterObject.put("seqId", UUID.randomUUID().toString());
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        parameterObject.put("password", passwordEncoder.encode(StringUtils.replaceNull(parameterObject.get("password"))));
+        parameterObject.put("password", passwordEncoder.encode(String.valueOf(parameterObject.get("password"))));
         this.accountRepo.registry(parameterObject);
         Member member = new Member();
-        member.setSeqId(StringUtils.getUUID());
+        member.setSeqId(IdUtil.randomUUID());
         member.setAccount(String.valueOf(parameterObject.get("account")));
-        member.setRegistryTime(DateUtils.getCurrentDate());
-        member.setCreateTime(DateUtils.getCurrentDate());
+        member.setRegistryTime(DateUtil.date());
+        member.setCreateTime(DateUtil.date());
         this.memberRepo.addMemberInfo(member);
 
         String id = UUID.randomUUID().toString();

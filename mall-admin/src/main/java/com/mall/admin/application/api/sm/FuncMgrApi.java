@@ -4,11 +4,11 @@ import com.mall.admin.application.service.sm.FuncMgrService;
 import com.mall.admin.domain.entity.sm.Func;
 import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,8 +45,8 @@ public class FuncMgrApi {
     @GetMapping("/getFuncChildrenNode")
     public ResponseResult getFuncChildrenNode(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String parentId = StringUtils.replaceNull(params.get("parentId"));
-        if (StringUtils.isNUll(parentId)) {
+        String parentId = String.valueOf(params.get("parentId"));
+        if (StringUtils.isEmpty(parentId)) {
             parentId = Func.ROOTFUNC_ID;
         }
         try {
@@ -90,8 +90,8 @@ public class FuncMgrApi {
     @ApiOperation("查询功能数据列表")
     public ResponseResult getFuncList(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String parentId = StringUtils.replaceNull(params.get("parentId"));
-        if (StringUtils.isNUll(parentId)) {
+        String parentId = String.valueOf(params.get("parentId"));
+        if (StringUtils.isEmpty(parentId)) {
             parentId = Func.ROOTFUNC_ID;
             params.put("parentId", parentId);
         }
@@ -116,8 +116,8 @@ public class FuncMgrApi {
     @ApiOperation("新增功能")
     public ResponseResult addFunc(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String parentId = StringUtils.replaceNull(params.get("parentId"));
-        if (StringUtils.isNUll(parentId)) {
+        String parentId = String.valueOf(params.get("parentId"));
+        if (StringUtils.isEmpty(parentId)) {
             parentId = Func.ROOTFUNC_ID;
             params.put("parentId", parentId);
         }
@@ -162,7 +162,7 @@ public class FuncMgrApi {
     @ApiOperation("删除功能")
     public ResponseResult deleteFunc(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String id = StringUtils.replaceNull(params.get("id"));
+        String id = String.valueOf(params.get("id"));
         try {
             funcMgrService.deleteFunc(id);
         } catch (Exception e) {

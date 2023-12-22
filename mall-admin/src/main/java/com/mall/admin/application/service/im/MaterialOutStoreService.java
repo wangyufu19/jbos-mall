@@ -1,6 +1,7 @@
 package com.mall.admin.application.service.im;
 
 
+import cn.hutool.core.util.IdUtil;
 import com.mall.admin.application.request.im.MaterialOutStoreDto;
 import com.mall.admin.application.request.wf.ProcessTaskDto;
 import com.mall.admin.application.service.sm.BusinessDict;
@@ -19,10 +20,10 @@ import com.mall.admin.infrastructure.repository.im.MaterialOutStoreRepo;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -144,7 +145,7 @@ public class MaterialOutStoreService {
                     processOutStoreAmt=materialStore.getSurplusAmt();
                 }
                 MaterialOutStoreList materialOutStoreList=new MaterialOutStoreList();
-                materialOutStoreList.setId(StringUtils.getUUID());
+                materialOutStoreList.setId(IdUtil.randomUUID());
                 materialOutStoreList.setBizId(bizId);
                 materialOutStoreList.setBizType(ProcessDefConstants.PROC_DEF_MATERIAL_OUT_STORE);
                 materialOutStoreList.setBatchNo(materialStore.getBatchNo());
@@ -215,9 +216,9 @@ public class MaterialOutStoreService {
         //删除物品领取基本信息
         materialOutStoreRepo.deleteMaterialOutStore(parameterObject);
         //释放物品领取库存
-        this.releaseMaterialStore(StringUtils.replaceNull(parameterObject.get("id")));
+        this.releaseMaterialStore(String.valueOf(parameterObject.get("id")));
         //删除物品领取清单
-        parameterObject.put("bizId", StringUtils.replaceNull(parameterObject.get("id")));
+        parameterObject.put("bizId", String.valueOf(parameterObject.get("id")));
         parameterObject.put("bizType", ProcessDefConstants.PROC_DEF_MATERIAL_OUT_STORE);
         materialOutStoreRepo.deleteMaterialOutStoreItem(parameterObject);
 
@@ -275,7 +276,7 @@ public class MaterialOutStoreService {
             Map<String, Object> variables = this.getMaterialOutStoreProcessVariables(processTask);
             //流程实例非最后节点下一节点的候选人不能为空
             if (!Role.ROLE_IM_ADMIN.equals(processTask.getActivityId())
-                    && StringUtils.isNUll(StringUtils.replaceNull(variables.get("nextAssignees")))) {
+                    && StringUtils.isEmpty(String.valueOf(variables.get("nextAssignees")))) {
                 res = ResponseResult.error(
                         ResponseResult.CODE_FAILURE,
                         "对不起，实例任务【"+variables.get("nextActivityName")+"】候选人不能为空！");

@@ -5,7 +5,6 @@ import com.mall.admin.application.service.wf.ProcessMgrService;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +77,7 @@ public class ProcessInstanceApi {
     public ResponseResult getProcessInstanceVariableList(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            String typeId=StringUtils.replaceNull(params.get("typeId"));
+            String typeId=String.valueOf(params.get("typeId"));
             List<Map<String, Object>> dictList= businessDict.getDictCodeList(typeId);
             res.setData(dictList);
         } catch (Exception e) {
@@ -92,8 +91,8 @@ public class ProcessInstanceApi {
     @ApiOperation("查询流程实例当前活动")
     public ResponseResult getProcessInstanceCurrentActivityId(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String processDefinitionId=StringUtils.replaceNull(params.get("processDefinitionId"));
-        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        String processDefinitionId=String.valueOf(params.get("processDefinitionId"));
+        String processInstanceId=String.valueOf(params.get("processInstanceId"));
         try {
             Map<String,Object> data=processMgrService.getProcessInstanceCurrentActivityId(
                     processDefinitionId,processInstanceId);
@@ -111,7 +110,7 @@ public class ProcessInstanceApi {
     @ApiOperation("查询流程实例列表")
     public ResponseResult suspendProcessInstance(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        String processInstanceId=String.valueOf(params.get("processInstanceId"));
         try {
             processMgrService.suspendProcessInstanceById(processInstanceId);
         } catch (Exception e) {
@@ -126,7 +125,7 @@ public class ProcessInstanceApi {
     @ApiOperation("查询流程实例列表")
     public ResponseResult activateProcessInstance(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        String processInstanceId=String.valueOf(params.get("processInstanceId"));
         try {
             processMgrService.activateProcessInstanceById(processInstanceId);
         } catch (Exception e) {
@@ -141,7 +140,7 @@ public class ProcessInstanceApi {
     @ApiOperation("删除流程实例")
     public ResponseResult deleteProcessInstance(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        String processInstanceId=String.valueOf(params.get("processInstanceId"));
         try {
             processMgrService.deleteProcessInstance(processInstanceId);
         } catch (Exception e) {

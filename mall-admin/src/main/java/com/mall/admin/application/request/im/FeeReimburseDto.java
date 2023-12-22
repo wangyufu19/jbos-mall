@@ -1,11 +1,11 @@
 package com.mall.admin.application.request.im;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import com.mall.admin.domain.entity.im.FeeReimburseItem;
 import com.mall.admin.domain.entity.im.Invoice;
 import com.mall.admin.domain.entity.im.FeeReimburse;
 import com.mall.admin.domain.entity.im.Payee;
-import com.mall.common.utils.DateUtils;
-import com.mall.common.utils.StringUtils;
 import lombok.Data;
 import org.springframework.util.CollectionUtils;
 
@@ -51,23 +51,23 @@ public class FeeReimburseDto {
         FeeReimburseDto dto = new FeeReimburseDto();
         //报销基本信息
         Map<String, Object> feeReimburseMap = (Map<String, Object>) params.get("formObj");
-        String action = StringUtils.replaceNull(params.get("action"));
+        String action = String.valueOf(params.get("action"));
         dto.setAction(action);
         FeeReimburse feeReimburse = new FeeReimburse();
         if ("create".equals(action)) {
-            feeReimburse.setId(StringUtils.getUUID());
+            feeReimburse.setId(IdUtil.randomUUID());
         } else {
-            feeReimburse.setId(StringUtils.replaceNull(feeReimburseMap.get("id")));
+            feeReimburse.setId(String.valueOf(feeReimburseMap.get("id")));
         }
 
-        feeReimburse.setBizNo(StringUtils.replaceNull(feeReimburseMap.get("bizNo")));
-        feeReimburse.setApplyUserId(StringUtils.replaceNull(feeReimburseMap.get("applyUserId")));
-        feeReimburse.setApplyDepId(StringUtils.replaceNull(feeReimburseMap.get("applyDepId")));
-        feeReimburse.setApplyTime(DateUtils.parse(StringUtils.replaceNull(feeReimburseMap.get("applyTime"))));
-        feeReimburse.setFeeType(StringUtils.replaceNull(feeReimburseMap.get("feeType")));
-        feeReimburse.setFeeTmplt(StringUtils.replaceNull(feeReimburseMap.get("feeTmplt")));
-        feeReimburse.setTotalAmt(Double.parseDouble(StringUtils.replaceNull(feeReimburseMap.get("totalAmt"))));
-        feeReimburse.setBizDesc(StringUtils.replaceNull(feeReimburseMap.get("bizDesc")));
+        feeReimburse.setBizNo(String.valueOf(feeReimburseMap.get("bizNo")));
+        feeReimburse.setApplyUserId(String.valueOf(feeReimburseMap.get("applyUserId")));
+        feeReimburse.setApplyDepId(String.valueOf(feeReimburseMap.get("applyDepId")));
+        feeReimburse.setApplyTime(DateUtil.parse(String.valueOf(feeReimburseMap.get("applyTime"))));
+        feeReimburse.setFeeType(String.valueOf(feeReimburseMap.get("feeType")));
+        feeReimburse.setFeeTmplt(String.valueOf(feeReimburseMap.get("feeTmplt")));
+        feeReimburse.setTotalAmt(Double.parseDouble(String.valueOf(feeReimburseMap.get("totalAmt"))));
+        feeReimburse.setBizDesc(String.valueOf(feeReimburseMap.get("bizDesc")));
         if ("create".equals(action) || "update".equals(action)) {
             feeReimburse.setBizState("10");
         }
@@ -75,10 +75,10 @@ public class FeeReimburseDto {
         //收款人信息
         Payee payee = new Payee();
         payee.setBizId(feeReimburse.getId());
-        payee.setAcctName(StringUtils.replaceNull(feeReimburseMap.get("acctName")));
-        payee.setAcctNo(StringUtils.replaceNull(feeReimburseMap.get("acctNo")));
-        payee.setBankName(StringUtils.replaceNull(feeReimburseMap.get("bankName")));
-        payee.setTradeType(StringUtils.replaceNull(feeReimburseMap.get("tradeType")));
+        payee.setAcctName(String.valueOf(feeReimburseMap.get("acctName")));
+        payee.setAcctNo(String.valueOf(feeReimburseMap.get("acctNo")));
+        payee.setBankName(String.valueOf(feeReimburseMap.get("bankName")));
+        payee.setTradeType(String.valueOf(feeReimburseMap.get("tradeType")));
         dto.setPayee(payee);
         //报销明细
         List<Map<String, Object>> feeReimburseItemList = (ArrayList<Map<String, Object>>) params.get("feeReimburseItem");
@@ -86,12 +86,12 @@ public class FeeReimburseDto {
             List<FeeReimburseItem> feeReimburseItems = new ArrayList<>();
             for (Map<String, Object> feeReimburseItemMap : feeReimburseItemList) {
                 FeeReimburseItem feeReimburseItem = new FeeReimburseItem();
-                feeReimburseItem.setId(StringUtils.getUUID());
+                feeReimburseItem.setId(IdUtil.randomUUID());
                 feeReimburseItem.setBizId(feeReimburse.getId());
-                feeReimburseItem.setFeeId(StringUtils.replaceNull(feeReimburseItemMap.get("feeId")));
-                feeReimburseItem.setFeeName(StringUtils.replaceNull(feeReimburseItemMap.get("feeName")));
-                feeReimburseItem.setAmount(Double.parseDouble(StringUtils.replaceNull(feeReimburseItemMap.get("amount"))));
-                feeReimburseItem.setFeeDesc(StringUtils.replaceNull(feeReimburseItemMap.get("feeDesc")));
+                feeReimburseItem.setFeeId(String.valueOf(feeReimburseItemMap.get("feeId")));
+                feeReimburseItem.setFeeName(String.valueOf(feeReimburseItemMap.get("feeName")));
+                feeReimburseItem.setAmount(Double.parseDouble(String.valueOf(feeReimburseItemMap.get("amount"))));
+                feeReimburseItem.setFeeDesc(String.valueOf(feeReimburseItemMap.get("feeDesc")));
                 feeReimburseItems.add(feeReimburseItem);
             }
             dto.setFeeReimburseItems(feeReimburseItems);
@@ -102,11 +102,11 @@ public class FeeReimburseDto {
             List<Invoice> invoices = new ArrayList<>();
             for (Map<String, Object> invoiceItemMap : invoiceItemList) {
                 Invoice invoice = new Invoice();
-                invoice.setId(StringUtils.getUUID());
+                invoice.setId(IdUtil.randomUUID());
                 invoice.setBizId(feeReimburse.getId());
-                invoice.setInvoiceCode(StringUtils.replaceNull(invoiceItemMap.get("invoiceCode")));
-                invoice.setInvoiceNo(StringUtils.replaceNull(invoiceItemMap.get("invoiceNo")));
-                invoice.setAmount(Double.parseDouble(StringUtils.replaceNull(invoiceItemMap.get("amount"))));
+                invoice.setInvoiceCode(String.valueOf(invoiceItemMap.get("invoiceCode")));
+                invoice.setInvoiceNo(String.valueOf(invoiceItemMap.get("invoiceNo")));
+                invoice.setAmount(Double.parseDouble(String.valueOf(invoiceItemMap.get("amount"))));
                 invoices.add(invoice);
             }
             dto.setInvoiceItems(invoices);

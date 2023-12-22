@@ -1,11 +1,11 @@
 package com.mall.admin.infrastructure.repository.sm;
 
+import cn.hutool.core.util.IdUtil;
 import com.mall.common.page.PageParam;
 import com.mall.common.page.Paging;
 import com.mall.admin.domain.entity.sm.Org;
 import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.admin.infrastructure.repository.sm.mapper.OrgMapper;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
@@ -18,6 +18,7 @@ import java.util.Map;
 
 /**
  * OrgMgrRepository
+ *
  * @author youfu.wang
  * @date 2020-06-24
  */
@@ -25,64 +26,76 @@ import java.util.Map;
 public class OrgMgrRepository {
     @Autowired
     private OrgMapper orgMapper;
+
     /**
      * 查询组织机构树数据
+     *
      * @param parentId
      * @return
      */
-    public List<TreeNode> getOrgTree(String parentId){
-        List<TreeNode> orgTree=null;
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("parentId",parentId);
-        orgTree=orgMapper.getOrgTree(parameterObject);
+    public List<TreeNode> getOrgTree(String parentId) {
+        List<TreeNode> orgTree = null;
+        Map<String, Object> parameterObject = new HashMap<String, Object>();
+        parameterObject.put("parentId", parentId);
+        orgTree = orgMapper.getOrgTree(parameterObject);
         return orgTree;
     }
+
     /**
      * 查询组织机构数据
+     *
      * @return
      */
     @Paging
-    public List<Org> getOrgList(PageParam pageParam,String parentId){
-        List<Org> orgList=null;
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("parentId",parentId);
-        orgList=orgMapper.getOrgList(parameterObject);
+    public List<Org> getOrgList(PageParam pageParam, String parentId) {
+        List<Org> orgList = null;
+        Map<String, Object> parameterObject = new HashMap<String, Object>();
+        parameterObject.put("parentId", parentId);
+        orgList = orgMapper.getOrgList(parameterObject);
         return orgList;
     }
+
     /**
      * 查询组织机构数据
+     *
      * @return
      */
-    public Org getOrg(String orgId){
-        Org org=null;
-        org=orgMapper.getOrg(orgId);
+    public Org getOrg(String orgId) {
+        Org org = null;
+        org = orgMapper.getOrg(orgId);
         return org;
     }
+
     /**
      * 保存组织机构数据
+     *
      * @param org
      */
-    public void addOrg(Org org){
-        org.setId(StringUtils.getUUID());
+    public void addOrg(Org org) {
+        org.setId(IdUtil.randomUUID());
         orgMapper.addOrg(org);
     }
+
     /**
      * 更新组织机构数据
+     *
      * @param org
      */
-    public void updateOrg(Org org){
+    public void updateOrg(Org org) {
         orgMapper.updateOrg(org);
     }
+
     /**
      * 删除组织机构数据
+     *
      * @param orgs
      */
-    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
-    public void deleteOrg(Org[] orgs){
-        if(orgs==null){
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
+    public void deleteOrg(Org[] orgs) {
+        if (orgs == null) {
             return;
         }
-        for(int i=0;i<orgs.length;i++){
+        for (int i = 0; i < orgs.length; i++) {
             orgMapper.deleteOrg(orgs[i].getId());
         }
     }

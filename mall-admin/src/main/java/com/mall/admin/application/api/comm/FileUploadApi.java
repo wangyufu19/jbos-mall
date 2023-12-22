@@ -1,10 +1,11 @@
 package com.mall.admin.application.api.comm;
 
+import cn.hutool.core.io.IoUtil;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.IOUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,7 @@ public class FileUploadApi {
     public void download(HttpServletResponse response) {
         ClassPathResource classPathResource = new ClassPathResource("public/资产池.xlsx");
         try {
-            IOUtils.write(response.getOutputStream(), classPathResource.getInputStream());
+            IoUtil.copy(classPathResource.getInputStream(), response.getOutputStream());
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }

@@ -1,8 +1,8 @@
 package com.mall.admin.application.request.wf;
 
 import com.mall.admin.domain.entity.wf.ProcessTask;
-import com.mall.common.utils.StringUtils;
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -15,22 +15,22 @@ import java.util.Map;
 @Data
 public class ProcessTaskDto {
 
-    public static ProcessTask build(Map<String, Object> formMap){
-        ProcessTask processTask=new ProcessTask();
-        processTask.setUserId(StringUtils.replaceNull(formMap.get("userId")));
-        processTask.setProcDefId(StringUtils.replaceNull(formMap.get("processDefinitionId")));
-        processTask.setProcInstId(StringUtils.replaceNull(formMap.get("processInstanceId")));
-        processTask.setTaskId(StringUtils.replaceNull(formMap.get("taskId")));
-        processTask.setActivityId(StringUtils.replaceNull(formMap.get("activityId")));
-        processTask.setActivityName(StringUtils.replaceNull(formMap.get("activityName")));
-        if(StringUtils.isNUll(formMap.get("assignee"))){
-            processTask.setAssignee(StringUtils.replaceNull(formMap.get("userId")));
-        }else{
-            processTask.setAssignee(StringUtils.replaceNull(formMap.get("assignee")));
+    public static ProcessTask build(Map<String, Object> formMap) {
+        ProcessTask processTask = new ProcessTask();
+        processTask.setUserId(String.valueOf(formMap.get("userId")));
+        processTask.setProcDefId(String.valueOf(formMap.get("processDefinitionId")));
+        processTask.setProcInstId(String.valueOf(formMap.get("processInstanceId")));
+        processTask.setTaskId(String.valueOf(formMap.get("taskId")));
+        processTask.setActivityId(String.valueOf(formMap.get("activityId")));
+        processTask.setActivityName(String.valueOf(formMap.get("activityName")));
+        if (StringUtils.isEmpty(formMap.get("assignee"))) {
+            processTask.setAssignee(String.valueOf(formMap.get("userId")));
+        } else {
+            processTask.setAssignee(String.valueOf(formMap.get("assignee")));
         }
-        processTask.setAssigneeDepId(StringUtils.replaceNull(formMap.get("depId")));
-        processTask.setOpinion(StringUtils.replaceNull(formMap.get("opinion")));
-        processTask.setOpinionDesc(StringUtils.replaceNull(formMap.get("opinionDesc")));
+        processTask.setAssigneeDepId(String.valueOf(formMap.get("depId")));
+        processTask.setOpinion(String.valueOf(formMap.get("opinion")));
+        processTask.setOpinionDesc(String.valueOf(formMap.get("opinionDesc")));
         return processTask;
     }
 }

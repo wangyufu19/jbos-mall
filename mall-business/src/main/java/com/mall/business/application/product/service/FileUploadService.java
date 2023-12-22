@@ -1,6 +1,6 @@
 package com.mall.business.application.product.service;
 
-import com.mall.common.utils.StringUtils;
+import cn.hutool.core.util.IdUtil;
 import com.mall.business.domain.entity.product.FileRepo;
 import com.mall.business.domain.entity.product.ProductPic;
 import com.mall.business.infrastructure.repository.product.FileRepoRepo;
@@ -58,7 +58,7 @@ public class FileUploadService {
             FileUtils.writeByteArrayToFile(dest,file.getBytes());
             //新增图片存储信息
             FileRepo fileRepo=new FileRepo();
-            String seqId=StringUtils.getUUID();
+            String seqId= IdUtil.randomUUID();
             fileRepo.setSeqId(seqId);
             fileRepo.setFileRepo(uploadRepo);
             fileRepo.setFileName(file.getOriginalFilename());
@@ -66,9 +66,9 @@ public class FileUploadService {
             fileRepoRepo.addFileRepo(fileRepo);
             //新增商品图片信息
             ProductPic productPic=new ProductPic();
-            productPic.setSeqId(StringUtils.getUUID());
+            productPic.setSeqId(IdUtil.randomUUID());
             productPic.setPicSeqId(seqId);
-            productPic.setProductSeqId(StringUtils.replaceNull(params.get("productSeqId")));
+            productPic.setProductSeqId(String.valueOf(params.get("productSeqId")));
             productPicRepo.addProductPic(productPic);
         } catch (IOException e) {
             throw e;
@@ -96,11 +96,11 @@ public class FileUploadService {
     public void delete(Map<String, Object> params){
         //删除图片存储信息
         FileRepo fileRepo=new FileRepo();
-        fileRepo.setSeqId(StringUtils.replaceNull(params.get("picSeqId")));
+        fileRepo.setSeqId(String.valueOf(params.get("picSeqId")));
         fileRepoRepo.deleteFileRepo(fileRepo);
         //删除商品图片信息
         ProductPic productPic=new ProductPic();
-        productPic.setSeqId(StringUtils.replaceNull(params.get("seqId")));
+        productPic.setSeqId(String.valueOf(params.get("seqId")));
         productPicRepo.deleteProductPic(productPic);
 
     }

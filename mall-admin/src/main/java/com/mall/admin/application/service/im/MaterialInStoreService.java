@@ -18,10 +18,10 @@ import com.mall.admin.infrastructure.repository.im.MaterialInStoreRepo;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -114,7 +114,7 @@ public class MaterialInStoreService {
         //删除物品入库基本信息
         materialInStoreRepo.deleteMaterialInStore(parameterObject);
         Map<String, Object> listParams = new HashMap<String, Object>();
-        listParams.put("bizid", StringUtils.replaceNull(parameterObject.get("id")));
+        listParams.put("bizid", String.valueOf(parameterObject.get("id")));
         listParams.put("biztype", ProcessDefConstants.PROC_DEF_MATERIAL_IN_STORE);
         //删除物品入库清单
         materialListService.deleteMaterial(listParams);
@@ -174,7 +174,7 @@ public class MaterialInStoreService {
             double amount = materialInStoreDto.getMaterialInStore().getTotalAmt();
             //查询物品入库业务流程变量
             Map<String, Object> variables = this.getMaterialInStoreProcessVariables(processTask);
-            if (!Role.ROLE_REPO_ADMIN.equals(processTask.getActivityId()) && StringUtils.isNUll(variables.get("nextAssignees"))) {
+            if (!Role.ROLE_REPO_ADMIN.equals(processTask.getActivityId()) && StringUtils.isEmpty(variables.get("nextAssignees"))) {
                 res = ResponseResult.error(ResponseResult.CODE_FAILURE, "对不起，实例任务下一个候选人不能为空！");
                 return res;
             }

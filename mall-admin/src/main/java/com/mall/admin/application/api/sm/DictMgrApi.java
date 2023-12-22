@@ -11,7 +11,6 @@ import com.mall.common.response.ResponsePageResult;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +50,7 @@ public class DictMgrApi {
     @ApiOperation("得到缓存业务字典数据")
     public ResponseResult getCacheDictCodeList(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String typeId = StringUtils.replaceNull(params.get("typeId"));
+        String typeId = String.valueOf(params.get("typeId"));
         try {
             List<Map<String, Object>> dictCodes = businessDict.getDictCodeList(typeId);
             res.setData(dictCodes);

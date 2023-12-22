@@ -2,10 +2,10 @@ package com.mall.gateway.application.service.auth;
 
 import com.mall.gateway.application.external.redis.RedisService;
 import com.mall.gateway.infrastructure.repository.auth.CaptchaRepository;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * CaptchaService
@@ -31,7 +31,7 @@ public class CaptchaService {
      */
     public boolean validate(String token, String text) {
         Object data = null;
-        if (StringUtils.isNUll(token) || StringUtils.isNUll(text)) {
+        if (StringUtils.isEmpty(token) || StringUtils.isEmpty(text)) {
             return false;
         }
         //是否启用Redis
@@ -45,7 +45,7 @@ public class CaptchaService {
         if (data == null) {
             return false;
         } else {
-            if (text.equals(StringUtils.replaceNull(data))) {
+            if (text.equals(String.valueOf(data))) {
                 return true;
             } else {
                 return false;

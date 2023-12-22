@@ -1,11 +1,11 @@
 package com.mall.admin.application.service.im;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import com.mall.admin.domain.entity.im.MaterialList;
 import com.mall.admin.domain.entity.im.MaterialStore;
 import com.mall.admin.infrastructure.repository.im.MaterialStoreRepo;
 import com.mall.common.page.PageParam;
-import com.mall.common.utils.DateUtils;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,14 +84,14 @@ public class MaterialStoreService {
         List<MaterialStore> materialStoreList=new ArrayList<>();
         for(MaterialList materialList:materialListList){
             MaterialStore materialStore=new MaterialStore();
-            materialStore.setId(StringUtils.getUUID());
-            materialStore.setBatchNo(DateUtils.format(DateUtils.getCurrentDate(), "yyyyMMddHHmmss"));
+            materialStore.setId(IdUtil.randomUUID());
+            materialStore.setBatchNo(DateUtil.format(DateUtil.date(), "yyyyMMddHHmmss"));
             materialStore.setInBizId(materialList.getBizId());
             materialStore.setMaterialId(materialList.getMaterialId());
             materialStore.setMaterialName(materialList.getMaterialName());
             materialStore.setAmount(materialList.getAmount());
             materialStore.setPrice(materialList.getPrice());
-            materialStore.setInTime(DateUtils.format(DateUtils.getCurrentDate(), "yyyy-MM-dd HH:mm:ss"));
+            materialStore.setInTime(DateUtil.format(DateUtil.date(), "yyyy-MM-dd HH:mm:ss"));
             materialStoreList.add(materialStore);
         }
         if(materialStoreList.size()>0){

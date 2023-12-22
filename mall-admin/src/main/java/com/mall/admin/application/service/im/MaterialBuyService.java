@@ -1,5 +1,6 @@
 package com.mall.admin.application.service.im;
 
+import cn.hutool.core.util.IdUtil;
 import com.mall.admin.application.request.im.MaterialBuyDto;
 import com.mall.admin.application.request.im.MaterialInStoreDto;
 import com.mall.admin.application.request.wf.ProcessTaskDto;
@@ -10,7 +11,6 @@ import com.mall.admin.application.service.wf.ProcessMgrService;
 import com.mall.admin.application.service.wf.ProcessTaskService;
 import com.mall.admin.common.exception.CamundaException;
 import com.mall.admin.domain.entity.im.MaterialInStore;
-import com.mall.common.base.BaseService;
 import com.mall.common.page.PageParam;
 import com.mall.admin.domain.entity.im.MaterialBuy;
 import com.mall.admin.domain.entity.im.MaterialList;
@@ -20,7 +20,6 @@ import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.infrastructure.repository.im.MaterialBuyRepo;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mall.admin.application.service.sm.BusinessDict;
+import org.springframework.util.StringUtils;
 
 /**
  * MaterialBuyService
@@ -39,7 +39,7 @@ import com.mall.admin.application.service.sm.BusinessDict;
  * @date 2020-06-24
  */
 @Service
-public class MaterialBuyService extends BaseService {
+public class MaterialBuyService{
     @Autowired
     private BizGeneratorService bizGeneratorService;
     @Autowired
@@ -75,7 +75,7 @@ public class MaterialBuyService extends BaseService {
      * @return
      */
     public MaterialBuyDto getMaterialBuyById(String id) {
-        MaterialBuyDto materialBuyDto=new MaterialBuyDto();
+        MaterialBuyDto materialBuyDto = new MaterialBuyDto();
         MaterialBuy materialBuy = materialBuyRepo.getMaterialBuyById(id);
         Map<String, Object> parameterObject = new HashMap<>();
         parameterObject.put("bizId", id);
@@ -126,7 +126,7 @@ public class MaterialBuyService extends BaseService {
         //删除物品采购基本信息
         materialBuyRepo.deleteMaterialBuy(parameterObject);
         Map<String, Object> listParams = new HashMap<String, Object>();
-        listParams.put("bizid", StringUtils.replaceNull(parameterObject.get("id")));
+        listParams.put("bizid", String.valueOf(parameterObject.get("id")));
         listParams.put("biztype", ProcessDefConstants.PROC_DEF_MATERIAL_BUY);
         //删除物品采购清单
         materialListService.deleteMaterial(listParams);
@@ -138,7 +138,7 @@ public class MaterialBuyService extends BaseService {
     @Transactional
     public ResponseResult handleMaterialStartProcess(Map<String, Object> params) throws CamundaException {
         ResponseResult res;
-        String action = StringUtils.replaceNull(params.get("action"));
+        String action = String.valueOf(params.get("action"));
         MaterialBuyDto materialBuyDto = MaterialBuyDto.build(params);
 
         //启动物品采购流程
@@ -146,7 +146,7 @@ public class MaterialBuyService extends BaseService {
         processMap.put("processDefinitionKey", ProcessDefConstants.PROC_DEF_MATERIAL_BUY);
         processMap.put("businessKey", "KEY_" + materialBuyDto.getMaterialBuy().getBizNo());
         processMap.put("userId", materialBuyDto.getMaterialBuy().getApplyUserId());
-        processMap.put("startActivityId",Role.ROLE_PROCESS_STARTER);
+        processMap.put("startActivityId", Role.ROLE_PROCESS_STARTER);
         processMap.put("routeUrl",
                 businessDict.getDictValue("JBOS_PROC_ROUTE", ProcessDefConstants.PROC_DEF_MATERIAL_BUY));
         processMap.put("bizId", materialBuyDto.getMaterialBuy().getId());
@@ -154,7 +154,7 @@ public class MaterialBuyService extends BaseService {
         processMap.put("bizType", ProcessDefConstants.PROC_DEF_MATERIAL_BUY);
         processMap.put("amount", materialBuyDto.getMaterialBuy().getTotalAmt());
 
-        res = processMgrService.startProcessInstance(processMap,new ProcessCallback(){
+        res = processMgrService.startProcessInstance(processMap, new ProcessCallback() {
             public void call(Map<String, String> data) {
                 String processDefinitionId = data.get("processDefinitionId");
                 String processInstanceId = data.get("processInstanceId");
@@ -178,30 +178,30 @@ public class MaterialBuyService extends BaseService {
     @Transactional
     public ResponseResult handleMaterialBuyProcessTask(Map<String, Object> params) throws CamundaException {
         ResponseResult res;
-        Map<String,Object> materialBuyMap=(Map<String,Object>)params.get("formObj");
+        Map<String, Object> materialBuyMap = (Map<String, Object>) params.get("formObj");
         ProcessTask processTask = ProcessTaskDto.build(materialBuyMap);
         MaterialBuyDto materialBuyDto = MaterialBuyDto.build(params);
 
         //审批驳回
-        if("101".equals(processTask.getOpinion())){
+        if ("101".equals(processTask.getOpinion())) {
             res = processTaskService.rejectProcessTask(processTask);
-        }else{
-            String bizNo=materialBuyDto.getMaterialBuy().getBizNo();
+        } else {
+            String bizNo = materialBuyDto.getMaterialBuy().getBizNo();
             double amount = materialBuyDto.getMaterialBuy().getTotalAmt();
             //查询物品采购业务流程变量
             Map<String, Object> variables = this.getMaterialBuyProcessVariables(processTask, amount);
-            if (!Role.ROLE_REPO_ADMIN.equals(processTask.getActivityId()) && StringUtils.isNUll(variables.get("nextAssignees"))) {
+            if (!Role.ROLE_REPO_ADMIN.equals(processTask.getActivityId()) && StringUtils.isEmpty(variables.get("nextAssignees"))) {
                 res = ResponseResult.error(ResponseResult.CODE_FAILURE, "对不起，实例任务下一个候选人不能为空！");
                 return res;
             }
-            res = processTaskService.completeTask(processTask,variables,new ProcessCallback(){
+            res = processTaskService.completeTask(processTask, variables, new ProcessCallback() {
                 public void call(Map<String, String> data) throws CamundaException {
                     //如果物品采购流程结束 ，则自动发起物品入库流程
                     if ("isEnded".equals(data.get("processInstanceState"))) {
-                        MaterialInStoreDto materialInStoreDto=new MaterialInStoreDto();
+                        MaterialInStoreDto materialInStoreDto = new MaterialInStoreDto();
                         materialInStoreDto.setAction("create");
-                        MaterialInStore materialInStore=new MaterialInStore();
-                        materialInStore.setId(StringUtils.getUUID());
+                        MaterialInStore materialInStore = new MaterialInStore();
+                        materialInStore.setId(IdUtil.randomUUID());
                         materialInStore.setBizNo(bizGeneratorService.getBizNo(BizGeneratorService.BIZ_IN_STORE));
                         materialInStore.setBuyBizId(materialBuyDto.getMaterialBuy().getId());
                         materialInStore.setApplyUserId(materialBuyDto.getMaterialBuy().getApplyUserId());
@@ -210,8 +210,8 @@ public class MaterialBuyService extends BaseService {
                         materialInStore.setFeeType(materialBuyDto.getMaterialBuy().getFeeType());
                         materialInStore.setTotalAmt(materialBuyDto.getMaterialBuy().getTotalAmt());
                         materialInStoreDto.setMaterialInStore(materialInStore);
-                        List<MaterialList> materialListList=new ArrayList<>();
-                        for(MaterialList materialList:materialBuyDto.getMaterialList()){
+                        List<MaterialList> materialListList = new ArrayList<>();
+                        for (MaterialList materialList : materialBuyDto.getMaterialList()) {
                             materialList.setBizId(materialInStore.getId());
                             materialList.setBizType(ProcessDefConstants.PROC_DEF_MATERIAL_IN_STORE);
                             materialListList.add(materialList);
@@ -264,7 +264,7 @@ public class MaterialBuyService extends BaseService {
         if (Role.ROLE_PROCESS_STARTER.equals(processTask.getActivityId())) {
             variables.put("currentActivityId", Role.ROLE_PROCESS_STARTER);
             variables.put("nextActivityId", Role.ROLE_DEP_LEADER);
-            nextAssignees = processTaskService.getTaskAssigneeList(variables,false);
+            nextAssignees = processTaskService.getTaskAssigneeList(variables, false);
             variables.put("multiInstance", "true");
             variables.put("nextActivityName", Role.ROLE_DEP_LEADER_DESC);
             variables.put("nextAssignees", nextAssignees);
@@ -272,11 +272,11 @@ public class MaterialBuyService extends BaseService {
             variables.put("currentActivityId", Role.ROLE_DEP_LEADER);
             if (amount <= 5000) {
                 variables.put("nextActivityId", Role.ROLE_REPO_ADMIN);
-                nextAssignees = processTaskService.getTaskAssigneeList(variables,false);
+                nextAssignees = processTaskService.getTaskAssigneeList(variables, false);
                 variables.put("nextActivityName", Role.ROLE_REPO_ADMIN_DESC);
             } else {
                 variables.put("nextActivityId", Role.ROLE_CHARGE_LEADER);
-                nextAssignees = processTaskService.getTaskAssigneeList(variables,false);
+                nextAssignees = processTaskService.getTaskAssigneeList(variables, false);
                 variables.put("multiInstance", "true");
                 variables.put("nextActivityName", Role.ROLE_CHARGE_LEADER_DESC);
             }
@@ -284,7 +284,7 @@ public class MaterialBuyService extends BaseService {
         } else if (Role.ROLE_CHARGE_LEADER.equals(processTask.getActivityId())) {
             variables.put("currentActivityId", Role.ROLE_CHARGE_LEADER);
             variables.put("nextActivityId", Role.ROLE_REPO_ADMIN);
-            nextAssignees = processTaskService.getTaskAssigneeList(variables,true);
+            nextAssignees = processTaskService.getTaskAssigneeList(variables, true);
             variables.put("nextActivityName", Role.ROLE_REPO_ADMIN_DESC);
             variables.put("nextAssignees", nextAssignees);
         }

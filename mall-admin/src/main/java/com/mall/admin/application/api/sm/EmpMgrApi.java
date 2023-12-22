@@ -9,7 +9,6 @@ import com.mall.common.office.excel.IPageExcel;
 import com.mall.common.office.excel.PageExcelHandler;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -119,7 +118,7 @@ public class EmpMgrApi {
     @ApiOperation("删除人员")
     public ResponseResult deleteEmp(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String id = StringUtils.replaceNull(params.get("id"));
+        String id = String.valueOf(params.get("id"));
         try {
             empMgrService.deleteEmp(params);
         } catch (Exception e) {
@@ -140,8 +139,8 @@ public class EmpMgrApi {
     @ApiOperation("同步到CAMUNDA")
     public ResponseResult synchToCamunda(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String userId = StringUtils.replaceNull(params.get("userId"));
-        String userName = StringUtils.replaceNull(params.get("userName"));
+        String userId = String.valueOf(params.get("userId"));
+        String userName = String.valueOf(params.get("userName"));
         try {
             identityMgrService.createUser(userId, userName);
         } catch (Exception e) {

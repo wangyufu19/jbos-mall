@@ -10,7 +10,6 @@ import com.mall.admin.infrastructure.camunda.InstanceTaskService;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -84,16 +83,16 @@ public class MaterialInStoreApi {
         ResponseResult res = ResponseResult.ok();
         try {
             MaterialInStoreDto materialInStoreDto = materialInStoreService.getMaterialInStoreById(
-                    StringUtils.replaceNull(params.get("id")));
+                    String.valueOf(params.get("id")));
             Map<String, Object> formObj = new HashMap<>();
             formObj.put("materialInStoreDto", materialInStoreDto);
             //如果是待办处理路由则查询当前任务是否可撤回
             boolean isDrawback=false;
             //查询实例任务是否可撤回
             if ("trans".equals(params.get("action"))) {
-                String userId=StringUtils.replaceNull(params.get("userId"));
-                String processInstanceId= StringUtils.replaceNull(params.get("processInstanceId"));
-                String taskId=StringUtils.replaceNull(params.get("taskId"));
+                String userId=String.valueOf(params.get("userId"));
+                String processInstanceId= String.valueOf(params.get("processInstanceId"));
+                String taskId=String.valueOf(params.get("taskId"));
                 isDrawback = instanceTaskService.isDrawback(userId,processInstanceId,taskId);
             }
             formObj.put("isDrawback", isDrawback);

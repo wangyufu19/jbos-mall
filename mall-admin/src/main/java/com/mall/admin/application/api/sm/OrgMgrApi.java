@@ -6,11 +6,11 @@ import com.mall.admin.domain.entity.sm.Org;
 import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,14 +27,16 @@ import java.util.Map;
 @Slf4j
 @Api(tags = "机构管理接口")
 public class OrgMgrApi {
-
+    /**
+     * orgMgrService
+     */
     @Autowired
     private OrgMgrService orgMgrService;
 
     /**
      * 得到组织机构页面
      *
-     * @return
+     * @return str
      */
     @RequestMapping("/getOrgPage")
     public String getOrgPage() {
@@ -43,125 +45,92 @@ public class OrgMgrApi {
 
     /**
      * 查询组织机构树
-     *
-     * @return
+     * @param params
+     * @return ResponseResult
      */
     @ResponseBody
     @GetMapping("/getOgrTree")
     @ApiOperation("查询组织机构树")
     public ResponseResult getOgrTree(@RequestParam Map<String, Object> params) {
         ResponseResult ret = ResponseResult.ok();
-        String parentId = StringUtils.replaceNull(params.get("parentId"));
-        if (StringUtils.isNUll(parentId)) {
+        String parentId = String.valueOf(params.get("parentId"));
+        if (StringUtils.isEmpty(parentId)) {
             parentId = Org.ROOTORG_ID;
         }
-        try {
-            List<TreeNode> orgTree = orgMgrService.getOrgTree(parentId);
-            ret.setData(orgTree);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            ret = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
-        }
+        List<TreeNode> orgTree = orgMgrService.getOrgTree(parentId);
+        ret.setData(orgTree);
         return ret;
     }
 
     /**
      * 查询组织机构数据
-     *
-     * @return
+     * @param params
+     * @return ResponsePageResult
      */
     @ResponseBody
     @GetMapping("/getOrgList")
     @ApiOperation("查询组织机构列表")
     public ResponsePageResult getOrgList(@RequestParam Map<String, Object> params) {
         ResponsePageResult res;
-        try {
-            PageParam pageParam = PageParam.getPageParam(params);
-            res = orgMgrService.getOrgList(pageParam, Org.ROOTORG_ID);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
-        }
+        PageParam pageParam = PageParam.getPageParam(params);
+        res = orgMgrService.getOrgList(pageParam, Org.ROOTORG_ID);
         return res;
     }
 
     /**
      * 查询组织机构数据
-     *
-     * @return
+     * @param orgId
+     * @return ResponseResult
      */
     @ResponseBody
     @GetMapping("/getOrg")
     @ApiOperation("查询一个组织机构信息")
     public ResponseResult getOrg(@RequestParam String orgId) {
         ResponseResult ret = ResponseResult.ok();
-        try {
-            Org org = orgMgrService.getOrg(orgId);
-            ret.setData(org);
-        } catch (Exception e) {
-            log.error(ResponseResult.MSG_FAILURE, e);
-            ret = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
-        }
-        return ret;
+        Org org = orgMgrService.getOrg(orgId);
+        ret.setData(org);
+        return ResponseResult.ok();
     }
 
     /**
      * 保存组织机构数据
      *
      * @param org
-     * @return
+     * @return ResponseResult
      */
     @ResponseBody
     @PostMapping("/saveOrg")
     @ApiOperation("保存组织机构信息")
     public ResponseResult saveOrg(@RequestBody Org org) {
-        ResponseResult ret = ResponseResult.ok();
-        try {
-            orgMgrService.addOrg(org);
-        } catch (Exception e) {
-            log.error(ResponseResult.MSG_FAILURE, e);
-            ret = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
-        }
-        return ret;
+        orgMgrService.addOrg(org);
+        return ResponseResult.ok();
     }
 
     /**
      * 保存组织机构数据
      *
      * @param org
-     * @return
+     * @return ResponseResult
      */
     @ResponseBody
     @PostMapping("/updateOrg")
     @ApiOperation("更新组织机构信息")
     public ResponseResult updateOrg(@RequestBody Org org) {
-        ResponseResult ret = ResponseResult.ok();
-        try {
-            orgMgrService.updateOrg(org);
-        } catch (Exception e) {
-            log.error(ResponseResult.MSG_FAILURE, e);
-            ret = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
-        }
-        return ret;
+        orgMgrService.updateOrg(org);
+        return ResponseResult.ok();
     }
 
     /**
      * 保存组织机构数据
      *
      * @param orgs
-     * @return
+     * @return ResponseResult
      */
     @ResponseBody
     @PostMapping("/deleteOrg")
     @ApiOperation("删除组织机构信息")
     public ResponseResult deleteOrg(@RequestBody Org[] orgs) {
-        ResponseResult ret = ResponseResult.ok();
-        try {
-            orgMgrService.deleteOrg(orgs);
-        } catch (Exception e) {
-            log.error(ResponseResult.MSG_FAILURE, e);
-            ret = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
-        }
-        return ret;
+        orgMgrService.deleteOrg(orgs);
+        return ResponseResult.ok();
     }
 }

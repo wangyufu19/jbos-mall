@@ -15,7 +15,6 @@
 
     <properties>
         <kaptcha.version>2.3.2</kaptcha.version>
-        <jwt.version>3.8.3</jwt.version>
         <camunda.spring-boot.version>7.15.0</camunda.spring-boot.version>
     </properties>
 

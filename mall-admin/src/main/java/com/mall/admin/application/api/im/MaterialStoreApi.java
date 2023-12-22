@@ -5,7 +5,6 @@ import com.mall.admin.domain.entity.im.MaterialStore;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +65,7 @@ public class MaterialStoreApi {
     @ApiOperation("根据物品Id查询物品库存剩余数量")
     public ResponseResult getMaterialStoreSurplusAmt(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String materialId = StringUtils.replaceNull(params.get("materialId"));
+        String materialId = String.valueOf(params.get("materialId"));
         try {
             double surplusAmt = materialStoreService.getMaterialStoreSurplusAmt(materialId);
             res.setData(surplusAmt);

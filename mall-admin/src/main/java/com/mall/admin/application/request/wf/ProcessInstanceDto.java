@@ -1,9 +1,11 @@
 package com.mall.admin.application.request.wf;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import com.mall.admin.domain.entity.wf.ProcessInst;
-import com.mall.common.utils.DateUtils;
-import com.mall.common.utils.StringUtils;
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -15,24 +17,28 @@ import java.util.Map;
  **/
 @Data
 public class ProcessInstanceDto {
-
+    /**
+     * ProcessInst
+     * @param variable
+     * @return ProcessInst
+     */
     public static ProcessInst build(Map<String, Object> variable) {
-        String currentTime = DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS);
+        String currentTime = DateUtil.format(DateUtil.date(), DatePattern.PURE_DATETIME_FORMAT);
         ProcessInst processInst = new ProcessInst();
-        String id=StringUtils.getUUID();
+        String id = IdUtil.randomUUID();
         processInst.setId(id);
-        processInst.setProcDefId(StringUtils.replaceNull(variable.get("id")));
-        if(StringUtils.isNUll(variable.get("bizId"))){
+        processInst.setProcDefId(String.valueOf(variable.get("id")));
+        if (StringUtils.isEmpty(variable.get("bizId"))) {
             processInst.setBizId(id);
-        }else{
-            processInst.setBizId(StringUtils.replaceNull(variable.get("bizId")));
+        } else {
+            processInst.setBizId(String.valueOf(variable.get("bizId")));
         }
-        processInst.setBizNo(StringUtils.replaceNull(variable.get("bizNo")));
-        processInst.setBizType(StringUtils.replaceNull(variable.get("bizType")));
-        processInst.setBusinessKey(StringUtils.replaceNull(variable.get("businessKey")));
-        processInst.setRouteUrl(StringUtils.replaceNull(variable.get("routeUrl")));
+        processInst.setBizNo(String.valueOf(variable.get("bizNo")));
+        processInst.setBizType(String.valueOf(variable.get("bizType")));
+        processInst.setBusinessKey(String.valueOf(variable.get("businessKey")));
+        processInst.setRouteUrl(String.valueOf(variable.get("routeUrl")));
         processInst.setStartTime(currentTime);
-        processInst.setCreateUserId(StringUtils.replaceNull(variable.get("userId")));
+        processInst.setCreateUserId(String.valueOf(variable.get("userId")));
         processInst.setCreateTime(currentTime);
         return processInst;
     }

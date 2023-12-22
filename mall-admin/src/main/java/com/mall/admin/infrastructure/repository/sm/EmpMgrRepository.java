@@ -1,12 +1,12 @@
 package com.mall.admin.infrastructure.repository.sm;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import com.mall.common.page.PageParam;
 import com.mall.common.page.Paging;
 import com.mall.admin.domain.entity.sm.Emp;
 import com.mall.admin.infrastructure.repository.sm.mapper.EmpMapper;
 import com.mall.admin.infrastructure.repository.sm.mapper.UserMapper;
-import com.mall.common.utils.DateUtils;
-import com.mall.common.utils.StringUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -88,7 +88,7 @@ public class EmpMgrRepository {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public void addEmp(Map<String, Object> parameterObject) {
         parameterObject.put("id", UUID.randomUUID().toString());
-        parameterObject.put("createTime", DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+        parameterObject.put("createTime", DateUtil.format(DateUtil.date(), DatePattern.PURE_DATETIME_FORMAT));
         empMapper.addEmp(parameterObject);
         String salt = RandomStringUtils.randomAlphanumeric(20);
         parameterObject.put("salt", salt);
@@ -119,8 +119,8 @@ public class EmpMgrRepository {
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public void deleteEmp(Map<String, Object> parameterObject) {
-        String id = StringUtils.replaceNull(parameterObject.get("id"));
-        String loginName = StringUtils.replaceNull(parameterObject.get("badge"));
+        String id = String.valueOf(parameterObject.get("id"));
+        String loginName = String.valueOf(parameterObject.get("badge"));
         empMapper.deleteEmp(id);
         empMapper.deleteEmpUser(loginName);
     }

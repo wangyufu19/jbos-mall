@@ -3,7 +3,6 @@ package com.mall.admin.application.api.mm;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import com.mall.admin.application.service.mm.MemberService;
 import com.mall.admin.domain.entity.mm.Member;
 import io.swagger.annotations.Api;
@@ -105,12 +104,12 @@ public class MemberMgrApi {
         ResponseResult res = ResponseResult.ok();
         try {
             Member member = new Member();
-            member.setAccount(StringUtils.replaceNull(params.get("account")));
-            member.setFullName(StringUtils.replaceNull(params.get("fullName")));
-            member.setNickName(StringUtils.replaceNull(params.get("nickName")));
-            member.setSex(Integer.parseInt(StringUtils.replaceNull(params.get("sex"))));
-            member.setMobilePhone(StringUtils.replaceNull(params.get("mobilePhone")));
-            member.setEmail(StringUtils.replaceNull(params.get("email")));
+            member.setAccount(String.valueOf(params.get("account")));
+            member.setFullName(String.valueOf(params.get("fullName")));
+            member.setNickName(String.valueOf(params.get("nickName")));
+            member.setSex(Integer.parseInt(String.valueOf(params.get("sex"))));
+            member.setMobilePhone(String.valueOf(params.get("mobilePhone")));
+            member.setEmail(String.valueOf(params.get("email")));
             memberService.updateMemberInfo(member);
         } catch (Exception e) {
             log.error(e.getMessage(), e);

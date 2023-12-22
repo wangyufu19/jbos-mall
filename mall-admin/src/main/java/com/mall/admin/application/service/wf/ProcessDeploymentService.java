@@ -1,5 +1,7 @@
 package com.mall.admin.application.service.wf;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.mall.admin.domain.entity.wf.ProcessDeployment;
 import com.mall.admin.infrastructure.camunda.DeploymentService;
@@ -7,11 +9,10 @@ import com.mall.admin.infrastructure.repository.wf.ProcessDeploymentRepo;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.DateUtils;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -56,15 +57,15 @@ public class ProcessDeploymentService {
         //判断合法的文件类型
         if(deploymentService.includeExtensions(resource)){
             Map<String,Object> deploymentMap=deploymentService.deploy(file);
-            if(deploymentMap!=null&&!StringUtils.isNUll(deploymentMap.get("deploymentId"))){
+            if(deploymentMap!=null&&!StringUtils.isEmpty(deploymentMap.get("deploymentId"))){
                 ProcessDeployment processDeployment=new ProcessDeployment();
-                processDeployment.setId(StringUtils.replaceNull(deploymentMap.get("id")));
-                processDeployment.setDeploymentId(StringUtils.replaceNull(deploymentMap.get("deploymentId")));
-                processDeployment.setProcKey(StringUtils.replaceNull(deploymentMap.get("key")));
-                processDeployment.setProcName(StringUtils.replaceNull(deploymentMap.get("name")));
-                processDeployment.setResource(StringUtils.replaceNull(deploymentMap.get("source")));
-                processDeployment.setVersion(StringUtils.replaceNull(deploymentMap.get("version")));
-                processDeployment.setDeployTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+                processDeployment.setId(String.valueOf(deploymentMap.get("id")));
+                processDeployment.setDeploymentId(String.valueOf(deploymentMap.get("deploymentId")));
+                processDeployment.setProcKey(String.valueOf(deploymentMap.get("key")));
+                processDeployment.setProcName(String.valueOf(deploymentMap.get("name")));
+                processDeployment.setResource(String.valueOf(deploymentMap.get("source")));
+                processDeployment.setVersion(String.valueOf(deploymentMap.get("version")));
+                processDeployment.setDeployTime(DateUtil.format(DateUtil.date(), DatePattern.PURE_DATE_FORMAT));
                 processDeploymentRepo.save(processDeployment);
             }
         }else{

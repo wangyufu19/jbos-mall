@@ -7,7 +7,6 @@ import com.mall.admin.domain.entity.wf.TaskStep;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +41,7 @@ public class ProcessTaskApi {
     @ApiOperation("查询我的工作列表")
     public ResponsePageResult getMyWorkList(@RequestParam Map<String, Object> params) {
         ResponsePageResult res;
-        String workType = StringUtils.replaceNull(params.get("workType"));
+        String workType = String.valueOf(params.get("workType"));
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             if ("waiting".equals(workType)) {
@@ -178,10 +177,10 @@ public class ProcessTaskApi {
         ResponseResult res = ResponseResult.ok();
         try {
             ProcessTask processTask=new ProcessTask();
-            processTask.setUserId(StringUtils.replaceNull(params.get("userId")));
-            processTask.setProcDefId(StringUtils.replaceNull(params.get("processDefinitionId")));
-            processTask.setProcInstId(StringUtils.replaceNull(params.get("processInstanceId")));
-            processTask.setTaskId(StringUtils.replaceNull(params.get("taskId")));
+            processTask.setUserId(String.valueOf(params.get("userId")));
+            processTask.setProcDefId(String.valueOf(params.get("processDefinitionId")));
+            processTask.setProcInstId(String.valueOf(params.get("processInstanceId")));
+            processTask.setTaskId(String.valueOf(params.get("taskId")));
             res = processTaskService.drawbackProcessTask(processTask);
         } catch (Exception e) {
             log.error(e.getMessage(), e);

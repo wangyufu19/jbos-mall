@@ -7,7 +7,6 @@ import com.mall.admin.domain.entity.abs.ProjectInfo;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +51,7 @@ public class ProjectApprovalApi {
     @ApiOperation("查询项目登记信息")
     public ResponseResult getRegistrationInfo(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String id = StringUtils.replaceNull(params.get("id"));
+        String id = String.valueOf(params.get("id"));
         try {
             ProjectApprovalResponseDto dto = projectApprovalService.getProjectApproval(id);
             res.setData(dto);
@@ -82,8 +81,8 @@ public class ProjectApprovalApi {
     @ApiOperation("删除项目登记信息")
     public ResponseResult deleteRegistrationInfo(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String id = StringUtils.replaceNull(params.get("id"));
-        String projectNo = StringUtils.replaceNull(params.get("projectNo"));
+        String id = String.valueOf(params.get("id"));
+        String projectNo = String.valueOf(params.get("projectNo"));
         try {
             projectApprovalService.deleteProjectInfo(id, projectNo);
         } catch (Exception e) {

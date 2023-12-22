@@ -2,14 +2,13 @@ package com.mall.business.application.product.api;
 
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import com.mall.business.application.product.service.CategoryService;
-import com.mall.business.domain.entity.product.Category;
 import com.mall.business.domain.entity.TreeNode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,8 +36,8 @@ public class CategoryMgrApi{
     @ApiOperation("得到商品列表")
     public ResponseResult tree(@RequestParam Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
-        String parentId = StringUtils.replaceNull(params.get("parentId"));
-        if (StringUtils.isNUll(parentId)) {
+        String parentId = String.valueOf(params.get("parentId"));
+        if (StringUtils.isEmpty(parentId)) {
             parentId = TreeNode.ROOT_ID;
         }
         try{
@@ -60,8 +59,8 @@ public class CategoryMgrApi{
     @ApiOperation("得到商品列表")
     public ResponsePageResult list(@RequestParam Map<String, Object> params){
         ResponsePageResult res;
-        String parentCode=StringUtils.replaceNull(params.get("parentCode"));
-        if(StringUtils.isNUll(parentCode)){
+        String parentCode=String.valueOf(params.get("parentCode"));
+        if(StringUtils.isEmpty(parentCode)){
             parentCode="0";
         }
         try{

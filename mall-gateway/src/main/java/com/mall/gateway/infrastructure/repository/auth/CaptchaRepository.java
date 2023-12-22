@@ -1,7 +1,6 @@
 package com.mall.gateway.infrastructure.repository.auth;
 
 import com.mall.gateway.infrastructure.repository.mapper.auth.CaptchaMapper;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +28,7 @@ public class CaptchaRepository {
         parameterObject.put("token",token);
         Map<String, Object> retMap=captchaMapper.getCaptcha(parameterObject);
         if(retMap!=null){
-            text= StringUtils.replaceNull(retMap.get("TEXT"));
+            text= String.valueOf(retMap.get("TEXT"));
         }
         return text;
     }

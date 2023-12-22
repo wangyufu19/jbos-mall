@@ -1,7 +1,6 @@
 package com.mall.gateway.common.websecurity.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mall.common.utils.StringUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -45,10 +44,10 @@ public class AuthRequestDto {
     public static AuthRequestDto getInstance(HttpServletRequest request) {
         AuthRequestDto authRequest = new AuthRequestDto();
         if (request.getContentType().indexOf(MediaType.APPLICATION_FORM_URLENCODED_VALUE) != -1) {
-            authRequest.setUsername(StringUtils.replaceNull(request.getParameter("username")));
-            authRequest.setPassword(StringUtils.replaceNull(request.getParameter("password")));
-            authRequest.setCaptchaToken(StringUtils.replaceNull(request.getParameter("captchaToken")));
-            authRequest.setCaptchaText(StringUtils.replaceNull(request.getParameter("captchaText")));
+            authRequest.setUsername(String.valueOf(request.getParameter("username")));
+            authRequest.setPassword(String.valueOf(request.getParameter("password")));
+            authRequest.setCaptchaToken(String.valueOf(request.getParameter("captchaToken")));
+            authRequest.setCaptchaText(String.valueOf(request.getParameter("captchaText")));
         } else if (request.getContentType().indexOf(MediaType.APPLICATION_JSON_VALUE) != -1) {
             // 判断请求是否是json格式
             // 把request的json数据转换为Map
@@ -58,10 +57,10 @@ public class AuthRequestDto {
             } catch (IOException e) {
                 log.error(e.getMessage());
             }
-            authRequest.setUsername(StringUtils.replaceNull(loginData.get("username")));
-            authRequest.setPassword(StringUtils.replaceNull(loginData.get("password")));
-            authRequest.setCaptchaToken(StringUtils.replaceNull(loginData.get("captchaToken")));
-            authRequest.setCaptchaText(StringUtils.replaceNull(loginData.get("captchaText")));
+            authRequest.setUsername(String.valueOf(loginData.get("username")));
+            authRequest.setPassword(String.valueOf(loginData.get("password")));
+            authRequest.setCaptchaToken(String.valueOf(loginData.get("captchaToken")));
+            authRequest.setCaptchaText(String.valueOf(loginData.get("captchaText")));
 
         }
         return authRequest;

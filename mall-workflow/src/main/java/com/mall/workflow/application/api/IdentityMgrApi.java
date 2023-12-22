@@ -1,7 +1,6 @@
 package com.mall.workflow.application.api;
 
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import com.mall.workflow.application.service.IdentityMgrService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,8 +27,8 @@ public class IdentityMgrApi {
     @ApiOperation("创建用户")
     public ResponseResult create(@RequestBody Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
-        String userId=StringUtils.replaceNull(params.get("userId"));
-        String userName= StringUtils.replaceNull(params.get("userName"));
+        String userId=String.valueOf(params.get("userId"));
+        String userName= String.valueOf(params.get("userName"));
         try {
             identityMgrService.createUser(userId,userName);
         }catch (Exception e){

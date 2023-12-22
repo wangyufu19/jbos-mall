@@ -51,7 +51,7 @@
                 '已处理' TASKSTATE
             FROM WF_PROCESS_TASK t
             LEFT JOIN WF_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
-            WHERE t.ASSIGNEE=#{userId} and t.TASKSTATE IN ('90','99')
+            WHERE t.ASSIGNEE=#{userId} and t.TASKSTATE IN ('90","99')
             <if test="bizNoS != null and bizNoS != ''">
                 AND T1.BIZNO LIKE '%${bizNoS}%'
             </if>
@@ -77,7 +77,7 @@
             t.OPINION,
             t.OPINIONDESC
         FROM WF_PROCESS_TASK t
-        WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
+        WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20","90","99')
         <if test="activityId != null and activityId != ''">
             AND T.ACTIVITYID=#{activityId}
         </if>
@@ -100,7 +100,7 @@
             ELSE 'process'
             END status
         FROM WF_PROCESS_TASK t
-        WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20','90','99')
+        WHERE t.PROCINSTID=#{procInstId} AND t.TASKSTATE IN ('20","90","99')
         ORDER BY t.STARTTIME
     </select>
     <!--查询实例任务的所有已处理的任务数据(除当前处理用户任务)-->
@@ -116,7 +116,7 @@
             t.ASSIGNEE
         FROM WF_PROCESS_TASK t
         LEFT JOIN WF_PROCESS_INST T1 ON t.PROCINSTID=T1.PROCINSTID
-        WHERE t.ACTIVITYID=#{currentActivityId} AND t.ASSIGNEE!=#{userId} AND t.TASKSTATE NOT IN ('90','99')
+        WHERE t.ACTIVITYID=#{currentActivityId} AND t.ASSIGNEE!=#{userId} AND t.TASKSTATE NOT IN ('90","99')
     </select>
     <!--查询流程任务的领取人-->
     <select id="getTaskAssigneeList" parameterType="java.util.Map" resultType="java.util.Map">

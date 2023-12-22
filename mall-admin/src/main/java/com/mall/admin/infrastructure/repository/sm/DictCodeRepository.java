@@ -2,7 +2,6 @@ package com.mall.admin.infrastructure.repository.sm;
 
 import com.mall.admin.domain.entity.sm.DictCode;
 import com.mall.admin.infrastructure.repository.sm.mapper.DictCodeMapper;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
@@ -40,7 +39,7 @@ public class DictCodeRepository {
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public void saveDictCode(Map<String, Object> parameterObject) {
-        String typeId = StringUtils.replaceNull(parameterObject.get("typeId"));
+        String typeId = String.valueOf(parameterObject.get("typeId"));
         //删除业务字典
         dictCodeMapper.deleteDictCode(typeId);
         //保存业务字典
@@ -51,9 +50,9 @@ public class DictCodeRepository {
                 Map<String, Object> dictCodeMap = (Map<String, Object>) obj;
                 DictCode dictCode = new DictCode();
                 dictCode.setTypeId(typeId);
-                dictCode.setDictId(StringUtils.replaceNull(dictCodeMap.get("dictId")));
-                dictCode.setDictName(StringUtils.replaceNull(dictCodeMap.get("dictName")));
-                dictCode.setOrderNo(Integer.parseInt(StringUtils.replaceNull(dictCodeMap.get("orderNo"))));
+                dictCode.setDictId(String.valueOf(dictCodeMap.get("dictId")));
+                dictCode.setDictName(String.valueOf(dictCodeMap.get("dictName")));
+                dictCode.setOrderNo(Integer.parseInt(String.valueOf(dictCodeMap.get("orderNo"))));
                 list.add(dictCode);
             }
             dictCodeMapper.insertDictCode(list);

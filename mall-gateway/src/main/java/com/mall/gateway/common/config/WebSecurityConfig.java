@@ -8,7 +8,6 @@ import com.mall.gateway.common.websecurity.jwt.JwtTokenProvider;
 import com.mall.gateway.common.websecurity.user.JwtUser;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.JacksonUtils;
-import com.mall.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -241,8 +240,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     throw new CaptchaAuthenticationException("Bad captcha");
                 }
             }
-            String username = StringUtils.replaceNull(authRequestDto.getUsername()).trim();
-            String password = StringUtils.replaceNull(authRequestDto.getPassword());
+            String username = String.valueOf(authRequestDto.getUsername()).trim();
+            String password = String.valueOf(authRequestDto.getPassword());
             UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
             this.setDetails(request, authRequest);
             return this.getAuthenticationManager().authenticate(authRequest);

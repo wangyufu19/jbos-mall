@@ -1,6 +1,7 @@
 package com.mall.admin.application.service.comm;
 
-import com.mall.common.utils.DateUtils;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,7 +26,7 @@ public class BizGeneratorService {
     public static final String BIZ_OUT_STORE = "BIZ_OUT_STORE";
 
     public String getBizNo() {
-        return DateUtils.format(DateUtils.getCurrentDate(), "yyyyMMddHHmmss");
+        return DateUtil.format(DateUtil.date(), DatePattern.PURE_DATETIME_FORMAT);
     }
 
     /**
@@ -34,7 +35,7 @@ public class BizGeneratorService {
      * @return bizNo
      */
     public String getBizNo(String bizType) {
-        return bizType + "_" + DateUtils.format(DateUtils.getCurrentDate(), "yyyyMMddHHmmss");
+        return bizType + "_" + DateUtil.format(DateUtil.date(), DatePattern.PURE_DATETIME_FORMAT);
     }
 
 }

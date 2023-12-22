@@ -1,7 +1,6 @@
 package com.mall.admin.application.api.mm;
 
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import com.mall.admin.application.service.mm.AccountService;
 import com.mall.admin.domain.entity.mm.Account;
 import io.swagger.annotations.Api;
@@ -90,7 +89,7 @@ public class AccountMgrApi {
         ResponseResult res = ResponseResult.ok();
         try {
             Account account = new Account();
-            account.setAccount(StringUtils.replaceNull(params.get("account")));
+            account.setAccount(String.valueOf(params.get("account")));
             account.setStatus(Account.ACCT_LOCKED);
             accountService.updateAccountStatus(account);
         } catch (Exception e) {
@@ -113,7 +112,7 @@ public class AccountMgrApi {
         ResponseResult res = ResponseResult.ok();
         try {
             Account account = new Account();
-            account.setAccount(StringUtils.replaceNull(params.get("account")));
+            account.setAccount(String.valueOf(params.get("account")));
             account.setStatus(Account.ACCT_NORMAL);
             accountService.updateAccountStatus(account);
         } catch (Exception e) {

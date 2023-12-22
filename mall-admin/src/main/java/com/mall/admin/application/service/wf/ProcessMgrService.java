@@ -1,5 +1,8 @@
 package com.mall.admin.application.service.wf;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import com.mall.admin.application.request.wf.ProcessInstanceDto;
 import com.mall.admin.common.exception.CamundaException;
 import com.mall.admin.domain.entity.sm.Role;
@@ -10,8 +13,6 @@ import com.mall.admin.infrastructure.repository.wf.ProcessInstRepo;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.DateUtils;
-import com.mall.common.utils.StringUtils;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,10 +54,10 @@ public class ProcessMgrService {
     @Transactional
     public ResponseResult startProcessInstance(Map<String, Object> variable,ProcessCallback processCallback) throws CamundaException {
         ResponseResult res=ResponseResult.ok();
-        String userId= StringUtils.replaceNull(variable.get("userId"));
-        String processDefinitionKey= StringUtils.replaceNull(variable.get("processDefinitionKey"));
-        String businessKey= StringUtils.replaceNull(variable.get("businessKey"));
-        String startActivityId=StringUtils.replaceNull(variable.get("startActivityId"));
+        String userId= String.valueOf(variable.get("userId"));
+        String processDefinitionKey= String.valueOf(variable.get("processDefinitionKey"));
+        String businessKey= String.valueOf(variable.get("businessKey"));
+        String startActivityId=String.valueOf(variable.get("startActivityId"));
         variable.put(startActivityId,userId);
         //启动流程实例
         ProcessInstance processInstance=processInstanceService.startProcessInstance(userId,processDefinitionKey,businessKey,variable);
@@ -73,13 +74,13 @@ public class ProcessMgrService {
             this.addProcessInst(processInst);
             //新增流程任务数据
             ProcessTask processTask = new ProcessTask();
-            processTask.setId(StringUtils.getUUID());
+            processTask.setId(IdUtil.randomUUID());
             processTask.setProcInstId(processInstance.getProcessInstanceId());
             processTask.setActivityId(startActivityId);
             processTask.setActivityName(Role.ROLE_PROCESS_STARTER_DESC);
             processTask.setAssignee(userId);
             processTask.setTaskState(ProcessTask.PROCESS_STATE_ACTIVE);
-            processTask.setStartTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+            processTask.setStartTime(DateUtil.format(DateUtil.date(), DatePattern.PURE_DATETIME_FORMAT));
             processTaskService.addProcessTask(processTask);
             //处理流程回调业务
             if(processCallback!=null){
@@ -105,7 +106,7 @@ public class ProcessMgrService {
         ProcessInst processInst=new ProcessInst();
         processInst.setProcInstId(processInstanceId);
         processInst.setProcState(procState);
-        processInst.setEndTime(DateUtils.format(DateUtils.getCurrentDate(), DateUtils.YYYYMMDDHIMMSS));
+        processInst.setEndTime(DateUtil.format(DateUtil.date(), DatePattern.PURE_DATETIME_FORMAT));
         processInstRepo.updateProcState(processInst);
     }
     /**

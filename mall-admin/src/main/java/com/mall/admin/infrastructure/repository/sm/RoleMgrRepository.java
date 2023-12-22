@@ -8,7 +8,6 @@ import com.mall.admin.domain.entity.sm.Role;
 import com.mall.admin.domain.entity.sm.RoleFunc;
 import com.mall.admin.domain.entity.sm.UserRole;
 import com.mall.admin.infrastructure.repository.sm.mapper.RoleMapper;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
@@ -68,7 +67,7 @@ public class RoleMgrRepository {
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public void saveRoleFuncs(Map<String, Object> parameterObject){
         //删除角色功能
-        String roleId= StringUtils.replaceNull(parameterObject.get("roleId"));
+        String roleId= String.valueOf(parameterObject.get("roleId"));
         roleMapper.deleteRoleFunc(roleId);
         //新增角色功能
         ArrayList funcIds=(ArrayList)parameterObject.get("checkedIds");
@@ -77,7 +76,7 @@ public class RoleMgrRepository {
             for(Object funcId:funcIds){
                 RoleFunc roleFunc=new RoleFunc();
                 roleFunc.setRoleId(roleId);
-                roleFunc.setFuncId(StringUtils.replaceNull(funcId));
+                roleFunc.setFuncId(String.valueOf(funcId));
                 roleFuncs.add(roleFunc);
             }
             roleMapper.insertRoleFunc(roleFuncs);
@@ -132,7 +131,7 @@ public class RoleMgrRepository {
      * @param parameterObject
      */
     public void addRoleUser(Map<String, Object> parameterObject){
-        String roleId= StringUtils.replaceNull(parameterObject.get("roleId"));
+        String roleId= String.valueOf(parameterObject.get("roleId"));
         //新增角色用户
         ArrayList emps=(ArrayList)parameterObject.get("emps");
         if(null!=emps){
@@ -140,7 +139,7 @@ public class RoleMgrRepository {
             for(Object emp:emps){
                 UserRole userRole=new UserRole();
                 userRole.setRoleId(roleId);
-                userRole.setUserId(StringUtils.replaceNull(((HashMap<String,String>)emp).get("id")));
+                userRole.setUserId(String.valueOf(((HashMap<String,String>)emp).get("id")));
                 userRoleList.add(userRole);
             }
             roleMapper.insertRoleUser(userRoleList);

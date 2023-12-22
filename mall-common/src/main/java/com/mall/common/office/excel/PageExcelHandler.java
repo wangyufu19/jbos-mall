@@ -3,7 +3,6 @@ package com.mall.common.office.excel;
 import com.github.pagehelper.PageInfo;
 import com.mall.common.page.PageParam;
 import com.mall.common.paralle.ParallelUtil;
-import com.mall.common.utils.StringUtils;
 import com.mall.common.utils.bean.BeanFactory;
 import com.mall.common.utils.bean.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +10,7 @@ import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.springframework.util.ObjectUtils;
 
 
 import java.io.File;
@@ -80,6 +80,7 @@ public class PageExcelHandler {
 
     /**
      * 设置最大行数
+     *
      * @param maxRow
      */
     public void setMaxRow(int maxRow) {
@@ -88,6 +89,7 @@ public class PageExcelHandler {
 
     /**
      * 设置页码大小
+     *
      * @param pageSize
      */
     public void setPageSize(int pageSize) {
@@ -318,7 +320,12 @@ public class PageExcelHandler {
 
     private void setCellValue(SXSSFRow row, int startCell, Object value) {
         SXSSFCell cell = row.createCell(startCell);
-        cell.setCellValue(StringUtils.replaceNull(value));
+        if (!ObjectUtils.isEmpty(value)) {
+            cell.setCellValue(String.valueOf(value));
+        } else {
+            cell.setCellValue("");
+        }
+
     }
 
 

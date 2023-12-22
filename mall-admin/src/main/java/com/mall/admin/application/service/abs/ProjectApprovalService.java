@@ -1,5 +1,7 @@
 package com.mall.admin.application.service.abs;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import com.mall.admin.application.request.BaseRequestDto;
 import com.mall.admin.application.request.abs.ProjectApprovalRequestDto;
 import com.mall.admin.application.response.abs.ProjectApprovalResponseDto;
@@ -7,12 +9,11 @@ import com.mall.admin.domain.entity.abs.AcctInfo;
 import com.mall.admin.domain.entity.abs.ProjectInfo;
 import com.mall.admin.infrastructure.repository.abs.ProjectApprovalRepo;
 import com.mall.common.page.PageParam;
-import com.mall.common.utils.DateUtils;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,9 @@ import java.util.Map;
  **/
 @Service
 public class ProjectApprovalService {
+    /**
+     * projectApprovalRepo
+     */
     @Autowired
     private ProjectApprovalRepo projectApprovalRepo;
 
@@ -60,10 +64,10 @@ public class ProjectApprovalService {
     public void addOrUpdateProjectApproval(ProjectApprovalRequestDto projectApprovalDto) {
         if (BaseRequestDto.ACTION_CREATE.equals(projectApprovalDto.getAction())) {
             ProjectInfo projectInfo = projectApprovalDto.getProjectInfo();
-            projectInfo.setId(StringUtils.getUUID());
+            projectInfo.setId(IdUtil.randomUUID());
             this.addProjectInfo(projectInfo);
             AcctInfo acctInfo = projectApprovalDto.getAcctInfo();
-            acctInfo.setId(StringUtils.getUUID());
+            acctInfo.setId(IdUtil.randomUUID());
             acctInfo.setProjectId(projectInfo.getId());
             projectApprovalRepo.addAcctInfo(acctInfo);
         } else if (BaseRequestDto.ACTION_UPDATE.equals(projectApprovalDto.getAction())) {
@@ -89,7 +93,7 @@ public class ProjectApprovalService {
      */
     public void addProjectInfo(ProjectInfo projectInfo) {
         projectInfo.setProjectSte(ProjectInfo.PROJECT_STE_NORMAL);
-        projectInfo.setCreateTime(DateUtils.format(DateUtils.getCurrentDate()));
+        projectInfo.setCreateTime(DateUtil.now());
         projectApprovalRepo.addProjectInfo(projectInfo);
     }
 
@@ -99,7 +103,7 @@ public class ProjectApprovalService {
      * @param projectInfo
      */
     public void updateProjectInfo(ProjectInfo projectInfo) {
-        projectInfo.setUpdateTime(DateUtils.format(DateUtils.getCurrentDate()));
+        projectInfo.setUpdateTime(DateUtil.now());
         projectApprovalRepo.updateProjectInfo(projectInfo);
     }
 

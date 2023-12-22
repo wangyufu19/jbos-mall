@@ -2,9 +2,7 @@ package com.mall.business.application.product.service;
 import com.mall.business.domain.entity.product.Category;
 import com.mall.business.domain.entity.TreeNode;
 import com.mall.business.infrastructure.repository.product.CategoryRepo;
-import com.mall.common.base.BaseService;
 import com.mall.common.response.ResponsePageResult;
-import com.mall.common.response.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +16,7 @@ import java.util.Map;
  * @date 2021-08-19
  */
 @Component
-public class CategoryService extends BaseService {
+public class CategoryService {
     @Autowired
     private CategoryRepo categoryRepo;
 

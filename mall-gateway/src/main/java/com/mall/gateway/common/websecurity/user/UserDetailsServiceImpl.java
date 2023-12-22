@@ -1,7 +1,6 @@
 package com.mall.gateway.common.websecurity.user;
 
 import com.mall.gateway.application.service.auth.UserAuthService;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -46,14 +45,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     throw new AccountGrantException("Bad grant");
                 }
                 for (HashMap role : userRoles) {
-                    grantedAuthorities.add(new SimpleGrantedAuthority(StringUtils.replaceNull(role.get("ROLECODE"))));
+                    grantedAuthorities.add(new SimpleGrantedAuthority(String.valueOf(role.get("ROLECODE"))));
                 }
             }
-            String nickName = StringUtils.replaceNull(userMap.get("NICKNAME"));
-            String password = StringUtils.replaceNull(userMap.get("PASSWORD"));
-            String depId = StringUtils.replaceNull(userMap.get("DEPID"));
-            String depName = StringUtils.replaceNull(userMap.get("DEPNAME"));
-            String orgId = StringUtils.replaceNull(userMap.get("ORGID"));
+            String nickName = String.valueOf(userMap.get("NICKNAME"));
+            String password = String.valueOf(userMap.get("PASSWORD"));
+            String depId = String.valueOf(userMap.get("DEPID"));
+            String depName = String.valueOf(userMap.get("DEPNAME"));
+            String orgId = String.valueOf(userMap.get("ORGID"));
             JwtUser jwtUser = new JwtUser();
             jwtUser.setUsername(username);
             jwtUser.setNickName(nickName);

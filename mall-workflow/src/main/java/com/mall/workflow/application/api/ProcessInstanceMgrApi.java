@@ -1,7 +1,6 @@
 package com.mall.workflow.application.api;
 
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import com.mall.workflow.application.service.ProcessInstanceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,9 +29,9 @@ public class ProcessInstanceMgrApi {
     @ApiOperation("启动流程实例")
     public ResponseResult startProcessInstance(@RequestBody Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
-        String userId=StringUtils.replaceNull(params.get("userId"));
-        String processDefinitionKey= StringUtils.replaceNull(params.get("processDefinitionKey"));
-        String businessKey= StringUtils.replaceNull(params.get("businessKey"));
+        String userId=String.valueOf(params.get("userId"));
+        String processDefinitionKey= String.valueOf(params.get("processDefinitionKey"));
+        String businessKey= String.valueOf(params.get("businessKey"));
         String processDefinitionId="";
         String processInstanceId="";
         try{
@@ -63,9 +62,9 @@ public class ProcessInstanceMgrApi {
     @ApiOperation("启动和完成流程实例")
     public ResponseResult startAndFinishProcessInstance(@RequestBody Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
-        String userId=StringUtils.replaceNull(params.get("userId"));
-        String processDefinitionKey= StringUtils.replaceNull(params.get("processDefinitionKey"));
-        String businessKey= StringUtils.replaceNull(params.get("businessKey"));
+        String userId=String.valueOf(params.get("userId"));
+        String processDefinitionKey= String.valueOf(params.get("processDefinitionKey"));
+        String businessKey= String.valueOf(params.get("businessKey"));
         String processDefinitionId="";
         String processInstanceId="";
         try{
@@ -96,7 +95,7 @@ public class ProcessInstanceMgrApi {
     @ApiOperation("查询流程实例状态")
     public ResponseResult getProcessInstanceState(@RequestParam Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
-        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        String processInstanceId=String.valueOf(params.get("processInstanceId"));
         try{
             String processInstanceState=processInstanceService.getProcessInstanceState(processInstanceId);
             Map<String,Object> data=new HashMap<String,Object>();
@@ -113,8 +112,8 @@ public class ProcessInstanceMgrApi {
     @ApiOperation("查询流程实例当前活动")
     public ResponseResult getProcessInstanceCurrentActivityId(@RequestParam Map<String, Object> params){
         ResponseResult res= ResponseResult.ok();
-        String processDefinitionId=StringUtils.replaceNull(params.get("processDefinitionId"));
-        String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+        String processDefinitionId=String.valueOf(params.get("processDefinitionId"));
+        String processInstanceId=String.valueOf(params.get("processInstanceId"));
 
         try{
             Map<String,Object> data=processInstanceService.getProcessInstanceCurrentActivityId(
@@ -132,7 +131,7 @@ public class ProcessInstanceMgrApi {
     public ResponseResult suspendProcessInstanceById(@RequestBody Map<String, Object> params){
         ResponseResult res = ResponseResult.ok();
         try {
-            String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+            String processInstanceId=String.valueOf(params.get("processInstanceId"));
             processInstanceService.suspendProcessInstanceById(processInstanceId);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -147,7 +146,7 @@ public class ProcessInstanceMgrApi {
     public ResponseResult activateProcessInstanceById(@RequestBody Map<String, Object> params){
         ResponseResult res = ResponseResult.ok();
         try {
-            String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+            String processInstanceId=String.valueOf(params.get("processInstanceId"));
             processInstanceService.activateProcessInstanceById(processInstanceId);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -161,7 +160,7 @@ public class ProcessInstanceMgrApi {
     public ResponseResult deleteProcessInstance(@RequestBody Map<String, Object> params){
         ResponseResult res = ResponseResult.ok();
         try {
-            String processInstanceId=StringUtils.replaceNull(params.get("processInstanceId"));
+            String processInstanceId=String.valueOf(params.get("processInstanceId"));
             processInstanceService.deleteProcessInstance(processInstanceId,"作废流程实例");
         } catch (Exception e) {
             log.error(e.getMessage(), e);

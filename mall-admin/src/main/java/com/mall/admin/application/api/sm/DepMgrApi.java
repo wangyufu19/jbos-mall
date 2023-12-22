@@ -3,7 +3,6 @@ package com.mall.admin.application.api.sm;
 import com.mall.admin.application.service.sm.DepMgrService;
 import com.mall.admin.domain.entity.sm.Dep;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -108,7 +107,7 @@ public class DepMgrApi {
     @ApiOperation("删除部门")
     public ResponseResult deleteDep(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String id = StringUtils.replaceNull(params.get("id"));
+        String id = String.valueOf(params.get("id"));
         try {
             //查询部门下员工数量
             int count = depMgrService.getDepEmpCount(id);

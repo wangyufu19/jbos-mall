@@ -18,10 +18,10 @@ import com.mall.admin.infrastructure.repository.im.PayeeRepo;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -145,7 +145,7 @@ public class FeeReimburseService {
         //删除费用报销
         feeReimburseRepo.deleteFeeReimburse(parameterObject);
         //删除费用报销科目明细
-        feeReimburseRepo.deleteFeeReimburseItem(StringUtils.replaceNull(parameterObject.get("id")));
+        feeReimburseRepo.deleteFeeReimburseItem(String.valueOf(parameterObject.get("id")));
     }
 
     /**
@@ -208,7 +208,7 @@ public class FeeReimburseService {
             Map<String, Object> variables = this.getFeeReimburseProcessVariables(processTask);
             //流程实例非最后节点下一节点的候选人不能为空
             if (!Role.ROLE_IM_ADMIN.equals(processTask.getActivityId())
-                    && StringUtils.isNUll(StringUtils.replaceNull(variables.get("nextAssignees")))) {
+                    && StringUtils.isEmpty(String.valueOf(variables.get("nextAssignees")))) {
                 res = ResponseResult.error(
                         ResponseResult.CODE_FAILURE,
                         "对不起，实例任务【" + variables.get("nextActivityName") + "】候选人不能为空！");

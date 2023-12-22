@@ -4,9 +4,9 @@ import com.mall.admin.application.service.im.MaterialInfoService;
 import com.mall.admin.domain.entity.comm.TreeNode;
 import com.mall.admin.domain.entity.sm.Func;
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,27 +25,32 @@ import java.util.Map;
 @RestController
 @RequestMapping("/material")
 public class MaterialInfoApi {
+    /**
+     * materialInfoService
+     */
     @Autowired
     private MaterialInfoService materialInfoService;
+
     /**
      * 查询物品下级节点
+     *
      * @param params
-     * @res
+     * @return ResponseResult
      */
     @ResponseBody
     @RequestMapping("/getMaterialChildrenNode")
     public ResponseResult getMaterialChildrenNode(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String parentId = StringUtils.replaceNull(params.get("parentId"));
-        if (StringUtils.isNUll(parentId)) {
+        String parentId = String.valueOf(params.get("parentId"));
+        if (StringUtils.isEmpty(parentId)) {
             parentId = Func.ROOTFUNC_ID;
         }
-        try{
-            List<TreeNode> childrenNode=materialInfoService.getMaterialChildrenNode(parentId);
+        try {
+            List<TreeNode> childrenNode = materialInfoService.getMaterialChildrenNode(parentId);
             res.setData(childrenNode);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }

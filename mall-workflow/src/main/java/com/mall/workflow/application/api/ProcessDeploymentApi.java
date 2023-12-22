@@ -1,12 +1,10 @@
 package com.mall.workflow.application.api;
 
 import com.mall.common.response.ResponseResult;
-import com.mall.common.utils.StringUtils;
 import com.mall.workflow.application.service.ProcessDeploymentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.camunda.bpm.engine.impl.task.TaskDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -60,8 +58,8 @@ public class ProcessDeploymentApi {
     @ApiOperation("删除流程部署")
     public ResponseResult unDeploy(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String id= StringUtils.replaceNull(params.get("id"));
-        String cascade=StringUtils.replaceNull(params.get("cascade"));
+        String id= String.valueOf(params.get("id"));
+        String cascade=String.valueOf(params.get("cascade"));
         try{
             if("true".equals(cascade)){
                 processDeploymentService.deleteDeployment(id,true);
@@ -86,7 +84,7 @@ public class ProcessDeploymentApi {
     @ApiOperation("得到流程定义任务")
     public ResponseResult getProcessDefinitionList(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
-        String processDefinitionId= StringUtils.replaceNull(params.get("processDefinitionId"));
+        String processDefinitionId= String.valueOf(params.get("processDefinitionId"));
         try{
             List<Map<String, String>> data=processDeploymentService.getProcessDefinitionList(processDefinitionId);
             res.setData(data);
