@@ -1,6 +1,7 @@
 package com.mall.admin.common.exception;
 
 import com.mall.common.response.ResponseResult;
+import com.mall.common.utils.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalControllerException {
     /**
      * 参数检查异常
+     *
      * @param request
      * @param e
      * @return ResponseResult
@@ -34,7 +36,21 @@ public class GlobalControllerException {
     }
 
     /**
+     * 业务异常处理
+     *
+     * @param e
+     * @return ResponseResult
+     */
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseResult businessException(BusinessException e) {
+        log.error(e.getMessage(), e);
+        return ResponseResult.error("业务异常：" + e.getMessage());
+    }
+
+    /**
      * 未知异常处理
+     *
      * @param e
      * @return ResponseResult
      */

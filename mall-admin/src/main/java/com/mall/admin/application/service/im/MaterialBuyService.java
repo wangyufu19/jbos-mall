@@ -65,7 +65,7 @@ public class MaterialBuyService{
      */
     public ResponsePageResult getMaterialBuyList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<MaterialBuy> materialBuyList = materialBuyRepo.getMaterialBuyList(pageParam, parameterObject);
-        return ResponsePageResult.ok().isPage(true).setData(materialBuyList);
+        return ResponsePageResult.ok().setData(materialBuyList);
     }
 
     /**

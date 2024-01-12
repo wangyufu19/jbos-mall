@@ -36,7 +36,7 @@ public class RoleMgrService {
      */
     public ResponsePageResult getRoleList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<Role> roleList=roleMgrRepository.getRoleList(pageParam,parameterObject);
-        return ResponsePageResult.ok().isPage(true).setData(roleList);
+        return ResponsePageResult.ok().setData(roleList);
     }
 
     /**
@@ -83,7 +83,7 @@ public class RoleMgrService {
      */
     public ResponsePageResult getRoleEmpList(PageParam pageParam,Map<String, Object> parameterObject){
         List<Emp> empList=roleMgrRepository.getRoleEmpList(pageParam,parameterObject);
-        return ResponsePageResult.ok().isPage(true).setData(empList);
+        return ResponsePageResult.ok().setData(empList);
     }
     /**
      * 查询选择角色用户列表
@@ -92,7 +92,7 @@ public class RoleMgrService {
      */
     public ResponsePageResult getSelectRoleEmpList(PageParam pageParam,Map<String, Object> parameterObject){
         List<Emp> empList=roleMgrRepository.getSelectRoleEmpList(pageParam,parameterObject);
-        return ResponsePageResult.ok().isPage(true).setData(empList);
+        return ResponsePageResult.ok().setData(empList);
     }
     /**
      * 新增角色用户

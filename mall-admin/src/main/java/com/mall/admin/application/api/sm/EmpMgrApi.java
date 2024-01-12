@@ -9,6 +9,7 @@ import com.mall.common.office.excel.IPageExcel;
 import com.mall.common.office.excel.PageExcelHandler;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
+import com.mall.common.utils.ExcelUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -59,7 +62,7 @@ public class EmpMgrApi {
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             List<Emp> empList = empMgrService.getEmpList(pageParam, params);
-            res = ResponsePageResult.ok().isPage(true).setData(empList);
+            res = ResponsePageResult.ok().setData(empList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
@@ -152,35 +155,36 @@ public class EmpMgrApi {
 
     @PostMapping(value = "/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ApiOperation("导出员工列表")
-    public void export(HttpServletResponse response) {
-        Map<String, String> titles = new HashMap<>();
+    public void export(HttpServletResponse response) throws IOException {
+        Map<String, String> titles = new LinkedHashMap<>();
+        titles.put("userid", "用户Id");
         titles.put("badge", "员工号");
         titles.put("empName", "姓名");
-//        titles.put("orgName", "所属机构");
-//        titles.put("depName", "所属部门");
-//        titles.put("headShipName", "职务");
+        titles.put("orgName", "所属机构");
+        titles.put("depName", "所属部门");
+        titles.put("headShipName", "职务");
         PageExcelHandler pageExcelHandler = new PageExcelHandler(titles);
-        try {
-            pageExcelHandler.generateExcelParallel(response.getOutputStream(), new IPageExcel() {
-                public int getPageCount() {
-                    int total = empMgrService.getEmpCount();
-                    if (total >= IPageExcel.SHEET_MAX_ROW) {
-                        total = IPageExcel.SHEET_MAX_ROW;
-                    }
-                    return total;
-                }
+        PageParam pageParam = PageParam.getPageParam(1, 10);
+        List<Emp> empList = empMgrService.getEmpList(pageParam, new HashMap<>());
+        ExcelUtils.exportExcel(response.getOutputStream(), titles, empList, "", "员工");
+//        pageExcelHandler.generateExcelParallel(response.getOutputStream(), new IPageExcel() {
+//            public int getPageCount() {
+//                int total = empMgrService.getEmpCount();
+//                if (total >= IPageExcel.SHEET_MAX_ROW) {
+//                    total = IPageExcel.SHEET_MAX_ROW;
+//                }
+//                return total;
+//            }
+//
+//            public PageInfo getPageDataList(int page, int limit) {
+//                log.info("******读取数据[page={},limit={}]", page, limit);
+//                PageParam pageParam = PageParam.getPageParam(page, limit);
+//                Map<String, Object> params = new HashMap<>();
+//                List<Emp> empList = empMgrService.getEmpList(page, limit);
+//                PageInfo pageInfo = new PageInfo(empList);
+//                return pageInfo;
+//            }
+//        }, PageParam.DEFAULT_PAGE_SIZE);
 
-                public PageInfo getPageDataList(int page, int limit) {
-                    log.info("******读取数据[page={},limit={}]", page, limit);
-                    PageParam pageParam = PageParam.getPageParam(page, limit);
-                    Map<String, Object> params = new HashMap<>();
-                    List<Emp> empList = empMgrService.getEmpList(page, limit);
-                    PageInfo pageInfo = new PageInfo(empList);
-                    return pageInfo;
-                }
-            }, PageParam.DEFAULT_PAGE_SIZE);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
     }
 }

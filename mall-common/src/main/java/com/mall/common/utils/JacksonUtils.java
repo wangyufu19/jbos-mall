@@ -5,14 +5,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 
 /**
  * JacksonUtils
+ *
  * @author youfu.wang
  * @date 2021-07-08
  */
+@Slf4j
 public class JacksonUtils {
+    /**
+     * objectMapper
+     */
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
     static {
         //Include.NON_NULL 属性为NULL 不序列化
         //Include.Include.ALWAYS 默认
@@ -33,12 +42,37 @@ public class JacksonUtils {
         objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 
     }
+
+    /**
+     * Json->Object
+     * @param json
+     * @param t
+     * @return t
+     * @param <T>
+     */
+    public static <T> T parseObject(String json, Class<T> t) {
+        if (json == null) {
+            return null;
+        }
+        try {
+            return objectMapper.readValue(json, t);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    /**
+     * Object->Json
+     * @param value
+     * @return json
+     */
     public static String toJson(Object value) {
         try {
             return objectMapper.writeValueAsString(value);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        return null;
     }
 }

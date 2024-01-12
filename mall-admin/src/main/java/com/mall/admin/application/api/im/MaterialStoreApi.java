@@ -37,7 +37,7 @@ public class MaterialStoreApi {
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             List<MaterialStore> materialStoreList = materialStoreService.getMaterialStoreSumList(pageParam, params);
-            res.isPage(true).setData(materialStoreList);
+            res.setData(materialStoreList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

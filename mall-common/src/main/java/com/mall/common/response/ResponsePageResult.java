@@ -21,7 +21,6 @@ public class ResponsePageResult<T> {
     public static final String MSG_FAILURE = "操作失败";
     private String retCode;
     private String retMsg;
-    private boolean isPage;
     private T data;
 
 
@@ -65,18 +64,10 @@ public class ResponsePageResult<T> {
         return new ResponsePageResult(retCode, retMsg);
     }
 
-    public ResponsePageResult isPage(boolean isPage) {
-        this.isPage = isPage;
-        return this;
-    }
 
     public ResponsePageResult setData(T data) {
-        if (this.isPage) {
-            PageInfo pageInfo = new PageInfo((List) data);
-            this.data = (T) pageInfo;
-        } else {
-            this.data = data;
-        }
+        PageInfo pageInfo = new PageInfo((List) data);
+        this.data = (T) pageInfo;
         return this;
     }
 }

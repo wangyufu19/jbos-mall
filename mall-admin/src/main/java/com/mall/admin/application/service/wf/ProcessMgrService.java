@@ -43,7 +43,7 @@ public class ProcessMgrService {
      */
     public ResponsePageResult getProcessInstList(PageParam pageParam, Map<String, Object> parameterObject){
         List<ProcessInst> processInstList=processInstRepo.getProcessInstList(pageParam,parameterObject);
-        return ResponsePageResult.ok().isPage(true).setData(processInstList);
+        return ResponsePageResult.ok().setData(processInstList);
     }
 
     /**

@@ -75,7 +75,7 @@ public class FeeReimburseService {
      */
     public ResponsePageResult getFeeReimburseList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<FeeReimburse> feeReimburseList = feeReimburseRepo.getFeeReimburseList(pageParam, parameterObject);
-        return ResponsePageResult.ok().isPage(true).setData(feeReimburseList);
+        return ResponsePageResult.ok().setData(feeReimburseList);
     }
 
     /**

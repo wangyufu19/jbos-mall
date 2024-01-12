@@ -23,7 +23,7 @@ public class MemberService {
 
     public ResponsePageResult getMemberList(PageParam pageParam, Map<String, Object> parameterObject){
         List<Member> memberList=this.memberRepo.getMemberList(pageParam,parameterObject);
-        return ResponsePageResult.ok().isPage(true).setData(memberList);
+        return ResponsePageResult.ok().setData(memberList);
     }
     public Member getMemberInfo(Map<String, Object> parameterObject){
         return this.memberRepo.getMemberInfo(parameterObject);

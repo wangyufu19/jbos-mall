@@ -1,5 +1,7 @@
 package com.mall.admin.application.service.abs.impl;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.listener.PageReadListener;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mall.admin.application.service.abs.BasicAssetService;
 import com.mall.admin.domain.entity.abs.BasicAsset;
@@ -7,7 +9,6 @@ import com.mall.admin.infrastructure.repository.abs.BasicAssetRepo;
 import com.mall.admin.infrastructure.repository.abs.mapper.BasicAssetMapper;
 import com.mall.common.page.PageParam;
 import com.mall.common.response.ResponsePageResult;
-import com.mall.common.utils.ExcelUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,7 @@ public class BasicAssetServiceImpl extends ServiceImpl<BasicAssetMapper, BasicAs
      */
     public ResponsePageResult getBasicAssetList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<BasicAsset> basicAssetList = basicAssetRepo.getBasicAssetList(pageParam, parameterObject);
-        return ResponsePageResult.ok().isPage(true).setData(basicAssetList);
+        return ResponsePageResult.ok().setData(basicAssetList);
     }
 
     /**
@@ -66,9 +67,10 @@ public class BasicAssetServiceImpl extends ServiceImpl<BasicAssetMapper, BasicAs
      */
     @Transactional
     public void inPool(MultipartFile file) {
-        try (InputStream is = file.getInputStream()) {
-            List<BasicAsset> basicAssetList = ExcelUtils.readToList(is, BasicAsset.class);
-            this.saveBatch(basicAssetList);
+        try (InputStream in = file.getInputStream()) {
+            EasyExcel.read(in, BasicAsset.class, new PageReadListener<BasicAsset>(dataList -> {
+                this.saveBatch(dataList);
+            }, 10000)).sheet().doRead();
         } catch (Exception e) {
             log.error(e.getMessage());
         }

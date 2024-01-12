@@ -63,10 +63,19 @@ import java.util.Map;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, jsr250Enabled = true)
 @EnableConfigurationProperties({WebSecurityProperties.class})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    /**
+     * userDetailsService
+     */
     @Autowired
     private UserDetailsService userDetailsService;
+    /**
+     * jwtTokenProvider
+     */
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+    /**
+     * webSecurityProperties
+     */
     @Autowired
     private WebSecurityProperties webSecurityProperties;
 
@@ -97,16 +106,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    /**
-     * getExcludeUris
-     *
-     * @return excludeUris
-     */
-    private String[] getExcludeUris() {
-        String excludeUri = webSecurityProperties.getExcludeUri();
-        String[] excludeUris = excludeUri.split(",");
-        return excludeUris;
-    }
+
 
     /**
      * HttpSecurity
@@ -150,18 +150,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .and().cors(); //启用跨域请求
     }
-
+    /**
+     * getExcludeUris
+     *
+     * @return excludeUris
+     */
+    private String[] getExcludeUris() {
+        String excludeUri = webSecurityProperties.getExcludeUri();
+        String[] excludeUris = excludeUri.split(",");
+        return excludeUris;
+    }
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    /**
+     * passwordEncoder
+     * @return PasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * loginFilter
+     * @return LoginFilter
+     * @throws Exception
+     */
     @Bean
     public LoginFilter loginFilter() throws Exception {
         LoginFilter loginFilter = new LoginFilter();
@@ -169,7 +187,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         loginFilter.setFilterProcessesUrl(webSecurityProperties.getLoginUri());
         // 返回登录成功后数据
         loginFilter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+            public void onAuthenticationSuccess(
+                    HttpServletRequest request,
+                    HttpServletResponse response, Authentication authentication) throws IOException {
                 //获取用户对象
                 JwtUser principal = (JwtUser) authentication.getPrincipal(); // 获取用户对象
                 Map<String, String> signData = new HashMap<String, String>();
@@ -223,6 +243,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         /**
          * attemptAuthentication
+         *
          * @param request
          * @param response
          * @return Authentication
@@ -250,18 +271,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public class CaptchaAuthenticationException extends AuthenticationException {
-
+        /**
+         * CaptchaAuthenticationException
+         * @param msg
+         * @param t
+         */
         public CaptchaAuthenticationException(String msg, Throwable t) {
             super(msg, t);
         }
 
+        /**
+         * CaptchaAuthenticationException
+         * @param msg
+         */
         public CaptchaAuthenticationException(String msg) {
             super(msg);
         }
     }
 
     public class WebLogoutHandler implements LogoutHandler {
-
+        /**
+         * logout
+         * @param request
+         * @param response
+         * @param authentication
+         */
         public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
             if (authentication != null) {
                 JwtUser user = (JwtUser) authentication.getPrincipal();
@@ -272,8 +306,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public class WebLogoutSuccessHandler implements LogoutSuccessHandler {
-
-        public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        /**
+         * onLogoutSuccess
+         * @param request
+         * @param response
+         * @param authentication
+         * @throws IOException
+         */
+        public void onLogoutSuccess(
+                HttpServletRequest request,
+                HttpServletResponse response,
+                Authentication authentication) throws IOException {
             response.setStatus(HttpServletResponse.SC_OK);
             response.setCharacterEncoding("utf-8");
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -286,6 +329,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public class JwtAuthenticationFilter extends OncePerRequestFilter {
+        /**
+         * antPathMatcher
+         */
         private AntPathMatcher antPathMatcher = new AntPathMatcher(File.separator);
 
         private boolean isExcludeUri(String requestURI) {
@@ -336,7 +382,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             List<GrantedAuthority> grantedAuthorities = jwtTokenProvider.getGrantedAuthorityFromJWT(token, JwtUser.AUTHORITIES);
             UserDetails userDetails = new JwtUser(username, nickName, grantedAuthorities);
             // 构建认证过的token
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             if (authentication != null) {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             }

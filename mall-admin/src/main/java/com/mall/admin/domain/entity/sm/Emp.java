@@ -1,5 +1,6 @@
 package com.mall.admin.domain.entity.sm;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.mall.admin.domain.entity.comm.BaseEntity;
@@ -26,10 +27,12 @@ public class Emp extends BaseEntity implements Serializable {
      */
     @ApiModelProperty(value = "员工号", required = true)
     @TableField("badge")
+    @ExcelProperty
     private String badge;
     /**
      * 员工姓名
      */
+    @ExcelProperty
     private String empName;
     /**
      * 所属机构Id

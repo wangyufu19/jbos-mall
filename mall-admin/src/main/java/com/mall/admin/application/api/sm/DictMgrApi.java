@@ -75,7 +75,7 @@ public class DictMgrApi {
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             List<DictType> dictTypes = dictTypeService.getDictTypeList(pageParam, params);
-            res.isPage(true).setData(dictTypes);
+            res.setData(dictTypes);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

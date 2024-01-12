@@ -38,7 +38,7 @@ public class ProjectApprovalApi {
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             List<ProjectInfo> projectList = projectApprovalService.getProjectList(pageParam, params);
-            res.isPage(true).setData(projectList);
+            res.setData(projectList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);

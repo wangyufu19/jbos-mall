@@ -39,6 +39,6 @@ public class CategoryService {
         Map<String,Object> parameterObject=new HashMap<String,Object>();
         parameterObject.put("parentCode",parentCode);
         List<Category> categoryList=categoryRepo.getProductCategory(parameterObject);
-        return ResponsePageResult.ok().isPage(true).setData(categoryList);
+        return ResponsePageResult.ok().setData(categoryList);
     }
 }

@@ -56,7 +56,7 @@ public class MaterialOutStoreService {
      */
     public ResponsePageResult getMaterialOutStoreList(PageParam pageParam, Map<String, Object> parameterObject) {
         List<MaterialOutStore> materialOutStoreList = materialOutStoreRepo.getMaterialOutStoreList(pageParam,parameterObject);
-        return ResponsePageResult.ok().isPage(true).setData(materialOutStoreList);
+        return ResponsePageResult.ok().setData(materialOutStoreList);
     }
 
     /**
