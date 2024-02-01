@@ -10,37 +10,39 @@ import java.util.Map;
 
 @Component
 public class UserAuthRepository {
+    /**
+     * userAuthMapper
+     */
     @Autowired
     private UserAuthMapper userAuthMapper;
+
     /**
      * 用户认证
+     *
      * @param username
      * @return
      */
-    public Map<String,Object> login(String username){
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("username",username);
-        return userAuthMapper.login(parameterObject);
+    public Map<String, Object> login(String username) {
+        return userAuthMapper.login(username);
     }
 
     /**
      * 得到认证用户角色
+     *
      * @param username
      * @return
      */
-    public List<HashMap> getAuthUserRole(String username){
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("username",username);
-        return userAuthMapper.getAuthUserRole(parameterObject);
+    public List<HashMap> getAuthUserRole(String username) {
+        return userAuthMapper.getAuthUserRole(username);
     }
+
     /**
      * 得到用户认证信息
+     *
      * @param username
      * @return
      */
-    public Map<String,Object> getUserAuthInfo(String username){
-        Map<String, Object> parameterObject=new HashMap<String, Object>();
-        parameterObject.put("username",username);
-        return userAuthMapper.getUserAuthInfo(parameterObject);
+    public Map<String, Object> getUserAuthInfo(String username) {
+        return userAuthMapper.getUserAuthInfo(username);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +24,14 @@ import java.util.Map;
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final String USER_ADMIN = "admin";
-    private final String ROLE_ADMIN = "ROLE_ADMIN";
+    /**
+     * USER_ADMIN
+     */
+    private static final String USER_ADMIN = "admin";
+    /**
+     * ROLE_ADMIN
+     */
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
     @Autowired
     private UserAuthService userAuthService;
 
@@ -35,18 +42,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (userMap == null) {
             throw new BadCredentialsException("Bad credentials");
         } else {
-            //判断用户权限
+            //查询用户权限
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-            List<HashMap> userRoles = userAuthService.getAuthUserRole(username);
+            List<HashMap<String, String>> userPermissionList = userAuthService.getAuthUserPermission(username);
             if (USER_ADMIN.equals(username)) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(ROLE_ADMIN));
-            } else {
-                if (userRoles == null || userRoles.size() <= 0) {
-                    throw new AccountGrantException("Bad grant");
-                }
-                for (HashMap role : userRoles) {
-                    grantedAuthorities.add(new SimpleGrantedAuthority(String.valueOf(role.get("ROLECODE"))));
-                }
+            }
+            for (HashMap role : userPermissionList) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(String.valueOf(role.get("FUNCCODE"))));
+            }
+            if (ObjectUtils.isEmpty(grantedAuthorities)) {
+                throw new AccountGrantException("Bad grant");
             }
             String nickName = String.valueOf(userMap.get("NICKNAME"));
             String password = String.valueOf(userMap.get("PASSWORD"));
@@ -66,10 +72,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public class AccountGrantException extends AuthenticationException {
+        /**
+         * AccountGrantException
+         *
+         * @param msg
+         */
         public AccountGrantException(String msg) {
             super(msg);
         }
 
+        /**
+         * AccountGrantException
+         *
+         * @param msg
+         * @param t
+         */
         public AccountGrantException(String msg, Throwable t) {
             super(msg, t);
         }

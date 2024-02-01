@@ -55,11 +55,7 @@ public class FuncMgrRepository {
         Map<String, Object> parameterObject = new HashMap<String, Object>();
         parameterObject.put("loginName", loginName);
         parameterObject.put("parentId", parentId);
-        if ("admin".equals(loginName)) {
-            funcs = funcMapper.getFuncList(parameterObject);
-        } else {
-            funcs = funcMapper.getUserFuncList(parameterObject);
-        }
+        funcs = funcMapper.getUserFuncList(parameterObject);
         if (null != funcs) {
             for (Func func : funcs) {
                 func.setChildren(this.getUserFuncTree(loginName, func.getId()));

@@ -24,11 +24,21 @@
         FROM JBOS_USER A
         WHERE A.USERNAME=#{username}
     </select>
-    <!--查询认证用户角色-->
+    <!--查询用户角色-->
     <select id="getAuthUserRole" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT C.ROLECODE
         FROM JBOS_USER A INNER JOIN JBOS_USER_ROLE B ON A.ID=B.USERID
         INNER JOIN JBOS_ROLE C ON B.ROLEID=C.ID
+        WHERE A.USERNAME=#{username}
+    </select>
+    <!--查询用户权限-->
+    <select id="getAuthUserPermission" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT F.FUNCCODE,F.FUNCNAME
+        FROM JBOS_USER A
+        INNER JOIN JBOS_USER_ROLE B ON A.ID=B.USERID
+        INNER JOIN JBOS_ROLE C ON B.ROLEID=C.ID
+        INNER JOIN JBOS_ROLE_FUNC D ON C.ID=D.ROLEID
+        INNER JOIN JBOS_FUNC F ON D.FUNCID=F.ID
         WHERE A.USERNAME=#{username}
     </select>
 </mapper>
