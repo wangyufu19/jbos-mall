@@ -39,7 +39,7 @@ public class UserAuthApi {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMINd')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @ResponseBody
     @RequestMapping(value = "/getPrincipalInfo", method = RequestMethod.GET)
     @ApiOperation("得到用户凭据信息")
@@ -51,7 +51,7 @@ public class UserAuthApi {
         String depId = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "depId");
         String depName = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "depName");
         String orgId = jwtTokenProvider.getSignDataFromJWT(this.getRequestToken(), "orgId");
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap();
         data.put("username", principal.getUsername());
         data.put("nickName", nickName);
         data.put("depId", depId);
@@ -68,7 +68,7 @@ public class UserAuthApi {
         ResponseResult res = ResponseResult.ok();
         String token = this.getRequestToken();
         String freshToken = jwtTokenProvider.freshToken(token);
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap();
         data.put("freshToken", freshToken);
         res.setData(data);
         return res;

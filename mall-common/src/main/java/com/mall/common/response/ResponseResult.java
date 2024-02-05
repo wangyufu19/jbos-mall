@@ -9,6 +9,7 @@ import lombok.Setter;
  *
  * @author youfu.wang
  * @date 2021-08-19
+ * @param <T>
  */
 @Setter
 @Getter

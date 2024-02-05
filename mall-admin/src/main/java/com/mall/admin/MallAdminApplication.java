@@ -1,5 +1,6 @@
 package com.mall.admin;
 
+import cn.hutool.core.util.DesensitizedUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,6 +30,7 @@ public class MallAdminApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
+        log.info("id={}", DesensitizedUtil.idCardNum("362326198310202119", 3, 4));
         SpringApplication.run(MallAdminApplication.class, args);
     }
 }
