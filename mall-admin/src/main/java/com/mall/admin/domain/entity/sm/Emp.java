@@ -3,6 +3,8 @@ package com.mall.admin.domain.entity.sm;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.mall.admin.common.sensitive.Sensitive;
+import com.mall.admin.common.sensitive.SensitiveStrategy;
 import com.mall.admin.domain.entity.comm.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -33,6 +35,7 @@ public class Emp extends BaseEntity implements Serializable {
      * 员工姓名
      */
     @ExcelProperty
+    @Sensitive(strategy = SensitiveStrategy.CHINESE_NAME)
     private String empName;
     /**
      * 所属机构Id

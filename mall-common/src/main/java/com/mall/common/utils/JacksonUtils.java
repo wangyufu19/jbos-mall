@@ -3,8 +3,10 @@ package com.mall.common.utils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -44,11 +46,20 @@ public class JacksonUtils {
     }
 
     /**
+     * getTypeFactory
+     * @return TypeFactory
+     */
+    public static TypeFactory getTypeFactory() {
+        return objectMapper.getTypeFactory();
+    }
+
+    /**
      * Json->Object
+     *
      * @param json
      * @param t
-     * @return t
      * @param <T>
+     * @return t
      */
     public static <T> T parseObject(String json, Class<T> t) {
         if (json == null) {
@@ -63,7 +74,28 @@ public class JacksonUtils {
     }
 
     /**
+     * Json->Object
+     *
+     * @param json
+     * @param javaType
+     * @param <T>
+     * @return t
+     */
+    public static <T> T parseObject(String json, JavaType javaType) {
+        if (json == null) {
+            return null;
+        }
+        try {
+            return objectMapper.readValue(json, javaType);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    /**
      * Object->Json
+     *
      * @param value
      * @return json
      */

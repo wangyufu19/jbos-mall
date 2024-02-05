@@ -10,6 +10,7 @@ import com.mall.common.office.excel.PageExcelHandler;
 import com.mall.common.response.ResponsePageResult;
 import com.mall.common.response.ResponseResult;
 import com.mall.common.utils.ExcelUtils;
+import com.mall.common.utils.JacksonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -166,6 +167,7 @@ public class EmpMgrApi {
         PageExcelHandler pageExcelHandler = new PageExcelHandler(titles);
         PageParam pageParam = PageParam.getPageParam(1, 10);
         List<Emp> empList = empMgrService.getEmpList(pageParam, new HashMap<>());
+        empList = JacksonUtils.parseObject(JacksonUtils.toJson(empList), JacksonUtils.getTypeFactory().constructCollectionType(List.class, Emp.class));
         ExcelUtils.exportExcel(response.getOutputStream(), titles, empList, "", "员工");
 //        pageExcelHandler.generateExcelParallel(response.getOutputStream(), new IPageExcel() {
 //            public int getPageCount() {
