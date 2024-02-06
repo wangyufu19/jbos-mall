@@ -126,5 +126,13 @@ public class ResponseResult<T> {
     public static ResponseResult error(String retCode, String retMsg) {
         return new ResponseResult(retCode, retMsg);
     }
-
+    /**
+     * error
+     * @param retCode
+     * @param retMsg
+     * @return ResponseResult
+     */
+    public static ResponseResult error(int retCode, String retMsg) {
+        return new ResponseResult(String.valueOf(retCode), retMsg);
+    }
 }

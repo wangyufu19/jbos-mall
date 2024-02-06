@@ -1,4 +1,5 @@
 package com.mall.admin.application.api.sm;
+
 import com.mall.admin.application.service.sm.FuncMgrService;
 import com.mall.admin.application.service.sm.UserMgrService;
 import com.mall.admin.domain.entity.sm.Func;
@@ -6,6 +7,8 @@ import com.mall.common.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -17,6 +20,7 @@ import java.util.Map;
 
 /**
  * UserMgrApi
+ *
  * @author youfu.wang
  * @date 2019-01-31
  */
@@ -41,37 +45,42 @@ public class UserMgrApi {
             return accessToken;
         }
     }
+
     /**
      * 新增用户信息数据
+     *
      * @param params
      * @return
      */
     @ResponseBody
     @PostMapping(value = "/add")
     @ApiOperation("新增用户信息数据")
-    public ResponseResult add(@RequestBody Map<String, Object> params){
-        ResponseResult res= ResponseResult.ok();
-        try{
+    public ResponseResult add(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
+        try {
             userMgrService.addUserInfo(params);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res= ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
+
     /**
      * 查询用户菜单导航数据
+     *
      * @param params
-     * @return
+     * @return ResponseResult
      */
     @ResponseBody
-    @RequestMapping(value = "/getUserFunc", method = RequestMethod.GET)
+    @GetMapping(value = "/getUserFunc")
+//    @RequiresPermissions("admin")
     @ApiOperation("查询用户功能数据")
     public ResponseResult getUserFunc(@RequestParam Map<String, Object> params) {
-        ResponseResult res= ResponseResult.ok();
+        ResponseResult res = ResponseResult.ok();
         String username = String.valueOf(params.get("userId"));
         List<Func> funcRouteList = null;
-        funcRouteList=funcMgrService.getUserFuncList(username,username);
+        funcRouteList = funcMgrService.getUserFuncList(username, username);
         res.setData(funcRouteList);
         return res;
     }

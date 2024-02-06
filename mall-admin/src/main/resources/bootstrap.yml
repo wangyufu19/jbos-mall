@@ -9,6 +9,8 @@ spring:
     name: mall-admin
   profiles:
     active: dev
+  main:
+    allow-circular-references: true
 #actuator 端点信息配置
 management:
   endpoints:

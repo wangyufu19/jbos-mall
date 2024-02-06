@@ -31,9 +31,10 @@ import java.util.Map;
 public class ProcessTaskApi {
     @Autowired
     private ProcessTaskService processTaskService;
+
     /**
      * 查询我的工作列表
-     *
+     * @param params
      * @return
      */
     @ResponseBody
@@ -45,9 +46,9 @@ public class ProcessTaskApi {
         try {
             PageParam pageParam = PageParam.getPageParam(params);
             if ("waiting".equals(workType)) {
-                res = processTaskService.getUserTaskList(pageParam,params);
+                res = processTaskService.getUserTaskList(pageParam, params);
             } else {
-                res = processTaskService.getUserTaskProcessedList(pageParam,params);
+                res = processTaskService.getUserTaskProcessedList(pageParam, params);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -78,6 +79,7 @@ public class ProcessTaskApi {
 
     /**
      * 查询实例任务明细列表
+     *
      * @param params
      * @return
      */
@@ -88,56 +90,60 @@ public class ProcessTaskApi {
         ResponsePageResult res = ResponsePageResult.ok();
         try {
             PageParam pageParam = PageParam.getPageParam(params);
-            res=processTaskService.getProcessTaskDetailList(pageParam,params);
+            res = processTaskService.getProcessTaskDetailList(pageParam, params);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponsePageResult.error(ResponseResult.CODE_FAILURE, ResponseResult.MSG_FAILURE);
         }
         return res;
     }
+
     @ResponseBody
     @PostMapping(value = "/assignee")
     @ApiOperation("领取任务")
-    public ResponseResult assignee(@RequestBody Map<String, Object> params){
-        ResponseResult res=ResponseResult.ok();
+    public ResponseResult assignee(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
         try {
-            ProcessTask processTask= ProcessTaskDto.build(params);
+            ProcessTask processTask = ProcessTaskDto.build(params);
             processTaskService.assigneeTask(processTask);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, e.getMessage());
         }
         return res;
     }
+
     @ResponseBody
     @PostMapping(value = "/addAssignee")
     @ApiOperation("新增任务领取人")
-    public ResponseResult addAssignee(@RequestBody Map<String, Object> params){
-        ResponseResult res=ResponseResult.ok();
+    public ResponseResult addAssignee(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
         try {
             processTaskService.addTaskAssignee(params);
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, e.getMessage());
         }
         return res;
     }
+
     @ResponseBody
     @PostMapping(value = "/reduceAssignee")
     @ApiOperation("减去任务领取人")
-    public ResponseResult reduceAssignee(@RequestBody Map<String, Object> params){
-        ResponseResult res=ResponseResult.ok();
+    public ResponseResult reduceAssignee(@RequestBody Map<String, Object> params) {
+        ResponseResult res = ResponseResult.ok();
         try {
-            int reduceNum=processTaskService.reduceTaskAssignee(params);
-            if(reduceNum<=0){
-                res=ResponseResult.error(ResponseResult.CODE_FAILURE,"当前活动实例必须包含一个子活动实例");
+            int reduceNum = processTaskService.reduceTaskAssignee(params);
+            if (reduceNum <= 0) {
+                res = ResponseResult.error(ResponseResult.CODE_FAILURE, "当前活动实例必须包含一个子活动实例");
             }
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            res=ResponseResult.error(ResponseResult.CODE_FAILURE,e.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = ResponseResult.error(ResponseResult.CODE_FAILURE, e.getMessage());
         }
         return res;
     }
+
     /**
      * 完成用户任务
      *
@@ -150,20 +156,21 @@ public class ProcessTaskApi {
     public ResponseResult completeUserTask(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            ProcessTask processCurrentTask= ProcessTaskDto.build(params);
-            List<Map<String,String>> variables=(ArrayList<Map<String,String>>)params.get("variables");
-            if(!CollectionUtils.isEmpty(variables)) {
+            ProcessTask processCurrentTask = ProcessTaskDto.build(params);
+            List<Map<String, String>> variables = (ArrayList<Map<String, String>>) params.get("variables");
+            if (!CollectionUtils.isEmpty(variables)) {
                 for (Map<String, String> variableMap : variables) {
-                    params.put(variableMap.get("DICTID"),variableMap.get("variableValue"));
+                    params.put(variableMap.get("DICTID"), variableMap.get("variableValue"));
                 }
             }
-            res = processTaskService.completeTask(processCurrentTask,params,null);
+            res = processTaskService.completeTask(processCurrentTask, params, null);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             res = ResponseResult.error(ResponseResult.CODE_FAILURE, e.getMessage());
         }
         return res;
     }
+
     /**
      * 撤回用户任务
      *
@@ -176,7 +183,7 @@ public class ProcessTaskApi {
     public ResponseResult drawbackUserTask(@RequestBody Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();
         try {
-            ProcessTask processTask=new ProcessTask();
+            ProcessTask processTask = new ProcessTask();
             processTask.setUserId(String.valueOf(params.get("userId")));
             processTask.setProcDefId(String.valueOf(params.get("processDefinitionId")));
             processTask.setProcInstId(String.valueOf(params.get("processInstanceId")));

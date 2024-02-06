@@ -14,6 +14,10 @@ import java.util.function.Function;
 @AllArgsConstructor
 public enum SensitiveStrategy {
     /**
+     * 姓名
+     */
+    CHINESE_NAME(DesensitizedUtil::chineseName),
+    /**
      * 身份证号码
      */
     ID_CARD(s -> DesensitizedUtil.idCardNum(s, 3, 4)),
@@ -21,10 +25,6 @@ public enum SensitiveStrategy {
      * 手机号码
      */
     MOBILE_PHONE(DesensitizedUtil::mobilePhone),
-    /**
-     * 姓名
-     */
-    CHINESE_NAME(DesensitizedUtil::chineseName),
     /**
      * 邮箱
      */
