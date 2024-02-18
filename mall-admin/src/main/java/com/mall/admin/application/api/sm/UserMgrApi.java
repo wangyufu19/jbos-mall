@@ -10,7 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -50,7 +56,7 @@ public class UserMgrApi {
      * 新增用户信息数据
      *
      * @param params
-     * @return
+     * @return ResponseResult
      */
     @ResponseBody
     @PostMapping(value = "/add")
@@ -74,7 +80,7 @@ public class UserMgrApi {
      */
     @ResponseBody
     @GetMapping(value = "/getUserFunc")
-//    @RequiresPermissions("admin")
+    @RequiresPermissions("ROLE_SUPERADMIN")
     @ApiOperation("查询用户功能数据")
     public ResponseResult getUserFunc(@RequestParam Map<String, Object> params) {
         ResponseResult res = ResponseResult.ok();

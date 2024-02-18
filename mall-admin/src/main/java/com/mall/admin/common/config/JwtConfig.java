@@ -1,9 +1,10 @@
-package com.mall.gateway.common.config;
+package com.mall.admin.common.config;
 
 
 import com.auth0.jwt.JWT;
-import com.mall.gateway.common.websecurity.jwt.JwtProperties;
-import com.mall.gateway.common.websecurity.jwt.JwtTokenProvider;
+
+import com.mall.admin.common.jwt.JwtProperties;
+import com.mall.admin.common.jwt.JwtTokenProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

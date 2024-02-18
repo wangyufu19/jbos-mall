@@ -44,7 +44,7 @@ public class UserAuthService {
      * @param username
      * @return
      */
-    public List<HashMap> getAuthUserRole(String username) {
+    public List<String> getAuthUserRole(String username) {
         return userAuthMapper.getAuthUserRole(username);
     }
     /**
@@ -53,7 +53,7 @@ public class UserAuthService {
      * @param username
      * @return
      */
-    public List<HashMap<String, String>> getAuthUserPermission(String username) {
+    public List<String> getAuthUserPermission(String username) {
         return userAuthMapper.getAuthUserPermission(username);
     }
 

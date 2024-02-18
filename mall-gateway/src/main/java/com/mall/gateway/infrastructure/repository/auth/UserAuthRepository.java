@@ -32,7 +32,7 @@ public class UserAuthRepository {
      * @param username
      * @return
      */
-    public List<HashMap> getAuthUserRole(String username) {
+    public List<String> getAuthUserRole(String username) {
         return userAuthMapper.getAuthUserRole(username);
     }
 

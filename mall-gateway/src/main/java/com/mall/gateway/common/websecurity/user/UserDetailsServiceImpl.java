@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,13 +24,8 @@ import java.util.Map;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     /**
-     * USER_ADMIN
+     * userAuthService
      */
-    private static final String USER_ADMIN = "admin";
-    /**
-     * ROLE_ADMIN
-     */
-    private static final String ROLE_ADMIN = "ROLE_ADMIN";
     @Autowired
     private UserAuthService userAuthService;
 
@@ -42,15 +36,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (userMap == null) {
             throw new BadCredentialsException("Bad credentials");
         } else {
-            //查询用户权限
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-            List<HashMap<String, String>> userPermissionList = userAuthService.getAuthUserPermission(username);
-            if (USER_ADMIN.equals(username)) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(ROLE_ADMIN));
+            //查询用户角色
+            List<String> userRoleList = userAuthService.getAuthUserRole(username);
+            if (!ObjectUtils.isEmpty(userRoleList)) {
+                for (String role : userRoleList) {
+                    grantedAuthorities.add(new SimpleGrantedAuthority(role));
+                }
             }
-            for (HashMap role : userPermissionList) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(String.valueOf(role.get("FUNCCODE"))));
+            //查询用户权限
+            List<String> userPermissionList = userAuthService.getAuthUserPermission(username);
+            if (!ObjectUtils.isEmpty(userPermissionList)) {
+                for (String permission : userPermissionList) {
+                    grantedAuthorities.add(new SimpleGrantedAuthority(permission));
+                }
             }
+
             if (ObjectUtils.isEmpty(grantedAuthorities)) {
                 throw new AccountGrantException("Bad grant");
             }

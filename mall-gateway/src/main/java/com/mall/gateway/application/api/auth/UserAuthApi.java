@@ -39,7 +39,7 @@ public class UserAuthApi {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPERADMIN')")
     @ResponseBody
     @RequestMapping(value = "/getPrincipalInfo", method = RequestMethod.GET)
     @ApiOperation("得到用户凭据信息")

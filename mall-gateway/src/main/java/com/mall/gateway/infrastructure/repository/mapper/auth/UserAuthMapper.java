@@ -33,13 +33,12 @@ public interface UserAuthMapper {
      * @param username
      * @return list
      */
-    List<HashMap> getAuthUserRole(String username);
-
+    List<String> getAuthUserRole(String username);
     /**
      * getAuthUserPermission
      *
      * @param username
      * @return list
      */
-    List<HashMap<String, String>> getAuthUserPermission(String username);
+    List<String> getAuthUserPermission(String username);
 }
